@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                template="/WEB-INF/templates/default.xhtml"
+                xmlns:p="http://primefaces.org/ui">
+    <ui:define name="content">
+        <h:panelGroup id="grupoUsuarios">
+            <p:panel id="panelListaUsuarios" rendered="#{usuariosBB.esPantallaActual('PANTALLA_LISTADO')}">
+                <h:form id="formularioListaUsuarios">  
+
+                    <p:growl id="growl" showDetail="true" sticky="true" life="800"/>
+                    <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+                    <p>
+                        <h2>
+                            <h:outputText styleClass="#{usuariosBB.iconoPantalla.textoEtiqueta}"/>
+                            <h:outputText value=" #{usuariosBB.tituloPantalla.textoEtiqueta}"/>
+                        </h2>
+                    </p>
+                    <p>#{usuariosBB.descripcionPantalla.textoEtiqueta}</p>
+                    <p>
+                        <p:commandButton value="Nuevo usuario" icon="fa fa-user-plus" 
+                                         update="messages grupoUsuarios"
+                                         id="ingresarUsuario"
+                                         actionListener="#{usuariosBB.crearNuevoUsuario()}">
+                            <p:ajax update="toolTipInsert" process="@this" />  
+                        </p:commandButton>
+                        <p:tooltip id="toolTipInsert" for="ingresarUsuario" value="Ingresar un nuevo usuario" showEffect="fade" hideEffect="fade" position="bottom"/>
+
+                    </p>
+                    <p:dataTable id="listaUsuarios" var="usuario" widgetVar="listaUsuariosTabla"
+                                 value="#{usuariosBB.listaUsuarios}" rowKey="#{usuario.usuId}" filteredValue="#{usuariosBB.listaUsuariosFiltrado}"
+                                 paginator="true" rows="10" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" 
+                                 rowsPerPageTemplate="10,15,20" 
+                                 emptyMessage="No se han encontrado resultados" 
+                                 paginatorPosition="bottom">
+
+                        <p:column headerText="Usuario" sortBy="#{usuario.usuPalabraclave}" filterBy="#{usuario.usuPalabraclave}" filterMatchMode="contains">
+                            <h:outputText value="#{usuario.usuPalabraclave}" />
+                        </p:column>            
+
+                        <p:column headerText="Código/CI" sortBy="#{usuario.usuCodigo}" filterBy="#{usuario.usuCodigo}">
+                            <h:outputText value="#{usuario.usuCodigo}" />
+                        </p:column>
+
+                        <p:column headerText="Nombres Completos" sortBy="#{usuario.usuApellidos.concat(' ').concat(usuario.usuNombres)}" filterBy="#{usuario.usuApellidos.concat(' ').concat(usuario.usuNombres)}">
+                            <h:outputText value="#{usuario.usuApellidos.concat(' ').concat(usuario.usuNombres)}" />
+                        </p:column>
+
+                        <p:column headerText="Rol" sortBy="#{usuario.perId.descripcionPermiso}" filterBy="#{usuario.perId.descripcionPermiso}">
+                            <h:outputText value="#{usuario.perId.descripcionPermiso}" />
+                        </p:column>            
+
+                        <p:column width="80">
+                            <p:commandButton actionListener="#{usuariosBB.eliminarUsuario(usuario.usuId)}" 
+                                             icon="fa fa-user-times"
+                                             id="eliminarUsuario"
+                                             update="listaUsuarios :formularioListaUsuarios:growl :formularioListaUsuarios:messages" >
+                                <p:confirm header="Eliminar usuario" message="¿Está seguro?" icon="ui-icon-alert" />
+                                <p:ajax update="toolTipDelete" process="@this" /> 
+                            </p:commandButton>
+                            <p:tooltip id="toolTipDelete" for="eliminarUsuario" value="Eliminar Usuario" showEffect="fade" hideEffect="fade" position="bottom"/>
+
+                            <p:commandButton process="listaUsuarios" 
+                                             actionListener="#{usuariosBB.seleccionarUsuario(usuario.usuId)}"
+                                             icon="fa fa-edit"
+                                             id="editarUsuario"
+                                             update="grupoUsuarios">
+                                <p:ajax update="toolTipEdit" process="@this" /> 
+                            </p:commandButton>
+                            <p:tooltip id="toolTipEdit" for="editarUsuario" value="Editar Usuario" showEffect="fade" hideEffect="fade" position="bottom"/>
+                        </p:column>            
+                    </p:dataTable>
+                    <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                        <p:commandButton value="Si" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                        <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                    </p:confirmDialog>
+                </h:form>
+            </p:panel>
+            <p:panel id="panelUsuario" rendered="#{usuariosBB.esPantallaActual('PANTALLA_EDICION')}">
+                <h:form id="formularioUsuario">
+                    <p>
+                        <h2>
+                            <h:outputText styleClass="#{usuariosBB.iconoPantalla.textoEtiqueta}"/>
+                            <h:outputText value=" #{usuariosBB.tituloPantalla.textoEtiqueta}"/>
+                        </h2>
+                    </p>
+                    <p>#{usuariosBB.descripcionPantalla.textoEtiqueta}</p>
+                    <p:messages id="mensajeFormulario" showDetail="false" autoUpdate="true" closable="true" />
+                    <p:tooltip />
+                    <p:outputPanel id="opDetalleUsuarios">
+                        <h:panelGrid columns="3">
+                            <h:outputLabel for="usuEmail" value="Correo electrónico" style="text-align:right;vertical-align:top;"/>
+                            <p:inputText id="usuEmail" value="#{usuariosBB.usuario.usuEmai}" 
+                                         validator="#{usuariosBB.validarEmail}" required="true" size="50"/>
+                            <p:message for="usuEmail" display="tooltip"/>
+
+                            <h:outputLabel for="usuUsuario" value="Usuario" style="text-align:right;vertical-align:top;"/>
+                            <p:inputText id="usuUsuario" value="#{usuariosBB.usuario.usuUsuario}" 
+                                         validator="#{usuariosBB.validarUsuarioRepetido}" validatorMessage="El usuario ya se encuentra registrado en el sistema." required="true" size="50"/>
+                            <p:message id="mensajeUsuario" for="usuUsuario" display="tooltip"/>
+
+                            <h:outputLabel for="usuPassword" value="Contraseña" style="text-align:right;vertical-align:top;"/>
+                            <p:inputText id="usuPassword" required="true" value="#{usuariosBB.usuario.usuPassword}" type="Password" size="50"/>
+                            <p:message for="usuPassword"/>
+
+                            <h:outputLabel for="grupoPermiso" value="Permiso asignado" style="text-align:right;vertical-align:top;"/>
+                            <p:selectOneMenu value="#{usuariosBB.usuario.perId}" converter="permisosConverter" id="grupoPermiso" >
+                                <f:selectItem itemLabel="Seleccione uno" itemValue="" />
+                                <f:selectItems var="permiso" value="#{usuariosBB.listaPermisos}" itemLabel="#{permiso.grupoPermiso}" itemValue="#{permiso}"  />
+                            </p:selectOneMenu>
+                            <p:message for="grupoPermiso"/>
+
+                            <h:outputLabel for="usuCodigo" value="Código/Cédula" style="text-align:right;vertical-align:top;"/>
+                            <p:inputText id="usuCodigo" value="#{usuariosBB.usuario.usuCodigo}" required="true" requiredMessage="No puede ser un valor nulo" size="50">
+                                <f:validateLength minimum="1" maximum="11" />
+                            </p:inputText>
+                            <p:message for="usuCodigo" display="tooltip"/>
+
+                            <h:outputLabel for="usuNombres" value="Nombres" style="text-align:right;vertical-align:top;"/>
+                            <p:inputText id="usuNombres" value="#{usuariosBB.usuario.usuNombres}" required="true" requiredMessage="No puede ser un valor nulo" size="50">
+                                <f:validateLength minimum="1" maximum="35" />
+                            </p:inputText>
+                            <p:message for="usuNombres" display="tooltip"/>
+
+                            <h:outputLabel for="usuApellidos" value="Apellidos" style="text-align:right;vertical-align:top;"/>
+                            <p:inputText id="usuApellidos" value="#{usuariosBB.usuario.usuApellidos}" required="true" size="50">
+                                <f:validateLength minimum="1" maximum="35" />
+                            </p:inputText>
+                            <p:message for="usuApellidos" display="tooltip"/>
+
+                            <h:outputLabel for="usuDirección" value="Direccion" style="text-align:right;vertical-align:top;"/>
+                            <p:inputTextarea id="usuDireccion" value="#{usuariosBB.usuario.usuDireccion}" rows="3" cols="50"/>
+                            <p:message for="usuDireccion"/>
+
+                            <h:outputLabel for="usuTelefono" value="Teléfono celular" style="text-align:right;vertical-align:top;"/>
+                            <p:inputText id="usuTelefono" value="#{usuariosBB.usuario.usuTelefono}"/>
+                            <p:message for="usuTelefono"/>
+
+                            <h:outputLabel for="usuFax" value="Teléfono domicilio" style="text-align:right;vertical-align:top;"/>
+                            <p:inputText id="usuFax" value="#{usuariosBB.usuario.usuFax}"/>
+                            <p:message for="usuFax"/>
+
+                            <h:outputLabel for="usuFoto" value="foto" style="text-align:right;vertical-align:top;"/>
+                            <p:inputText id="usuFoto" value="#{usuariosBB.usuario.usuFoto}" />
+                            <p:message for="usuFoto"/>
+
+
+                            <h:outputLabel value="Fecha nacimiento" style="text-align:right;vertical-align:top;"/>
+                            <p:calendar id="usuFechaNacimiento" navigator="true" value="#{usuariosBB.usuario.usuFnacimiento}" 
+                                        showOn="button" size="10" pattern="dd/MM/yyyy" mask="true" >
+                                <p:watermark for="usuFechaNacimiento" value="dd/mm/aaaa"/>
+                            </p:calendar>
+                            <p:message for="usuFechaNacimiento"/>
+
+                            <h:outputLabel value="Numero de ingreso" style="text-align:right;vertical-align:top;"/>
+                            <p:inputNumber id="usuNumeroIngreso" maxValue="99" minValue="0" value="#{usuariosBB.usuario.usuNumingreso}" size="5"/>
+                            <p:message for="usuNumeroIngreso"/>
+
+
+                            <h:outputLabel for="usuCargo" value="Cargo" style="text-align:right;vertical-align:top;"/>
+                            <p:inputText id="usuCargo" value="#{usuariosBB.usuario.usuCargo}" size="50"/>
+                            <p:message for="usuCargo"/>
+
+
+                            <h:outputLabel for="usuDepartamento" value="Departamento" style="text-align:right !important;vertical-align:top;"/>
+                            <p:inputText id="usuDepartamento" value="#{usuariosBB.usuario.usuDepartamento}" size="50"/>
+                            <p:message for="usuDepartamento"/>
+
+                            <p:commandButton actionListener="#{usuariosBB.actualizarUsuario()}" 
+                                             update="grupoUsuarios" 
+                                             icon="fa fa-check"
+                                             id="guardarUsuario"
+                                             value="Guardar">
+                                <p:ajax update="toolTipSave" process="@this" /> 
+                            </p:commandButton>
+                            <p:tooltip id="toolTipSave" for="guardarUsuario" value="Guardar cambios en usuario" showEffect="fade" hideEffect="fade" position="top"/>
+
+                            <p:commandButton icon="fa fa-close" 
+                                             value="Cerrar"
+                                             id="cancelar"
+                                             update="grupoUsuarios" 
+                                             process="@this" 
+                                             actionListener="#{usuariosBB.cancelarEdicion()}">
+                                <p:ajax update="toolTipCancel" process="@this" />
+                                <p:resetInput target="panelUsuario" />
+                            </p:commandButton>
+                            <p:tooltip id="toolTipCancel" for="cancelar" value="Regresar sin guardar cambios" showEffect="fade" hideEffect="fade" position="top"/>
+                        </h:panelGrid>
+                    </p:outputPanel>
+                </h:form>
+            </p:panel>
+        </h:panelGroup>
+    </ui:define>
+</ui:composition>

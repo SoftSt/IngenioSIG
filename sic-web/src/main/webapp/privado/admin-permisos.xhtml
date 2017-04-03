@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                template="/WEB-INF/templates/default.xhtml"
+                xmlns:p="http://primefaces.org/ui">
+    <ui:define name="content">
+        <h:panelGroup id="grupoPermisos">
+            <p:panel id="panelListaFPermisos" rendered="#{permisosBB.esPantallaActual('PANTALLA_LISTADO')}">
+                <h:form id="formularioListaPermisos">  
+
+                    <p:growl id="growl" showDetail="true" sticky="true" />
+                    <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+                    <p>
+                        <h2>
+                            <h:outputText styleClass="#{permisosBB.iconoPantalla.textoEtiqueta}"/>
+                            <h:outputText value=" #{permisosBB.tituloPantalla.textoEtiqueta}"/>
+                        </h2>
+                    </p>
+                    <p>#{permisosBB.descripcionPantalla.textoEtiqueta}</p>
+                    <p>
+                        <p:commandButton value="Nuevo Rol" icon="fa fa-plus" 
+                                         update="messages grupoPermisos"
+                                         id="IngresarRol"
+                                         actionListener="#{permisosBB.crearNuevoPermiso()}">
+                            <p:ajax update="toolTipInsert" process="@this" />  
+                        </p:commandButton>
+                        <p:tooltip id="toolTipInsert" for="IngresarRol" value="Ingresar un nuevo rol" showEffect="fade" hideEffect="fade" position="bottom"/>
+                    </p>
+
+                    <p:dataTable id="listaPermisos" var="permiso" 
+                                 value="#{permisosBB.listaPermisos}" rowKey="#{permiso.idPermiso}"
+                                 paginator="true" rows="5" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" 
+                                 rowsPerPageTemplate="5,10,15" 
+                                 paginatorPosition="bottom">
+
+
+                        <p:column headerText="Rol" sortBy="#{permiso.grupoPermiso}">
+                            <h:outputText value="#{permiso.grupoPermiso}" />
+                        </p:column>
+
+                        <p:column headerText="Descripción">
+                            <h:outputText value="#{permiso.descripcionPermiso}" />
+                        </p:column>
+
+                        <p:column headerText="Operaciones">
+                            <h:outputText value="#{permiso.operacionesPermiso}" />
+                        </p:column>
+
+                        <p:column width="120">
+                            <p:commandButton actionListener="#{permisosBB.eliminarPermiso(permiso.idPermiso)}" 
+                                             icon="fa fa-trash"
+                                             id="elminarRol"
+                                             update="listaPermisos :formularioListaPermisos:growl :formularioListaPermisos:messages" >
+                                <p:confirm header="Eliminar rol" message="¿Está seguro?" icon="ui-icon-alert" />
+                                <p:ajax update="toolTipDelete" process="@this" /> 
+                            </p:commandButton>
+                            <p:tooltip id="toolTipDelete" for="elminarRol" value="Eliminar Rol" showEffect="fade" hideEffect="fade" position="bottom"/>
+
+                            <p:commandButton process="listaPermisos" 
+                                             actionListener="#{permisosBB.seleccionarPermiso(permiso.idPermiso)}"
+                                             icon="fa fa-edit"
+                                             id="editarRol"
+                                             update="grupoPermisos">
+                                <p:ajax update="toolTipEdit" process="@this" /> 
+                            </p:commandButton>
+                            <p:tooltip id="toolTipEdit" for="editarRol" value="Editar Rol" showEffect="fade" hideEffect="fade" position="bottom"/>
+
+                            <p:commandButton icon="fa fa-check-square-o" 
+                                             id="asignarFuncionalidad"
+                                             actionListener="#{permisosBB.actulizarListadoFuncionalidades(permiso.idPermiso)}"
+                                             update="grupoPermisos">
+                                <p:ajax update="toolTipAssig" process="@this" /> 
+                            </p:commandButton>
+                            <p:tooltip id="toolTipAssig" for="asignarFuncionalidad" value="Asignar funcionalidades" showEffect="fade" hideEffect="fade" position="bottom"/>
+                        </p:column>            
+                    </p:dataTable>
+                    <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                        <p:commandButton value="Si" type="button" styleClass="ui-confirmdialog-yes" icon="fa fa-check" />
+                        <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="fa fa-close" />
+                    </p:confirmDialog>
+                </h:form>
+            </p:panel>
+
+            <!--Dialog de editar--> 
+
+            <p:panel id="panelPermisos" rendered="#{permisosBB.esPantallaActual('PANTALLA_EDICION')}">
+                <h:form id="formularioPermiso">
+                    <p>
+                        <h2>
+                            <h:outputText styleClass="#{permisosBB.iconoPantalla.textoEtiqueta}"/>
+                            <h:outputText value=" #{permisosBB.tituloPantalla.textoEtiqueta}"/>
+                        </h2>
+                    </p>
+                    <p>#{permisosBB.descripcionPantalla.textoEtiqueta}</p>
+                    <p:growl id="growlFormulario" showDetail="true" sticky="true" life="800"/>
+                    <p:messages id="mensajeFormulario" showDetail="true" autoUpdate="true" closable="true" />
+                    <p:outputPanel id="opDetallePermisos" style="width: 650px; position: relative; align-content: center; ">
+                        <h:panelGrid columns="2" cellpadding="5" styleClass="centered" rendered="true">
+
+                            <h:outputLabel value="Rol" />
+                            <p:inputText id="grupoPermiso" value="#{permisosBB.permiso.grupoPermiso}"/>
+
+                            <h:outputLabel value="Descripción" />
+                            <p:inputTextarea rows="3" id="descripcionPermiso" value="#{permisosBB.permiso.descripcionPermiso}"/>
+
+                            <h:outputLabel value="Operaciones" />
+                            <p:inputText id="operacionesPermiso" value="#{permisosBB.permiso.operacionesPermiso}"/>
+                        </h:panelGrid>
+
+                            <p:commandButton actionListener="#{permisosBB.actualizarPermiso()}" 
+                                             update="grupoPermisos" 
+                                             icon="fa fa-check" 
+                                             id="guardarRol"
+                                             value="Guardar">
+                                <p:ajax update="toolTipSave" process="@this" /> 
+                            </p:commandButton>
+                            <p:tooltip id="toolTipSave" for="guardarRol" value="Guardar cambios en el rol" showEffect="fade" hideEffect="fade" position="bottom"/>
+
+
+                            <p:commandButton icon="fa fa-close" 
+                                             id="cancelar"
+                                             value="Cerrar" 
+                                             update="grupoPermisos" 
+                                             actionListener="#{permisosBB.cancelarEdicion()}">
+                                <p:ajax update="toolTipCancel" process="@this" />
+                            </p:commandButton>
+                            <p:tooltip id="toolTipCancel" for="cancelar" value="Regresar sin guardar cambios" showEffect="fade" hideEffect="fade" position="bottom"/>
+
+                    </p:outputPanel>
+                </h:form>
+            </p:panel>
+
+            <p:panel id="panelPermisosFuncionalidades" rendered="#{permisosBB.esPantallaActual('PANTALLA_ASIGNACION')}">
+                <h:form id="formularioAddFun">
+                    <p>
+                        <h2>
+                            <h:outputText styleClass="#{permisosBB.iconoPantalla.textoEtiqueta}"/>
+                            <h:outputText value=" #{permisosBB.tituloPantalla.textoEtiqueta}"/>
+                        </h2>
+                    </p>
+                    <p>#{permisosBB.descripcionPantalla.textoEtiqueta}</p>
+                    <p:growl id="growlFuncionalidades" showDetail="true" sticky="true" />
+                    <p:messages id="messagesFuncionalidades" showDetail="true" autoUpdate="true" closable="true" />
+                    <p:outputPanel id="opPermisosFuncionalidades" >
+                        <h:panelGrid columns="2" cellpadding="5" styleClass="centered" rendered="true">
+
+                            <h:outputLabel style="font-weight: bold" value="Rol:" />
+                            <h:outputLabel value="#{permisosBB.permiso.grupoPermiso}"/>
+
+                            <h:outputLabel style="font-weight: bold" value="Descripción: " />
+                            <h:outputLabel value="#{permisosBB.permiso.descripcionPermiso}"/>
+
+                            <p:commandButton icon="fa fa-arrow-left" 
+                                             id="cancelar"
+                                             value="Regresar al listado" 
+                                             update="grupoPermisos" 
+                                             actionListener="#{permisosBB.cancelarEdicion()}">
+                                <p:ajax update="toolTipCancel" process="@this" />
+                            </p:commandButton>
+                            <p:tooltip id="toolTipCancel" for="cancelar" value="Regresar sin guardar cambios" showEffect="fade" hideEffect="fade" position="bottom"/>
+
+                        </h:panelGrid>
+                    </p:outputPanel>
+                    <p:treeTable id="listaFuncionalidadesDto" var="funcionalidad"
+                                 value="#{permisosBB.listaArbolFuncionalidadesDto}">
+                        <p:column headerText="Menú">
+                            <h:outputLabel value="#{funcionalidad.funcionalidad.funMenu}" />
+                        </p:column>
+                        <p:column headerText="Funcionalidad">
+                            <h:outputLabel value="#{funcionalidad.funcionalidad.funNombre}" />
+                        </p:column>
+                        <p:column>
+                            <p:selectOneMenu id="cbTipoOperacion" value="#{funcionalidad.operacion}" style="width:125px" >
+                                <p:ajax listener="#{permisosBB.actualizarPermisoAsignado(funcionalidad.asignacionPermiso, funcionalidad.funcionalidad.funId, funcionalidad.operacion)}" update="formularioAddFun" />
+                                <f:selectItems value="#{permisosBB.listaTipoPermisos}" var="tipoPermiso" itemValue="#{tipoPermiso}" itemLabel="#{tipoPermiso.descripcionTipoPermiso}"/>
+                            </p:selectOneMenu>
+                        </p:column>
+                    </p:treeTable>
+                </h:form>
+            </p:panel>
+        </h:panelGroup>
+
+
+    </ui:define>
+</ui:composition>

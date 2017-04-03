@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                template="/WEB-INF/templates/default-publico.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:pe="http://primefaces.org/ui/extensions">
+    <ui:define name="content">
+        <h:form id="formLogin">					
+            <p:growl id="growl" showDetail="true" sticky="true" showSummary="false" />
+            <center>
+                <p:panel styleClass="panelLogin">
+                    <h:panelGrid id="grid" columns="2" styleClass="separatorTop w100" columnClasses="w66, field_mrg">
+                        <h:panelGrid columns="2" styleClass="w100" columnClasses="w33 bold, field_mrg">
+                            <p:outputLabel for="usuario" value="Usuario" styleClass="labelMain" />
+                            <p:inputText value="#{loginBB.usuario}" id="usuario" required="true" requiredMessage="Ingrese el usuario" styleClass="w100" autocomplete="off" >
+                            </p:inputText>
+                            <p:outputLabel for="clave" value="Clave" styleClass="labelMain" />
+                            <p:password value="#{loginBB.clave}" id="clave" required="true" requiredMessage="Ingrese la contraseña" styleClass="w100" autocomplete="off">
+                            </p:password>
+                        </h:panelGrid>
+                        <p:commandButton id="loginButton" icon="fa fa-sign-in" value="Ingresar" action="#{loginBB.login()}" update=":formLogin" styleClass="buttonLogin w100" />
+                    </h:panelGrid>
+                    <br />
+                </p:panel>	
+            </center>
+
+        </h:form>
+    </ui:define>
+</ui:composition>

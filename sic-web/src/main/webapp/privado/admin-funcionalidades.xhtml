@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                template="/WEB-INF/templates/default.xhtml"
+                xmlns:p="http://primefaces.org/ui">
+    <ui:define name="content">
+        <h:panelGroup id="grupoFuncionalidades">
+            <p:panel id="panelListaFuncionalidades" rendered="#{funcionalidadesBB.esPantallaActual('PANTALLA_LISTADO')}">
+                <h:form id="formularioListaFuncionalidades">  
+
+                    <p:growl id="growl" showDetail="true" sticky="true" />
+                    <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+                    <p>
+                        <h2>
+                            <h:outputText styleClass="#{funcionalidadesBB.iconoPantalla.textoEtiqueta}"/>
+                            <h:outputText value=" #{funcionalidadesBB.tituloPantalla.textoEtiqueta}"/>
+                        </h2>
+                    </p>
+                    <p>#{funcionalidadesBB.descripcionPantalla.textoEtiqueta}</p>
+                    <p>
+                        <p:commandButton value="Nueva Funcionalidad" icon="fa fa-plus" 
+                                         update="messages grupoFuncionalidades"
+                                         id="IngresarFuncionalidad"
+                                         actionListener="#{funcionalidadesBB.crearNuevoFuncionalidad()}">
+                            <p:ajax update="toolTipInsert" process="@this" />  
+                        </p:commandButton>
+                        <p:tooltip id="toolTipInsert" for="IngresarFuncionalidad" value="Ingresar una nueva funcionalidad" showEffect="fade" hideEffect="fade" position="bottom"/>
+
+                    </p>
+
+                    <p:treeTable id="listaArbolFuncionalidades" var="funcionalidad" 
+                                 value="#{funcionalidadesBB.listaArbolFuncionalidades}">
+
+                        <p:column headerText="Funcionalidad" sortBy="#{funcionalidad.funNombre}">
+                            <h:outputText value="#{funcionalidad.funNombre}" />
+                        </p:column>
+
+                        <p:column headerText="Nombre de Menu">
+                            <h:outputText value="#{funcionalidad.funMenu}" />
+                        </p:column>
+
+                        <p:column headerText="Ruta">
+                            <h:outputText value="#{funcionalidad.funRuta}" />
+                        </p:column>
+
+                        <p:column headerText="Orden" width="60">
+                            <h:outputText value="#{funcionalidad.funOrden}" />
+                        </p:column>
+
+                        <p:column width="80">
+
+                            <p:commandButton actionListener="#{funcionalidadesBB.eliminarFuncionalidad(funcionalidad.funId)}" 
+                                             icon="fa fa-trash"
+                                             id="eliminarFuncionalidad"
+                                             update="listaArbolFuncionalidades :formularioListaFuncionalidades:growl :formularioListaFuncionalidades:messages" >
+                                <p:confirm header="Eliminar funcionalidades" message="¿Está seguro?" icon="ui-icon-alert" />
+                                <p:ajax update="toolTipDelete" process="@this" /> 
+                            </p:commandButton>
+                            <p:tooltip id="toolTipDelete" for="eliminarFuncionalidad" value="Eliminar Funcionalidad" showEffect="fade" hideEffect="fade" position="bottom"/>
+
+                            <p:commandButton process="listaArbolFuncionalidades" 
+                                             actionListener="#{funcionalidadesBB.seleccionarFuncionalidad(funcionalidad.funId)}"
+                                             icon="fa fa-edit"
+                                             id="editarFuncionalidad"
+                                             update="grupoFuncionalidades">
+                                <p:ajax update="toolTipEdit" process="@this" /> 
+                            </p:commandButton>
+                            <p:tooltip id="toolTipEdit" for="editarFuncionalidad" value="Editar Funcionalidad" showEffect="fade" hideEffect="fade" position="bottom"/>
+
+                            <p:commandButton process="listaArbolFuncionalidades" 
+                                             actionListener="#{funcionalidadesBB.crearNuevaSubFuncionalidad(funcionalidad.funId)}"
+                                             icon="fa fa-sitemap"
+                                             id="asignarSubFuncionalidad"
+                                             update="grupoFuncionalidades">
+                                <p:ajax update="toolTipAssig" process="@this" /> 
+                            </p:commandButton>
+                            <p:tooltip id="toolTipAssig" for="asignarSubFuncionalidad" value="Asignar subfuncionalidad" showEffect="fade" hideEffect="fade" position="left"/>
+                        </p:column>            
+                    </p:treeTable>
+                    <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                        <p:commandButton value="Si" type="button" styleClass="ui-confirmdialog-yes" icon="fa fa-check" />
+                        <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="fa fa-close" />
+                    </p:confirmDialog>
+                </h:form>
+            </p:panel>
+
+            <p:panel id="panelFuncionalidad" rendered="#{funcionalidadesBB.esPantallaActual('PANTALLA_EDICION')}">
+                <h:form id="formularioFuncionalidad">
+                    <p>
+                        <h2>
+                            <h:outputText styleClass="#{funcionalidadesBB.iconoPantalla.textoEtiqueta}"/>
+                            <h:outputText value=" #{funcionalidadesBB.tituloPantalla.textoEtiqueta}"/>
+                        </h2>
+                    </p>
+                    <p>#{funcionalidadesBB.descripcionPantalla.textoEtiqueta}</p>
+                    <p:growl id="growlFormulario" showDetail="true" sticky="true" life="800"/>
+                    <p:messages id="mensajeFormulario" showDetail="true" autoUpdate="true" closable="true" />
+                    <p:outputPanel id="opDetalleFuncionalidades" style="width: 650px; position: relative; align-content: center; ">
+                        <h:panelGrid columns="2" cellpadding="5" styleClass="centered" rendered="true">
+
+                            <h:outputLabel value="Nombre" />
+                            <p:inputText id="nombreFuncionalidad" value="#{funcionalidadesBB.funcionalidad.funNombre}"/>
+
+                            <h:outputLabel value="Descripción" />
+                            <p:inputTextarea rows="3" id="descripcionFuncionalidad" value="#{funcionalidadesBB.funcionalidad.funDescripcion}"/>
+
+                            <h:outputLabel value="Menu" />
+                            <p:inputText id="menuFuncionalidad" value="#{funcionalidadesBB.funcionalidad.funMenu}"/>
+
+                            <h:outputLabel value="Icono Menu" />
+                            <p:inputText id="menuIconoFuncionalidad" value="#{funcionalidadesBB.funcionalidad.funMenuIcono}"/>
+
+                            <h:outputLabel value="Ruta" />
+                            <p:inputText id="rutaFuncionalidad" value="#{funcionalidadesBB.funcionalidad.funRuta}"/>
+
+                            <h:outputLabel value="Orden" />
+                            <p:inputText id="ordenFuncionalidad" value="#{funcionalidadesBB.funcionalidad.funOrden}"/>
+
+                        </h:panelGrid>
+                            <p:commandButton actionListener="#{funcionalidadesBB.actualizarFuncionalidad()}" 
+                                             update="grupoFuncionalidades" 
+                                             id="guardarFuncionalidad"
+                                             icon="fa fa-check" 
+                                             value="Guardar">
+                                <p:ajax update="toolTipSave" process="@this" /> 
+                            </p:commandButton>
+                            <p:tooltip id="toolTipSave" for="guardarFuncionalidad" value="Guardar cambios en la funcionalidad" showEffect="fade" hideEffect="fade" position="bottom"/>
+
+                            <p:commandButton icon="fa fa-close" 
+                                             id="cancelar"
+                                             value="Cerrar" 
+                                             update="grupoFuncionalidades" 
+                                             actionListener="#{funcionalidadesBB.cancelarEdicion()}">
+                                <p:ajax update="toolTipCancel" process="@this" />
+                            </p:commandButton>
+                            <p:tooltip id="toolTipCancel" for="cancelar" value="Regresar sin guardar cambios" showEffect="fade" hideEffect="fade" position="bottom"/>
+
+                    </p:outputPanel>
+                </h:form>
+            </p:panel>
+        </h:panelGroup>
+
+    </ui:define>
+</ui:composition>
