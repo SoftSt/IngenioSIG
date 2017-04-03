@@ -14,6 +14,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
+import org.primefaces.context.RequestContext;
 import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.TreeNode;
 
@@ -42,6 +43,15 @@ public class WebUtils {
      */
     public static HttpServletRequest obtenerPeticion() {
         return (HttpServletRequest) obtenerContexto().getExternalContext().getRequest();
+    }
+    
+    /**
+     * Devuelve el contexto de petición
+     * 
+     * @return Contexto de petición
+     */
+    public static RequestContext obtenerContextoPeticion() {
+        return RequestContext.getCurrentInstance();
     }
 
     /**
