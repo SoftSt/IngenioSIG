@@ -58,7 +58,7 @@ public class MensajesFaces {
         presentarMensajeFaces(FacesMessage.SEVERITY_WARN, EnumMensajes.ADVERTENCIA.getValor(), mensaje, elemento);
     }
     
-    private static FacesMessage generarMensajeFaces(FacesMessage.Severity severity, String titulo, String mensaje){
+    public static FacesMessage generarMensajeFaces(FacesMessage.Severity severity, String titulo, String mensaje){
         return new FacesMessage(severity, titulo, mensaje);
     }
 
@@ -70,10 +70,6 @@ public class MensajesFaces {
             auxiliarMensaje = auxiliarMensaje.substring(indice);
         }
         FacesContext.getCurrentInstance().addMessage(elemento, generarMensajeFaces(severity, titulo, auxiliarMensaje));
-    }
-    
-    public static ValidatorException lanzarExcepcionValidacion(EnumNewviExcepciones excepcion) {
-        return new ValidatorException(generarMensajeFaces(FacesMessage.SEVERITY_ERROR, EnumMensajes.ERROR.getValor(), excepcion.presentarMensajeCodigo()), (Throwable) new NewviExcepcion(excepcion));
     }
     
 }

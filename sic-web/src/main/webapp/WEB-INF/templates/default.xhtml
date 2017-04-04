@@ -6,18 +6,18 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:p="http://primefaces.org/ui">
     <h:head>
+        <h:outputStylesheet name="custom-style.css" library="css" />
         <title>Catastro</title>
     </h:head>
     <h:body>
-        <ui:include src="/WEB-INF/templates/cabecera.xhtml" />
-        <p:layout style="min-height:600px;border: 0;" >
-            <p:layoutUnit position="west" gutter="1" style="border: 0;" 
-                          resizable="true" size="250" header="Menú" collapsible="true">
-                <ui:include src="/WEB-INF/templates/menu.xhtml" />
-            </p:layoutUnit>
-            <p:layoutUnit position="center" gutter="0" style="border: 0;">
-                <ui:insert name="content"></ui:insert>
-            </p:layoutUnit>
-        </p:layout>
+        <div class="cabecera">
+            <ui:include src="/WEB-INF/templates/cabecera.xhtml" />
+        </div>
+        <div class="menu-izquierda">
+            <ui:include src="/WEB-INF/templates/menu.xhtml" />
+        </div>
+        <div class="principal principal-privado">
+            <ui:insert name="content"></ui:insert>
+        </div>
     </h:body>
 </html>

@@ -40,16 +40,27 @@ public class UsuariosFacade extends AbstractFacade<Usuarios, Integer> implements
         return q.getResultList();
     }
 
-    public Boolean buscarUsuarioRepetidoPorUsuario(String usuCodigo) {
-        Boolean retorno = false;
-        //Buscar si el usuario se encuentra registrado
-        Query q = this.getEntityManager().createQuery("SELECT usuario.usuUsuario FROM Usuarios usuario where usuario.usuUsuario = :USUARIO");
-        q.setParameter("USUARIO", usuCodigo);
-        //@return listado de usuarios
-        if (q.getResultList().isEmpty()) {
-            retorno = true;
+    /**
+     * Devuelve verdadero si existe un usuario registrado con el nombre
+     * indicado, que no sea el actual.
+     *
+     * @param usuCodigo Nombre del usuario
+     * @param idUsuario ID del usuario (secuencial)
+     * @return
+     */
+    public Boolean existeNombreUsuarioRegistrado(String usuCodigo, Integer idUsuario) {
+        String consulta = "SELECT usuario.usuUsuario FROM Usuarios usuario where usuario.usuUsuario = :USUARIO";
+        if (!ComunUtil.esNulo(idUsuario)) {
+            consulta = consulta.concat(" and usuario.usuId <> :ID_USUARIO");
         }
-        return retorno;
+        //Buscar si el usuario se encuentra registrado
+        Query q = this.getEntityManager().createQuery(consulta);
+        q.setParameter("USUARIO", usuCodigo);
+        if (!ComunUtil.esNulo(idUsuario)) {
+            q.setParameter("ID_USUARIO", idUsuario);
+        }
+        //@return listado de usuarios
+        return !q.getResultList().isEmpty();
     }
 
     public Boolean buscarUsuarioRepetidoPorEmail(String usuEmail) {

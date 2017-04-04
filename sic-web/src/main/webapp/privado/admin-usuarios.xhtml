@@ -87,86 +87,93 @@
                         </h2>
                     </p>
                     <p>#{usuariosBB.descripcionPantalla.textoEtiqueta}</p>
-                    <p:messages id="mensajeFormulario" showDetail="false" autoUpdate="true" closable="true" />
+                    <p:messages id="mensajeFormulario" showDetail="true" autoUpdate="true" closable="true" />
                     <p:tooltip />
                     <p:outputPanel id="opDetalleUsuarios">
-                        <h:panelGrid columns="3">
-                            <h:outputLabel for="usuEmail" value="Correo electrónico" style="text-align:right;vertical-align:top;"/>
-                            <p:inputText id="usuEmail" value="#{usuariosBB.usuario.usuEmai}" 
+                        <h:panelGrid columns="1">
+                            <h:outputLabel for="usuEmail" value="Correo electrónico" style="font-weight: bold;"/>
+                            <p:inputText id="usuEmail" value="#{usuariosBB.usuario.usuEmai}" label="Correo electrónico" 
                                          validator="#{usuariosBB.validarEmail}" required="true" size="50"/>
                             <p:message for="usuEmail" display="tooltip"/>
 
-                            <h:outputLabel for="usuUsuario" value="Usuario" style="text-align:right;vertical-align:top;"/>
-                            <p:inputText id="usuUsuario" value="#{usuariosBB.usuario.usuUsuario}" 
-                                         validator="#{usuariosBB.validarUsuarioRepetido}" validatorMessage="El usuario ya se encuentra registrado en el sistema." required="true" size="50"/>
+                            <h:outputLabel for="usuUsuario" value="Usuario" style="font-weight: bold;"/>
+                            <p:inputText id="usuUsuario" value="#{usuariosBB.usuario.usuUsuario}" label="Usuario" 
+                                         validator="#{usuariosBB.validarUsuarioRepetido}" required="true" size="50"/>
                             <p:message id="mensajeUsuario" for="usuUsuario" display="tooltip"/>
 
-                            <h:outputLabel for="usuPassword" value="Contraseña" style="text-align:right;vertical-align:top;"/>
-                            <p:inputText id="usuPassword" required="true" value="#{usuariosBB.usuario.usuPassword}" type="Password" size="50"/>
-                            <p:message for="usuPassword"/>
+                            <h:outputLabel for="usuPassword" value="Contraseña" style="font-weight: bold;"/>
+                            <p:password id="usuPassword" match="usuPasswordRepetir" required="true" value="#{usuariosBB.usuario.usuPassword}" label="Contraseña" size="50"/>
+                            <p:message for="usuPassword" display="tooltip"/>
 
-                            <h:outputLabel for="grupoPermiso" value="Permiso asignado" style="text-align:right;vertical-align:top;"/>
-                            <p:selectOneMenu value="#{usuariosBB.usuario.perId}" converter="permisosConverter" id="grupoPermiso" >
+                            <h:outputLabel for="usuPasswordRepetir" value="Repita la Contraseña" style="font-weight: bold;"/>
+                            <p:password id="usuPasswordRepetir" required="true" value="#{usuariosBB.usuario.usuPassword}" label="Contraseña (Repetición)" size="50"/>
+                            <p:message for="usuPasswordRepetir" display="tooltip"/>
+                            
+                            <h:outputLabel for="grupoPermiso" value="Permiso asignado" style="font-weight: bold;"/>
+                            <p:selectOneMenu value="#{usuariosBB.usuario.perId}" converter="permisosConverter" 
+                                             id="grupoPermiso" label="Permiso asignado" required="true">
                                 <f:selectItem itemLabel="Seleccione uno" itemValue="" />
                                 <f:selectItems var="permiso" value="#{usuariosBB.listaPermisos}" itemLabel="#{permiso.grupoPermiso}" itemValue="#{permiso}"  />
                             </p:selectOneMenu>
-                            <p:message for="grupoPermiso"/>
+                            <p:message for="grupoPermiso" display="tooltip"/>
 
-                            <h:outputLabel for="usuCodigo" value="Código/Cédula" style="text-align:right;vertical-align:top;"/>
-                            <p:inputText id="usuCodigo" value="#{usuariosBB.usuario.usuCodigo}" required="true" requiredMessage="No puede ser un valor nulo" size="50">
+                            <h:outputLabel for="usuCodigo" value="Código/Cédula" style="font-weight: bold;"/>
+                            <p:inputText id="usuCodigo" value="#{usuariosBB.usuario.usuCodigo}" required="true" label="Código/Cédula" size="50">
                                 <f:validateLength minimum="1" maximum="11" />
                             </p:inputText>
                             <p:message for="usuCodigo" display="tooltip"/>
 
-                            <h:outputLabel for="usuNombres" value="Nombres" style="text-align:right;vertical-align:top;"/>
-                            <p:inputText id="usuNombres" value="#{usuariosBB.usuario.usuNombres}" required="true" requiredMessage="No puede ser un valor nulo" size="50">
+                            <h:outputLabel for="usuNombres" value="Nombres" style="font-weight: bold;"/>
+                            <p:inputText id="usuNombres" value="#{usuariosBB.usuario.usuNombres}" required="true" label="Nombres" size="50">
                                 <f:validateLength minimum="1" maximum="35" />
                             </p:inputText>
                             <p:message for="usuNombres" display="tooltip"/>
 
-                            <h:outputLabel for="usuApellidos" value="Apellidos" style="text-align:right;vertical-align:top;"/>
-                            <p:inputText id="usuApellidos" value="#{usuariosBB.usuario.usuApellidos}" required="true" size="50">
+                            <h:outputLabel for="usuApellidos" value="Apellidos" style="font-weight: bold;"/>
+                            <p:inputText id="usuApellidos" value="#{usuariosBB.usuario.usuApellidos}" required="true" label="Apellidos" size="50">
                                 <f:validateLength minimum="1" maximum="35" />
                             </p:inputText>
                             <p:message for="usuApellidos" display="tooltip"/>
 
-                            <h:outputLabel for="usuDirección" value="Direccion" style="text-align:right;vertical-align:top;"/>
-                            <p:inputTextarea id="usuDireccion" value="#{usuariosBB.usuario.usuDireccion}" rows="3" cols="50"/>
-                            <p:message for="usuDireccion"/>
+                            <h:outputLabel for="usuDireccion" value="Dirección" style="font-weight: bold;"/>
+                            <p:inputTextarea id="usuDireccion" value="#{usuariosBB.usuario.usuDireccion}" label="Dirección" rows="3" cols="50"/>
+                            <p:message for="usuDireccion" display="tooltip"/>
 
-                            <h:outputLabel for="usuTelefono" value="Teléfono celular" style="text-align:right;vertical-align:top;"/>
-                            <p:inputText id="usuTelefono" value="#{usuariosBB.usuario.usuTelefono}"/>
-                            <p:message for="usuTelefono"/>
+                            <h:outputLabel for="usuTelefono" value="Teléfono celular" style="font-weight: bold;"/>
+                            <p:inputText id="usuTelefono" value="#{usuariosBB.usuario.usuTelefono}" label="Teléfono celular" />
+                            <p:message for="usuTelefono" display="tooltip"/>
 
-                            <h:outputLabel for="usuFax" value="Teléfono domicilio" style="text-align:right;vertical-align:top;"/>
-                            <p:inputText id="usuFax" value="#{usuariosBB.usuario.usuFax}"/>
-                            <p:message for="usuFax"/>
+                            <h:outputLabel for="usuFax" value="Teléfono domicilio" style="font-weight: bold;"/>
+                            <p:inputText id="usuFax" value="#{usuariosBB.usuario.usuFax}" label="Teléfono domicilio"/>
+                            <p:message for="usuFax" display="tooltip"/>
 
-                            <h:outputLabel for="usuFoto" value="foto" style="text-align:right;vertical-align:top;"/>
-                            <p:inputText id="usuFoto" value="#{usuariosBB.usuario.usuFoto}" />
-                            <p:message for="usuFoto"/>
+                            <h:outputLabel for="usuFoto" value="Fotografía" style="font-weight: bold;"/>
+                            <p:inputText id="usuFoto" value="#{usuariosBB.usuario.usuFoto}" label="Fotografía"/>
+                            <p:message for="usuFoto" display="tooltip"/>
 
 
-                            <h:outputLabel value="Fecha nacimiento" style="text-align:right;vertical-align:top;"/>
-                            <p:calendar id="usuFechaNacimiento" navigator="true" value="#{usuariosBB.usuario.usuFnacimiento}" 
+                            <h:outputLabel value="Fecha de nacimiento" style="font-weight: bold;"/>
+                            <p:calendar id="usuFechaNacimiento" navigator="true" value="#{usuariosBB.usuario.usuFnacimiento}" label="Fecha de nacimiento" 
                                         showOn="button" size="10" pattern="dd/MM/yyyy" mask="true" >
                                 <p:watermark for="usuFechaNacimiento" value="dd/mm/aaaa"/>
                             </p:calendar>
-                            <p:message for="usuFechaNacimiento"/>
+                            <p:message for="usuFechaNacimiento" display="tooltip"/>
 
-                            <h:outputLabel value="Numero de ingreso" style="text-align:right;vertical-align:top;"/>
-                            <p:inputNumber id="usuNumeroIngreso" maxValue="99" minValue="0" value="#{usuariosBB.usuario.usuNumingreso}" size="5"/>
+                            <h:outputLabel value="Numero de ingreso" style="font-weight: bold;"/>
+                            <p:inputNumber id="usuNumeroIngreso" maxValue="99" minValue="0" value="#{usuariosBB.usuario.usuNumingreso}" label="Numero de ingreso" size="5"/>
                             <p:message for="usuNumeroIngreso"/>
 
 
-                            <h:outputLabel for="usuCargo" value="Cargo" style="text-align:right;vertical-align:top;"/>
-                            <p:inputText id="usuCargo" value="#{usuariosBB.usuario.usuCargo}" size="50"/>
-                            <p:message for="usuCargo"/>
+                            <h:outputLabel for="usuCargo" value="Cargo" style="font-weight: bold;"/>
+                            <p:inputText id="usuCargo" value="#{usuariosBB.usuario.usuCargo}" label="Cargo" size="50"/>
+                            <p:message for="usuCargo" display="tooltip"/>
 
 
                             <h:outputLabel for="usuDepartamento" value="Departamento" style="text-align:right !important;vertical-align:top;"/>
-                            <p:inputText id="usuDepartamento" value="#{usuariosBB.usuario.usuDepartamento}" size="50"/>
-                            <p:message for="usuDepartamento"/>
+                            <p:inputText id="usuDepartamento" value="#{usuariosBB.usuario.usuDepartamento}" label="Departamento" size="50"/>
+                            <p:message for="usuDepartamento" display="tooltip"/>
+                        </h:panelGrid>
+                        <h:panelGrid columns="4">
 
                             <p:commandButton actionListener="#{usuariosBB.actualizarUsuario()}" 
                                              update="grupoUsuarios" 

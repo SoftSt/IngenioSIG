@@ -15,17 +15,14 @@ import ec.com.newvi.sic.util.logs.LoggerNewvi;
 import ec.com.newvi.sic.web.MensajesFaces;
 import ec.com.newvi.sic.web.enums.EnumEtiquetas;
 import ec.com.newvi.sic.web.enums.EnumPantallaMantenimiento;
+import ec.com.newvi.sic.web.utils.ValidacionUtils;
 import ec.com.newvi.sic.web.utils.WebUtils;
 import java.util.List;
-import java.util.regex.Pattern;
-import java.util.regex.Matcher;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
-import javax.faces.validator.ValidatorException;
-import org.primefaces.context.RequestContext;
 
 @ManagedBean
 @ViewScoped
@@ -38,8 +35,6 @@ public class UsuariosBB extends SeguridadesBB {
     private List<Permisos> listaPermisos;
 
     private EnumPantallaMantenimiento pantallaActual;
-
-    private static final String PATTERN_EMAIL = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@" + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
 
     public Usuarios getUsuario() {
         return usuario;
@@ -213,10 +208,14 @@ public class UsuariosBB extends SeguridadesBB {
     }
 
     public void validarUsuarioRepetido(FacesContext arg0, UIComponent arg1, Object arg2) throws NewviExcepcion {
-        String usuCodigo =arg2.toString();
+        String usuCodigo = arg2.toString();
+        Integer codigoUsuarioSeleccionado = null;
+        if (!ComunUtil.esNulo(this.usuario)) {
+            codigoUsuarioSeleccionado = this.usuario.getUsuId();
+        }
         try {
-            if (seguridadesServicio.esUsuarioRepetido(usuCodigo)) {
-                throw MensajesFaces.lanzarExcepcionValidacion(EnumNewviExcepciones.ERR327);
+            if (seguridadesServicio.esUsuarioRepetido(usuCodigo, codigoUsuarioSeleccionado)) {
+                throw ValidacionUtils.lanzarExcepcionValidacion(EnumNewviExcepciones.ERR327);
             }
 
         } catch (NewviExcepcion e) {
@@ -228,16 +227,11 @@ public class UsuariosBB extends SeguridadesBB {
     public void validarEmail(FacesContext arg0, UIComponent arg1, Object arg2) throws NewviExcepcion {
         String usuEmail =arg2.toString();
         try {
-            // Compiles the given regular expression into a pattern.
-            Pattern pattern = Pattern.compile(PATTERN_EMAIL);
-            // Match the given input against this pattern
-            Matcher matcher = pattern.matcher(usuEmail);
-            if (!matcher.matches()) {
-                throw MensajesFaces.lanzarExcepcionValidacion(EnumNewviExcepciones.ERR328);
-            }else if (seguridadesServicio.esEmailRepetido(arg2.toString())) {
-                throw MensajesFaces.lanzarExcepcionValidacion(EnumNewviExcepciones.ERR327);
+            if (!ValidacionUtils.validarCorreoElectronico(usuEmail.trim())) {
+                throw ValidacionUtils.lanzarExcepcionValidacion(EnumNewviExcepciones.ERR251);
+            }else if (seguridadesServicio.esEmailRepetido(arg2.toString())) {    
+                throw ValidacionUtils.lanzarExcepcionValidacion(EnumNewviExcepciones.ERR328);
             }
-
         } catch (NewviExcepcion e) {
             LoggerNewvi.getLogNewvi(this.getClass()).error(e, sesionBean.obtenerSesionDto());
             MensajesFaces.mensajeError(e.getMessage());

@@ -6,16 +6,33 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core">
-    <h:head/>
+    <h:head>
+    </h:head>
     <h:body>
         <ui:composition>
             <h:form id="formCabecera">
-                <p:menubar>
-                    <p:menuitem value="Sistema de Información Catastral | SIC" />
-                    <p:submenu label="#{sesionBean.usuarioRegistrado.usuPalabraclave}" icon="fa fa-user" style="position: absolute; right: 6px;" rendered="#{sesionBean.esUsuarioRegistrado}">
+                <div class="marca">
+                    <div class="titulo">
+                        <p:outputLabel styleClass="fa fa-globe"/>
+                        <p:outputLabel style="font-weight: bold" value=" SIGC | "/>
+                    </div>
+                    <div class="subtitulo"><p:outputLabel value=" Sistema de Información Geográfico Catastral"/></div>
+                </div>
+                <div class="info-usuario">
+                    <p:inputText value="#{loginBB.usuario}" id="usuario" required="true" requiredMessage="Ingrese el usuario" autocomplete="off" rendered="#{!sesionBean.esUsuarioRegistrado}">
+                        <p:watermark for="usuario" value="Usuario"/>
+                    </p:inputText>
+                    <p:outputLabel value="  " rendered="#{!sesionBean.esUsuarioRegistrado}"/>
+                    <p:password value="#{loginBB.clave}" id="clave" required="true" requiredMessage="Ingrese la contraseña" autocomplete="off" rendered="#{!sesionBean.esUsuarioRegistrado}">
+                        <p:watermark for="clave" value="Contraseña"/>
+                    </p:password>
+                    <p:outputLabel value="  " rendered="#{!sesionBean.esUsuarioRegistrado}"/>
+                    <p:commandButton id="loginButton" icon="fa fa-sign-in" value="Identificarse" action="#{loginBB.login()}" update=":formCabecera" rendered="#{!sesionBean.esUsuarioRegistrado}"/>
+                    <p:menuButton value="#{sesionBean.usuarioRegistrado.usuPalabraclave}" rendered="#{sesionBean.esUsuarioRegistrado}">
+                        <p:separator />
                         <p:menuitem value=" Cerrar sesión " icon="fa fa-sign-out" action="#{loginBB.logout()}"/>
-                    </p:submenu>
-                </p:menubar>
+                    </p:menuButton>
+                </div>
 
             </h:form>
         </ui:composition>

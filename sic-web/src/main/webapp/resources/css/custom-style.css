@@ -1,0 +1,92 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 04-abr-2017, 8:58:39
+    Author     : israelavila
+*/
+
+html {
+    height: 100%;
+    width: 100%;
+}
+
+body {
+    margin: 0;
+    font-size: 0.9em;
+    height: 100%;
+}
+
+.cabecera {
+    background: #369;
+    height: 30px;
+    position: relative;
+    padding-top: 15px;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-bottom: 10px;
+}
+
+.ui-corner-all, .ui-corner-top, .ui-corner-right, ui-corner-left, ui-corner-bottom {
+    -moz-border-radius: 0px !important;
+    -webkit-border-radius: 0px !important;
+    -khtml-border-radius: 0px !important;
+    border-radius: 0px !important;
+}
+
+.marca {
+    color: #fff;
+    margin: 0 !important;
+    float: left;
+}
+
+.titulo {
+    font-size: 1.4em !important;
+    float: left;
+}
+
+.subtitulo {
+    font-size: 1.4em !important;
+    float: left;
+}
+
+.info-usuario {
+    position: absolute; 
+    right: 40px;
+}
+
+.ui-menu, .ui-panel, ui-panelmenu-panel {
+    border: none !important;
+}
+
+.menu-izquierda {
+    width: 20%;
+    position: relative;
+    float: left;
+    background: #ebedf0;
+    height: -moz-calc(100% - 55px);
+    height: -webkit-calc(100% - 55px);
+    height: calc(100% - 55px);
+    display: block;
+}
+
+.principal {
+    position: relative;
+    float: left;
+    height: -moz-calc(100% - 55px);
+    height: -webkit-calc(100% - 55px);
+    height: calc(100% - 55px);
+    display: block;
+    overflow-y: auto;
+    overflow-x: auto;
+}
+
+.principal-privado {
+    width: 80%;
+}
+
+.principal-publico {
+    width: 100%;
+}

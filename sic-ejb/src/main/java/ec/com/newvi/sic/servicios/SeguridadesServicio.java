@@ -84,7 +84,7 @@ public interface SeguridadesServicio {
      * @return False si el usuario no se encuentra registrado
      * @throws NewviExcepcion 
      */
-    public Boolean esUsuarioRepetido(String usuUsuario) throws NewviExcepcion;
+    public Boolean esUsuarioRepetido(String usuUsuario, Integer idUsuario) throws NewviExcepcion;
     /**
      * Verifica si el email no se encuentra registrado en el sistema
      * @param usuEmail El usuario será verificado por el email

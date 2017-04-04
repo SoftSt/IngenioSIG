@@ -18,13 +18,15 @@ import javax.persistence.TransactionRequiredException;
 
 /**
  *
- * @author SUIA
+ * @author Newvi
+ * @param <T>
+ * @param <E>
  */
 @PermitAll
 public abstract class AbstractFacade<T, E> {
 
-    private Class<T> entityClass;
-    private Class<E> primaryKeyClass;
+    private final Class<T> entityClass;
+    private final Class<E> primaryKeyClass;
 
     @PersistenceContext(unitName = "SIC_PU")
     private EntityManager em;
@@ -113,5 +115,5 @@ public abstract class AbstractFacade<T, E> {
         }
 
     }
-
+    
 }

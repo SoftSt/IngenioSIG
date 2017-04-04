@@ -132,10 +132,10 @@ public class SeguridadesServicioImpl implements SeguridadesServicio {
     }
     
     @Override
-    public Boolean esUsuarioRepetido(String usuUsuario){
-        
-        return !usuariosFacade.buscarUsuarioRepetidoPorUsuario(usuUsuario);
+    public Boolean esUsuarioRepetido(String usuUsuario, Integer idUsuario){
+        return usuariosFacade.existeNombreUsuarioRegistrado(usuUsuario, idUsuario);
     }
+    
     @Override
     public Boolean esEmailRepetido(String usuEmail){
         
