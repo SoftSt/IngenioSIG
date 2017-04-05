@@ -6,6 +6,7 @@
 package ec.com.newvi.sic.servicios.impl;
 
 import ec.com.newvi.sic.dao.AsignacionPermisosFacade;
+import ec.com.newvi.sic.dao.ContribuyentesFacade;
 import ec.com.newvi.sic.dao.FuncionalidadesFacade;
 import ec.com.newvi.sic.dao.PermisosFacade;
 import ec.com.newvi.sic.modelo.Usuarios;
@@ -16,6 +17,7 @@ import ec.com.newvi.sic.enums.EnumEstadoRegistro;
 import ec.com.newvi.sic.enums.EnumNewviExcepciones;
 import ec.com.newvi.sic.enums.EnumTipoPermisos;
 import ec.com.newvi.sic.modelo.AsignacionPermisos;
+import ec.com.newvi.sic.modelo.Contribuyentes;
 import ec.com.newvi.sic.modelo.Funcionalidades;
 import ec.com.newvi.sic.modelo.Permisos;
 import ec.com.newvi.sic.util.ComunUtil;
@@ -350,5 +352,5 @@ public class SeguridadesServicioImpl implements SeguridadesServicio {
     public AsignacionPermisos buscarAsignacionPermisos(Permisos permiso, Funcionalidades funcionalidad, SesionDto sesion) throws NewviExcepcion {
         return asignacionPermisosFacade.buscarAsignacionesPermisoPorPermisoFuncionalidad(permiso, funcionalidad, sesion);
     }
-
+    
 }

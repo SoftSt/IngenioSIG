@@ -56,7 +56,11 @@ public enum EnumNewviExcepciones {
     INF325("INF325", "Dominio eliminado.", "El dominio se ha eliminado correctamente."),
     ERR326("ERR326", "Usuario no registrado.", "El usuario no se encuentra registrado en el sistema."),
     ERR327("ERR327", "Usuario registrado.", "El usuario ya se encuentra registrado en el sistema."),
-    ERR328("ERR328", "Correo electrónico registrado.", "El correo electrónico ya se encuentra registrado en el sistema.");
+    ERR328("ERR328", "Correo electrónico registrado.", "El correo electrónico ya se encuentra registrado en el sistema."),
+    ERR329("ERR329", "Contribuyente no válido.", "El contribuyente ingresado no es válido. Por favor verifique que los datos ingresados son correctos."),
+    INF330("INF330", "Contribuyente ingresado.", "El contribuyente se ha registrado correctamente."),
+    INF331("INF331", "Contribuyente editado.", "El contribuyente se ha editado correctamente."),
+    INF332("INF332", "Contribuyente eliminado.", "El contribuyente se ha eliminado correctamente.");
     
     private final String codigoExcepcion;
     private final String nombreExcepcion;

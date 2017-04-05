@@ -61,7 +61,16 @@ public enum EnumEtiquetas {
     PERMISOS_EDITAR_DESCRIPCION("Edición de permiso seleccionado."),
     PERMISOS_ASIGNAR_TITULO("Asignar funcionalidades al rol"),
     PERMISOS_ASIGNAR_ICONO("fa fa-check-square-o"),
-    PERMISOS_ASIGNAR_DESCRIPCION("Asignación de funcionalidades permitidas al rol seleccionado.");
+    PERMISOS_ASIGNAR_DESCRIPCION("Asignación de funcionalidades permitidas al rol seleccionado."),
+    CONTRIBUYENTES_LISTA_TITULO("Administración de Contribuyentes"),
+    CONTRIBUYENTES_LISTA_ICONO("fa fa-users"),
+    CONTRIBUYENTES_LISTA_DESCRIPCION("Gestión de contribuyentes en el sistema."),
+    CONTRIBUYENTES_NUEVO_TITULO("Nuevo Contribuyente"),
+    CONTRIBUYENTES_NUEVO_ICONO("fa fa-plus"),
+    CONTRIBUYENTES_NUEVO_DESCRIPCION("Creación de nuevo contribuyente."),
+    CONTRIBUYENTES_EDITAR_TITULO("Editar Contribuyente"),
+    CONTRIBUYENTES_EDITAR_ICONO("fa fa-edit"),
+    CONTRIBUYENTES_EDITAR_DESCRIPCION("Edición de contribuyente seleccionado.");
     
     private final String textoEtiqueta;
 

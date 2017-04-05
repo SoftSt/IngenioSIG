@@ -192,7 +192,7 @@ public interface SeguridadesServicio {
      * @throws NewviExcepcion
      */
     public String eliminarFuncionalidad(Funcionalidades funcionalidad, SesionDto sesion) throws NewviExcepcion;
-
+            
     /*------------------------------------------------------------ASignaciones------------------------------------------------------------*/
     /**
      * Genera una nueva asignacion de funcionalidad, de acuerdo a un objeto entregado.
