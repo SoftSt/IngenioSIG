@@ -5,11 +5,8 @@
  */
 package ec.com.newvi.sic.web;
 
-import ec.com.newvi.sic.enums.EnumNewviExcepciones;
-import ec.com.newvi.sic.util.excepciones.NewviExcepcion;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
-import javax.faces.validator.ValidatorException;
 
 /**
  *

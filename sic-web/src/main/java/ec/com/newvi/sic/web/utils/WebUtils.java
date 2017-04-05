@@ -12,6 +12,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
 import org.primefaces.context.RequestContext;
@@ -34,6 +35,10 @@ public class WebUtils {
      */
     public static FacesContext obtenerContexto() {
         return FacesContext.getCurrentInstance();
+    }
+    
+    public static ExternalContext obtenerContextoExterno() {
+        return obtenerContexto().getExternalContext();
     }
 
     /**

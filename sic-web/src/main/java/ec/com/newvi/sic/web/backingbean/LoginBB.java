@@ -78,6 +78,8 @@ public class LoginBB extends SeguridadesBB {
         } else {
             LoggerNewvi.getLogNewvi(this.getClass()).error(EnumNewviExcepciones.ERR317.presentarMensajeCodigo(), sesionBean.obtenerSesionDto());
             MensajesFaces.mensajeError(EnumNewviExcepciones.ERR317.presentarMensajeCodigo());
+            WebUtils.obtenerContextoExterno().getFlash().setKeepMessages(true);
+            redireccionarLogin();
         }
     }
 
@@ -86,6 +88,10 @@ public class LoginBB extends SeguridadesBB {
      */
     public void logout() {
         logoutInterno();
+        redireccionarLogin();
+    }
+
+    private void redireccionarLogin() {
         try {
             WebUtils.redireccionar("/publico/login.xhtml");
         } catch (NewviExcepcion e) {

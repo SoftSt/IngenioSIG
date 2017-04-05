@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto');
 /*
 To change this license header, choose License Headers in Project Properties.
 To change this template file, choose Tools | Templates
@@ -8,19 +9,95 @@ and open the template in the editor.
     Author     : israelavila
 */
 
+/* tipo de letra */
+body .ui-widget {
+    font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif !important;
+    -ms-text-size-adjust: 100%;
+    -webkit-text-size-adjust: 100%;
+    font-size: 0.9em;
+    font-weight: 300;
+}
+
+.ui-button, .ui-datatable {
+    border: 1px solid transparent !important;
+    -webkit-box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
+    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
+}
+
+.ui-button, .ui-button span, button.ui-button.ui-state-default span, .ui-button.ui-state-default span {
+    font-weight: 300 !important;
+}
+
+.ui-datatable tbody, .ui-datatable-odd, ui-datatable-even, .ui-datatable thead th, .ui-datatable tbody td, .ui-datatable tfoot td, .ui-datatable tfoot th {
+    border: none !important;
+    border-width: 0px !important;
+    border-style: none !important;
+    background: #fff;
+}
+
+.ui-datatable thead th {
+    height: 64px;
+}
+
+.ui-datatable tbody td {
+    height: 48px;
+}
+
+.ui-datatable th.ui-state-default {
+    border: none !important;
+    color: #363636 !important;
+    background: #fff !important;
+}
+
+.ui-datatable tbody>th.ui-widget-content {
+    border-top: 1px #d5d5d5 !important;
+    border-bottom: 0px !important;
+    border-left: 0px !important;
+    border-right: 0px !important;
+    border-style: solid !important;
+    color: #575757;
+}
+
+.ui-datatable tbody>tr.ui-widget-content {
+    border-top: 1px #d5d5d5 !important;
+    border-bottom: 0px !important;
+    border-left: 0px !important;
+    border-right: 0px !important;
+    border-style: solid !important;
+    color: #575757;
+}
+
+.ui-paginator {
+    border-top: 1px #d5d5d5 !important;
+    border-bottom: 0px !important;
+    border-left: 0px !important;
+    border-right: 0px !important;
+    height: 56px !important;
+    padding-top: 30px !important;
+    padding-bottom: 0px !important;
+    background: #fff !important;
+}
+
+.ui-panel {
+    background: #fafafa !important;
+}
+
 html {
     height: 100%;
     width: 100%;
+    min-width: 990px;
 }
 
 body {
     margin: 0;
-    font-size: 0.9em;
     height: 100%;
+    color: #333333;
+    background-color: #ffffff;
 }
 
 .cabecera {
-    background: #369;
+    background: #186ba0;
+    color: #fff;
     height: 30px;
     position: relative;
     padding-top: 15px;
@@ -37,7 +114,6 @@ body {
 }
 
 .marca {
-    color: #fff;
     margin: 0 !important;
     float: left;
 }
@@ -48,13 +124,17 @@ body {
 }
 
 .subtitulo {
-    font-size: 1.4em !important;
+    padding-top: 5px;
+    font-size: 1em !important;
     float: left;
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-top: 5px;
 }
 
 .info-usuario {
     position: absolute; 
-    right: 40px;
+    right: 20px;
 }
 
 .ui-menu, .ui-panel, ui-panelmenu-panel {
