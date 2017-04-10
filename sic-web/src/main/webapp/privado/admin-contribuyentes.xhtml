@@ -36,9 +36,9 @@
                                  emptyMessage="No se han encontrado resultados" 
                                  paginatorPosition="bottom">
 
-                        <p:column headerText="Personeria" sortBy="#{contribuyente.stsTipopersoneria}" filterBy="#{contribuyente.stsTipopersoneria}" filterMatchMode="contains">
-                            <h:outputText value="#{contribuyente.stsTipopersoneria}" />
-                        </p:column>            
+                        <p:column headerText="Personeria" sortBy="#{contribuyente.stsTipopersoneria}">
+                        <h:outputText value="#{contribuyente.stsTipopersoneria}" />
+                        </p:column>
 
                         <p:column headerText="Cédula/RUC" sortBy="#{contribuyente.codCedularuc}" filterBy="#{contribuyente.codCedularuc}">
                             <h:outputText value="#{contribuyente.codCedularuc}" />
@@ -89,9 +89,10 @@
                         <h:panelGrid columns="1">
 
                             <h:outputLabel for="stsTipopersoneria" value="Tipo Contribuyente" style="font-weight: bold;"/>
-                            <p:inputText id="stsTipopersoneria" value="#{contribuyentesBB.contribuyente.stsTipopersoneria}" required="true" label="Tipo Contribuyente" size="50">
-                                <f:validateLength minimum="1" maximum="20" />
-                            </p:inputText>
+                            <p:selectOneMenu id="stsTipopersoneria" value="#{contribuyentesBB.contribuyente.stsTipopersoneria}" required="true" style="width:125px" >
+                                <f:selectItem itemLabel="Seleccione tipo de contribuyente..." itemValue="null" />
+                                <f:selectItems value="#{contribuyentesBB.listaTipoPersoneria}" var="tipoPersoneria" itemValue="#{tipoPersoneria}" itemLabel="#{tipoPersoneria.descripcionTipoPersoneria}"/>
+                            </p:selectOneMenu>
                             <p:message for="stsTipopersoneria" display="tooltip"/>
 
 

@@ -6,16 +6,15 @@
 package ec.com.newvi.sic.modelo;
 
 import ec.com.newvi.sic.enums.EnumEstadoRegistro;
+import ec.com.newvi.sic.enums.EnumTipoPersoneria;
 import ec.com.newvi.sic.util.ComunUtil;
 import java.io.Serializable;
 import java.util.Date;
-import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
@@ -37,9 +36,9 @@ public class Contribuyentes implements Serializable {
     @GeneratedValue(generator = "CONTRIBUYENTES_CODIGO_GENERATOR")
     @Column(name = "cod_personeria")
     private Integer codPersoneria;
-    @Size(max = 20)
+    @Enumerated(EnumType.STRING)
     @Column(name = "sts_tipopersoneria")
-    private String stsTipopersoneria;
+    private EnumTipoPersoneria stsTipopersoneria;
     @Size(max = 15)
     @Column(name = "cod_cedularuc")
     private String codCedularuc;
@@ -107,11 +106,11 @@ public class Contribuyentes implements Serializable {
         this.codPersoneria = codPersoneria;
     }
 
-    public String getStsTipopersoneria() {
+    public EnumTipoPersoneria getStsTipopersoneria() {
         return stsTipopersoneria;
     }
 
-    public void setStsTipopersoneria(String stsTipopersoneria) {
+    public void setStsTipopersoneria(EnumTipoPersoneria stsTipopersoneria) {
         this.stsTipopersoneria = stsTipopersoneria;
     }
 

@@ -274,6 +274,7 @@ public class PermisosBB extends SeguridadesBB {
     }
 
     public void cancelarEdicion() {
+        WebUtils.obtenerContextoPeticion().reset("formularioPermiso:opDetallePermisos");
         conmutarPantalla(EnumPantallaMantenimiento.PANTALLA_LISTADO);
         establecerTitulo(EnumEtiquetas.PERMISOS_LISTA_TITULO,
                 EnumEtiquetas.PERMISOS_LISTA_ICONO,

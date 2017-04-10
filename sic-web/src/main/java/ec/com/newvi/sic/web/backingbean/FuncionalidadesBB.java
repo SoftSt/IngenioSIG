@@ -186,6 +186,7 @@ public class FuncionalidadesBB extends SeguridadesBB {
     }
 
     public void cancelarEdicion() {
+        WebUtils.obtenerContextoPeticion().reset("formularioFuncionalidad:opDetalleFuncionalidades");
         conmutarPantalla(EnumPantallaMantenimiento.PANTALLA_LISTADO);
         establecerTitulo(EnumEtiquetas.FUNCIONALIDADES_LISTA_TITULO,
                 EnumEtiquetas.FUNCIONALIDADES_LISTA_ICONO,

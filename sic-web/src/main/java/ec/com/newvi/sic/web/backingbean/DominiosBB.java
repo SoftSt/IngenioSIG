@@ -201,6 +201,7 @@ public class DominiosBB extends ParametrosBB {
     }
     
     public void cancelarEdicion() {
+        WebUtils.obtenerContextoPeticion().reset("formularioDominio:opDetalleDominios");
         conmutarPantalla(EnumPantallaMantenimiento.PANTALLA_LISTADO);
         establecerTitulo(EnumEtiquetas.DOMINIOS_LISTA_TITULO, 
                 EnumEtiquetas.DOMINIOS_LISTA_ICONO,

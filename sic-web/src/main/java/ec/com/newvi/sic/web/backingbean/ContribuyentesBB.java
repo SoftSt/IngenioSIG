@@ -7,6 +7,7 @@ package ec.com.newvi.sic.web.backingbean;
 
 import ec.com.newvi.sic.enums.EnumEstadoRegistro;
 import ec.com.newvi.sic.enums.EnumNewviExcepciones;
+import ec.com.newvi.sic.enums.EnumTipoPersoneria;
 import ec.com.newvi.sic.modelo.Contribuyentes;
 import ec.com.newvi.sic.util.ComunUtil;
 import ec.com.newvi.sic.util.excepciones.NewviExcepcion;
@@ -36,6 +37,7 @@ public class ContribuyentesBB extends AdminContribuyentesBB {
     private List<Contribuyentes> listaContribuyentes;
     private List<Contribuyentes> listaContribuyentesFiltrado;
     private EnumPantallaMantenimiento pantallaActual;
+    private EnumTipoPersoneria[] listaTipoPersoneria; 
 
     public Contribuyentes getContribuyente() {
         return contribuyente;
@@ -69,10 +71,21 @@ public class ContribuyentesBB extends AdminContribuyentesBB {
         this.listaContribuyentesFiltrado = listaContribuyentesFiltrado;
     }
 
+    public EnumTipoPersoneria[] getListaTipoPersoneria() {
+        return listaTipoPersoneria;
+    }
+
+    public void setListaTipoPersoneria(EnumTipoPersoneria[] listaTipoPersoneria) {
+        this.listaTipoPersoneria = listaTipoPersoneria;
+    }
+    
+    
+
     @PostConstruct
     public void init() {
         this.contribuyente = new Contribuyentes();
         actualizarListadoContribuyentes();
+        listaTipoPersoneria= EnumTipoPersoneria.values();
         conmutarPantalla(EnumPantallaMantenimiento.PANTALLA_LISTADO);
         establecerTitulo(EnumEtiquetas.CONTRIBUYENTES_LISTA_TITULO,
                 EnumEtiquetas.CONTRIBUYENTES_LISTA_ICONO,

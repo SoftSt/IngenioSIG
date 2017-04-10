@@ -94,21 +94,26 @@
                         </h2>
                     </p>
                     <p>#{permisosBB.descripcionPantalla.textoEtiqueta}</p>
-                    <p:growl id="growlFormulario" showDetail="true" sticky="true" life="800"/>
                     <p:messages id="mensajeFormulario" showDetail="true" autoUpdate="true" closable="true" />
-                    <p:outputPanel id="opDetallePermisos" style="width: 650px; position: relative; align-content: center; ">
-                        <h:panelGrid columns="2" cellpadding="5" styleClass="centered" rendered="true">
+                    <p:tooltip/>
+                    <p:outputPanel id="opDetallePermisos">
+                        <h:panelGrid columns="1">
 
-                            <h:outputLabel value="Rol" />
-                            <p:inputText id="grupoPermiso" value="#{permisosBB.permiso.grupoPermiso}"/>
+                            <h:outputLabel value="Rol" style="font-weight: bold;"/>
+                            <p:inputText id="grupoPermiso" value="#{permisosBB.permiso.grupoPermiso}" label="Rol" size="50" required="true">
+                                <f:validateLength minimum="1" maximum="30" />
+                            </p:inputText>
+                            <p:message for="grupoPermiso" display="tooltip"/>
 
-                            <h:outputLabel value="Descripción" />
-                            <p:inputTextarea rows="3" id="descripcionPermiso" value="#{permisosBB.permiso.descripcionPermiso}"/>
+                            <h:outputLabel value="Descripción" style="font-weight: bold;"/>
+                            <p:inputTextarea id="descripcionPermiso" value="#{permisosBB.permiso.descripcionPermiso}" rows="3" label="Descripcion" cols="50"/>
+                            <p:message for="descripcionPermiso" display="tooltip"/>
 
-                            <h:outputLabel value="Operaciones" />
-                            <p:inputText id="operacionesPermiso" value="#{permisosBB.permiso.operacionesPermiso}"/>
+                            <h:outputLabel value="Operaciones" style="font-weight: bold;"/>
+                            <p:inputText id="operacionesPermiso" value="#{permisosBB.permiso.operacionesPermiso}" label="Operaciones" size="50"/>
+                            <p:message for="operacionesPermiso" display="tooltip"/>
                         </h:panelGrid>
-
+                        <h:panelGrid columns="4">
                             <p:commandButton actionListener="#{permisosBB.actualizarPermiso()}" 
                                              update="grupoPermisos" 
                                              icon="fa fa-check" 
@@ -121,13 +126,14 @@
 
                             <p:commandButton icon="fa fa-close" 
                                              id="cancelar"
-                                             value="Cerrar" 
+                                             value="Cerrar"
+                                             process="@this"
                                              update="grupoPermisos" 
                                              actionListener="#{permisosBB.cancelarEdicion()}">
                                 <p:ajax update="toolTipCancel" process="@this" />
                             </p:commandButton>
                             <p:tooltip id="toolTipCancel" for="cancelar" value="Regresar sin guardar cambios" showEffect="fade" hideEffect="fade" position="bottom"/>
-
+                        </h:panelGrid>
                     </p:outputPanel>
                 </h:form>
             </p:panel>

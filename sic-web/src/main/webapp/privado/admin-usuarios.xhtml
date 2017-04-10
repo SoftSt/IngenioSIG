@@ -118,9 +118,7 @@
                             <p:message for="grupoPermiso" display="tooltip"/>
 
                             <h:outputLabel for="usuCodigo" value="Código/Cédula" style="font-weight: bold;"/>
-                            <p:inputText id="usuCodigo" value="#{usuariosBB.usuario.usuCodigo}" required="true" label="Código/Cédula" size="50">
-                                <f:validateLength minimum="1" maximum="11" />
-                            </p:inputText>
+                            <p:inputNumber id="usuCodigo" value="#{usuariosBB.usuario.usuCodigo}" label="Código/Cédula" maxValue="99999999999" minValue="0" size="50" thousandSeparator="" decimalSeparator=""/>
                             <p:message for="usuCodigo" display="tooltip"/>
 
                             <h:outputLabel for="usuNombres" value="Nombres" style="font-weight: bold;"/>
@@ -140,11 +138,11 @@
                             <p:message for="usuDireccion" display="tooltip"/>
 
                             <h:outputLabel for="usuTelefono" value="Teléfono celular" style="font-weight: bold;"/>
-                            <p:inputText id="usuTelefono" value="#{usuariosBB.usuario.usuTelefono}" label="Teléfono celular" />
+                            <p:inputMask id="usuTelefono" value="#{usuariosBB.usuario.usuTelefono}" mask="(99) 999-99999" label="Teléfono celular" />
                             <p:message for="usuTelefono" display="tooltip"/>
 
                             <h:outputLabel for="usuFax" value="Teléfono domicilio" style="font-weight: bold;"/>
-                            <p:inputText id="usuFax" value="#{usuariosBB.usuario.usuFax}" label="Teléfono domicilio"/>
+                            <p:inputMask id="usuFax" value="#{usuariosBB.usuario.usuFax}" mask="(999) 999-999" label="Teléfono domicilio"/>
                             <p:message for="usuFax" display="tooltip"/>
 
                             <h:outputLabel for="usuFoto" value="Fotografía" style="font-weight: bold;"/>
@@ -188,7 +186,7 @@
                                              value="Cerrar"
                                              id="cancelar"
                                              update="grupoUsuarios" 
-                                             process="@this" 
+                                             process="@this"
                                              actionListener="#{usuariosBB.cancelarEdicion()}">
                                 <p:ajax update="toolTipCancel" process="@this" />
                                 <p:resetInput target="panelUsuario" />
