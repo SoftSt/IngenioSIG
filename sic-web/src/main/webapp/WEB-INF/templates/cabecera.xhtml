@@ -31,15 +31,17 @@
                     <p:commandButton id="loginButton" icon="fa fa-sign-in" value="Identificarse" action="#{loginBB.login()}" update=":formCabecera" rendered="#{!sesionBean.esUsuarioRegistrado}"/>
 
                     <div class="subtitulo"><p:outputLabel value="Bienvenido #{sesionBean.usuarioRegistrado.usuNombres} #{sesionBean.usuarioRegistrado.usuApellidos} " rendered="#{sesionBean.esUsuarioRegistrado}"/></div>
-                    <p:commandButton id="botonSesion" type="button" 
-                                     icon="fa fa-user" rendered="#{sesionBean.esUsuarioRegistrado}">
-                        <p:ajax update="toolTipSesion" process="@this" /> 
-                    </p:commandButton>
-                    <p:tooltip id="toolTipSesion" for="botonSesion" value="Opciones de Sesión" showEffect="fade" hideEffect="fade" position="bottom"/>
-                    <p:menu overlay="true" trigger="botonSesion" my="left top" at="left bottom">
-                        <p:separator />
-                        <p:menuitem value=" Cerrar sesión " icon="fa fa-sign-out" action="#{loginBB.logout()}"/>
-                    </p:menu>
+                    <div class="div-boton-sesion">
+                        <p:commandButton id="botonSesion" type="button" 
+                                         icon="fa fa-user" rendered="#{sesionBean.esUsuarioRegistrado}">
+                            <p:ajax update="toolTipSesion" process="@this" /> 
+                        </p:commandButton>
+                        <p:tooltip id="toolTipSesion" for="botonSesion" value="Opciones de Sesión" showEffect="fade" hideEffect="fade" position="bottom"/>
+                        <p:menu overlay="true" trigger="botonSesion" my="left top" at="left bottom">
+                            <p:separator />
+                            <p:menuitem value=" Cerrar sesión " icon="fa fa-sign-out" action="#{loginBB.logout()}"/>
+                        </p:menu>
+                    </div>
                 </div>
 
             </h:form>
