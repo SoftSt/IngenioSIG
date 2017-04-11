@@ -1,16 +1,7 @@
 @import url('https://fonts.googleapis.com/css?family=Roboto');
-/*
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
+/**
+    Estilo propio para SIGC
 */
-/* 
-    Created on : 04-abr-2017, 8:58:39
-    Author     : israelavila
-*/
-
-
-
 
 html {
     height: 100%;
@@ -62,7 +53,7 @@ body {
 
 .menu-izquierda {
     border-right: 1px solid #d6d6d6 !important;
-    width: 259px;
+    width: 260px;
     position: relative;
     float: left;
     background: #fff;
@@ -85,7 +76,9 @@ body {
 }
 
 .principal-privado {
-    width: calc(100% - 260px);
+    width: -moz-calc(100% - 261px);
+    width: -webkit-calc(100% - 261px);
+    width: calc(100% - 261px);
 }
 
 .principal-publico {
@@ -94,5 +87,5 @@ body {
 
 .div-boton-sesion {
     float: left;
-    margin-top: -5px;
+    margin-top: -2px;
 }
