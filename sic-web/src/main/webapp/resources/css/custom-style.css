@@ -76,9 +76,9 @@ body {
 }
 
 .principal-privado {
-    width: -moz-calc(100% - 261px);
-    width: -webkit-calc(100% - 261px);
-    width: calc(100% - 261px);
+    width: -moz-calc(100% - 262px);
+    width: -webkit-calc(100% - 262px);
+    width: calc(100% - 262px);
 }
 
 .principal-publico {
