@@ -28,7 +28,7 @@ import org.primefaces.model.menu.MenuModel;
  */
 @ManagedBean
 @ViewScoped
-public class MenuBB extends SeguridadesBB {
+public class MenuBB extends AdminSeguridadesBB {
 
     @Inject
     private SesionBean sesionBean;

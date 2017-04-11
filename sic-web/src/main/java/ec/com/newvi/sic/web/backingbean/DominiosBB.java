@@ -27,7 +27,7 @@ import javax.faces.bean.ViewScoped;
  */
 @ManagedBean
 @ViewScoped
-public class DominiosBB extends ParametrosBB {
+public class DominiosBB extends AdminParametrosBB {
     
     private Dominios dominio;
     private List<Dominios> listaDominios;

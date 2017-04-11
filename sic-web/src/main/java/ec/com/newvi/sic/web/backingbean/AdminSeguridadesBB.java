@@ -12,7 +12,7 @@ import javax.ejb.EJB;
  *
  * @author israelavila
  */
-public abstract class SeguridadesBB extends SistemaBB {
+public abstract class AdminSeguridadesBB extends AdminSistemaBB {
 
     @EJB
     protected SeguridadesServicio seguridadesServicio;

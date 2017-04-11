@@ -12,7 +12,7 @@ package ec.com.newvi.sic.enums;
 public enum EnumTipoPersoneria {
     Natural("Persona Natural"),
     Juridica("Persona Juridica");
-    
+
     private final String descripcionTipoPersoneria;
 
     private EnumTipoPersoneria(String descripcionTipoPersoneria) {
@@ -22,11 +22,4 @@ public enum EnumTipoPersoneria {
     public String getDescripcionTipoPersoneria() {
         return descripcionTipoPersoneria;
     }
-    
-    
-    
-    
-    
-    
-    
 }

@@ -60,7 +60,11 @@ public enum EnumNewviExcepciones {
     ERR329("ERR329", "Contribuyente no válido.", "El contribuyente ingresado no es válido. Por favor verifique que los datos ingresados son correctos."),
     INF330("INF330", "Contribuyente ingresado.", "El contribuyente se ha registrado correctamente."),
     INF331("INF331", "Contribuyente editado.", "El contribuyente se ha editado correctamente."),
-    INF332("INF332", "Contribuyente eliminado.", "El contribuyente se ha eliminado correctamente.");
+    INF332("INF332", "Contribuyente eliminado.", "El contribuyente se ha eliminado correctamente."),
+    INF333("INF333", "Contribucion Mejora ingresada.", "La contribución se ha registrado correctamente."),
+    INF334("INF334", "Contribucion Mejora ingresada.", "La contribución se ha editado correctamente."),
+    INF335("INF335", "Contribucion Mejora ingresada.", "La contribución se ha eliminado correctamente."),
+    ERR336("ERR336", "Contribucion Mejora no válido.", "La contribución ingresada no es válida. Por favor verifique que los datos ingresados son correctos.");
     
     private final String codigoExcepcion;
     private final String nombreExcepcion;

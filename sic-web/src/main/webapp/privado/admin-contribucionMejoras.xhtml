@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                template="/WEB-INF/templates/default.xhtml"
+                xmlns:p="http://primefaces.org/ui">
+    <ui:define name="content">
+        <h:panelGroup id="grupoContribucionMejoras">
+            <p:panel id="panelListaContribucionMejoras" rendered="#{contribucionMejorasBB.esPantallaActual('PANTALLA_LISTADO')}">
+                <h:form id="formularioListaContribucionMejoras">  
+
+                    <p:growl id="growl" showDetail="true" sticky="true" life="800"/>
+                    <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+                    <p>
+                        <h2>
+                            <h:outputText styleClass="#{contribucionMejorasBB.iconoPantalla.textoEtiqueta}"/>
+                            <h:outputText value=" #{contribucionMejorasBB.tituloPantalla.textoEtiqueta}"/>
+                        </h2>
+                    </p>
+                    <p>#{contribucionMejorasBB.descripcionPantalla.textoEtiqueta}</p>
+                    <p>
+                        <p:commandButton value="Nueva contribucion" icon="fa fa-user-plus" 
+                                         update="messages grupoContribucionMejoras"
+                                         id="ingresarContribucionMejoras"
+                                         actionListener="#{contribucionMejorasBB.crearNuevaContribucionMejoras()}">
+                            <p:ajax update="toolTipInsert" process="@this" />  
+                        </p:commandButton>
+                        <p:tooltip id="toolTipInsert" for="ingresarContribucionMejoras" value="Ingresar un nuevo contribucion" showEffect="fade" hideEffect="fade" position="bottom"/>
+
+                    </p>
+                    <p:dataTable id="listaContribucionMejoras" var="contribucionMejoras" widgetVar="listaContribucionMejorasTabla"
+                                 value="#{contribucionMejorasBB.listaContribucionMejoras}" rowKey="#{contribucionMejoras.codObras}" filteredValue="#{contribucionMejorasBB.listaContribucionMejorasFiltrado}"
+                                 paginator="true" rows="10" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" 
+                                 rowsPerPageTemplate="10,15,20" 
+                                 emptyMessage="No se han encontrado resultados" 
+                                 paginatorPosition="bottom">
+
+                        <p:column headerText="Nombre Obra" sortBy="#{contribucionMejoras.nomObras}" filterBy="#{contribucionMejoras.nomObras}">
+                        <h:outputText value="#{contribucionMejoras.nomObras}" />
+                        </p:column>
+
+                        <p:column headerText="Año de la Obra" sortBy="#{contribucionMejoras.valAnioobra}" filterBy="#{contribucionMejoras.valAnioobra}">
+                            <h:outputText value="#{contribucionMejoras.valAnioobra}" />
+                        </p:column>
+
+                        <p:column headerText="Detalle de la Obra" sortBy="#{contribucionMejoras.txtDetalle}">
+                            <h:outputText value="#{contribucionMejoras.txtDetalle}" />
+                        </p:column>
+
+                        <p:column headerText="Valor a cobrar" sortBy="#{contribucionMejoras.valAcobrar}">
+                            <h:outputText value="#{contribucionMejoras.valAcobrar}" />
+                        </p:column>
+
+                        <p:column width="80">
+                            <p:commandButton actionListener="#{contribucionMejorasBB.eliminarContribucionMejoras(contribucionMejoras.codObras)}" 
+                                             icon="fa fa-trash"
+                                             id="eliminarContribucionMejoras"
+                                             update="listaContribucionMejoras :formularioListaContribucionMejoras:growl :formularioListaContribucionMejoras:messages" >
+                                <p:confirm header="Eliminar contribucionMejoras" message="¿Está seguro?" icon="ui-icon-alert" />
+                                <p:ajax update="toolTipDelete" process="@this" /> 
+                            </p:commandButton>
+                            <p:tooltip id="toolTipDelete" for="eliminarContribucionMejoras" value="Eliminar ContribucionMejoras" showEffect="fade" hideEffect="fade" position="bottom"/>
+
+                            <p:commandButton process="listaContribucionMejoras" 
+                                             actionListener="#{contribucionMejorasBB.seleccionarContribucionMejoras(contribucionMejoras.codObras)}"
+                                             icon="fa fa-edit"
+                                             id="editarContribucionMejoras"
+                                             update="grupoContribucionMejoras">
+                                <p:ajax update="toolTipEdit" process="@this" /> 
+                            </p:commandButton>
+                            <p:tooltip id="toolTipEdit" for="editarContribucionMejoras" value="Editar ContribucionMejoras" showEffect="fade" hideEffect="fade" position="bottom"/>
+                        </p:column>            
+                    </p:dataTable>
+                    <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                        <p:commandButton value="Si" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                        <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                    </p:confirmDialog>
+                </h:form>
+            </p:panel>
+            <p:panel id="panelContribucionMejoras" rendered="#{contribucionMejorasBB.esPantallaActual('PANTALLA_EDICION')}">
+                <h:form id="formularioContribucionMejoras">
+                    <p>
+                        <h2>
+                            <h:outputText styleClass="#{contribucionMejorasBB.iconoPantalla.textoEtiqueta}"/>
+                            <h:outputText value=" #{contribucionMejorasBB.tituloPantalla.textoEtiqueta}"/>
+                        </h2>
+                    </p>
+                    <p>#{contribucionMejorasBB.descripcionPantalla.textoEtiqueta}</p>
+                    <p:messages id="mensajeFormulario" showDetail="true" autoUpdate="true" closable="true" />
+                    <p:tooltip />
+                    <p:outputPanel id="opDetalleContribucionMejoras">
+                        <h:panelGrid columns="1">
+
+                            <h:outputLabel for="nomObras" value="Nombre de la Obra" style="font-weight: bold;"/>
+                            <p:inputText id="nomObras" value="#{contribucionMejorasBB.contribucionMejoras.nomObras}" required="true" label="Nombre de la Obra" size="50">
+                                <f:validateLength minimum="1" maximum="25"/>
+                            </p:inputText>
+                            <p:message for="nomObras" display="tooltip"/>
+
+                            <h:outputLabel for="valAnioaplicacion" value="Año de aplicación" style="font-weight: bold;"/>
+                            <p:inputNumber id="valAnioaplicacion" value="#{contribucionMejorasBB.contribucionMejoras.valAnioaplicacion}" label="Año de aplicación" maxValue="9999" minValue="0" thousandSeparator="" decimalSeparator="" size="50"/>
+                            <p:message for="valAnioaplicacion" display="tooltip"/>
+
+                            <h:outputLabel for="valAnioobra" value="Año de la obra" style="font-weight: bold;"/>
+                            <p:inputNumber id="valAnioobra" value="#{contribucionMejorasBB.contribucionMejoras.valAnioobra}" label="Año de la obra" maxValue="9999" minValue="0" thousandSeparator="" decimalSeparator="" size="50"/>
+                            <p:message for="valAnioobra" display="tooltip"/>
+
+                            <h:outputLabel for="valAniodeprecia" value="Años de depreciacion" style="font-weight: bold;"/>
+                            <p:inputNumber id="valAniodeprecia" value="#{contribucionMejorasBB.contribucionMejoras.valAniodeprecia}" label="Años de depreciacion" maxValue="9999" thousandSeparator="" decimalSeparator="" minValue="0" size="50"/>
+                            <p:message for="valAniodeprecia" display="tooltip"/>
+
+                            <h:outputLabel for="txtDetalle" value="Detalle" style="font-weight: bold;"/>
+                            <p:inputTextarea id="txtDetalle" value="#{contribucionMejorasBB.contribucionMejoras.txtDetalle}" label="Detalle" rows="3" cols="50"/>
+                            <p:message for="txtDetalle" display="tooltip"/>
+
+                            <h:outputLabel for="valPorcentaje" value="Porcentaje" style="font-weight: bold;"/>
+                            <p:inputNumber id="valPorcentaje" value="#{contribucionMejorasBB.contribucionMejoras.valPorcentaje}" label="Porcentaje" size="50"/>
+                            <p:message for="valPorcentaje" display="tooltip"/>
+
+                            <h:outputLabel for="valValor" value="Valor Total" style="font-weight: bold;"/>
+                            <p:inputNumber id="valValor" value="#{contribucionMejorasBB.contribucionMejoras.valValor}" label="Valor Total" size="50"/>
+                            <p:message for="valValor" display="tooltip"/>
+
+                            <h:outputLabel for="stsAplicacionforma" value="Forma de apliación" style="font-weight: bold;"/>
+                            <p:inputText id="stsAplicacionforma" value="#{contribucionMejorasBB.contribucionMejoras.stsAplicacionforma}" label="Forma de apliación" size="50">
+                                <f:validateLength minimum="0" maximum="25" />
+                            </p:inputText>
+                            <p:message for="stsAplicacionforma" display="tooltip"/>
+
+                            <h:outputLabel for="valAcobrar" value="Valor a cobrar" style="font-weight: bold;"/>
+                            <p:inputNumber id="valAcobrar" value="#{contribucionMejorasBB.contribucionMejoras.valAcobrar}" label="Valor a cobrar" size="50"/>
+                            <p:message for="valAcobrar" display="tooltip"/>
+
+                            <h:outputLabel for="valPorcentajefrentistas" value="Porcentaje frentistas" style="font-weight: bold;"/>
+                            <p:inputNumber id="valPorcentajefrentistas" value="#{contribucionMejorasBB.contribucionMejoras.valPorcentajefrentistas}" label="Porcentaje frentistas" size="50"/>
+                            <p:message for="valPorcentajefrentistas" display="tooltip"/>
+
+                            <h:outputLabel for="valPorcentajeavaluo" value="Porcentaje avaluo" style="font-weight: bold;"/>
+                            <p:inputNumber id="valPorcentajeavaluo" value="#{contribucionMejorasBB.contribucionMejoras.valPorcentajeavaluo}" label="Porcentaje avaluo" size="50"/>
+                            <p:message for="valPorcentajeavaluo" display="tooltip"/>
+
+                            <h:outputLabel for="stsPorcentajeaplica" value="Porcentaje aplicacion" style="font-weight: bold;"/>
+                            <p:inputNumber id="stsPorcentajeaplica" value="#{contribucionMejorasBB.contribucionMejoras.stsPorcentajeaplica}" label="Porcentaje aplicacion" size="50"/>
+                            <p:message for="stsPorcentajeaplica" display="tooltip"/>
+
+                        </h:panelGrid>
+                        <h:panelGrid columns="4">
+
+                            <p:commandButton actionListener="#{contribucionMejorasBB.actualizarContribucionMejoras()}" 
+                                             update="grupoContribucionMejoras" 
+                                             icon="fa fa-check"
+                                             id="guardarContribucionMejoras"
+                                             value="Guardar">
+                                <p:ajax update="toolTipSave" process="@this" /> 
+                            </p:commandButton>
+                            <p:tooltip id="toolTipSave" for="guardarContribucionMejoras" value="Guardar cambios en contribucionMejoras" showEffect="fade" hideEffect="fade" position="top"/>
+
+                            <p:commandButton icon="fa fa-close" 
+                                             value="Cerrar"
+                                             id="cancelar"
+                                             update="grupoContribucionMejoras" 
+                                             process="@this" 
+                                             actionListener="#{contribucionMejorasBB.cancelarEdicion()}">
+                                <p:ajax update="toolTipCancel" process="@this" />
+                                <p:resetInput target="panelContribucionMejoras" />
+                            </p:commandButton>
+                            <p:tooltip id="toolTipCancel" for="cancelar" value="Regresar sin guardar cambios" showEffect="fade" hideEffect="fade" position="top"/>
+                        </h:panelGrid>
+                    </p:outputPanel>
+                </h:form>
+            </p:panel>
+        </h:panelGroup>
+    </ui:define>
+</ui:composition>

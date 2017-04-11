@@ -75,7 +75,7 @@ public class ContribuyentesServicioImpl implements ContribuyentesServicio{
         contribuyente.setAudModFec(fechaModificacion);
         
         contribuyentesFacade.edit(contribuyente);
-        // Si todo marcha bien enviar nombre de la funcionalidad
+        // Si todo marcha bien enviar nombre del Contribuyente
         return contribuyente.getNomNombres();
     }
 

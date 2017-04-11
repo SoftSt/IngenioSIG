@@ -70,7 +70,16 @@ public enum EnumEtiquetas {
     CONTRIBUYENTES_NUEVO_DESCRIPCION("Creación de nuevo contribuyente."),
     CONTRIBUYENTES_EDITAR_TITULO("Editar Contribuyente"),
     CONTRIBUYENTES_EDITAR_ICONO("fa fa-edit"),
-    CONTRIBUYENTES_EDITAR_DESCRIPCION("Edición de contribuyente seleccionado.");
+    CONTRIBUYENTES_EDITAR_DESCRIPCION("Edición de contribuyente seleccionado."),
+    CONTRIBUCION_MEJORAS_LISTA_TITULO("Contribucion Especial de Mejoras"),
+    CONTRIBUCION_MEJORAS_LISTA_ICONO("fa fa-thumbs-o-up"),
+    CONTRIBUCION_MEJORAS_LISTA_DESCRIPCION("Gestión de Contribucion Especial de Mejoras en el sistema."),
+    CONTRIBUCION_MEJORAS_NUEVO_TITULO("Nueva Contribucion Especial de Mejora"),
+    CONTRIBUCION_MEJORAS_NUEVO_ICONO("fa fa-plus"),
+    CONTRIBUCION_MEJORAS_NUEVO_DESCRIPCION("Creación de nueva Contribucion Especial de Mejora."),
+    CONTRIBUCION_MEJORAS_EDITAR_TITULO("Editar Contribucion Especial de Mejora"),
+    CONTRIBUCION_MEJORAS_EDITAR_ICONO("fa fa-edit"),
+    CONTRIBUCION_MEJORAS_EDITAR_DESCRIPCION("Edición de Contribucion Especial de Mejora seleccionado.");
     
     private final String textoEtiqueta;
 

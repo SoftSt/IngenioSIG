@@ -25,7 +25,7 @@ import org.primefaces.model.TreeNode;
 
 @ManagedBean
 @ViewScoped
-public class FuncionalidadesBB extends SeguridadesBB {
+public class FuncionalidadesBB extends AdminSeguridadesBB {
 
     private Funcionalidades funcionalidad;
 

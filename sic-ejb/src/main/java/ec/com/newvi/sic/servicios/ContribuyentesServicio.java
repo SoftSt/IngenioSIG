@@ -19,9 +19,9 @@ import javax.ejb.Local;
 @Local
 @PermitAll
 public interface ContribuyentesServicio {
-        /*------------------------------------------------------------Contribuyentes------------------------------------------------------------*/
+/*------------------------------------------------------------Contribuyentes------------------------------------------------------------*/
     /**
-     * Genera una nueva funcionalidad, de acuerdo a un objeto entregado.
+     * Genera una nueva Contribuyente, de acuerdo a un objeto entregado.
      *
      * @param nuevoContribuyente El nuevo Contribuyente a ser ingresado
      * @param sesion Sesion que realiza la operación

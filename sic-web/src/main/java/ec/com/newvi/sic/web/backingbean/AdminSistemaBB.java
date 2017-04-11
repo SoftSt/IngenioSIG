@@ -13,7 +13,7 @@ import javax.inject.Inject;
  *
  * @author israelavila
  */
-public abstract class SistemaBB {
+public abstract class AdminSistemaBB {
     
     @Inject
     protected SesionBean sesionBean;

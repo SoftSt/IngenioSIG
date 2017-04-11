@@ -24,7 +24,7 @@ import javax.faces.bean.ViewScoped;
  */
 @ManagedBean
 @ViewScoped
-public class AsignacionPermisosBB extends SeguridadesBB {
+public class AsignacionPermisosBB extends AdminSeguridadesBB {
 
     private AsignacionPermisos asignacionPermisos;
     private List<AsignacionPermisos> listaAsignaciones;

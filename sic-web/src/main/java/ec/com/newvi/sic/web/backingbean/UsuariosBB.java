@@ -26,7 +26,7 @@ import javax.faces.context.FacesContext;
 
 @ManagedBean
 @ViewScoped
-public class UsuariosBB extends SeguridadesBB {
+public class UsuariosBB extends AdminSeguridadesBB {
 
     private Usuarios usuario;
     private List<Usuarios> listaUsuarios;

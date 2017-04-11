@@ -22,7 +22,7 @@ import javax.servlet.http.HttpServletRequest;
  */
 @ManagedBean
 @ViewScoped
-public class LoginBB extends SeguridadesBB {
+public class LoginBB extends AdminSeguridadesBB {
 
     private HttpServletRequest peticion;
 

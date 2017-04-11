@@ -34,7 +34,7 @@ import org.primefaces.model.TreeNode;
  */
 @ManagedBean
 @ViewScoped
-public class PermisosBB extends SeguridadesBB {
+public class PermisosBB extends AdminSeguridadesBB {
 
     private Permisos permiso;
     private List<Permisos> listaPermisos;
