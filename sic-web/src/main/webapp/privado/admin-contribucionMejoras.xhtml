@@ -37,7 +37,7 @@
                                  paginatorPosition="bottom">
 
                         <p:column headerText="Nombre Obra" sortBy="#{contribucionMejoras.nomObras}" filterBy="#{contribucionMejoras.nomObras}">
-                        <h:outputText value="#{contribucionMejoras.nomObras}" />
+                            <h:outputText value="#{contribucionMejoras.nomObras}" />
                         </p:column>
 
                         <p:column headerText="Año de la Obra" sortBy="#{contribucionMejoras.valAnioobra}" filterBy="#{contribucionMejoras.valAnioobra}">
@@ -168,6 +168,99 @@
                             <p:tooltip id="toolTipCancel" for="cancelar" value="Regresar sin guardar cambios" showEffect="fade" hideEffect="fade" position="top"/>
                         </h:panelGrid>
                     </p:outputPanel>
+                </h:form>
+                <h:form id="formularioListaObrasDetalle">
+                    <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+                    <p>
+                        <h2>
+                            <h:outputText styleClass="#{contribucionMejorasBB.iconoPantalla.textoEtiqueta}"/>
+                            <h:outputText value=" #{contribucionMejorasBB.tituloPantalla.textoEtiqueta}"/>
+                        </h2>
+                    </p>
+                    <p>#{contribucionMejorasBB.descripcionPantalla.textoEtiqueta}</p>
+                    <p>
+                        <h:panelGrid columns="" cellpadding="5">
+                            <p:commandButton value="Añadir un predio" icon="fa fa-plus" 
+
+                                             id="ingresarContribucionMejoras2"
+                                             oncomplete="PF('dlg1').show();">
+                                <p:ajax update="toolTipInsert" process="@this" />  
+                            </p:commandButton>
+                            <p:tooltip id="toolTipInsert" for="ingresarContribucionMejoras2" value="Añadir un predio" showEffect="fade" hideEffect="fade" position="bottom"/>
+                        </h:panelGrid>
+                    </p>
+                    <p:dataTable id="listaObrasDetalle" var="obrasDetalle" widgetVar="listaObrasDetalleTabla"
+                                 value="#{contribucionMejorasBB.listaObrasDetalle}" rowKey="#{obrasDetalle.codObras}" filteredValue="#{contribucionMejorasBB.listaObrasDetalleFiltrado}"
+                                 paginator="true" rows="10" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" 
+                                 rowsPerPageTemplate="10,15,20" 
+                                 emptyMessage="No se han encontrado resultados" 
+                                 paginatorPosition="bottom">
+
+                        <p:column headerText="Codigo" sortBy="#{obrasDetalle.codObras.codObras}">
+                            <h:outputText value="#{obrasDetalle.codObras.codObras}" />
+                        </p:column>
+                        <p:column headerText="Codigo Catastral" sortBy="#{obrasDetalle.nomCodigocatastral}" filterBy="#{obrasDetalle.nomCodigocatastral}">
+                            <h:outputText value="#{obrasDetalle.nomCodigocatastral.codCatastral}" />
+                        </p:column>
+
+                        <p:column headerText="Valor Obra" sortBy="#{obrasDetalle.obrValor}">
+                            <h:outputText value="#{obrasDetalle.obrValor}" />
+                        </p:column>
+
+                        <p:column headerText="Valor Predio" sortBy="#{obrasDetalle.valPredio}">
+                            <h:outputText value="#{obrasDetalle.valPredio}" />
+                        </p:column>
+
+                        <p:column headerText="Valor area frente" sortBy="#{obrasDetalle.valAreafrente}">
+                            <h:outputText value="#{obrasDetalle.valAreafrente}" />
+                        </p:column>
+
+                        <p:column width="80">
+                            <p:commandButton actionListener="#{contribucionMejorasBB.eliminarContribucionMejoras(contribucionMejoras.codObras)}" 
+                                             icon="fa fa-trash"
+                                             id="eliminarContribucionMejoras2">
+                                <p:confirm header="Eliminar contribucionMejoras" message="¿Está seguro?" icon="ui-icon-alert" />
+                                <p:ajax update="toolTipDelete" process="@this" /> 
+                            </p:commandButton>
+                            <p:tooltip id="toolTipDelete" for="eliminarContribucionMejoras2" value="Eliminar ContribucionMejoras" showEffect="fade" hideEffect="fade" position="bottom"/>
+
+                            <p:commandButton process="listaObrasDetalle" 
+                                             actionListener="#{contribucionMejorasBB.seleccionarContribucionMejoras(contribucionMejoras.codObras)}"
+                                             icon="fa fa-edit"
+                                             id="editarContribucionMejoras2"
+                                             update="grupoContribucionMejoras">
+                                <p:ajax update="toolTipEdit" process="@this" /> 
+                            </p:commandButton>
+                            <p:tooltip id="toolTipEdit" for="editarContribucionMejoras2" value="Editar ContribucionMejoras" showEffect="fade" hideEffect="fade" position="bottom"/>
+                        </p:column>            
+                    </p:dataTable>
+                    <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                        <p:commandButton value="Si" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                        <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                    </p:confirmDialog>
+
+                    <!--Dialogo Predios-->
+                    <p:dialog header="Basic Dialog" modal="true" widgetVar="dlg1" minHeight="40">
+                        <p:dataTable id="listaPredios" var="predios" widgetVar="listaPrediosTabla"
+                                     value="#{contribucionMejorasBB.listaPredios}" rowKey="#{predios.codPredio}" filteredValue="#{contribucionMejorasBB.listaPrediosFiltrado}"
+                                     paginator="true" rows="10" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" 
+                                     rowsPerPageTemplate="10,15,20" 
+                                     emptyMessage="No se han encontrado resultados" 
+                                     paginatorPosition="bottom">
+
+                            <p:column selectionMode="multiple" style="width:16px;text-align:center"/>
+                            
+                            <p:column headerText="Codigo Catastral" sortBy="#{predios.nomCodigocatastral}">
+                                <h:outputText value="#{predios.nomCodigocatastral}" />
+                            </p:column>
+
+                            <p:column headerText="Codigo Dpa" sortBy="#{predios.codDpa}">
+                                <h:outputText value="#{predios.codDpa}" />
+                            </p:column>
+                        </p:dataTable>
+                    </p:dialog>
+
+
                 </h:form>
             </p:panel>
         </h:panelGroup>

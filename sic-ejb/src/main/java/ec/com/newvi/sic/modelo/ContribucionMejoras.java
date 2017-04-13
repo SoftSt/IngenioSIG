@@ -9,17 +9,15 @@ import ec.com.newvi.sic.enums.EnumEstadoRegistro;
 import ec.com.newvi.sic.util.ComunUtil;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Collection;
 import java.util.Date;
-import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -34,6 +32,10 @@ import javax.validation.constraints.Size;
 @Table(name = "cat_cat_obras", schema = "public")
 
 public class ContribucionMejoras implements Serializable {
+
+    
+    @OneToMany(mappedBy = "codObras")
+    private Collection<ObrasDetalle> obrasdetalleCollection;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -285,6 +287,14 @@ public class ContribucionMejoras implements Serializable {
     
     public Boolean esContribucionValida(){
         return (!ComunUtil.esNulo(this.obrEstado));
+    }
+
+    public Collection<ObrasDetalle> getObrasdetalleCollection() {
+        return obrasdetalleCollection;
+    }
+
+    public void setObrasdetalleCollection(Collection<ObrasDetalle> obrasdetalleCollection) {
+        this.obrasdetalleCollection = obrasdetalleCollection;
     }
     
 }

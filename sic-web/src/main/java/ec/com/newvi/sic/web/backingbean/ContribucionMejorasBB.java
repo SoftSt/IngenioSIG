@@ -8,6 +8,8 @@ package ec.com.newvi.sic.web.backingbean;
 import ec.com.newvi.sic.enums.EnumEstadoRegistro;
 import ec.com.newvi.sic.enums.EnumNewviExcepciones;
 import ec.com.newvi.sic.modelo.ContribucionMejoras;
+import ec.com.newvi.sic.modelo.ObrasDetalle;
+import ec.com.newvi.sic.modelo.Predios;
 import ec.com.newvi.sic.util.ComunUtil;
 import ec.com.newvi.sic.util.excepciones.NewviExcepcion;
 import ec.com.newvi.sic.util.logs.LoggerNewvi;
@@ -34,6 +36,10 @@ public class ContribucionMejorasBB extends AdminContribucionMejorasBB{
     private ContribucionMejoras contribucionMejoras;
     private List<ContribucionMejoras> listaContribucionMejoras;
     private List<ContribucionMejoras> listaContribucionMejorasFiltrado;
+    private List<ObrasDetalle> listaObrasDetalleFiltrado;
+    private List<ObrasDetalle> listaObrasDetalle;
+    private List<Predios> listaPredios;
+    private List<Predios> listaPrediosFiltrado;
     private EnumPantallaMantenimiento pantallaActual;
 
     public ContribucionMejoras getContribucionMejoras() {
@@ -67,11 +73,48 @@ public class ContribucionMejorasBB extends AdminContribucionMejorasBB{
     public void setPantallaActual(EnumPantallaMantenimiento pantallaActual) {
         this.pantallaActual = pantallaActual;
     }
+
+    public List<ObrasDetalle> getListaObrasDetalle() {
+        return listaObrasDetalle;
+    }
+
+    public void setListaObrasDetalle(List<ObrasDetalle> listaObrasDetalle) {
+        this.listaObrasDetalle = listaObrasDetalle;
+    }
+
+    public List<ObrasDetalle> getListaObrasDetalleFiltrado() {
+        return listaObrasDetalleFiltrado;
+    }
+
+    public void setListaObrasDetalleFiltrado(List<ObrasDetalle> listaObrasDetalleFiltrado) {
+        this.listaObrasDetalleFiltrado = listaObrasDetalleFiltrado;
+    }
+
+    public List<Predios> getListaPredios() {
+        return listaPredios;
+    }
+
+    public void setListaPredios(List<Predios> listaPredios) {
+        this.listaPredios = listaPredios;
+    }
+
+    public List<Predios> getListaPrediosFiltrado() {
+        return listaPrediosFiltrado;
+    }
+
+    public void setListaPrediosFiltrado(List<Predios> listaPrediosFiltrado) {
+        this.listaPrediosFiltrado = listaPrediosFiltrado;
+    }
+    
+    
+    
+    
     
     @PostConstruct
     public void init() {
         this.contribucionMejoras = new ContribucionMejoras();
         actualizarListadoContribucionMejoras();
+        actualizarListadoPredios();
         //listaTipoPersoneria= EnumTipoPersoneria.values();
         conmutarPantalla(EnumPantallaMantenimiento.PANTALLA_LISTADO);
         establecerTitulo(EnumEtiquetas.CONTRIBUCION_MEJORAS_LISTA_TITULO,
@@ -81,6 +124,12 @@ public class ContribucionMejorasBB extends AdminContribucionMejorasBB{
 
     private void actualizarListadoContribucionMejoras() {
         listaContribucionMejoras = contribucionMejorasServicio.consultarContribucionMejoras();
+    }
+    private void actualizarListadoObrasDetalle(Integer codObra) throws NewviExcepcion {
+        listaObrasDetalle = contribucionMejorasServicio.consultarObrasDetalle(codObra);
+    }
+    private void actualizarListadoPredios() {
+        listaPredios = catastroServicio.consultarPredios();
     }
 
     public void crearNuevaContribucionMejoras() {
@@ -155,6 +204,7 @@ public class ContribucionMejorasBB extends AdminContribucionMejorasBB{
     public void seleccionarContribucionMejoras(Integer idContribucionMejoras) {
         try {
             this.seleccionarContribucionMejorasPorCodigo(idContribucionMejoras);
+            actualizarListadoObrasDetalle(idContribucionMejoras);
         } catch (NewviExcepcion e) {
             MensajesFaces.mensajeError(e.getMessage());
         } catch (Exception e) {

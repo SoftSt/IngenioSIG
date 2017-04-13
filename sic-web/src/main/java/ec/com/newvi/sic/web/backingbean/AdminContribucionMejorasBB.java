@@ -5,6 +5,7 @@
  */
 package ec.com.newvi.sic.web.backingbean;
 
+import ec.com.newvi.sic.servicios.CatastroServicio;
 import ec.com.newvi.sic.servicios.ContribucionMejorasServicio;
 import javax.ejb.EJB;
 
@@ -15,4 +16,7 @@ import javax.ejb.EJB;
 public abstract class AdminContribucionMejorasBB extends AdminSistemaBB{
     @EJB
     protected ContribucionMejorasServicio contribucionMejorasServicio;
+    
+    @EJB
+    protected CatastroServicio catastroServicio;
 }

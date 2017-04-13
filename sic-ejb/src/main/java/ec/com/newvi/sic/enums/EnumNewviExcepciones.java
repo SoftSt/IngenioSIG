@@ -64,7 +64,9 @@ public enum EnumNewviExcepciones {
     INF333("INF333", "Contribucion Mejora ingresada.", "La contribución se ha registrado correctamente."),
     INF334("INF334", "Contribucion Mejora ingresada.", "La contribución se ha editado correctamente."),
     INF335("INF335", "Contribucion Mejora ingresada.", "La contribución se ha eliminado correctamente."),
-    ERR336("ERR336", "Contribucion Mejora no válido.", "La contribución ingresada no es válida. Por favor verifique que los datos ingresados son correctos.");
+    ERR336("ERR336", "Contribucion Mejora no válido.", "La contribución ingresada no es válida. Por favor verifique que los datos ingresados son correctos."),
+    ERR337("ERR337", "Detalle de obra no válido.", "El Detalle de obra ingresada no es válida. Por favor verifique que los datos ingresados son correctos."),
+    ERR338("ERR338", "Predio no válido.", "El predio ingresado no es válido. Por favor verifique que los datos ingresados son correctos.");
     
     private final String codigoExcepcion;
     private final String nombreExcepcion;

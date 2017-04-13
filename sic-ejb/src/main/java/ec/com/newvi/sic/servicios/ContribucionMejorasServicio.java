@@ -7,6 +7,7 @@ package ec.com.newvi.sic.servicios;
 
 import ec.com.newvi.sic.dto.SesionDto;
 import ec.com.newvi.sic.modelo.ContribucionMejoras;
+import ec.com.newvi.sic.modelo.ObrasDetalle;
 import ec.com.newvi.sic.util.excepciones.NewviExcepcion;
 import java.util.List;
 import javax.annotation.security.PermitAll;
@@ -65,4 +66,51 @@ public interface ContribucionMejorasServicio {
      * @throws NewviExcepcion
      */
     public String eliminarContribucionMejoras(ContribucionMejoras contribucionMejoras, SesionDto sesion) throws NewviExcepcion;
+    
+    /*------------------------------------------------------------ObrasDetalle------------------------------------------------------------*/
+    /**
+     * Genera una nueva ObrasDetalle, de acuerdo a un objeto entregado.
+     *
+     * @param nuevaObrasDetalle La nueva ObrasDetalle a ser ingresada
+     * @param sesion Sesion que realiza la operación
+     * @return Nombre del nueva ObrasDetalle.
+     * @throws NewviExcepcion
+     */
+    public String generarNuevaObrasDetalle(ObrasDetalle nuevaObrasDetalle, SesionDto sesion) throws NewviExcepcion;
+
+    /**
+     * Actualiza una ObrasDetalle existente.
+     *
+     * @param contribucionMejoras La ObrasDetalle a actualizar
+     * @param sesion Sesion que realiza la operación
+     * @return Nombre de la contribucionMejoras actualizada
+     * @throws NewviExcepcion
+     */
+    public String actualizarObrasDetalle(ObrasDetalle contribucionMejoras, SesionDto sesion) throws NewviExcepcion;
+
+    /**
+     * Devuelve una contribucionMejoras dado un id
+     *
+     * @param idObrasDetalle Integer, código del contribucionMejoras a obtener
+     * @return contribucionMejoras
+     * @throws NewviExcepcion
+     */
+    public ObrasDetalle seleccionarObrasDetalle(Integer idObrasDetalle) throws NewviExcepcion;
+
+    /**
+     * Devuelve un listado de ObrasDetalle.
+     * @param codObra
+     * @return Listado de ObrasDetalle 
+     */
+    public List<ObrasDetalle> consultarObrasDetalle(Integer codObra) throws NewviExcepcion;
+    
+    /**
+     * Elimina un contribucionMejoras dado
+     *
+     * @param contribucionMejoras La contribucionMejoras a eliminar
+     * @param sesion Sesion que realiza la operación
+     * @return Nombre de la contribucionMejoras eliminada
+     * @throws NewviExcepcion
+     */
+    public String eliminarObrasDetalle(ObrasDetalle contribucionMejoras, SesionDto sesion) throws NewviExcepcion;
 }
