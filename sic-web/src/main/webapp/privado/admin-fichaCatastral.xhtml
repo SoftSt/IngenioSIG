@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                template="/WEB-INF/templates/default.xhtml"
+                xmlns:p="http://primefaces.org/ui">
+    <ui:define name="content">
+        <h:panelGroup id="grupoFichaCatastral">
+            <p:panel id="panelListaFichaCatastral" rendered="#{fichaCatastralBB.esPantallaActual('PANTALLA_LISTADO')}">
+                <h:form id="formularioListaFichaCatastral">  
+
+                    <p:growl id="growl" showDetail="true" sticky="true" life="800"/>
+                    <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+                    <p>
+                        <h2>
+                            <h:outputText styleClass="#{fichaCatastralBB.iconoPantalla.textoEtiqueta}"/>
+                            <h:outputText value=" #{fichaCatastralBB.tituloPantalla.textoEtiqueta}"/>
+                        </h2>
+                    </p>
+                    <p>#{fichaCatastralBB.descripcionPantalla.textoEtiqueta}</p>
+                    <p>
+                        <p:commandButton value="Nuevo ficha Catastral" icon="fa fa-user-plus" 
+                                         update="messages grupoFichaCatastral"
+                                         id="ingresarFichaCatastral"
+                                         actionListener="#{fichaCatastralBB.crearNuevoPredio()}">
+                            <p:ajax update="toolTipInsert" process="@this" />  
+                        </p:commandButton>
+                        <p:tooltip id="toolTipInsert" for="ingresarFichaCatastral" value="Ingresar un nuevo ficha Catastral" showEffect="fade" hideEffect="fade" position="bottom"/>
+
+                    </p>
+                    <p:dataTable id="listaFichaCatastral" var="fichaCatastral" widgetVar="listaFichaCatastralTabla"
+                                 value="#{fichaCatastralBB.listaPredios}" rowKey="#{fichaCatastral.codCatastral}" filteredValue="#{fichaCatastralBB.listaPrediosFiltrados}"
+                                 paginator="true" rows="10" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" 
+                                 rowsPerPageTemplate="10,15,20" 
+                                 emptyMessage="No se han encontrado resultados" 
+                                 paginatorPosition="bottom">
+
+
+                        <p:column headerText="Codigo" sortBy="#{fichaCatastral.nomCodigocatastral}" filterBy="#{fichaCatastral.nomCodigocatastral}">
+                            <h:outputText value="#{fichaCatastral.nomCodigocatastral}" />
+                        </p:column>
+
+                        <p:column headerText="Codigo dpa" sortBy="#{fichaCatastral.codDpa}">
+                            <h:outputText value="#{fichaCatastral.codDpa}"/>
+                        </p:column>
+
+                        <p:column headerText="Codigo predio" sortBy="#{fichaCatastral.codPredio}">
+                            <h:outputText value="#{fichaCatastral.codPredio}"/>
+                        </p:column>
+
+                        <p:column width="80">
+                            <p:commandButton actionListener="#{fichaCatastralBB.eliminarPredio(fichaCatastral.codCatastral)}" 
+                                             icon="fa fa-trash"
+                                             id="eliminarFichaCatastral"
+                                             update="listaFichaCatastral :formularioListaFichaCatastral:growl :formularioListaFichaCatastral:messages" >
+                                <p:confirm header="Eliminar fichaCatastral" message="¿Está seguro?" icon="ui-icon-alert" />
+                                <p:ajax update="toolTipDelete" process="@this" /> 
+                            </p:commandButton>
+                            <p:tooltip id="toolTipDelete" for="eliminarFichaCatastral" value="Eliminar FichaCatastral" showEffect="fade" hideEffect="fade" position="bottom"/>
+
+                            <p:commandButton process="listaFichaCatastral" 
+                                             actionListener="#{fichaCatastralBB.seleccionarPredio(fichaCatastral.codCatastral)}"
+                                             icon="fa fa-edit"
+                                             id="editarFichaCatastral"
+                                             update="grupoFichaCatastral">
+                                <p:ajax update="toolTipEdit" process="@this" /> 
+                            </p:commandButton>
+                            <p:tooltip id="toolTipEdit" for="editarFichaCatastral" value="Editar FichaCatastral" showEffect="fade" hideEffect="fade" position="bottom"/>
+                        </p:column>            
+                    </p:dataTable>
+                    <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                        <p:commandButton value="Si" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                        <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                    </p:confirmDialog>
+                </h:form>
+            </p:panel>
+            <p:panel id="panelFichaCatastral" rendered="#{fichaCatastralBB.esPantallaActual('PANTALLA_EDICION')}">
+                <h:form id="formularioFichaCatastral">
+                    <p>
+                        <h2>
+                            <h:outputText styleClass="#{fichaCatastralBB.iconoPantalla.textoEtiqueta}"/>
+                            <h:outputText value=" #{fichaCatastralBB.tituloPantalla.textoEtiqueta}"/>
+                        </h2>
+                    </p>
+                    <p>#{fichaCatastralBB.descripcionPantalla.textoEtiqueta}</p>
+                    <p:messages id="mensajeFormulario" showDetail="true" autoUpdate="true" closable="true" />
+                    <p:tooltip />
+                    <p:outputPanel id="opDetalleFichaCatastral">
+                        <h:panelGrid columns="1">
+
+                            <h:outputLabel for="stsTipo" value="Tipo" style="font-weight: bold;"/>
+                            <p:inputText id="stsTipo" value="#{fichaCatastralBB.predio.stsTipo}" label="Tipo" size="50"/>
+                            <p:message for="stsTipo" display="tooltip"/>
+
+                            <h:outputLabel for="codCatastral" value="Codigo Catastral" style="font-weight: bold;"/>
+                            <p:inputNumber id="codCatastral" value="#{fichaCatastralBB.predio.nomCodigocatastral}" maxValue="9999999999999999999999999" minValue="0" label="Codigo Catastral" size="50" thousandSeparator="" decimalSeparator=""/>
+                            <p:message for="codCatastral" display="tooltip"/>
+
+                            <h:outputLabel for="nomCodigocatastralanterior" value="Codigo Catastral Anterior" style="font-weight: bold;"/>
+                            <p:inputNumber id="nomCodigocatastralanterior" value="#{fichaCatastralBB.predio.nomCodigocatastralanterior}" maxValue="9999999999999999999999999" minValue="0" label="Codigo Catastral Anterior" size="50" thousandSeparator="" decimalSeparator=""/>
+                            <p:message for="nomCodigocatastralanterior" display="tooltip"/>
+
+                            <h:outputLabel for="codDpa" value="Codigo dpa" style="font-weight: bold;"/>
+                            <p:inputNumber id="codDpa" value="#{fichaCatastralBB.predio.codDpa}" maxValue="999999" minValue="0" label="Codigo dpa" size="50" thousandSeparator="" decimalSeparator=""/>
+                            <p:message for="codDpa" display="tooltip"/>
+
+                            <h:outputLabel for="codZona" value="Codigo zona" style="font-weight: bold;"/>
+                            <p:inputNumber id="codZona" value="#{fichaCatastralBB.predio.codZona}" maxValue="99" minValue="0" label="Codigo zona" size="50" thousandSeparator="" decimalSeparator=""/>
+                            <p:message for="codZona" display="tooltip"/>
+
+                            <h:outputLabel for="codSector" value="Codigo sector" style="font-weight: bold;"/>
+                            <p:inputNumber id="codSector" value="#{fichaCatastralBB.predio.codSector}" maxValue="99" minValue="0" label="Codigo sector" size="50" thousandSeparator="" decimalSeparator=""/>
+                            <p:message for="codSector" display="tooltip"/>
+
+                            <h:outputLabel for="codManzana" value="Codigo manzana" style="font-weight: bold;"/>
+                            <p:inputNumber id="codManzana" value="#{fichaCatastralBB.predio.codManzana}" maxValue="999" minValue="0" label="Codigo manzana" size="50" thousandSeparator="" decimalSeparator=""/>
+                            <p:message for="codManzana" display="tooltip"/>
+
+                            <h:outputLabel for="codPredio" value="Codigo predio" style="font-weight: bold;"/>
+                            <p:inputNumber id="codPredio" value="#{fichaCatastralBB.predio.codPredio}" maxValue="999" minValue="0" label="Codigo predio" size="50" thousandSeparator="" decimalSeparator=""/>
+                            <p:message for="codPredio" display="tooltip"/>
+
+                        </h:panelGrid>
+                        <h:panelGrid columns="4">
+
+                            <p:commandButton actionListener="#{fichaCatastralBB.actualizarPredio()}" 
+                                             update="grupoFichaCatastral" 
+                                             icon="fa fa-check"
+                                             id="guardarFichaCatastral"
+                                             value="Guardar">
+                                <p:ajax update="toolTipSave" process="@this" /> 
+                            </p:commandButton>
+                            <p:tooltip id="toolTipSave" for="guardarFichaCatastral" value="Guardar cambios en ficha Catastral" showEffect="fade" hideEffect="fade" position="top"/>
+
+                            <p:commandButton icon="fa fa-close" 
+                                             value="Cerrar"
+                                             id="cancelar"
+                                             update="grupoFichaCatastral" 
+                                             process="@this" 
+                                             actionListener="#{fichaCatastralBB.cancelarEdicion()}">
+                                <p:ajax update="toolTipCancel" process="@this" />
+                                <p:resetInput target="panelFichaCatastral" />
+                            </p:commandButton>
+                            <p:tooltip id="toolTipCancel" for="cancelar" value="Regresar sin guardar cambios" showEffect="fade" hideEffect="fade" position="top"/>
+                        </h:panelGrid>
+                    </p:outputPanel>
+                </h:form>
+            </p:panel>
+        </h:panelGroup>
+    </ui:define>
+</ui:composition>

@@ -79,7 +79,16 @@ public enum EnumEtiquetas {
     CONTRIBUCION_MEJORAS_NUEVO_DESCRIPCION("Creación de nueva Contribucion Especial de Mejora."),
     CONTRIBUCION_MEJORAS_EDITAR_TITULO("Editar Contribucion Especial de Mejora"),
     CONTRIBUCION_MEJORAS_EDITAR_ICONO("fa fa-edit"),
-    CONTRIBUCION_MEJORAS_EDITAR_DESCRIPCION("Edición de Contribucion Especial de Mejora seleccionado.");
+    CONTRIBUCION_MEJORAS_EDITAR_DESCRIPCION("Edición de Contribucion Especial de Mejora seleccionado."),
+    FICHA_CATASTRAL_LISTA_TITULO("Ficha Predial Urbana"),
+    FICHA_CATASTRAL_LISTA_ICONO("fa fa-list-alt"),
+    FICHA_CATASTRAL_LISTA_DESCRIPCION("Gestión de ficha predial urbana."),
+    FICHA_CATASTRAL_NUEVO_TITULO("Nueva Ficha Predial"),
+    FICHA_CATASTRAL_NUEVO_ICONO("fa fa-plus"),
+    FICHA_CATASTRAL_NUEVO_DESCRIPCION("Creación de nueva Ficha Predial."),
+    FICHA_CATASTRAL_EDITAR_TITULO("Editar Ficha Predial"),
+    FICHA_CATASTRAL_EDITAR_ICONO("fa fa-edit"),
+    FICHA_CATASTRAL_EDITAR_DESCRIPCION("Edición de Ficha Predial seleccionada.");
     
     private final String textoEtiqueta;
 
