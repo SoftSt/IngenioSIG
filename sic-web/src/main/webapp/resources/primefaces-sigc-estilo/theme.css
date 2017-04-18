@@ -267,16 +267,21 @@ a.ui-button:active,
 .ui-icon-carat-1-w { background-position: -96px 0; }
 .ui-icon-carat-1-nw { background-position: -112px 0; }
 .ui-icon-carat-2-n-s:before { background: none; font-family: FontAwesome; content: "\f0dc"; }
+.ui-icon-carat-2-n-s { background-position: 16px 16px; }
 .ui-icon-carat-2-e-w { background-position: -144px 0; }
 .ui-icon-triangle-1-n:before { background: none; font-family: FontAwesome; content: "\f0de"; }
+.ui-icon-triangle-1-n { background-position: 16px 16px; }
 .ui-icon-triangle-1-ne { background-position: -16px -16px; }
 .ui-icon-triangle-1-e:before { background: none; font-family: FontAwesome; content: "\f0da"; }
+.ui-icon-triangle-1-e { background-position: 16px 16px; }
 .ui-icon-triangle-1-se { background-position: -48px -16px; }
 .ui-icon-triangle-1-s:before { background: none; font-family: FontAwesome; content: "\f0dd"; }
+.ui-icon-triangle-1-s { background-position: 16px 16px; margin-top: 0.1em; margin-left: 0.25em}
 .ui-icon-triangle-1-sw { background-position: -80px -16px; }
 .ui-icon-triangle-1-w { background-position: -96px -16px; }
 .ui-icon-triangle-1-nw { background-position: -112px -16px; }
 .ui-icon-triangle-2-n-s:before { background: none; font-family: FontAwesome; content: "\f0dc"; }
+.ui-icon-triangle-2-n-s { background-position: 16px 16px; }
 .ui-icon-triangle-2-e-w { background-position: -144px -16px; }
 .ui-icon-arrow-1-n { background-position: 0 -32px; }
 .ui-icon-arrow-1-ne { background-position: -16px -32px; }
@@ -349,6 +354,7 @@ a.ui-button:active,
 .ui-icon-home { background-position: 0 -112px; }
 .ui-icon-flag { background-position: -16px -112px; }
 .ui-icon-calendar:before { background: none; font-family: FontAwesome; content: "\f073"; }
+.ui-icon-calendar { background-position: 16px 16px; }
 .ui-icon-cart { background-position: -48px -112px; }
 .ui-icon-pencil { background-position: -64px -112px; }
 .ui-icon-clock { background-position: -80px -112px; }
@@ -391,11 +397,14 @@ a.ui-button:active,
 .ui-icon-play { background-position: 0 -160px; }
 .ui-icon-pause { background-position: -16px -160px; }
 .ui-icon-seek-next:before { background: none; font-family: FontAwesome; content: "\f04e\20"; }
+.ui-icon-seek-next { background-position: 16px 16px; }
 .ui-icon-seek-prev:before { background: none; font-family: FontAwesome; content: "\f04a\20"; }
+.ui-icon-seek-prev { background-position: 16px 16px; }
 .ui-icon-seek-end:before { background: none; font-family: FontAwesome; content: "\f050\20"; }
-.ui-icon-seek-start { background-position: -80px -160px; }
+.ui-icon-seek-end { background-position: -80px -160px; }
 /* ui-icon-seek-first is deprecated, use ui-icon-seek-start instead */
 .ui-icon-seek-first:before { background: none; font-family: FontAwesome; content: "\f049\20"; }
+.ui-icon-seek-first { background-position: 16px 16px; }
 .ui-icon-stop { background-position: -96px -160px; }
 .ui-icon-eject { background-position: -112px -160px; }
 .ui-icon-volume-off { background-position: -128px -160px; }
@@ -542,7 +551,15 @@ a.ui-button:active,
 }
 
 .ui-panelmenu .ui-menuitem-link {
-    padding: 16px 0.5em 14px 64px !important;
+    padding: 16px 0.5em 14px 60px !important;
+}
+
+.ui-menuitem-text {
+    margin-left: 20px;
+}
+
+.ui-panelmenu .ui-menuitem-link .ui-menuitem-text {
+    margin-left: 0px;
 }
 
 .ui-panelmenu .ui-state-hover {
@@ -614,3 +631,14 @@ a.ui-button:active,
     height: 15px !important;
     overflow: hidden !important;
 }
+
+.ui-treetable-toggler {
+    margin-left: -15px;
+}
+
+.ui-treetable tbody tr td:first-child  {
+    padding-left: 30px !important;
+}
+
+.ui-panelmenu .ui-panelmenu-header .ui-icon-triangle-1-e:before { background: none; font-family: FontAwesome; content: "\f078"; }
+.ui-panelmenu .ui-panelmenu-header .ui-icon-triangle-1-s:before { background: none; font-family: FontAwesome; content: "\f077"; }
