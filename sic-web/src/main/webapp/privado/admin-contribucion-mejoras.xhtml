@@ -171,7 +171,7 @@
                 </h:form>
                 <h:form id="formularioListaObrasDetalle">
                     <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
-                    <p>
+                    <!--<p>
                         <h2>
                             <h:outputText styleClass="#{contribucionMejorasBB.iconoPantalla.textoEtiqueta}"/>
                             <h:outputText value=" #{contribucionMejorasBB.tituloPantalla.textoEtiqueta}"/>
@@ -188,7 +188,7 @@
                             </p:commandButton>
                             <p:tooltip id="toolTipInsert" for="ingresarContribucionMejoras2" value="Añadir un predio" showEffect="fade" hideEffect="fade" position="bottom"/>
                         </h:panelGrid>
-                    </p>
+                    </p>-->
                     <p:dataTable id="listaObrasDetalle" var="obrasDetalle" widgetVar="listaObrasDetalleTabla"
                                  value="#{contribucionMejorasBB.listaObrasDetalle}" rowKey="#{obrasDetalle.codObras}" filteredValue="#{contribucionMejorasBB.listaObrasDetalleFiltrado}"
                                  paginator="true" rows="10" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" 
