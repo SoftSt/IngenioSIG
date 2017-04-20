@@ -87,40 +87,45 @@
                     <p:messages id="mensajeFormulario" showDetail="true" autoUpdate="true" closable="true" />
                     <p:tooltip />
                     <p:outputPanel id="opDetalleFichaCatastral">
-                        <h:panelGrid columns="1">
+                        <h:panelGrid>
 
-                            <h:outputLabel for="stsTipo" value="Tipo" style="font-weight: bold;"/>
-                            <p:inputText id="stsTipo" value="#{fichaCatastralBB.predio.stsTipo}" label="Tipo" size="50"/>
-                            <p:message for="stsTipo" display="tooltip"/>
-
-                            <h:outputLabel for="codCatastral" value="Codigo Catastral" style="font-weight: bold;"/>
+                            <h:outputLabel for="codCatastral" value="Clave Catastral" style="font-weight: bold;"/>
                             <p:inputNumber id="codCatastral" value="#{fichaCatastralBB.predio.nomCodigocatastral}" maxValue="9999999999999999999999999" minValue="0" label="Codigo Catastral" size="50" thousandSeparator="" decimalSeparator=""/>
                             <p:message for="codCatastral" display="tooltip"/>
 
-                            <h:outputLabel for="nomCodigocatastralanterior" value="Codigo Catastral Anterior" style="font-weight: bold;"/>
+                            <h:outputLabel for="nomCodigocatastralanterior" value="Clave Catastral Anterior" style="font-weight: bold;"/>
                             <p:inputNumber id="nomCodigocatastralanterior" value="#{fichaCatastralBB.predio.nomCodigocatastralanterior}" maxValue="9999999999999999999999999" minValue="0" label="Codigo Catastral Anterior" size="50" thousandSeparator="" decimalSeparator=""/>
                             <p:message for="nomCodigocatastralanterior" display="tooltip"/>
 
-                            <h:outputLabel for="codDpa" value="Codigo dpa" style="font-weight: bold;"/>
-                            <p:inputNumber id="codDpa" value="#{fichaCatastralBB.predio.codDpa}" maxValue="999999" minValue="0" label="Codigo dpa" size="50" thousandSeparator="" decimalSeparator=""/>
-                            <p:message for="codDpa" display="tooltip"/>
-
-                            <h:outputLabel for="codZona" value="Codigo zona" style="font-weight: bold;"/>
-                            <p:inputNumber id="codZona" value="#{fichaCatastralBB.predio.codZona}" maxValue="99" minValue="0" label="Codigo zona" size="50" thousandSeparator="" decimalSeparator=""/>
-                            <p:message for="codZona" display="tooltip"/>
-
-                            <h:outputLabel for="codSector" value="Codigo sector" style="font-weight: bold;"/>
-                            <p:inputNumber id="codSector" value="#{fichaCatastralBB.predio.codSector}" maxValue="99" minValue="0" label="Codigo sector" size="50" thousandSeparator="" decimalSeparator=""/>
-                            <p:message for="codSector" display="tooltip"/>
-
-                            <h:outputLabel for="codManzana" value="Codigo manzana" style="font-weight: bold;"/>
-                            <p:inputNumber id="codManzana" value="#{fichaCatastralBB.predio.codManzana}" maxValue="999" minValue="0" label="Codigo manzana" size="50" thousandSeparator="" decimalSeparator=""/>
-                            <p:message for="codManzana" display="tooltip"/>
-
-                            <h:outputLabel for="codPredio" value="Codigo predio" style="font-weight: bold;"/>
-                            <p:inputNumber id="codPredio" value="#{fichaCatastralBB.predio.codPredio}" maxValue="999" minValue="0" label="Codigo predio" size="50" thousandSeparator="" decimalSeparator=""/>
-                            <p:message for="codPredio" display="tooltip"/>
-
+                            <h:panelGrid columns="4">
+                                <h:outputLabel for="codZona" value="Zona" style="font-weight: bold;" />
+                                <h:outputLabel for="codSector" value="Sector" style="font-weight: bold;"/>
+                                <h:outputLabel for="codManzana" value="Manzana" style="font-weight: bold;"/>
+                                <h:outputLabel for="codPredio" value="Predio" style="font-weight: bold;"/>
+                                
+                                <p:inputNumber id="codZona" value="#{fichaCatastralBB.predio.codZona}" maxValue="99" minValue="0" label="Zona" size="5" thousandSeparator="" decimalSeparator=""/>
+                                <p:inputNumber id="codSector" value="#{fichaCatastralBB.predio.codSector}" maxValue="99" minValue="0" label="Sector" size="5" thousandSeparator="" decimalSeparator=""/>
+                                <p:inputNumber id="codManzana" value="#{fichaCatastralBB.predio.codManzana}" maxValue="999" minValue="0" label="Manzana" size="5" thousandSeparator="" decimalSeparator=""/>
+                                <p:inputNumber id="codPredio" value="#{fichaCatastralBB.predio.codPredio}" maxValue="999" minValue="0" label="Predio" size="5" thousandSeparator="" decimalSeparator=""/>
+                            
+                                <p:message for="codZona" display="tooltip"/>
+                                <p:message for="codSector" display="tooltip"/>
+                                <p:message for="codManzana" display="tooltip"/>
+                                <p:message for="codPredio" display="tooltip"/>
+                            </h:panelGrid>
+                            
+                            <h:outputLabel for="txtDireccion" value="Direccion" style="font-weight: bold;"/>
+                            <p:inputText id="txtDireccion" value="#{fichaCatastralBB.predio.txtDireccion}" label="Direccion" size="50"/>
+                            <p:message for="txtDireccion" display="tooltip"/>
+                            
+                            <h:outputLabel for="stsBarrio" value="Barrio/Comunidad" style="font-weight: bold;"/>
+                            <p:inputText id="stsBarrio" value="#{fichaCatastralBB.predio.stsBarrio}" label="Barrio/Comunidad" size="50"/>
+                            <p:message for="stsBarrio" display="tooltip"/>
+                            
+                            <h:outputLabel for="nomPredio" value="Nombre del predio" style="font-weight: bold;"/>
+                            <p:inputText id="nomPredio" value="#{fichaCatastralBB.predio.nomPredio}" label="Nombre del predio" size="50"/>
+                            <p:message for="nomPredio" display="tooltip"/>
+                            
                         </h:panelGrid>
                         <h:panelGrid columns="4">
 
