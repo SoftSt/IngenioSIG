@@ -34,9 +34,10 @@ public class VisorGeograficoRenderer extends CoreRenderer {
  
     protected void encodeMarkup(FacesContext context, VisorGeografico visor) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
- 
+
         writer.startElement("div", visor);
         writer.writeAttribute("id", visor.getClientId(), null);
+        writer.writeAttribute("style", "height: 500px;width: 100px;", null);
         writer.endElement("div");
     }
  

@@ -18,6 +18,8 @@ import org.primefaces.component.api.Widget;
  */
 @FacesComponent(value = VisorGeografico.COMPONENT_TYPE)
 @ResourceDependencies({
+        @ResourceDependency(library = "ol", name = "ol.css"),
+        @ResourceDependency(library = "ol", name = "ol.js"),
         @ResourceDependency(library = "primefaces", name = "jquery/jquery.js"),
         @ResourceDependency(library = "primefaces", name = "primefaces.js"),
         @ResourceDependency(library = "newvi", name = "visorgeografico.js") })
