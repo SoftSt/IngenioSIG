@@ -495,14 +495,6 @@ a.ui-button:active,
     border: none !important;
 }
 
-
-
-
-
-
-
-
-
 .ui-datatable tbody, .ui-treetable tbody, .ui-datatable-odd, ui-datatable-even, .ui-datatable thead th, .ui-datatable tbody td, .ui-datatable tfoot td, .ui-treetable thead th, .ui-treetable tbody td, .ui-datatable tfoot th, .ui-panelmenu-content {
     border: none !important;
     border-width: 0px !important;
