@@ -36,14 +36,30 @@ public class VisorGeografico extends UIComponentBase implements Widget {
         return COMPONENT_FAMILY;
     }
  
-    public Integer getWidth(){
-        return (Integer) this.getStateHelper().eval(PropertyKeys.width,null);
+    public String getWidth(){
+        return (String) this.getStateHelper().eval(PropertyKeys.width,null);
     }
  
-    public void setWidth(Integer width){
+    public void setWidth(String width){
         this.getStateHelper().put(PropertyKeys.width, width);
     }
  
+    public String getHeight(){
+        return (String) this.getStateHelper().eval(PropertyKeys.height,null);
+    }
+ 
+    public void setHeight(String height){
+        this.getStateHelper().put(PropertyKeys.height, height);
+    }
+    
+    public VistaMapa getView(){
+        return (VistaMapa) this.getStateHelper().eval(PropertyKeys.view,null);
+    }
+ 
+    public void setView(VistaMapa view){
+        this.getStateHelper().put(PropertyKeys.view, view);
+    }
+    
     public String getWidgetVar() {
         return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
@@ -68,6 +84,6 @@ public class VisorGeografico extends UIComponentBase implements Widget {
     }
  
     protected static enum PropertyKeys {
-        width, widgetVar;
+        width, height, view, widgetVar;
     }
 }

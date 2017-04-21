@@ -7,18 +7,22 @@ PrimeFaces.widget.VisorGeografico = PrimeFaces.widget.BaseWidget.extend({
     init: function (cfg) {
 
         this._super(cfg);
+        
+        this.cfg = cfg;
 
         // Inicializar el componente de mapa
         var capaOsm = new ol.layer.Tile({
             source: new ol.source.OSM()
         });
-        var ecuador = ol.proj.transform([-84, -1.75], 'EPSG:4326', 'EPSG:3857');
+        var vista = JSON.parse(this.cfg.view);
+        
+        var ecuador = ol.proj.transform([vista.posx, vista.posy], vista.srs, 'EPSG:3857');
         var centro = new ol.View({
             center: ecuador,
-            zoom: 6
+            zoom: vista.zoom
         });
         var map = new ol.Map({
-            target: cfg.id
+            target: this.cfg.id
         });
         map.addLayer(capaOsm);
         map.setView(centro);
@@ -30,7 +34,7 @@ PrimeFaces.widget.VisorGeografico = PrimeFaces.widget.BaseWidget.extend({
 
         //this.startTime = cfg.time && cfg.mode !== 'client' ? moment(cfg.time) : moment();
 
-        this.colorScheme = cfg.colorScheme || 'standard';
+        this.colorScheme = this.cfg.colorScheme || 'standard';
 
         this.dimensions = new PrimeFaces.widget.VisorGeografico.Dimensions(this.cfg.width || this.jq.width());
 

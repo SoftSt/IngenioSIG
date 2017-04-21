@@ -5,6 +5,7 @@
  */
 package ec.com.newvi.sic.web.backingbean;
 
+import ec.com.newvi.faces.visorgeografico.VistaMapa;
 import ec.com.newvi.sic.enums.EnumEstadoRegistro;
 import ec.com.newvi.sic.enums.EnumNewviExcepciones;
 import ec.com.newvi.sic.modelo.Predios;
@@ -16,6 +17,7 @@ import ec.com.newvi.sic.web.enums.EnumEtiquetas;
 import ec.com.newvi.sic.web.enums.EnumPantallaMantenimiento;
 import ec.com.newvi.sic.web.utils.ValidacionUtils;
 import ec.com.newvi.sic.web.utils.WebUtils;
+import java.math.BigDecimal;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
@@ -27,7 +29,6 @@ import javax.faces.context.FacesContext;
  *
  * @author Andrés
  */
-
 @ManagedBean
 @ViewScoped
 
@@ -37,6 +38,7 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
     private List<Predios> listaPredios;
     private List<Predios> listaPrediosFiltrados;
     private EnumPantallaMantenimiento pantallaActual;
+    private VistaMapa vistaMapa;
 
     public Predios getPredio() {
         return predio;
@@ -70,17 +72,31 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
         this.pantallaActual = pantallaActual;
     }
 
+    public VistaMapa getVistaMapa() {
+        return vistaMapa;
+    }
+
+    public void setVistaMapa(VistaMapa vistaMapa) {
+        this.vistaMapa = vistaMapa;
+    }
+    
     @PostConstruct
     public void init() {
-    this.predio = new Predios();
-    actualizarListadoPredios();
-     conmutarPantalla(EnumPantallaMantenimiento.PANTALLA_LISTADO);
+        this.predio = new Predios();
+        actualizarListadoPredios();
+        conmutarPantalla(EnumPantallaMantenimiento.PANTALLA_LISTADO);
         establecerTitulo(EnumEtiquetas.FICHA_CATASTRAL_LISTA_TITULO,
                 EnumEtiquetas.FICHA_CATASTRAL_LISTA_ICONO,
                 EnumEtiquetas.FICHA_CATASTRAL_LISTA_DESCRIPCION);
+        
+        vistaMapa = new VistaMapa();
+        vistaMapa.setCentroX(BigDecimal.valueOf(-84));
+        vistaMapa.setCentroY(BigDecimal.valueOf(-1.2));
+        vistaMapa.setCodigoSRS("EPSG:4326");
+        vistaMapa.setZoom(BigDecimal.valueOf(6));
     }
-    
-        private void actualizarListadoPredios() {
+
+    private void actualizarListadoPredios() {
         listaPredios = catastroServicio.consultarPredios();
     }
 

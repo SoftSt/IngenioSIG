@@ -129,7 +129,9 @@
                             
                             
                         </h:panelGrid>
-                            <newvi:visorGeografico id="id" width="100"></newvi:visorGeografico>
+                        <newvi:visorGeografico id="id" 
+                                               width="500px" height="200px"
+                                               view="#{fichaCatastralBB.vistaMapa}"/>
                         <h:panelGrid columns="4">
 
                             <p:commandButton actionListener="#{fichaCatastralBB.actualizarPredio()}" 

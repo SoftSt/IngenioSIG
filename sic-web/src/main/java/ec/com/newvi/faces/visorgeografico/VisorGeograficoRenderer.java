@@ -4,6 +4,7 @@
  */
 package ec.com.newvi.faces.visorgeografico;
 
+import ec.com.newvi.sic.util.ComunUtil;
 import java.io.IOException;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -37,8 +38,14 @@ public class VisorGeograficoRenderer extends CoreRenderer {
 
         writer.startElement("div", visor);
         writer.writeAttribute("id", visor.getClientId(), null);
-        writer.writeAttribute("style", "height: 500px;width: 100%;", null);
+        writer.writeAttribute("style", this.generarEstiloMapa(visor) , null);
         writer.endElement("div");
+    }
+    
+    protected String generarEstiloMapa(VisorGeografico visor) {
+        String ancho = visor.getWidth();
+        String alto = visor.getHeight();
+        return "width: ".concat(ancho).concat(";height:").concat(alto).concat(";");
     }
  
  
@@ -51,14 +58,19 @@ public class VisorGeograficoRenderer extends CoreRenderer {
         WidgetBuilder wb = getWidgetBuilder(context);
  
  
-        wb.init("VisorGeografico", widgetVar, clientId);
-        //wb.attr("mode", visor.getMode());
- 
+        wb.init("VisorGeografico", widgetVar, clientId); 
  
         if(visor.getWidth() != null){
             wb.attr("width", visor.getWidth());
         }
+        
+        if(visor.getHeight()!= null){
+            wb.attr("height", visor.getHeight());
+        }
  
+        if(!ComunUtil.esNulo(visor.getView())){
+            wb.attr("view", visor.getView().generarJSON());
+        }
  
         wb.finish();
     }
