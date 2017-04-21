@@ -32,7 +32,7 @@ PrimeFaces.widget.VisorGeografico = PrimeFaces.widget.BaseWidget.extend({
 
         this.colorScheme = cfg.colorScheme || 'standard';
 
-        //this.dimensions = new PrimeFaces.widget.VisorGeografico.Dimensions(this.cfg.width || this.jq.width());
+        this.dimensions = new PrimeFaces.widget.VisorGeografico.Dimensions(this.cfg.width || this.jq.width());
 
 
         this.interval = setInterval((function (self) {

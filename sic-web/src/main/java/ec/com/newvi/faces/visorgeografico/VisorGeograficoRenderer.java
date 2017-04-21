@@ -37,7 +37,7 @@ public class VisorGeograficoRenderer extends CoreRenderer {
 
         writer.startElement("div", visor);
         writer.writeAttribute("id", visor.getClientId(), null);
-        writer.writeAttribute("style", "height: 500px;width: 100px;", null);
+        writer.writeAttribute("style", "height: 500px;width: 100%;", null);
         writer.endElement("div");
     }
  

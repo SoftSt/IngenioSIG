@@ -127,9 +127,9 @@
                             <p:inputText id="nomPredio" value="#{fichaCatastralBB.predio.nomPredio}" label="Nombre del predio" size="50"/>
                             <p:message for="nomPredio" display="tooltip"/>
                             
-                            <newvi:visorGeografico id="id" width="100"></newvi:visorGeografico>
                             
                         </h:panelGrid>
+                            <newvi:visorGeografico id="id" width="100"></newvi:visorGeografico>
                         <h:panelGrid columns="4">
 
                             <p:commandButton actionListener="#{fichaCatastralBB.actualizarPredio()}" 

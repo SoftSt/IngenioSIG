@@ -20,8 +20,11 @@ import org.primefaces.component.api.Widget;
 @ResourceDependencies({
         @ResourceDependency(library = "ol", name = "ol.css"),
         @ResourceDependency(library = "ol", name = "ol.js"),
-        @ResourceDependency(library = "primefaces", name = "jquery/jquery.js"),
-        @ResourceDependency(library = "primefaces", name = "primefaces.js"),
+        @ResourceDependency(library="primefaces", name="components.css"),
+        @ResourceDependency(library="primefaces", name="jquery/jquery.js"),
+        @ResourceDependency(library="primefaces", name="jquery/jquery-plugins.js"),
+        @ResourceDependency(library="primefaces", name="core.js"),
+        @ResourceDependency(library="primefaces", name="components.js"),
         @ResourceDependency(library = "newvi", name = "visorgeografico.js") })
 public class VisorGeografico extends UIComponentBase implements Widget { 
  
