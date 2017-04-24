@@ -52,12 +52,12 @@ public class VisorGeografico extends UIComponentBase implements Widget {
         this.getStateHelper().put(PropertyKeys.height, height);
     }
     
-    public VistaMapa getView(){
-        return (VistaMapa) this.getStateHelper().eval(PropertyKeys.view,null);
+    public Map getMap(){
+        return (Map) this.getStateHelper().eval(PropertyKeys.map,null);
     }
  
-    public void setView(VistaMapa view){
-        this.getStateHelper().put(PropertyKeys.view, view);
+    public void setMap(Map map){
+        this.getStateHelper().put(PropertyKeys.map, map);
     }
     
     public String getWidgetVar() {
@@ -84,6 +84,6 @@ public class VisorGeografico extends UIComponentBase implements Widget {
     }
  
     protected static enum PropertyKeys {
-        width, height, view, widgetVar;
+        width, height, map, widgetVar;
     }
 }

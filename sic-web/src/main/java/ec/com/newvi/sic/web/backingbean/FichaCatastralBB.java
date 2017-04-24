@@ -5,7 +5,10 @@
  */
 package ec.com.newvi.sic.web.backingbean;
 
-import ec.com.newvi.faces.visorgeografico.VistaMapa;
+import ec.com.newvi.faces.visorgeografico.Coordinate;
+import ec.com.newvi.faces.visorgeografico.Map;
+import ec.com.newvi.faces.visorgeografico.ProjectionCode;
+import ec.com.newvi.faces.visorgeografico.View;
 import ec.com.newvi.sic.enums.EnumEstadoRegistro;
 import ec.com.newvi.sic.enums.EnumNewviExcepciones;
 import ec.com.newvi.sic.modelo.Predios;
@@ -38,7 +41,8 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
     private List<Predios> listaPredios;
     private List<Predios> listaPrediosFiltrados;
     private EnumPantallaMantenimiento pantallaActual;
-    private VistaMapa vistaMapa;
+    private View vistaMapa;
+    private Map mapa;
 
     public Predios getPredio() {
         return predio;
@@ -72,12 +76,20 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
         this.pantallaActual = pantallaActual;
     }
 
-    public VistaMapa getVistaMapa() {
+    public View getVistaMapa() {
         return vistaMapa;
     }
 
-    public void setVistaMapa(VistaMapa vistaMapa) {
+    public void setVistaMapa(View vistaMapa) {
         this.vistaMapa = vistaMapa;
+    }
+
+    public Map getMapa() {
+        return mapa;
+    }
+
+    public void setMapa(Map mapa) {
+        this.mapa = mapa;
     }
     
     @PostConstruct
@@ -89,11 +101,12 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
                 EnumEtiquetas.FICHA_CATASTRAL_LISTA_ICONO,
                 EnumEtiquetas.FICHA_CATASTRAL_LISTA_DESCRIPCION);
         
-        vistaMapa = new VistaMapa();
-        vistaMapa.setCentroX(BigDecimal.valueOf(-84));
-        vistaMapa.setCentroY(BigDecimal.valueOf(-1.2));
-        vistaMapa.setCodigoSRS("EPSG:4326");
-        vistaMapa.setZoom(BigDecimal.valueOf(6));
+        mapa = new Map();
+        vistaMapa = new View();
+        vistaMapa.setCenter(new Coordinate(BigDecimal.valueOf(-79), BigDecimal.valueOf(-1.2)));
+        vistaMapa.setProjection(ProjectionCode.EPSG_4326);
+        vistaMapa.setZoom(BigDecimal.valueOf(11));
+        mapa.setView(vistaMapa);
     }
 
     private void actualizarListadoPredios() {

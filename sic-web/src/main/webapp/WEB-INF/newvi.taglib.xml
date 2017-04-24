@@ -54,9 +54,9 @@
 		</attribute>
 		<attribute>
 			<description><![CDATA[Centro]]></description>
-			<name>view</name>
+			<name>map</name>
 			<required>false</required>
-			<type>ec.com.newvi.faces.VistaMapa</type>
+			<type>ec.com.newvi.faces.visorgeografico.Map</type>
 		</attribute>
 	</tag>
 </facelet-taglib>

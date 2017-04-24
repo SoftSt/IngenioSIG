@@ -4,76 +4,51 @@
  */
 
 PrimeFaces.widget.VisorGeografico = PrimeFaces.widget.BaseWidget.extend({
+    setVista: function (centro, srs, zoom) {
+        var posCentro = ol.proj.transform(centro, srs, 'EPSG:3857');
+        this.vista = new ol.View({
+            center: posCentro,
+            zoom: zoom
+        });
+    },
+    getVista: function() {
+        return this.vista;
+    },
+    actualizarVistaMapa: function (vista) {
+        this.mapa.setView(vista);
+    },
     init: function (cfg) {
-
-        this._super(cfg);
-        
         this.cfg = cfg;
-
-        // Inicializar el componente de mapa
-        var capaOsm = new ol.layer.Tile({
-            source: new ol.source.OSM()
-        });
-        var vista = JSON.parse(this.cfg.view);
-        
-        var ecuador = ol.proj.transform([vista.posx, vista.posy], vista.srs, 'EPSG:3857');
-        var centro = new ol.View({
-            center: ecuador,
-            zoom: vista.zoom
-        });
-        var map = new ol.Map({
-            target: this.cfg.id
-        });
-        map.addLayer(capaOsm);
-        map.setView(centro);
-
+        this._super(this.cfg);
         // Colocar un tamaño (ancho y alto)
-        // Agregar un mapa base
-        // Inicializar
-
-
-        //this.startTime = cfg.time && cfg.mode !== 'client' ? moment(cfg.time) : moment();
-
         this.colorScheme = this.cfg.colorScheme || 'standard';
-
-        this.dimensions = new PrimeFaces.widget.VisorGeografico.Dimensions(this.cfg.width || this.jq.width());
-
-
         this.interval = setInterval((function (self) {
             return function () {
                 self.update();
-            }
+            };
         })(this), 1000);
-
         this.draw();
     },
-
     draw: function () {
-
-        alert("hola mundo!");
-
-        // [TODO] generar mapa
-        //this.canvas = Raphael(this.id, this.dimensions.size, this.dimensions.size);
-
-
-        //this.clock = this.canvas.circle(this.dimensions.half, this.dimensions.half, this.dimensions.clock_width);
-        //this.clock.attr({
-        //    "fill" : PrimeFaces.widget.VisorGeografico.colorSchemes[this.colorScheme].face,
-        //    "stroke" :PrimeFaces.widget.VisorGeografico.colorSchemes[this.colorScheme].border,
-        //   "stroke-width" : "5"
-        //})
-
-
-        //this.draw_hour_signs();
-
-
-        //this.draw_hands();
-
-
-        //var pin = this.canvas.circle(this.dimensions.half, this.dimensions.half, this.dimensions.pin_width);
-        //pin.attr("fill", PrimeFaces.widget.VisorGeografico.colorSchemes[this.colorScheme].pin);
-
-
+        // Generar mapa
+        // Inicializar el componente de mapa
+        this.mapa = new ol.Map({
+            target: this.cfg.id
+        });
+        // Agregar un mapa base
+        var capaOsm = new ol.layer.Tile({
+            source: new ol.source.OSM()
+        });
+        this.mapa.addLayer(capaOsm);
+        // Colocar la vista
+        if (this.cfg.map) {
+            var mapa = JSON.parse(this.cfg.map.replace(/'/g, "\""));
+            this.setVista(mapa.view.center, mapa.view.projection, mapa.view.zoom);
+        } else {
+            this.setVista([0, 0], 'EPSG:3857', 1);
+        }
+        this.actualizarVistaMapa(this.getVista());
+        // Inicializar
         this.update();
     },
 
