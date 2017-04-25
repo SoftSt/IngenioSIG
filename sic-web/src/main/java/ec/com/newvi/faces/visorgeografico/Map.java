@@ -4,6 +4,8 @@
  */
 package ec.com.newvi.faces.visorgeografico;
 
+import ec.com.newvi.faces.visorgeografico.layer.LayerCollection;
+
 
 /**
  *
@@ -11,8 +13,13 @@ package ec.com.newvi.faces.visorgeografico;
  */
 public class Map extends Base {
     private View view;
-    private Collection layers;
+    private LayerCollection layers;
 
+    public Map() {
+        this.view = new View();
+        this.layers = new LayerCollection();
+    }
+    
     public View getView() {
         return view;
     }
@@ -21,11 +28,11 @@ public class Map extends Base {
         this.view = view;
     }
 
-    public Collection getLayers() {
+    public LayerCollection getLayers() {
         return layers;
     }
 
-    public void setLayers(Collection layers) {
+    public void setLayers(LayerCollection layers) {
         this.layers = layers;
     }
     

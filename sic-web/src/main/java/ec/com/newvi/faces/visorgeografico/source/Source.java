@@ -11,4 +11,5 @@ import ec.com.newvi.faces.visorgeografico.Base;
  * @author israelavila
  */
 public class Source extends Base {
+    
 }

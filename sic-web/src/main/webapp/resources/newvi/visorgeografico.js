@@ -4,15 +4,57 @@
  */
 
 PrimeFaces.widget.VisorGeografico = PrimeFaces.widget.BaseWidget.extend({
-    setVista: function (centro, srs, zoom) {
+    setLayersByCollection: function (layerCollection) {
+        var layers = [];
+        for (var i = 0; i < layerCollection.length; i++) {
+            layers.push(this.getLayerByType(layerCollection[i]));
+        }
+        ;
+        this.layers = layers;
+    },
+    getLayers: function () {
+        return this.layers;
+    },
+    getLayerByType: function (layerObject) {
+        var layer;
+        var options = {};
+        options.opacity = layerObject.opacity;
+        options.visible = layerObject.visible;
+        if (layerObject.type === "Tile") {
+            options.source = this.getSourceByType(layerObject.source);
+            layer = new ol.layer.Tile(options);
+        }
+        return layer;
+    },
+    getSourceByType: function (sourceObject) {
+        var source;
+        if (sourceObject.type === "OSM") {
+            source = new ol.source.OSM();
+        }
+        if (sourceObject.type === "BingMaps") {
+            source = new ol.source.BingMaps({
+                key: sourceObject.key,
+                imagerySet: sourceObject.imagerySet
+            });
+        }
+        if (sourceObject.type === "TileWMS") {
+            source = new ol.source.TileWMS({
+                url: sourceObject.url,
+                params: sourceObject.params,
+                serverType: sourceObject.serverType
+            });
+        }
+        return source;
+    },
+    setView: function (centro, srs, zoom) {
         var posCentro = ol.proj.transform(centro, srs, 'EPSG:3857');
-        this.vista = new ol.View({
+        this.view = new ol.View({
             center: posCentro,
             zoom: zoom
         });
     },
-    getVista: function() {
-        return this.vista;
+    getView: function () {
+        return this.view;
     },
     actualizarVistaMapa: function (vista) {
         this.mapa.setView(vista);
@@ -20,6 +62,14 @@ PrimeFaces.widget.VisorGeografico = PrimeFaces.widget.BaseWidget.extend({
     init: function (cfg) {
         this.cfg = cfg;
         this._super(this.cfg);
+        // Generar mapa
+        if (this.cfg.map) {
+            var mapa = JSON.parse(this.cfg.map.replace(/'/g, "\""));
+            this.setView(mapa.view.center, mapa.view.projection, mapa.view.zoom);
+            this.setLayersByCollection(mapa.layers);
+        } else {
+            this.setView([0, 0], 'EPSG:3857', 1);
+        }
         // Colocar un tamaño (ancho y alto)
         this.colorScheme = this.cfg.colorScheme || 'standard';
         this.interval = setInterval((function (self) {
@@ -30,24 +80,12 @@ PrimeFaces.widget.VisorGeografico = PrimeFaces.widget.BaseWidget.extend({
         this.draw();
     },
     draw: function () {
-        // Generar mapa
         // Inicializar el componente de mapa
         this.mapa = new ol.Map({
-            target: this.cfg.id
+            target: this.cfg.id,
+            layers: this.getLayers(),
+            view: this.getView()
         });
-        // Agregar un mapa base
-        var capaOsm = new ol.layer.Tile({
-            source: new ol.source.OSM()
-        });
-        this.mapa.addLayer(capaOsm);
-        // Colocar la vista
-        if (this.cfg.map) {
-            var mapa = JSON.parse(this.cfg.map.replace(/'/g, "\""));
-            this.setVista(mapa.view.center, mapa.view.projection, mapa.view.zoom);
-        } else {
-            this.setVista([0, 0], 'EPSG:3857', 1);
-        }
-        this.actualizarVistaMapa(this.getVista());
         // Inicializar
         this.update();
     },

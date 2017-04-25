@@ -14,17 +14,17 @@ import java.util.ListIterator;
  * @author israelavila
  */
 public class Collection implements List<Object> {
-    
-    List<Object> list;
+
+    protected List<Object> list;
 
     public Collection() {
         this.list = new ArrayList<>();
     }
-    
+
     public Collection(List<Object> list) {
         this.list = list;
     }
-    
+
     @Override
     public int size() {
         return this.list.size();
@@ -139,12 +139,15 @@ public class Collection implements List<Object> {
     public List<Object> subList(int fromIndex, int toIndex) {
         return this.list.subList(fromIndex, toIndex);
     }
-    
+
     @Override
     public String toString() {
         String string = "[";
         for (Object object : this.list) {
             string = string.concat(object.toString());
+            if (this.list.lastIndexOf(object) + 1 != this.list.size()) {
+                string = string.concat(",");
+            }
         }
         string = string.concat("]");
         return string;

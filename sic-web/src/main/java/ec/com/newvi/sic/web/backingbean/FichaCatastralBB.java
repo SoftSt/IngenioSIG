@@ -9,6 +9,11 @@ import ec.com.newvi.faces.visorgeografico.Coordinate;
 import ec.com.newvi.faces.visorgeografico.Map;
 import ec.com.newvi.faces.visorgeografico.ProjectionCode;
 import ec.com.newvi.faces.visorgeografico.View;
+import ec.com.newvi.faces.visorgeografico.layer.Layer;
+import ec.com.newvi.faces.visorgeografico.layer.Tile;
+import ec.com.newvi.faces.visorgeografico.source.BingMaps;
+import ec.com.newvi.faces.visorgeografico.source.OSM;
+import ec.com.newvi.faces.visorgeografico.source.TileWMS;
 import ec.com.newvi.sic.enums.EnumEstadoRegistro;
 import ec.com.newvi.sic.enums.EnumNewviExcepciones;
 import ec.com.newvi.sic.modelo.Predios;
@@ -41,7 +46,6 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
     private List<Predios> listaPredios;
     private List<Predios> listaPrediosFiltrados;
     private EnumPantallaMantenimiento pantallaActual;
-    private View vistaMapa;
     private Map mapa;
 
     public Predios getPredio() {
@@ -76,14 +80,6 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
         this.pantallaActual = pantallaActual;
     }
 
-    public View getVistaMapa() {
-        return vistaMapa;
-    }
-
-    public void setVistaMapa(View vistaMapa) {
-        this.vistaMapa = vistaMapa;
-    }
-
     public Map getMapa() {
         return mapa;
     }
@@ -102,10 +98,31 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
                 EnumEtiquetas.FICHA_CATASTRAL_LISTA_DESCRIPCION);
         
         mapa = new Map();
-        vistaMapa = new View();
+        View vistaMapa = new View();
         vistaMapa.setCenter(new Coordinate(BigDecimal.valueOf(-79), BigDecimal.valueOf(-1.2)));
         vistaMapa.setProjection(ProjectionCode.EPSG_4326);
         vistaMapa.setZoom(BigDecimal.valueOf(11));
+        
+        Layer capaBingMaps = new Tile();
+        BingMaps bingMaps = new BingMaps();
+        bingMaps.setImagerySet(BingMaps.Style.AERIAL);
+        bingMaps.setKey("AqFjj-M8JAhbTyEGSjJIY2pnV6dcbYhAYIw-UKyD363yXDWZekrkz0R65obxSnzb");
+        capaBingMaps.setSource(bingMaps);
+        mapa.getLayers().add(capaBingMaps);
+        
+        Layer capaOSM = new Tile();
+        capaOSM.setOpacity(BigDecimal.valueOf(0.5));
+        capaOSM.setSource(new OSM());
+        mapa.getLayers().add(capaOSM);
+        
+        Layer capaWMS = new Tile();
+        TileWMS fuenteWMS = new TileWMS();
+        fuenteWMS.setUrl("http://www.geoportaligm.gob.ec/nacional/wms");
+        fuenteWMS.setParams(fuenteWMS.new Params("igm:provincias", Boolean.FALSE));
+        fuenteWMS.setServerType(TileWMS.ServerType.GEOSERVER);
+        capaWMS.setSource(fuenteWMS);
+        mapa.getLayers().add(capaWMS);
+        
         mapa.setView(vistaMapa);
     }
 
