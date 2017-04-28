@@ -84,51 +84,101 @@
                             <h:outputText value=" #{fichaCatastralBB.tituloPantalla.textoEtiqueta}"/>
                         </h2>
                     </p>
-                    <p>#{fichaCatastralBB.descripcionPantalla.textoEtiqueta}</p>
+                    <!--<p>#{fichaCatastralBB.descripcionPantalla.textoEtiqueta}</p>-->
+
                     <p:messages id="mensajeFormulario" showDetail="true" autoUpdate="true" closable="true" />
                     <p:tooltip />
                     <p:outputPanel id="opDetalleFichaCatastral">
-                        <h:panelGrid>
 
-                            <h:outputLabel for="codCatastral" value="Clave Catastral" style="font-weight: bold;"/>
-                            <p:inputNumber id="codCatastral" value="#{fichaCatastralBB.predio.nomCodigocatastral}" maxValue="9999999999999999999999999" minValue="0" label="Codigo Catastral" size="50" thousandSeparator="" decimalSeparator=""/>
-                            <p:message for="codCatastral" display="tooltip"/>
+                        <div class="ui-g">
+                            <div class="ui-g-12 ui-md-12 ui-lg-6">
+                                <h:panelGrid>
+                                    <p style="font-weight: bold;">Identificacion Catastral del predio y dirección</p>
 
-                            <h:outputLabel for="nomCodigocatastralanterior" value="Clave Catastral Anterior" style="font-weight: bold;"/>
-                            <p:inputNumber id="nomCodigocatastralanterior" value="#{fichaCatastralBB.predio.nomCodigocatastralanterior}" maxValue="9999999999999999999999999" minValue="0" label="Codigo Catastral Anterior" size="50" thousandSeparator="" decimalSeparator=""/>
-                            <p:message for="nomCodigocatastralanterior" display="tooltip"/>
+                                    <h:outputLabel for="codCatastral" value="Clave Catastral" style="font-weight: bold;"/>
+                                    <p:inputNumber id="codCatastral" value="#{fichaCatastralBB.predio.nomCodigocatastral}" maxValue="9999999999999999999999999" minValue="0" label="Codigo Catastral" size="50" thousandSeparator="" decimalSeparator=""/>
+                                    <p:message for="codCatastral" display="tooltip"/>
 
-                            <h:panelGrid columns="4">
-                                <h:outputLabel for="codZona" value="Zona" style="font-weight: bold;" />
-                                <h:outputLabel for="codSector" value="Sector" style="font-weight: bold;"/>
-                                <h:outputLabel for="codManzana" value="Manzana" style="font-weight: bold;"/>
-                                <h:outputLabel for="codPredio" value="Predio" style="font-weight: bold;"/>
-                                
-                                <p:inputNumber id="codZona" value="#{fichaCatastralBB.predio.codZona}" maxValue="99" minValue="0" label="Zona" size="5" thousandSeparator="" decimalSeparator=""/>
-                                <p:inputNumber id="codSector" value="#{fichaCatastralBB.predio.codSector}" maxValue="99" minValue="0" label="Sector" size="5" thousandSeparator="" decimalSeparator=""/>
-                                <p:inputNumber id="codManzana" value="#{fichaCatastralBB.predio.codManzana}" maxValue="999" minValue="0" label="Manzana" size="5" thousandSeparator="" decimalSeparator=""/>
-                                <p:inputNumber id="codPredio" value="#{fichaCatastralBB.predio.codPredio}" maxValue="999" minValue="0" label="Predio" size="5" thousandSeparator="" decimalSeparator=""/>
-                            
-                                <p:message for="codZona" display="tooltip"/>
-                                <p:message for="codSector" display="tooltip"/>
-                                <p:message for="codManzana" display="tooltip"/>
-                                <p:message for="codPredio" display="tooltip"/>
-                            </h:panelGrid>
-                            
-                            <h:outputLabel for="txtDireccion" value="Direccion" style="font-weight: bold;"/>
-                            <p:inputText id="txtDireccion" value="#{fichaCatastralBB.predio.txtDireccion}" label="Direccion" size="50"/>
-                            <p:message for="txtDireccion" display="tooltip"/>
-                            
-                            <h:outputLabel for="stsBarrio" value="Barrio/Comunidad" style="font-weight: bold;"/>
-                            <p:inputText id="stsBarrio" value="#{fichaCatastralBB.predio.stsBarrio}" label="Barrio/Comunidad" size="50"/>
-                            <p:message for="stsBarrio" display="tooltip"/>
-                            
-                            <h:outputLabel for="nomPredio" value="Nombre del predio" style="font-weight: bold;"/>
-                            <p:inputText id="nomPredio" value="#{fichaCatastralBB.predio.nomPredio}" label="Nombre del predio" size="50"/>
-                            <p:message for="nomPredio" display="tooltip"/>
-                            
-                            
-                        </h:panelGrid>
+                                    <h:outputLabel for="nomCodigocatastralanterior" value="Clave Catastral Anterior" style="font-weight: bold;"/>
+                                    <p:inputNumber id="nomCodigocatastralanterior" value="#{fichaCatastralBB.predio.nomCodigocatastralanterior}" maxValue="9999999999999999999999999" minValue="0" label="Codigo Catastral Anterior" size="50" thousandSeparator="" decimalSeparator=""/>
+                                    <p:message for="nomCodigocatastralanterior" display="tooltip"/>
+
+                                    <h:panelGrid columns="4">
+                                        <h:outputLabel for="codZona" value="Zona" style="font-weight: bold;" />
+                                        <h:outputLabel for="codSector" value="Sector" style="font-weight: bold;"/>
+                                        <h:outputLabel for="codManzana" value="Manzana" style="font-weight: bold;"/>
+                                        <h:outputLabel for="codPredio" value="Predio" style="font-weight: bold;"/>
+
+                                        <p:inputNumber id="codZona" value="#{fichaCatastralBB.predio.codZona}" maxValue="99" minValue="0" label="Zona" size="5" thousandSeparator="" decimalSeparator=""/>
+                                        <p:inputNumber id="codSector" value="#{fichaCatastralBB.predio.codSector}" maxValue="99" minValue="0" label="Sector" size="5" thousandSeparator="" decimalSeparator=""/>
+                                        <p:inputNumber id="codManzana" value="#{fichaCatastralBB.predio.codManzana}" maxValue="999" minValue="0" label="Manzana" size="5" thousandSeparator="" decimalSeparator=""/>
+                                        <p:inputNumber id="codPredio" value="#{fichaCatastralBB.predio.codPredio}" maxValue="999" minValue="0" label="Predio" size="5" thousandSeparator="" decimalSeparator=""/>
+
+                                        <p:message for="codZona" display="tooltip"/>
+                                        <p:message for="codSector" display="tooltip"/>
+                                        <p:message for="codManzana" display="tooltip"/>
+                                        <p:message for="codPredio" display="tooltip"/>
+                                    </h:panelGrid>
+
+                                    <h:outputLabel for="txtDireccion" value="Direccion" style="font-weight: bold;"/>
+                                    <p:inputText id="txtDireccion" value="#{fichaCatastralBB.predio.txtDireccion}" label="Direccion" size="50"/>
+                                    <p:message for="txtDireccion" display="tooltip"/>
+
+                                    <h:outputLabel for="stsBarrio" value="Barrio/Comunidad" style="font-weight: bold;"/>
+                                    <p:inputText id="stsBarrio" value="#{fichaCatastralBB.predio.stsBarrio}" label="Barrio/Comunidad" size="50"/>
+                                    <p:message for="stsBarrio" display="tooltip"/>
+
+                                    <h:outputLabel for="nomPredio" value="Nombre del predio" style="font-weight: bold;"/>
+                                    <p:inputText id="nomPredio" value="#{fichaCatastralBB.predio.nomPredio}" label="Nombre del predio" size="50"/>
+                                    <p:message for="nomPredio" display="tooltip"/>
+
+                                </h:panelGrid>
+                            </div>
+                            <div class="ui-g-12 ui-md-12 ui-lg-6">
+                                <p style="font-weight: bold;">Identificacion del propietario y dirección</p>
+                                <h:panelGrid >
+                                    <h:panelGrid columns="2">
+
+                                        <h:outputLabel for="personeria" value="Personeria Legal" style="font-weight: bold;"/>
+                                        <h:outputLabel for="ci" value="CI/RUC" style="font-weight: bold;"/>
+
+                                        <p:inputText id="personeria" label="Personeria Legal" size="25"/>
+                                        <p:inputText id="ci" label="CI/RUC" size="25"/>
+
+                                        <p:message for="personeria" display="tooltip"/>
+                                        <p:message for="ci" display="tooltip"/>
+                                    </h:panelGrid>
+
+                                    <h:outputLabel for="apellidos" value="Apellidos" style="font-weight: bold;"/>
+                                    <p:inputText id="apellidos" label="Apellidos" size="50"/>
+                                    <p:message for="apellidos" display="tooltip"/>
+
+                                    <h:outputLabel for="nombres" value="Nombres" style="font-weight: bold;"/>
+                                    <p:inputText id="nombres" label="Nombres" size="50"/>
+                                    <p:message for="nombres" display="tooltip"/>
+
+                                    <h:outputLabel for="razonSocial" value="Razon social" style="font-weight: bold;"/>
+                                    <p:inputText id="razonSocial" label="Razon social" size="50"/>
+                                    <p:message for="razonSocial" display="tooltip"/>
+
+                                    <h:outputLabel for="repLegad" value="Representante legal" style="font-weight: bold;"/>
+                                    <p:inputText id="repLegad" label="Representante legal" size="50"/>
+                                    <p:message for="repLegad" display="tooltip"/>
+
+                                    <h:outputLabel for="domicilio" value="Domicilio" style="font-weight: bold;"/>
+                                    <p:inputText id="domicilio" label="Domicilio" size="50"/>
+                                    <p:message for="domicilio" display="tooltip"/>
+
+                                    <h:outputLabel for="propAnterior" value="Propietario anterior" style="font-weight: bold;"/>
+                                    <p:inputText id="propAnterior" label="Propietario anterior" size="50"/>
+                                    <p:message for="propAnterior" display="tooltip"/>
+
+                                </h:panelGrid>
+                            </div>
+                        </div>
+
+                        <p:separator />
+                        <p style="font-weight: bold;">Vista del predio</p>
                         <newvi:visorGeografico id="id" 
                                                width="500px" height="200px"
                                                map="#{fichaCatastralBB.mapa}"/>
@@ -154,6 +204,326 @@
                             </p:commandButton>
                             <p:tooltip id="toolTipCancel" for="cancelar" value="Regresar sin guardar cambios" showEffect="fade" hideEffect="fade" position="top"/>
                         </h:panelGrid>
+
+                        <p:separator />
+
+                        <div class="ui-g">
+                            <div class="ui-g-12 ui-md-12 ui-lg-6">
+                                <p style="font-weight: bold;">3.1 Tenencia</p>
+                                <h:panelGrid>
+
+                                    <h:outputLabel for="tenencia" value="" style="font-weight: bold;"/>
+                                    <p:selectOneMenu id="tenencia" value="" style="width:125px" >
+                                        <f:selectItem itemLabel="" itemValue="null" />
+                                    </p:selectOneMenu>
+                                    <p:message for="tenencia" display="tooltip"/>
+
+                                    <h:outputLabel for="otros" value="Otros" style="font-weight: bold;"/>
+                                    <p:inputText id="otros" label="Otros" size="50"/>
+                                    <p:message for="otros" display="tooltip"/>
+                                </h:panelGrid>
+
+                                <p style="font-weight: bold;">3.2 Transferencia de domicilio</p>
+                                <h:panelGrid >
+
+                                    <h:outputLabel for="tranferenciaDominio" value="" style="font-weight: bold;"/>
+                                    <p:selectOneMenu id="tranferenciaDominio" value="" style="width:125px" >
+                                        <f:selectItem itemLabel="" itemValue="null" />
+                                    </p:selectOneMenu>
+                                    <p:message for="tranferenciaDominio" display="tooltip"/>
+
+                                    <h:outputLabel for="otros2" value="Otros" style="font-weight: bold;"/>
+                                    <p:inputText id="otros2" label="Otros" size="50"/>
+                                    <p:message for="otros2" display="tooltip"/>
+                                </h:panelGrid>
+
+                            </div>
+                            <div class="ui-g-12 ui-md-12 ui-lg-6">
+                                <p style="font-weight: bold;">3.3 Datos de la escritura</p>
+                                <h:panelGrid >
+
+                                    <h:panelGrid columns="2">
+                                        <h:outputLabel value="Tiene escritura(Si)" style="font-weight: bold;"/>
+                                        <p:selectBooleanCheckbox value=""/>    
+                                    </h:panelGrid>
+
+                                    <h:panelGrid columns="2">
+
+                                        <h:outputLabel for="notaria" value="Notaria" style="font-weight: bold;"/>
+                                        <h:outputLabel for="ciudad" value="Ciudad" style="font-weight: bold;"/>
+
+                                        <p:inputText id="notaria" label="Notaria" size="25"/>
+                                        <p:inputText id="ciudad" label="Ciudad" size="25"/>
+
+                                        <p:message for="notaria" display="tooltip"/>
+                                        <p:message for="ciudad" display="tooltip"/>
+                                    </h:panelGrid>
+
+                                    <h:outputLabel value="Fecha de inscripción" style="font-weight: bold;"/>
+                                    <p:calendar id="fechaInscripcion" navigator="true" label="Fecha de inscripción" 
+                                                showOn="button" size="10" pattern="dd/MM/yyyy" mask="true" >
+                                        <p:watermark for="fechaInscripcion" value="dd/mm/aaaa"/>
+                                    </p:calendar>
+                                    <p:message for="fechaInscripcion" display="tooltip"/>
+
+                                    <h:outputLabel for="registroNumero" value="Registro número" style="font-weight: bold;"/>
+                                    <p:inputText id="registroNumero" label="Registro número" size="50"/>
+                                    <p:message for="registroNumero" display="tooltip"/>
+
+                                    <h:outputLabel value="Fecha escritura pública" style="font-weight: bold;"/>
+                                    <p:calendar id="fechaEscritutaPublica" navigator="true" label="Fecha escritura pública" 
+                                                showOn="button" size="10" pattern="dd/MM/yyyy" mask="true" >
+                                        <p:watermark for="fechaEscritutaPublica" value="dd/mm/aaaa"/>
+                                    </p:calendar>
+                                    <p:message for="fechaEscritutaPublica" display="tooltip"/>
+                                </h:panelGrid>
+                            </div>
+                            <div class="ui-g-12 ui-md-12 ui-lg-6">
+                                <p style="font-weight: bold;">Casos Especiales</p>
+                                <h:panelGrid >
+
+                                    <h:outputLabel for="casosEspeciales" value="" style="font-weight: bold;"/>
+                                    <p:selectOneMenu id="casosEspeciales" value="" style="width:125px" >
+                                        <f:selectItem itemLabel="Ley de anciano" itemValue="null" />
+                                    </p:selectOneMenu>
+                                    <p:message for="casosEspeciales" display="tooltip"/>
+                                </h:panelGrid>
+
+                                <p style="font-weight: bold;">Informante</p>
+                                <h:panelGrid >
+                                    <h:outputLabel for="informante" value="Informante" style="font-weight: bold;"/>
+                                    <p:inputText id="informante" label="Informante" size="50"/>
+                                    <p:message for="informante" display="tooltip"/>
+
+                                    <h:outputLabel for="relacionInformante" value="Relación" style="font-weight: bold;"/>
+                                    <p:inputText id="relacionInformante" label="Relación" size="50"/>
+                                    <p:message for="relacionInformante" display="tooltip"/>
+
+                                </h:panelGrid>
+                            </div>
+                        </div>
+
+                        <p:separator />
+                        <p style="font-weight: bold;">4.1 Area y uso del suelo</p>
+
+                        <div class="ui-g">
+                            <div class="ui-g-12 ui-md-12 ui-lg-6">
+                                <p style="font-weight: bold;">Area predio Urbano</p>
+                                <h:panelGrid >
+                                    <h:outputLabel for="areaPredio" value="Area" style="font-weight: bold;"/>
+                                    <p:inputNumber id="areaPredio" label="Area" size="50"/>
+                                    <p:message for="areaPredio" display="tooltip"/>
+
+                                    <h:outputLabel for="frentePredio" value="Frente principal" style="font-weight: bold;"/>
+                                    <p:inputNumber id="frentePredio" label="Frente principal" size="50"/>
+                                    <p:message for="frentePredio" display="tooltip"/>
+
+                                    <h:outputLabel for="profundidadPredio" value="Profundidad" style="font-weight: bold;"/>
+                                    <p:inputNumber id="profundidadPredio" label="Profundidad" size="50"/>
+                                    <p:message for="profundidadPredio" display="tooltip"/>
+
+                                    <h:outputLabel for="numeroBloques" value="Número de bloques" style="font-weight: bold;"/>
+                                    <p:inputNumber id="numeroBloques" label="Número de bloques" size="50"/>
+                                    <p:message for="numeroBloques" display="tooltip"/>
+                                </h:panelGrid>
+                            </div>
+                            <div class="ui-g-12 ui-md-12 ui-lg-6">
+                                <p style="font-weight: bold;">Uso del suelo</p>
+                                <h:panelGrid >
+                                    <h:outputLabel for="principal" value="Pricipal" style="font-weight: bold;"/>
+                                    <p:selectOneMenu id="principal" value="" style="width:125px" >
+                                        <f:selectItem itemLabel="" itemValue="null" />
+                                    </p:selectOneMenu>
+                                    <p:message for="principal" display="tooltip"/>
+
+                                    <h:outputLabel for="secundaria" value="Secundaria" style="font-weight: bold;"/>
+                                    <p:selectOneMenu id="secundaria" value="" style="width:125px" >
+                                        <f:selectItem itemLabel="" itemValue="null" />
+                                    </p:selectOneMenu>
+                                    <p:message for="secundaria" display="tooltip"/>
+                                </h:panelGrid>
+                            </div>
+                        </div>
+
+                        <p:separator />
+                        <p style="font-weight: bold;">4.2 Servicios básicos y accesibilidad</p>
+
+                        <div class="ui-g">
+                            <div class="ui-g-12 ui-md-12 ui-lg-12">
+                                <p:dataTable id="listaServiciosBasicos" var="seviciosBasicos" widgetVar="listaSeviciosBasicosTabla"
+                                             value="" rowKey="" filteredValue=""
+                                             paginator="true" rows="10" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" 
+                                             rowsPerPageTemplate="10,15,20" 
+                                             emptyMessage="No se han encontrado resultados" 
+                                             paginatorPosition="bottom">
+
+
+                                    <p:column headerText="Código" filterBy="">
+                                        <h:outputText value="" />
+                                    </p:column>
+
+                                    <p:column headerText="Grupo" sortBy="" filterBy="">
+                                        <h:outputText value="" />
+                                    </p:column>
+
+                                    <p:column headerText="Servicios" filterBy="">
+                                        <h:outputText value="" />
+                                    </p:column>
+
+                                    <p:column headerText="Medidor" filterBy="">
+                                        <h:outputText value="" />
+                                    </p:column>
+                                </p:dataTable>
+                            </div>
+                        </div>
+                        <p:separator />
+                        <p style="font-weight: bold;">4.3 Factores Físicos</p>
+
+                        <div class="ui-g">
+                            <div class="ui-g-12 ui-md-12 ui-lg-12">
+                                <p:dataTable id="listaFactoresFisicos" var="factoresFisicos" widgetVar="listaFactoresFisicosTabla"
+                                             value="" rowKey="" filteredValue=""
+                                             paginator="true" rows="10" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" 
+                                             rowsPerPageTemplate="10,15,20" 
+                                             emptyMessage="No se han encontrado resultados" 
+                                             paginatorPosition="bottom">
+
+
+                                    <p:column headerText="Código" filterBy="">
+                                        <h:outputText value="" />
+                                    </p:column>
+
+                                    <p:column headerText="Características" sortBy="" filterBy="">
+                                        <h:outputText value="" />
+                                    </p:column>
+
+                                    <p:column headerText="Detalle" filterBy="">
+                                        <h:outputText value="" />
+                                    </p:column>
+                                </p:dataTable>
+                            </div>
+                        </div>
+
+                        <p:separator />
+                        <p style="font-weight: bold;">5.Edificaciones</p>
+
+                        <div class="ui-g">
+                            <div class="ui-g-12 ui-md-12 ui-lg-6">
+
+                                <p style="font-weight: bold;">Información de bloques</p>
+                                <p:dataTable id="listaInformacionBloques" var="informacionBloques" widgetVar="listaInformacionBloquesTabla"
+                                             value="" rowKey="" filteredValue=""
+                                             paginator="true" rows="10" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" 
+                                             rowsPerPageTemplate="10,15,20" 
+                                             emptyMessage="No se han encontrado resultados" 
+                                             paginatorPosition="bottom">
+
+
+                                    <p:column headerText="Bloque" filterBy="">
+                                        <h:outputText value="" />
+                                    </p:column>
+
+                                    <p:column headerText="Piso" sortBy="" filterBy="">
+                                        <h:outputText value="" />
+                                    </p:column>
+
+                                </p:dataTable>
+                            </div>
+                            <div class="ui-g-12 ui-md-12 ui-lg-6">
+                                <p style="font-weight: bold;">Información de pisos</p>
+                                <p:dataTable id="listaInformacionPisos" var="informacionPisos" widgetVar="listaInformacionPisosTabla"
+                                             value="" rowKey="" filteredValue=""
+                                             paginator="true" rows="10" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" 
+                                             rowsPerPageTemplate="10,15,20" 
+                                             emptyMessage="No se han encontrado resultados" 
+                                             paginatorPosition="bottom">
+
+
+                                    <p:column headerText="Piso" filterBy="">
+                                        <h:outputText value="" />
+                                    </p:column>
+
+                                    <p:column headerText="Area" filterBy="">
+                                        <h:outputText value="" />
+                                    </p:column>
+
+                                    <p:column headerText="Edad contrucción" filterBy="">
+                                        <h:outputText value="" />
+                                    </p:column>
+
+                                    <p:column headerText="Edad reparación" filterBy="">
+                                        <h:outputText value="" />
+                                    </p:column>
+
+                                    <p:column headerText="" filterBy="">
+                                        <h:outputText value="" />
+                                    </p:column>
+                                </p:dataTable>
+                            </div>
+                            <div class="ui-g-12 ui-md-12 ui-lg-12"></div>
+                            <p style="font-weight: bold;">Elementos de contrucción</p>
+                            <p:dataTable id="listaElementosConstruccion" var="elementosConstruccion" widgetVar="listaElementosConstruccionTabla"
+                                         value="" rowKey="" filteredValue=""
+                                         paginator="true" rows="10" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" 
+                                         rowsPerPageTemplate="10,15,20" 
+                                         emptyMessage="No se han encontrado resultados" 
+                                         paginatorPosition="bottom">
+
+
+                                <p:column headerText="Código" filterBy="">
+                                    <h:outputText value="" />
+                                </p:column>
+
+                                <p:column headerText="Grupo" filterBy="">
+                                    <h:outputText value="" />
+                                </p:column>
+
+                                <p:column headerText="SubGrupo" filterBy="">
+                                    <h:outputText value="" />
+                                </p:column>
+
+                                <p:column headerText="Material de construcción" filterBy="">
+                                    <h:outputText value="" />
+                                </p:column>
+
+                                <p:column headerText="Estado" filterBy="">
+                                    <h:outputText value="" />
+                                </p:column>
+                            </p:dataTable>
+                        </div>
+
+                        <p:separator />
+                        <p style="font-weight: bold;">6. Resumen de avalúo</p>
+
+                        <div class="ui-g">
+                            <div class="ui-g-12 ui-md-12 ui-lg-12">
+
+                                <p:dataTable id="listaResumen" var="resumen" widgetVar="listaResumenTabla"
+                                             value="" rowKey="" filteredValue=""
+                                             paginator="true" rows="10" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" 
+                                             rowsPerPageTemplate="10,15,20" 
+                                             emptyMessage="No se han encontrado resultados" 
+                                             paginatorPosition="bottom">
+
+
+                                    <p:column headerText="Código" filterBy="">
+                                        <h:outputText value="" />
+                                    </p:column>
+
+                                    <p:column headerText="Descripción" sortBy="" filterBy="">
+                                        <h:outputText value="" />
+                                    </p:column>
+
+                                    <p:column headerText="Valor" sortBy="" filterBy="">
+                                        <h:outputText value="" />
+                                    </p:column>
+
+                                </p:dataTable>
+                            </div>
+                        </div>
+
+
+
                     </p:outputPanel>
                 </h:form>
             </p:panel>
