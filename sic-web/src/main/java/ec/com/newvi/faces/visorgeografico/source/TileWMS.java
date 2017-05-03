@@ -5,12 +5,6 @@
 package ec.com.newvi.faces.visorgeografico.source;
 
 import ec.com.newvi.faces.visorgeografico.Base;
-import static ec.com.newvi.faces.visorgeografico.Base.getAllFields;
-import ec.com.newvi.sic.util.ComunUtil;
-import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 /**
  *

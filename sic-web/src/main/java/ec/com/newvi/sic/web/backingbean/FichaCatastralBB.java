@@ -103,25 +103,33 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
         vistaMapa.setProjection(ProjectionCode.EPSG_4326);
         vistaMapa.setZoom(BigDecimal.valueOf(11));
         
-        Layer capaBingMaps = new Tile();
+        /*Layer capaBingMaps = new Tile();
         BingMaps bingMaps = new BingMaps();
         bingMaps.setImagerySet(BingMaps.Style.AERIAL);
         bingMaps.setKey("AqFjj-M8JAhbTyEGSjJIY2pnV6dcbYhAYIw-UKyD363yXDWZekrkz0R65obxSnzb");
         capaBingMaps.setSource(bingMaps);
-        mapa.getLayers().add(capaBingMaps);
+        mapa.getLayers().add(capaBingMaps);*/
         
         Layer capaOSM = new Tile();
-        capaOSM.setOpacity(BigDecimal.valueOf(0.5));
+        capaOSM.setOpacity(BigDecimal.valueOf(1));
         capaOSM.setSource(new OSM());
         mapa.getLayers().add(capaOSM);
         
         Layer capaWMS = new Tile();
         TileWMS fuenteWMS = new TileWMS();
-        fuenteWMS.setUrl("http://www.geoportaligm.gob.ec/nacional/wms");
-        fuenteWMS.setParams(fuenteWMS.new Params("igm:provincias", Boolean.FALSE));
+        fuenteWMS.setUrl("http://192.168.100.110:8080/geoserver/wms");
+        fuenteWMS.setParams(fuenteWMS.new Params("nwi_catastro:he002_lote", Boolean.FALSE));
         fuenteWMS.setServerType(TileWMS.ServerType.GEOSERVER);
         capaWMS.setSource(fuenteWMS);
         mapa.getLayers().add(capaWMS);
+        
+        /**Layer capaWFS = new Tile();
+        TileWMS fuenteWMS = new TileWMS();
+        fuenteWMS.setUrl("http://192.168.100.110:8080/geoserver/wms");
+        fuenteWMS.setParams(fuenteWMS.new Params("nwi_catastro:he002_lote", Boolean.FALSE));
+        fuenteWMS.setServerType(TileWMS.ServerType.GEOSERVER);
+        capaWMS.setSource(fuenteWMS);
+        mapa.getLayers().add(capaWMS);*/
         
         mapa.setView(vistaMapa);
     }
