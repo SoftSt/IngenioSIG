@@ -6,6 +6,7 @@
 package ec.com.newvi.sic.servicios;
 
 import ec.com.newvi.sic.dto.SesionDto;
+import ec.com.newvi.sic.modelo.Bloques;
 import ec.com.newvi.sic.modelo.Predios;
 import ec.com.newvi.sic.util.excepciones.NewviExcepcion;
 import java.util.List;
@@ -65,4 +66,50 @@ public interface CatastroServicio {
      * @throws NewviExcepcion
      */
     public String eliminarPredio(Predios predio, SesionDto sesion) throws NewviExcepcion;
+        /*------------------------------------------------------------Bloques------------------------------------------------------------*/
+    /**
+     * Genera un nuevo Bloque, de acuerdo a un objeto entregado.
+     *
+     * @param nuevoBloque El nuevo Bloque a ser ingresado
+     * @param sesion Sesion que realiza la operación
+     * @return Nombre del nuevo Bloque.
+     * @throws NewviExcepcion
+     */
+    public String generarNuevoBloque(Bloques nuevoBloque, SesionDto sesion) throws NewviExcepcion;
+
+    /**
+     * Actualiza un Bloque existente.
+     *
+     * @param predio El Bloque a actualizar
+     * @param sesion Sesion que realiza la operación
+     * @return Nombre del predio actualizado
+     * @throws NewviExcepcion
+     */
+    public String actualizarBloque(Bloques predio, SesionDto sesion) throws NewviExcepcion;
+
+    /**
+     * Devuelve un predio dado un id
+     *
+     * @param idBloque Integer, código del predio a obtener
+     * @return predio
+     * @throws NewviExcepcion
+     */
+    public Bloques seleccionarBloque(Integer idBloque) throws NewviExcepcion;
+
+    /**
+     * Devuelve un listado de Bloques.
+     *
+     * @return Listado de Bloques
+     */
+    public List<Bloques> consultarBloques();
+    
+    /**
+     * Elimina un predios dado
+     *
+     * @param predio El predio a eliminar
+     * @param sesion Sesion que realiza la operación
+     * @return Nombre del predio eliminado
+     * @throws NewviExcepcion
+     */
+    public String eliminarBloque(Bloques predio, SesionDto sesion) throws NewviExcepcion;
 }

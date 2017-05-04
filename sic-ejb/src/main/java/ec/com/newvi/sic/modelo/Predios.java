@@ -33,6 +33,9 @@ import javax.validation.constraints.Size;
 
 public class Predios implements Serializable {
 
+    @OneToMany(mappedBy = "codCatastral")
+    private Collection<Bloques> bloquesCollection;
+
     private static final long serialVersionUID = 1L;
     @Id
     @SequenceGenerator(name = "PREDIO_CODIGO_GENERATOR", initialValue = 1, allocationSize = 1, sequenceName = "cat_cat_predios_cod_catastral_seq", schema = "public")
@@ -549,6 +552,14 @@ public class Predios implements Serializable {
 
     public Boolean esPredioValido() {
         return (!ComunUtil.esNulo(this.catEstado));
+    }
+
+    public Collection<Bloques> getBloquesCollection() {
+        return bloquesCollection;
+    }
+
+    public void setBloquesCollection(Collection<Bloques> bloquesCollection) {
+        this.bloquesCollection = bloquesCollection;
     }
 
 }

@@ -88,7 +88,16 @@ public enum EnumEtiquetas {
     FICHA_CATASTRAL_NUEVO_DESCRIPCION("Creación de nueva Ficha Predial."),
     FICHA_CATASTRAL_EDITAR_TITULO("Editar Ficha Predial"),
     FICHA_CATASTRAL_EDITAR_ICONO("fa fa-edit"),
-    FICHA_CATASTRAL_EDITAR_DESCRIPCION("Edición de Ficha Predial seleccionada.");
+    FICHA_CATASTRAL_EDITAR_DESCRIPCION("Edición de Ficha Predial seleccionada."),
+    BLOQUES_LISTA_TITULO("Bloques"),
+    BLOQUES_LISTA_ICONO("fa fa-square"),
+    BLOQUES_LISTA_DESCRIPCION("Gestión de bloques."),
+    BLOQUES_NUEVO_TITULO("Nueva Bloque"),
+    BLOQUES_NUEVO_ICONO("fa fa-plus"),
+    BLOQUES_NUEVO_DESCRIPCION("Creación de nuevo Bloque."),
+    BLOQUES_EDITAR_TITULO("Editar Bloque"),
+    BLOQUES_EDITAR_ICONO("fa fa-edit"),
+    BLOQUES_EDITAR_DESCRIPCION("Edición de Blouqes seleccionado.");
     
     private final String textoEtiqueta;
 

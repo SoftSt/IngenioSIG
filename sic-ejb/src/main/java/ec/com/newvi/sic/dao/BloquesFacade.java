@@ -6,7 +6,7 @@
 package ec.com.newvi.sic.dao;
 
 import ec.com.newvi.sic.enums.EnumEstadoRegistro;
-import ec.com.newvi.sic.modelo.Predios;
+import ec.com.newvi.sic.modelo.Bloques;
 import java.io.Serializable;
 import java.util.List;
 import javax.annotation.security.PermitAll;
@@ -19,17 +19,18 @@ import javax.persistence.Query;
  */
 @Stateless
 @PermitAll
-public class PrediosFacade extends AbstractFacade<Predios, Integer>  implements Serializable{
+public class BloquesFacade extends AbstractFacade<Bloques, Integer> implements Serializable {
 
-    public PrediosFacade() {
-        super(Predios.class, Integer.class);
+    public BloquesFacade() {
+        super(Bloques.class, Integer.class);
     }
     
-    public List<Predios> buscarPredio(){
-    // Busca un listado de Predios
-        Query q = this.getEntityManager().createQuery("SELECT predio FROM Predios predio where predio.catEstado = :ESTADO");
+    public List<Bloques> buscarBloques(){
+        // Busca un listado de bloques
+        Query q = this.getEntityManager().createQuery("SELECT bloque FROM Bloques bloque where bloque.bloEstado = :ESTADO");
         q.setParameter("ESTADO", EnumEstadoRegistro.A);
-        //@return listado de Predios
-        return q.getResultList();
-    }
+        //@return listado de bloques
+        return q.getResultList();        
+    } 
+
 }
