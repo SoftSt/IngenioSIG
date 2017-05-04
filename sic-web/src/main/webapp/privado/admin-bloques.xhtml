@@ -100,59 +100,14 @@
                             </p:inputText>
                             <p:message for="nomBloque" display="tooltip"/>
 
-                            <h:outputLabel value="Padre" style="font-weight: bold;"/>
-                            <p:inputText id="domiPadre" value="#{bloquesBB.bloque.domiPadre}" size="50" label="Padre"/>
-                            <p:message for="domiPadre" display="tooltip"/>
+                            <h:outputLabel value="Area bloque" style="font-weight: bold;"/>
+                            <p:inputNumber id="areaBloque" value="#{bloquesBB.bloque.valAreabloque}" size="50" label="Area bloque"/>
+                            <p:message for="areaBloque" display="tooltip"/>
 
-                            <h:outputLabel value="Relacion" style="font-weight: bold;"/>
-                            <p:selectOneMenu id="dominRelacion" value="#{bloquesBB.bloque.domiRelacion}" label="Relacion" style="width:125px" >
-                                <f:selectItems value="#{bloquesBB.listaRelacionBloques}" var="relacionBloque" itemValue="#{relacionBloque}" itemLabel="#{relacionBloque.descripcionRelacionBloques}"/>
-                            </p:selectOneMenu>
-                            <p:message for="dominRelacion" display="tooltip"/>
 
-                            <h:outputLabel value="Descripcion" style="font-weight: bold;"/>
-                            <p:inputTextarea rows="3" id="domiDescripcion" value="#{bloquesBB.bloque.domiDescripcion}" label="Descripcion" cols="50"/>
-                            <p:message for="domiDescripcion" display="tooltip"/>
-
-                            <h:outputLabel value="Grupos" style="font-weight: bold;"/>
-                            <p:inputText id="domiGrupos" value="#{bloquesBB.bloque.domiGrupos}" label="Grupos" size="50"/>
-                            <p:message for="domiGrupos" display="tooltip"/>
-
-                            <h:outputLabel value="Calculo" style="font-weight: bold;"/>
-                            <p:inputText id="domiCalculo" value="#{bloquesBB.bloque.domiCalculo}" label="Calculo" size="50"/>
-                            <p:message for="domiCalculo" display="tooltip"/>
-
-                            <h:outputLabel value="Depreciacion" style="font-weight: bold;"/>
-                            <p:inputNumber id="domiDepreciacion" value="#{bloquesBB.bloque.domiDepreciacion}" label="Depreciacion" size="50"/>
-                            <p:message for="domiDepreciacion" display="tooltip"/>
-
-                            <h:outputLabel value="Codame" style="font-weight: bold;"/>
-                            <p:inputText id="domiCodame" value="#{bloquesBB.bloque.domiCodame}" label="Codame" size="50"/>
-                            <p:message for="domiCodame" display="tooltip"/>
-
-                            <h:outputLabel  value="Coeficiente" style="font-weight: bold;"/>
-                            <p:inputNumber id="domiCoeficiente" value="#{bloquesBB.bloque.domiCoefic}" label="Coeficiente" size="50"/>
-                            <p:message for="domiCoeficiente" display="tooltip"/>
-
-                            <h:outputLabel value="Unidad" style="font-weight: bold;"/>
-                            <p:inputText id="domiUnidad" value="#{bloquesBB.bloque.domiUnidad}" label="Unidad" size="50"/>
-                            <p:message for="domiUnidad" display="tooltip"/>
-
-                            <h:outputLabel value="Ficha" style="font-weight: bold;"/>
-                            <p:inputText id="domiFicha" value="#{bloquesBB.bloque.domiFicha}" label="Ficha" size="50"/>
-                            <p:message for="domiFicha" display="tooltip"/>
-
-                            <h:outputLabel value="Tipo" style="font-weight: bold;"/>
-                            <p:inputText id="domiTipo" value="#{bloquesBB.bloque.domiFicha}" label="Tipo" size="50"/>
-                            <p:message for="domiTipo" display="tooltip"/>
-
-                            <h:outputLabel value="Minimo" style="font-weight: bold;"/>
-                            <p:inputNumber id="domiMinimo" value="#{bloquesBB.bloque.domiMinimo}" label="Minimo" size="50"/>
-                            <p:message for="domiMinimo" display="tooltip"/>
-
-                            <h:outputLabel value="Maximo" style="font-weight: bold;"/>
-                            <p:inputNumber id="domiMaximo" value="#{bloquesBB.bloque.domiMaximo}" label="Maximo" size="50" />
-                            <p:message for="domiMaximo" display="tooltip"/>
+                            <h:outputLabel value="Valor bloque" style="font-weight: bold;"/>
+                            <p:inputNumber id="valBloque" value="#{bloquesBB.bloque.valBloque}" label="Valor bloque" size="50"/>
+                            <p:message for="valBloque" display="tooltip"/>
                         </h:panelGrid>
                         <h:panelGrid columns="4">
                             <p:commandButton actionListener="#{bloquesBB.actualizarBloque()}" 

@@ -7,7 +7,7 @@ package ec.com.newvi.sic.web.backingbean;
 
 import ec.com.newvi.sic.enums.EnumEstadoRegistro;
 import ec.com.newvi.sic.enums.EnumNewviExcepciones;
-import ec.com.newvi.sic.modelo.Bloques;
+import ec.com.newvi.sic.modelo.Pisos;
 import ec.com.newvi.sic.util.ComunUtil;
 import ec.com.newvi.sic.util.excepciones.NewviExcepcion;
 import ec.com.newvi.sic.util.logs.LoggerNewvi;
@@ -26,44 +26,44 @@ import javax.faces.bean.ViewScoped;
  */
 @ManagedBean
 @ViewScoped
-public class BloquesBB extends AdminFichaCatastralBB {
-
-    private Bloques bloque;
-    private List<Bloques> listaBloques;
-    private List<Bloques> listaBloquesFiltrados;
-    private List<Bloques> listaGruposBloques;
+public class PisosBB  extends AdminFichaCatastralBB  {
+    
+    private Pisos piso;
+    private List<Pisos> listaPisos;
+    private List<Pisos> listaPisosFiltrados;
+    private List<Pisos> listaGruposPisos;
     private EnumPantallaMantenimiento pantallaActual;
 
-    public Bloques getBloque() {
-        return bloque;
+    public Pisos getPiso() {
+        return piso;
     }
 
-    public void setBloque(Bloques bloque) {
-        this.bloque = bloque;
+    public void setPiso(Pisos piso) {
+        this.piso = piso;
     }
 
-    public List<Bloques> getListaBloques() {
-        return listaBloques;
+    public List<Pisos> getListaPisos() {
+        return listaPisos;
     }
 
-    public void setListaBloques(List<Bloques> listaBloques) {
-        this.listaBloques = listaBloques;
+    public void setListaPisos(List<Pisos> listaPisos) {
+        this.listaPisos = listaPisos;
     }
 
-    public List<Bloques> getListaGruposBloques() {
-        return listaGruposBloques;
+    public List<Pisos> getListaGruposPisos() {
+        return listaGruposPisos;
     }
 
-    public void setListaGruposBloques(List<Bloques> listaGruposBloques) {
-        this.listaGruposBloques = listaGruposBloques;
+    public void setListaGruposPisos(List<Pisos> listaGruposPisos) {
+        this.listaGruposPisos = listaGruposPisos;
     }
 
-    public List<Bloques> getListaBloquesFiltrados() {
-        return listaBloquesFiltrados;
+    public List<Pisos> getListaPisosFiltrados() {
+        return listaPisosFiltrados;
     }
 
-    public void setListaBloquesFiltrados(List<Bloques> listaBloquesFiltrados) {
-        this.listaBloquesFiltrados = listaBloquesFiltrados;
+    public void setListaPisosFiltrados(List<Pisos> listaPisosFiltrados) {
+        this.listaPisosFiltrados = listaPisosFiltrados;
     }
 
     public EnumPantallaMantenimiento getPantallaActual() {
@@ -76,32 +76,32 @@ public class BloquesBB extends AdminFichaCatastralBB {
 
     @PostConstruct
     public void init() {
-        this.bloque = new Bloques();
-        actualizarListadoBloques();
+        this.piso = new Pisos();
+        actualizarListadoPisos();
         conmutarPantalla(EnumPantallaMantenimiento.PANTALLA_LISTADO);
-        establecerTitulo(EnumEtiquetas.BLOQUES_LISTA_TITULO,
-                EnumEtiquetas.BLOQUES_LISTA_ICONO,
-                EnumEtiquetas.BLOQUES_LISTA_DESCRIPCION);
+        establecerTitulo(EnumEtiquetas.PISOS_LISTA_TITULO,
+                EnumEtiquetas.PISOS_LISTA_ICONO,
+                EnumEtiquetas.PISOS_LISTA_DESCRIPCION);
     }
 
-    private void actualizarListadoBloques() {
-        listaBloques = catastroServicio.consultarBloques();
+    private void actualizarListadoPisos() {
+        listaPisos = catastroServicio.consultarPisos();
     }
 
-    public void crearNuevoBloque() {
-        this.bloque = new Bloques();
-        this.bloque.setBloEstado(EnumEstadoRegistro.A);
+    public void crearNuevoPiso() {
+        this.piso = new Pisos();
+        this.piso.setPisEstado(EnumEstadoRegistro.A);
         conmutarPantalla(EnumPantallaMantenimiento.PANTALLA_EDICION);
-        establecerTitulo(EnumEtiquetas.BLOQUES_NUEVO_TITULO,
-                EnumEtiquetas.BLOQUES_NUEVO_ICONO,
-                EnumEtiquetas.BLOQUES_NUEVO_DESCRIPCION);
+        establecerTitulo(EnumEtiquetas.PISOS_NUEVO_TITULO,
+                EnumEtiquetas.PISOS_NUEVO_ICONO,
+                EnumEtiquetas.PISOS_NUEVO_DESCRIPCION);
     }
 
-    public void insertarBloque() {
+    public void insertarPiso() {
         try {
-            catastroServicio.generarNuevoBloque(bloque, sesionBean.obtenerSesionDto());
-            actualizarListadoBloques();
-            MensajesFaces.mensajeInformacion(EnumNewviExcepciones.INF340.presentarMensaje());
+            catastroServicio.generarNuevoPiso(piso, sesionBean.obtenerSesionDto());
+            actualizarListadoPisos();
+            MensajesFaces.mensajeInformacion(EnumNewviExcepciones.INF344.presentarMensaje());
         } catch (NewviExcepcion e) {
             LoggerNewvi.getLogNewvi(this.getClass()).error(e, sesionBean.obtenerSesionDto());
             MensajesFaces.mensajeError(e.getMessage());
@@ -111,14 +111,14 @@ public class BloquesBB extends AdminFichaCatastralBB {
         }
     }
 
-    public void actualizarBloque() {
-        if (!ComunUtil.esNumeroPositivo(this.bloque.getCodBloques())) {
-            insertarBloque();
+    public void actualizarPiso() {
+        if (!ComunUtil.esNumeroPositivo(this.piso.getCodPisos())) {
+            insertarPiso();
         } else {
             try {
-                catastroServicio.actualizarBloque(bloque, sesionBean.obtenerSesionDto());
-                actualizarListadoBloques();
-                MensajesFaces.mensajeInformacion(EnumNewviExcepciones.INF341.presentarMensaje());
+                catastroServicio.actualizarPiso(piso, sesionBean.obtenerSesionDto());
+                actualizarListadoPisos();
+                MensajesFaces.mensajeInformacion(EnumNewviExcepciones.INF345.presentarMensaje());
             } catch (NewviExcepcion e) {
                 LoggerNewvi.getLogNewvi(this.getClass()).error(e, sesionBean.obtenerSesionDto());
                 MensajesFaces.mensajeError(e.getMessage());
@@ -128,18 +128,18 @@ public class BloquesBB extends AdminFichaCatastralBB {
             }
         }
         conmutarPantalla(EnumPantallaMantenimiento.PANTALLA_LISTADO);
-        establecerTitulo(EnumEtiquetas.BLOQUES_LISTA_TITULO,
-                EnumEtiquetas.BLOQUES_LISTA_ICONO,
-                EnumEtiquetas.BLOQUES_LISTA_DESCRIPCION);
+        establecerTitulo(EnumEtiquetas.PISOS_LISTA_TITULO,
+                EnumEtiquetas.PISOS_LISTA_ICONO,
+                EnumEtiquetas.PISOS_LISTA_DESCRIPCION);
     }
 
-    public void eliminarBloque(Integer idBloque) {
+    public void eliminarPiso(Integer idPiso) {
         try {
-            this.seleccionarBloquePorCodigo(idBloque);
-            if (!ComunUtil.esNulo(bloque)) {
-                catastroServicio.eliminarBloque(bloque, sesionBean.obtenerSesionDto());
-                MensajesFaces.mensajeInformacion(EnumNewviExcepciones.INF342.presentarMensaje());
-                actualizarListadoBloques();
+            this.seleccionarPisoPorCodigo(idPiso);
+            if (!ComunUtil.esNulo(piso)) {
+                catastroServicio.eliminarPiso(piso, sesionBean.obtenerSesionDto());
+                MensajesFaces.mensajeInformacion(EnumNewviExcepciones.INF346.presentarMensaje());
+                actualizarListadoPisos();
 
             } else {
                 LoggerNewvi.getLogNewvi(this.getClass()).error(EnumNewviExcepciones.ERR010.presentarMensajeCodigo(), sesionBean.obtenerSesionDto());
@@ -155,9 +155,9 @@ public class BloquesBB extends AdminFichaCatastralBB {
 
     }
 
-    public void seleccionarBloque(Integer idBloque) {
+    public void seleccionarPiso(Integer idPiso) {
         try {
-            this.seleccionarBloquePorCodigo(idBloque);
+            this.seleccionarPisoPorCodigo(idPiso);
         } catch (NewviExcepcion e) {
             MensajesFaces.mensajeError(e.getMessage());
         } catch (Exception e) {
@@ -165,21 +165,21 @@ public class BloquesBB extends AdminFichaCatastralBB {
             MensajesFaces.mensajeError(EnumNewviExcepciones.ERR000.presentarMensajeCodigo());
         }
         conmutarPantalla(EnumPantallaMantenimiento.PANTALLA_EDICION);
-        establecerTitulo(EnumEtiquetas.BLOQUES_EDITAR_TITULO,
-                EnumEtiquetas.BLOQUES_EDITAR_ICONO,
-                EnumEtiquetas.BLOQUES_EDITAR_DESCRIPCION);
+        establecerTitulo(EnumEtiquetas.PISOS_EDITAR_TITULO,
+                EnumEtiquetas.PISOS_EDITAR_ICONO,
+                EnumEtiquetas.PISOS_EDITAR_DESCRIPCION);
     }
 
-    private void seleccionarBloquePorCodigo(Integer idBloque) throws NewviExcepcion {
-        this.bloque = catastroServicio.seleccionarBloque(idBloque);
+    private void seleccionarPisoPorCodigo(Integer idPiso) throws NewviExcepcion {
+        this.piso = catastroServicio.seleccionarPiso(idPiso);
     }
 
     public void cancelarEdicion() {
-        WebUtils.obtenerContextoPeticion().reset("formularioBloque:opDetalleBloques");
+        WebUtils.obtenerContextoPeticion().reset("formularioPiso:opDetallePisos");
         conmutarPantalla(EnumPantallaMantenimiento.PANTALLA_LISTADO);
-        establecerTitulo(EnumEtiquetas.BLOQUES_LISTA_TITULO,
-                EnumEtiquetas.BLOQUES_LISTA_ICONO,
-                EnumEtiquetas.BLOQUES_LISTA_DESCRIPCION);
+        establecerTitulo(EnumEtiquetas.PISOS_LISTA_TITULO,
+                EnumEtiquetas.PISOS_LISTA_ICONO,
+                EnumEtiquetas.PISOS_LISTA_DESCRIPCION);
     }
 
     private void conmutarPantalla(EnumPantallaMantenimiento nuevaPantalla) {

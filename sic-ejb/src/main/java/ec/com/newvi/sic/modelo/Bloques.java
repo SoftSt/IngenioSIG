@@ -9,6 +9,7 @@ import ec.com.newvi.sic.enums.EnumEstadoRegistro;
 import ec.com.newvi.sic.util.ComunUtil;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Collection;
 import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -22,11 +23,13 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -36,6 +39,9 @@ import javax.validation.constraints.Size;
 @Table(name = "cat_cat_bloques", schema = "public")
 
 public class Bloques implements Serializable {
+
+    @OneToMany(mappedBy = "codBloques")
+    private Collection<Pisos> pisosCollection;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -217,5 +223,14 @@ public class Bloques implements Serializable {
     
     public Boolean esBloqueValido() {
         return (!ComunUtil.esNulo(this.bloEstado));
+    }
+
+    @XmlTransient
+    public Collection<Pisos> getPisosCollection() {
+        return pisosCollection;
+    }
+
+    public void setPisosCollection(Collection<Pisos> pisosCollection) {
+        this.pisosCollection = pisosCollection;
     }
 }

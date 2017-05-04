@@ -97,7 +97,16 @@ public enum EnumEtiquetas {
     BLOQUES_NUEVO_DESCRIPCION("Creación de nuevo Bloque."),
     BLOQUES_EDITAR_TITULO("Editar Bloque"),
     BLOQUES_EDITAR_ICONO("fa fa-edit"),
-    BLOQUES_EDITAR_DESCRIPCION("Edición de Blouqes seleccionado.");
+    BLOQUES_EDITAR_DESCRIPCION("Edición de Bloques seleccionado."),
+    PISOS_LISTA_TITULO("Pisos"),
+    PISOS_LISTA_ICONO("fa fa-align-justify"),
+    PISOS_LISTA_DESCRIPCION("Gestión de pisos."),
+    PISOS_NUEVO_TITULO("Nueva Piso"),
+    PISOS_NUEVO_ICONO("fa fa-plus"),
+    PISOS_NUEVO_DESCRIPCION("Creación de nuevo Piso."),
+    PISOS_EDITAR_TITULO("Editar Piso"),
+    PISOS_EDITAR_ICONO("fa fa-edit"),
+    PISOS_EDITAR_DESCRIPCION("Edición de Pisos seleccionado.");
     
     private final String textoEtiqueta;
 

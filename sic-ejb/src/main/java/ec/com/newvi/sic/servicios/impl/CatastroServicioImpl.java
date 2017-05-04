@@ -6,11 +6,13 @@
 package ec.com.newvi.sic.servicios.impl;
 
 import ec.com.newvi.sic.dao.BloquesFacade;
+import ec.com.newvi.sic.dao.PisosFacade;
 import ec.com.newvi.sic.dao.PrediosFacade;
 import ec.com.newvi.sic.dto.SesionDto;
 import ec.com.newvi.sic.enums.EnumEstadoRegistro;
 import ec.com.newvi.sic.enums.EnumNewviExcepciones;
 import ec.com.newvi.sic.modelo.Bloques;
+import ec.com.newvi.sic.modelo.Pisos;
 import ec.com.newvi.sic.modelo.Predios;
 import ec.com.newvi.sic.servicios.CatastroServicio;
 import ec.com.newvi.sic.util.ComunUtil;
@@ -34,6 +36,8 @@ public class CatastroServicioImpl implements CatastroServicio{
     PrediosFacade prediosFacade;
     @EJB
     BloquesFacade bloquesFacade;
+    @EJB
+    PisosFacade pisosFacade;
     
         /*------------------------------------------------------------Predios------------------------------------------------------------*/
     @Override
@@ -162,5 +166,69 @@ public class CatastroServicioImpl implements CatastroServicio{
     public String eliminarBloque(Bloques bloque, SesionDto sesion) throws NewviExcepcion {
         bloque.setBloEstado(EnumEstadoRegistro.E);
         return actualizarBloque(bloque, sesion);
+    }
+        /*------------------------------------------------------------Pisos------------------------------------------------------------*/
+    @Override
+    public String generarNuevoPiso(Pisos nuevoPiso, SesionDto sesion) throws NewviExcepcion {
+
+        // Validar que los datos no sean incorrectos
+        LoggerNewvi.getLogNewvi(this.getClass()).debug("Validando piso...", sesion);
+        if (!nuevoPiso.esPisoValido()) {
+            throw new NewviExcepcion(EnumNewviExcepciones.ERR343);
+        }
+        // Crear el piso
+        LoggerNewvi.getLogNewvi(this.getClass()).debug("Creando piso...", sesion);
+
+        //Registramos la auditoria de ingreso
+        nuevoPiso.setAudIngIp(sesion.getDireccionIP());
+        nuevoPiso.setAudIngUsu(sesion.getUsuarioRegistrado().getUsuPalabraclave().trim());
+        Date fechaIngreso = Calendar.getInstance().getTime();
+        nuevoPiso.setAudIngFec(fechaIngreso);
+
+        pisosFacade.create(nuevoPiso);
+        // Si todo marcha bien enviar nombre del piso
+        return nuevoPiso.getNomPiso();
+
+    }
+
+    @Override
+    public String actualizarPiso(Pisos piso, SesionDto sesion) throws NewviExcepcion {
+        // Validar que los datos no sean incorrectos
+        LoggerNewvi.getLogNewvi(this.getClass()).debug("Validando piso...", sesion);
+        if (!piso.esPisoValido()) {
+            throw new NewviExcepcion(EnumNewviExcepciones.ERR343);
+        }
+        // Editar la piso
+        LoggerNewvi.getLogNewvi(this.getClass()).debug("Editando piso...", sesion);
+
+        //Registramos la auditoria de modificacion
+        piso.setAudModIp(sesion.getDireccionIP());
+        piso.setAudModUsu(sesion.getUsuarioRegistrado().getUsuPalabraclave().trim());
+        Date fechaModificacion = Calendar.getInstance().getTime();
+        piso.setAudModFec(fechaModificacion);
+
+        pisosFacade.edit(piso);
+        // Si todo marcha bien enviar nombre de la piso
+        return piso.getNomPiso();
+    }
+
+    @Override
+    public List<Pisos> consultarPisos() {
+        return pisosFacade.buscarPisos();
+    }
+
+    @Override
+    public Pisos seleccionarPiso(Integer idPiso) throws NewviExcepcion {
+        if (ComunUtil.esNumeroPositivo(idPiso)) {
+            return pisosFacade.find(idPiso);
+        } else {
+            throw new NewviExcepcion(EnumNewviExcepciones.ERR011);
+        }
+    }
+
+    @Override
+    public String eliminarPiso(Pisos piso, SesionDto sesion) throws NewviExcepcion {
+        piso.setPisEstado(EnumEstadoRegistro.E);
+        return actualizarPiso(piso, sesion);
     }
 }
