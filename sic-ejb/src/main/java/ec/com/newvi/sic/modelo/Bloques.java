@@ -233,4 +233,6 @@ public class Bloques implements Serializable {
     public void setPisosCollection(Collection<Pisos> pisosCollection) {
         this.pisosCollection = pisosCollection;
     }
+
+    
 }

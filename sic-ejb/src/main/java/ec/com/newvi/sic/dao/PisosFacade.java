@@ -6,7 +6,6 @@
 package ec.com.newvi.sic.dao;
 
 import ec.com.newvi.sic.enums.EnumEstadoRegistro;
-import ec.com.newvi.sic.modelo.Bloques;
 import ec.com.newvi.sic.modelo.Pisos;
 import java.io.Serializable;
 import java.util.List;

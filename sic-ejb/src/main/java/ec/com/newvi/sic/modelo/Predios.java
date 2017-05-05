@@ -33,6 +33,31 @@ import javax.validation.constraints.Size;
 
 public class Predios implements Serializable {
 
+    @Size(max = 20)
+    @Column(name = "nom_numero")
+    private String nomNumero;
+    @Size(max = 100)
+    @Column(name = "txt_norte")
+    private String txtNorte;
+    @Size(max = 100)
+    @Column(name = "txt_sur")
+    private String txtSur;
+    @Size(max = 100)
+    @Column(name = "txt_este")
+    private String txtEste;
+    @Size(max = 100)
+    @Column(name = "txt_oeste")
+    private String txtOeste;
+    @Size(max = 25)
+    @Column(name = "txt_dominio")
+    private String txtDominio;
+    @Size(max = 50)
+    @Column(name = "nom_informante")
+    private String nomInformante;
+    @Size(max = 50)
+    @Column(name = "nom_intervenido")
+    private String nomIntervenido;
+
     @OneToMany(mappedBy = "codCatastral")
     private Collection<Bloques> bloquesCollection;
 
@@ -560,6 +585,70 @@ public class Predios implements Serializable {
 
     public void setBloquesCollection(Collection<Bloques> bloquesCollection) {
         this.bloquesCollection = bloquesCollection;
+    }
+
+    public String getNomNumero() {
+        return nomNumero;
+    }
+
+    public void setNomNumero(String nomNumero) {
+        this.nomNumero = nomNumero;
+    }
+
+    public String getTxtNorte() {
+        return txtNorte;
+    }
+
+    public void setTxtNorte(String txtNorte) {
+        this.txtNorte = txtNorte;
+    }
+
+    public String getTxtSur() {
+        return txtSur;
+    }
+
+    public void setTxtSur(String txtSur) {
+        this.txtSur = txtSur;
+    }
+
+    public String getTxtEste() {
+        return txtEste;
+    }
+
+    public void setTxtEste(String txtEste) {
+        this.txtEste = txtEste;
+    }
+
+    public String getTxtOeste() {
+        return txtOeste;
+    }
+
+    public void setTxtOeste(String txtOeste) {
+        this.txtOeste = txtOeste;
+    }
+
+    public String getTxtDominio() {
+        return txtDominio;
+    }
+
+    public void setTxtDominio(String txtDominio) {
+        this.txtDominio = txtDominio;
+    }
+
+    public String getNomInformante() {
+        return nomInformante;
+    }
+
+    public void setNomInformante(String nomInformante) {
+        this.nomInformante = nomInformante;
+    }
+
+    public String getNomIntervenido() {
+        return nomIntervenido;
+    }
+
+    public void setNomIntervenido(String nomIntervenido) {
+        this.nomIntervenido = nomIntervenido;
     }
 
 }
