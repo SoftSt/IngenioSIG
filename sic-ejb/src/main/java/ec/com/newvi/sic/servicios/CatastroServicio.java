@@ -9,6 +9,7 @@ import ec.com.newvi.sic.dto.SesionDto;
 import ec.com.newvi.sic.modelo.Bloques;
 import ec.com.newvi.sic.modelo.Pisos;
 import ec.com.newvi.sic.modelo.Predios;
+import ec.com.newvi.sic.modelo.Terreno;
 import ec.com.newvi.sic.util.excepciones.NewviExcepcion;
 import java.util.List;
 import javax.annotation.security.PermitAll;
@@ -159,4 +160,50 @@ public interface CatastroServicio {
      * @throws NewviExcepcion
      */
     public String eliminarPiso(Pisos piso, SesionDto sesion) throws NewviExcepcion;
+        /*------------------------------------------------------------Terreno------------------------------------------------------------*/
+    /**
+     * Genera un nuevo Terreno, de acuerdo a un objeto entregado.
+     *
+     * @param nuevoTerreno El nuevo Terreno a ser ingresado
+     * @param sesion Sesion que realiza la operación
+     * @return Nombre del nuevo Terreno.
+     * @throws NewviExcepcion
+     */
+    public String generarNuevoTerreno(Terreno nuevoTerreno, SesionDto sesion) throws NewviExcepcion;
+
+    /**
+     * Actualiza un Terreno existente.
+     *
+     * @param terreno El Terreno a actualizar
+     * @param sesion Sesion que realiza la operación
+     * @return Nombre del terreno actualizado
+     * @throws NewviExcepcion
+     */
+    public String actualizarTerreno(Terreno terreno, SesionDto sesion) throws NewviExcepcion;
+
+    /**
+     * Devuelve un terreno dado un id
+     *
+     * @param idTerreno Integer, código del terreno a obtener
+     * @return terreno
+     * @throws NewviExcepcion
+     */
+    public Terreno seleccionarTerreno(Integer idTerreno) throws NewviExcepcion;
+
+    /**
+     * Devuelve un listado de Terreno.
+     *
+     * @return Listado de Terreno
+     */
+    public List<Terreno> consultarTerreno();
+    
+    /**
+     * Elimina un terreno dado
+     *
+     * @param terreno El terreno a eliminar
+     * @param sesion Sesion que realiza la operación
+     * @return Nombre del terreno eliminado
+     * @throws NewviExcepcion
+     */
+    public String eliminarTerreno(Terreno terreno, SesionDto sesion) throws NewviExcepcion;
 }

@@ -8,12 +8,14 @@ package ec.com.newvi.sic.servicios.impl;
 import ec.com.newvi.sic.dao.BloquesFacade;
 import ec.com.newvi.sic.dao.PisosFacade;
 import ec.com.newvi.sic.dao.PrediosFacade;
+import ec.com.newvi.sic.dao.TerrenoFacade;
 import ec.com.newvi.sic.dto.SesionDto;
 import ec.com.newvi.sic.enums.EnumEstadoRegistro;
 import ec.com.newvi.sic.enums.EnumNewviExcepciones;
 import ec.com.newvi.sic.modelo.Bloques;
 import ec.com.newvi.sic.modelo.Pisos;
 import ec.com.newvi.sic.modelo.Predios;
+import ec.com.newvi.sic.modelo.Terreno;
 import ec.com.newvi.sic.servicios.CatastroServicio;
 import ec.com.newvi.sic.util.ComunUtil;
 import ec.com.newvi.sic.util.excepciones.NewviExcepcion;
@@ -38,6 +40,8 @@ public class CatastroServicioImpl implements CatastroServicio{
     BloquesFacade bloquesFacade;
     @EJB
     PisosFacade pisosFacade;
+    @EJB
+    TerrenoFacade terrenoFacade;
     
         /*------------------------------------------------------------Predios------------------------------------------------------------*/
     @Override
@@ -230,5 +234,69 @@ public class CatastroServicioImpl implements CatastroServicio{
     public String eliminarPiso(Pisos piso, SesionDto sesion) throws NewviExcepcion {
         piso.setPisEstado(EnumEstadoRegistro.E);
         return actualizarPiso(piso, sesion);
+    }
+        /*------------------------------------------------------------Terreno------------------------------------------------------------*/
+    @Override
+    public String generarNuevoTerreno(Terreno nuevoTerreno, SesionDto sesion) throws NewviExcepcion {
+
+        // Validar que los datos no sean incorrectos
+        LoggerNewvi.getLogNewvi(this.getClass()).debug("Validando terreno...", sesion);
+        if (!nuevoTerreno.esTerrenoValido()) {
+            throw new NewviExcepcion(EnumNewviExcepciones.ERR343);
+        }
+        // Crear el terreno
+        LoggerNewvi.getLogNewvi(this.getClass()).debug("Creando terreno...", sesion);
+
+        //Registramos la auditoria de ingreso
+        nuevoTerreno.setAudIngIp(sesion.getDireccionIP());
+        nuevoTerreno.setAudIngUsu(sesion.getUsuarioRegistrado().getUsuPalabraclave().trim());
+        Date fechaIngreso = Calendar.getInstance().getTime();
+        nuevoTerreno.setAudIngFec(fechaIngreso);
+
+        terrenoFacade.create(nuevoTerreno);
+        // Si todo marcha bien enviar nombre del terreno
+        return nuevoTerreno.getCodTerrenodetalle().toString();
+
+    }
+
+    @Override
+    public String actualizarTerreno(Terreno terreno, SesionDto sesion) throws NewviExcepcion {
+        // Validar que los datos no sean incorrectos
+        LoggerNewvi.getLogNewvi(this.getClass()).debug("Validando terreno...", sesion);
+        if (!terreno.esTerrenoValido()) {
+            throw new NewviExcepcion(EnumNewviExcepciones.ERR343);
+        }
+        // Editar la terreno
+        LoggerNewvi.getLogNewvi(this.getClass()).debug("Editando terreno...", sesion);
+
+        //Registramos la auditoria de modificacion
+        terreno.setAudModIp(sesion.getDireccionIP());
+        terreno.setAudModUsu(sesion.getUsuarioRegistrado().getUsuPalabraclave().trim());
+        Date fechaModificacion = Calendar.getInstance().getTime();
+        terreno.setAudModFec(fechaModificacion);
+
+        terrenoFacade.edit(terreno);
+        // Si todo marcha bien enviar nombre de la terreno
+        return terreno.getCodTerrenodetalle().toString();
+    }
+
+    @Override
+    public List<Terreno> consultarTerreno() {
+        return terrenoFacade.buscarTerreno();
+    }
+
+    @Override
+    public Terreno seleccionarTerreno(Integer idTerreno) throws NewviExcepcion {
+        if (ComunUtil.esNumeroPositivo(idTerreno)) {
+            return terrenoFacade.find(idTerreno);
+        } else {
+            throw new NewviExcepcion(EnumNewviExcepciones.ERR011);
+        }
+    }
+
+    @Override
+    public String eliminarTerreno(Terreno terreno, SesionDto sesion) throws NewviExcepcion {
+        terreno.setTerEstado(EnumEstadoRegistro.E);
+        return actualizarTerreno(terreno, sesion);
     }
 }

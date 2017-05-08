@@ -624,7 +624,75 @@
                                     </div>
                                 </div>
                             </p:tab>
-                            <p:tab title="Terreno y Factores">
+
+                            <p:tab title="Descripcion del terreno">
+                                <div class="ui-g">
+                                    <div class="ui-g-12 ui-md-12 ui-lg-6">
+                                        <p:dataTable id="listaDescripcionTerreno" var="descripcionTerreno" widgetVar="listaDescripcionTerrenoTabla"
+                                                     value="" rowKey="" filteredValue=""
+                                                     paginator="true" rows="10" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" 
+                                                     rowsPerPageTemplate="10,15,20" 
+                                                     emptyMessage="No se han encontrado resultados" 
+                                                     paginatorPosition="bottom">
+
+
+                                            <p:column headerText="Código" filterBy="">
+                                                <h:outputText value="" />
+                                            </p:column>
+
+                                            <p:column headerText="Grupo" sortBy="" filterBy="">
+                                                <h:outputText value="" />
+                                            </p:column>
+
+                                            <p:column headerText="Estado del terreno" filterBy="">
+                                                <h:outputText value="" />
+                                            </p:column>
+
+                                            <p:column headerText="Estado" filterBy="">
+                                                <h:outputText value="" />
+                                            </p:column>
+                                        </p:dataTable>
+                                    </div>
+                                    <div class="ui-g-12 ui-md-12 ui-lg-6">
+                                        <p style="font-weight: bold;">Dimensiones y superficie</p>
+                                        <h:panelGrid >
+                                            <h:outputLabel for="areaTotal" value="Area Total" style="font-weight: bold;"/>
+                                            <p:inputNumber id="areaTotal" label="Area Total" size="50"/>
+                                            <p:message for="areaTotal" display="tooltip"/>
+
+                                            <h:outputLabel for="frenteprincipal" value="Frente principal" style="font-weight: bold;"/>
+                                            <p:inputNumber id="frenteprincipal" label="Frente principal" size="50"/>
+                                            <p:message for="frenteprincipal" display="tooltip"/>
+
+                                            <h:outputLabel for="fondoRelativo" value="Fondo Relativo" style="font-weight: bold;"/>
+                                            <p:inputNumber id="fondoRelativo" label="Fondo Relativo" size="50"/>
+                                            <p:message for="fondoRelativo" display="tooltip"/>
+                                        </h:panelGrid>
+                                        
+                                        <p style="font-weight: bold;">Cerramiento</p>
+                                        <h:panelGrid >
+                                            <h:outputLabel for="cerramiento" value="Cerramiento" style="font-weight: bold;"/>
+                                            <p:selectOneMenu id="cerramiento" style="width:125px" >
+                                                <f:selectItem itemLabel="" itemValue="null" />
+                                            </p:selectOneMenu>
+                                            <p:message for="cerramiento" display="tooltip"/>
+
+                                            <h:outputLabel for="areaCerramiento" value="Area Cerramiento" style="font-weight: bold;"/>
+                                            <p:inputNumber id="areaCerramiento" label="Area Cerramiento" size="50"/>
+                                            <p:message for="areaCerramiento" display="tooltip"/>
+
+                                            <h:outputLabel for="materialCerramiento" value="Material Cerramiento" style="font-weight: bold;"/>
+                                            <p:selectOneMenu id="materialCerramiento" style="width:125px" >
+                                                <f:selectItem itemLabel="" itemValue="null" />
+                                            </p:selectOneMenu>
+                                            <p:message for="materialCerramiento" display="tooltip"/>
+                                        </h:panelGrid>
+                                        
+                                    </div>
+                                </div>
+                            </p:tab>
+
+                            <p:tab title="Uso del suelo">
                                 <p style="font-weight: bold;">4.1 Área y uso del suelo</p>
                                 <p:separator/>
 
@@ -679,7 +747,7 @@
                                                      emptyMessage="No se han encontrado resultados" 
                                                      paginatorPosition="bottom">
 
-                                            
+
                                             <p:column headerText="Código" filterBy="">
                                                 <h:outputText value="" />
                                             </p:column>
