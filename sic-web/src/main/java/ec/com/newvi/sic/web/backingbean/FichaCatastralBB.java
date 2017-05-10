@@ -16,7 +16,9 @@ import ec.com.newvi.faces.visorgeografico.source.OSM;
 import ec.com.newvi.faces.visorgeografico.source.TileWMS;
 import ec.com.newvi.sic.enums.EnumEstadoRegistro;
 import ec.com.newvi.sic.enums.EnumNewviExcepciones;
+import ec.com.newvi.sic.modelo.Contribuyentes;
 import ec.com.newvi.sic.modelo.Predios;
+import ec.com.newvi.sic.modelo.Terreno;
 import ec.com.newvi.sic.util.ComunUtil;
 import ec.com.newvi.sic.util.excepciones.NewviExcepcion;
 import ec.com.newvi.sic.util.logs.LoggerNewvi;
@@ -47,6 +49,10 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
     private List<Predios> listaPrediosFiltrados;
     private EnumPantallaMantenimiento pantallaActual;
     private Map mapa;
+    //private Contribuyentes 
+    
+    private List<Terreno> caracTerreno;
+    
 
     public Predios getPredio() {
         return predio;

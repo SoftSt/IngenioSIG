@@ -19,9 +19,9 @@ import javax.persistence.Query;
  */
 @Stateless
 @PermitAll
-public class ContribuyentesFacade extends AbstractFacade<Contribuyentes, Integer> implements Serializable {
+public class PersoneriaFacade extends AbstractFacade<Contribuyentes, Integer> implements Serializable {
 
-    public ContribuyentesFacade() {
+    public PersoneriaFacade() {
         super(Contribuyentes.class, Integer.class);
     }
     

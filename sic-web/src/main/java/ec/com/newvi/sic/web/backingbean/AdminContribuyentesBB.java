@@ -5,8 +5,8 @@
  */
 package ec.com.newvi.sic.web.backingbean;
 
-import ec.com.newvi.sic.servicios.ContribuyentesServicio;
 import javax.ejb.EJB;
+import ec.com.newvi.sic.servicios.PersoneriaServicio;
 
 /**
  *
@@ -15,6 +15,6 @@ import javax.ejb.EJB;
 public abstract class AdminContribuyentesBB extends AdminSistemaBB {
     
     @EJB
-    protected ContribuyentesServicio contribuyentesServicio;
+    protected PersoneriaServicio contribuyentesServicio;
     
 }

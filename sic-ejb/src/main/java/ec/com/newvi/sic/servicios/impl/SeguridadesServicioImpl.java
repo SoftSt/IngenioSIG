@@ -6,7 +6,7 @@
 package ec.com.newvi.sic.servicios.impl;
 
 import ec.com.newvi.sic.dao.AsignacionPermisosFacade;
-import ec.com.newvi.sic.dao.ContribuyentesFacade;
+import ec.com.newvi.sic.dao.PersoneriaFacade;
 import ec.com.newvi.sic.dao.FuncionalidadesFacade;
 import ec.com.newvi.sic.dao.PermisosFacade;
 import ec.com.newvi.sic.modelo.Usuarios;

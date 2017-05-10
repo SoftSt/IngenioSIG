@@ -18,7 +18,7 @@ import javax.ejb.Local;
  */
 @Local
 @PermitAll
-public interface ContribuyentesServicio {
+public interface PersoneriaServicio {
 /*------------------------------------------------------------Contribuyentes------------------------------------------------------------*/
     /**
      * Genera una nueva Contribuyente, de acuerdo a un objeto entregado.

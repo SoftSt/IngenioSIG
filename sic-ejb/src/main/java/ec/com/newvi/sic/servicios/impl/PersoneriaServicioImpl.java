@@ -5,12 +5,11 @@
  */
 package ec.com.newvi.sic.servicios.impl;
 
-import ec.com.newvi.sic.dao.ContribuyentesFacade;
+import ec.com.newvi.sic.dao.PersoneriaFacade;
 import ec.com.newvi.sic.dto.SesionDto;
 import ec.com.newvi.sic.enums.EnumEstadoRegistro;
 import ec.com.newvi.sic.enums.EnumNewviExcepciones;
 import ec.com.newvi.sic.modelo.Contribuyentes;
-import ec.com.newvi.sic.servicios.ContribuyentesServicio;
 import ec.com.newvi.sic.util.ComunUtil;
 import ec.com.newvi.sic.util.excepciones.NewviExcepcion;
 import ec.com.newvi.sic.util.logs.LoggerNewvi;
@@ -20,6 +19,7 @@ import java.util.List;
 import javax.annotation.security.PermitAll;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import ec.com.newvi.sic.servicios.PersoneriaServicio;
 
 /**
  *
@@ -28,9 +28,9 @@ import javax.ejb.Stateless;
 @Stateless
 @PermitAll
 
-public class ContribuyentesServicioImpl implements ContribuyentesServicio{
+public class PersoneriaServicioImpl implements PersoneriaServicio{
     @EJB
-    private ContribuyentesFacade contribuyentesFacade;
+    private PersoneriaFacade contribuyentesFacade;
     
        
     /*------------------------------------------------------------Contribuyentes------------------------------------------------------------*/
