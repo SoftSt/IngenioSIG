@@ -122,7 +122,7 @@ public class ContribucionMejorasServicioImpl implements ContribucionMejorasServi
 
         obrasDetalleFacade.create(nuevaObrasDetalle);
         // Si todo marcha bien enviar nombre del predio
-        return nuevaObrasDetalle.getNomCodigocatastral().getNomPredio();
+        return nuevaObrasDetalle.getNomCodigocatastral().getNomCodigocatastral();
 
     }
 
@@ -144,7 +144,7 @@ public class ContribucionMejorasServicioImpl implements ContribucionMejorasServi
 
         obrasDetalleFacade.edit(obrasDetalle);
         // Si todo marcha bien enviar nombre del predio
-        return obrasDetalle.getNomCodigocatastral().getNomPredio();
+        return obrasDetalle.getNomCodigocatastral().getNomCodigocatastral();
     }
 
     @Override
