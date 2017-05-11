@@ -106,7 +106,16 @@ public enum EnumEtiquetas {
     PISOS_NUEVO_DESCRIPCION("Creación de nuevo Piso."),
     PISOS_EDITAR_TITULO("Editar Piso"),
     PISOS_EDITAR_ICONO("fa fa-edit"),
-    PISOS_EDITAR_DESCRIPCION("Edición de Pisos seleccionado.");
+    PISOS_EDITAR_DESCRIPCION("Edición de Pisos seleccionado."),
+    PROPIETARIO_LISTA_TITULO("Propietario"),
+    PROPIETARIO_LISTA_ICONO("fa fa-home"),
+    PROPIETARIO_LISTA_DESCRIPCION("Gestión de propietarios."),
+    PROPIETARIO_NUEVO_TITULO("Nueva Propietario"),
+    PROPIETARIO_NUEVO_ICONO("fa fa-plus"),
+    PROPIETARIO_NUEVO_DESCRIPCION("Creación de nuevo Propietario."),
+    PROPIETARIO_EDITAR_TITULO("Editar Propietario"),
+    PROPIETARIO_EDITAR_ICONO("fa fa-edit"),
+    PROPIETARIO_EDITAR_DESCRIPCION("Edición de Propietario seleccionado.");
     
     private final String textoEtiqueta;
 
