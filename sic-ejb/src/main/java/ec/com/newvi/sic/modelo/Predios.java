@@ -59,7 +59,7 @@ public class Predios implements Serializable {
     @Size(max = 2)
     @Column(name = "cod_sector")
     private String codSector;
-    @Size(max = 3)
+    @Size(max = 2)
     @Column(name = "cod_manzana")
     private String codManzana;
     @Size(max = 3)
@@ -71,7 +71,7 @@ public class Predios implements Serializable {
     @Size(max = 3)
     @Column(name = "cod_horizontal")
     private String codHorizontal;
-    @Size(max = 25)
+    @Size(max = 150)
     @Column(name = "sts_barrio")
     private String stsBarrio;
     @Size(max = 100)
@@ -83,6 +83,19 @@ public class Predios implements Serializable {
     @Size(max = 100)
     @Column(name = "txt_ubicacion")
     private String txtUbicacion;
+    @Size(max = 50)
+    @Column(name = "nom_cartografia")
+    private String nomCartografia;
+    @Size(max = 50)
+    @Column(name = "nom_fotoaerea")
+    private String nomFotoAerea;
+    @Size(max = 50)
+    @Column(name = "nom_cartootros")
+    private String nomcCartografiaOtros;
+    @Column(name = "val_coordenadaeste")
+    private BigDecimal valCoordenadaEste;
+    @Column(name = "val_coordenadanorte")
+    private BigDecimal valCoordenadaNorte;    
     @Size(max = 100)
     @Column(name = "txt_norte")
     private String txtNorte;
@@ -104,6 +117,12 @@ public class Predios implements Serializable {
     @Size(max = 50)
     @Column(name = "nom_intervenido")
     private String nomIntervenido;
+    @Column(name = "val_areafrente")
+    private BigDecimal valAreaFrente;    
+    @Column(name = "val_areaconstruccion")
+    private BigDecimal valAreaConstruccion;
+    @Column(name = "val_areapredio")
+    private BigDecimal valAreaPredio;    
     @Enumerated(EnumType.STRING)
     @Column(name = "cat_estado")
     private EnumEstadoRegistro catEstado;
@@ -258,6 +277,46 @@ public class Predios implements Serializable {
         this.txtUbicacion = txtUbicacion;
     }
 
+    public String getNomCartografia() {
+        return nomCartografia;
+    }
+
+    public void setNomCartografia(String nomCartografia) {
+        this.nomCartografia = nomCartografia;
+    }
+
+    public String getNomFotoAerea() {
+        return nomFotoAerea;
+    }
+
+    public void setNomFotoAerea(String nomFotoAerea) {
+        this.nomFotoAerea = nomFotoAerea;
+    }
+
+    public String getNomcCartografiaOtros() {
+        return nomcCartografiaOtros;
+    }
+
+    public void setNomcCartografiaOtros(String nomcCartografiaOtros) {
+        this.nomcCartografiaOtros = nomcCartografiaOtros;
+    }
+
+    public BigDecimal getValCoordenadaEste() {
+        return valCoordenadaEste;
+    }
+
+    public void setValCoordenadaEste(BigDecimal valCoordenadaEste) {
+        this.valCoordenadaEste = valCoordenadaEste;
+    }
+
+    public BigDecimal getValCoordenadaNorte() {
+        return valCoordenadaNorte;
+    }
+
+    public void setValCoordenadaNorte(BigDecimal valCoordenadaNorte) {
+        this.valCoordenadaNorte = valCoordenadaNorte;
+    }
+
     public String getTxtNorte() {
         return txtNorte;
     }
@@ -312,6 +371,30 @@ public class Predios implements Serializable {
 
     public void setNomIntervenido(String nomIntervenido) {
         this.nomIntervenido = nomIntervenido;
+    }
+
+    public BigDecimal getValAreaFrente() {
+        return valAreaFrente;
+    }
+
+    public void setValAreaFrente(BigDecimal valAreaFrente) {
+        this.valAreaFrente = valAreaFrente;
+    }
+
+    public BigDecimal getValAreaConstruccion() {
+        return valAreaConstruccion;
+    }
+
+    public void setValAreaConstruccion(BigDecimal valAreaConstruccion) {
+        this.valAreaConstruccion = valAreaConstruccion;
+    }
+
+    public BigDecimal getValAreaPredio() {
+        return valAreaPredio;
+    }
+
+    public void setValAreaPredio(BigDecimal valAreaPredio) {
+        this.valAreaPredio = valAreaPredio;
     }
 
     public EnumEstadoRegistro getCatEstado() {
@@ -413,6 +496,10 @@ public class Predios implements Serializable {
 
     public Boolean esPredioValido() {
         return (!ComunUtil.esNulo(this.catEstado));
+    }
+    
+    public void actualizarCodigoPredio() {
+        this.nomCodigocatastral = this.codDpa.concat(this.codZona).concat(this.codSector).concat(this.codManzana).concat(this.codPredio).concat(this.codRegimentenencia).concat(this.codHorizontal);
     }
 
 }

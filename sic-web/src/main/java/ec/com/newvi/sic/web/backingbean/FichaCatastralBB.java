@@ -260,4 +260,8 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
             throw ValidacionUtils.lanzarExcepcionValidacion(EnumNewviExcepciones.ERR251);
         }
     }
+    
+    public void actualizarCodigoCatastral() {
+        this.predio.actualizarCodigoPredio();
+    }
 }
