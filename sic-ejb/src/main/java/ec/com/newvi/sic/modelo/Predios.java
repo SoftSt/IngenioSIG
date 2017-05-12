@@ -62,7 +62,7 @@ public class Predios implements Serializable {
     @Size(max = 2)
     @Column(name = "cod_manzana")
     private String codManzana;
-    @Size(max = 3)
+    @Size(max = 4)
     @Column(name = "cod_predio")
     private String codPredio;
     @Size(max = 2)

@@ -36,7 +36,7 @@
 .ui-widget.ui-widget-content {
     border: 1px solid #2196F3;
 }
-.ui-widget-content, .ui_tabs {
+.ui-widget-content {
     background: #fff;
     border: 1px solid #d5d5d5;
     color: #333;
@@ -56,6 +56,10 @@
 }
 .ui-button {
     height: 32px;
+}
+.ui-separator {
+    border-top: 1em !important;
+    border-color: #d6d6d6 !important;
 }
 
 /* Interaction states
@@ -93,7 +97,13 @@ a:visited.ui-button,
     text-decoration: none;
     font-weight: 300;
 }
-
+.ui-tabs, .ui-tabs-nav {
+    border: none !important;
+    background: none !important;
+}
+.ui-tabs-panel {
+    background: #fff !important;
+}
 .ui-tabs-nav .ui-state-default a,
 .ui-tabs-nav .ui-state-default a:link,
 .ui-tabs-nav .ui-state-default a:visited,
@@ -505,15 +515,17 @@ a.ui-button:active,
     box-shadow: 2px 2px 5px #555;
 }
 
-.ui-button, .ui-datatable, .ui-treetable {
+.ui-button, .ui-datatable, .ui-treetable, .ui-tabs-panel {
     border: 1px solid transparent !important;
     border-radius: 2px;
     -webkit-box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
     box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
 }
 
-.ui-menu, .ui-panel, ui-panelmenu-panel {
+.ui-menu, .ui-panel, .ui-panelmenu-panel, .ui-tabs-panel .ui-datatable {
     border: none !important;
+    -webkit-box-shadow: none !important;
+    box-shadow: none !important;
 }
 
 .ui-datatable tbody, .ui-treetable tbody, .ui-datatable-odd, ui-datatable-even, .ui-datatable thead th, .ui-datatable tbody td, .ui-datatable tfoot td, .ui-treetable thead th, .ui-treetable tbody td, .ui-datatable tfoot th, .ui-panelmenu-content {
