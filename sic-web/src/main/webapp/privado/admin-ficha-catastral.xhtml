@@ -84,116 +84,59 @@
                             <h:outputText value=" #{fichaCatastralBB.tituloPantalla.textoEtiqueta}"/>
                         </h2>
                     </p>
-                    <p>#{fichaCatastralBB.descripcionPantalla.textoEtiqueta}</p>
+                    <!--<p>#{fichaCatastralBB.descripcionPantalla.textoEtiqueta}</p>-->
 
                     <p:messages id="mensajeFormulario" showDetail="true" autoUpdate="true" closable="true" />
-                    <p:tooltip style="height:1px" />
+                    <p:tooltip />
                     <p:outputPanel id="opDetalleFichaCatastral">
 
                         <div class="ui-g">
                             <div class="ui-g-12 ui-md-12 ui-lg-6">
                                 <h:panelGrid>
-                                    <br/>
-                                    <div style="font-size:1.2em;font-weight:bold;">Identificación Catastral del predio</div>
-                                    <p:separator />
+                                    <p style="font-weight: bold;">Identificacion Catastral del predio y dirección</p>
+
                                     <h:outputLabel for="codCatastral" value="Clave Catastral" style="font-weight: bold;"/>
-                                    <h:outputLabel id="codCatastral" value="#{fichaCatastralBB.predio.nomCodigocatastral}" />
+                                    <p:inputNumber id="codCatastral" value="#{fichaCatastralBB.predio.nomCodigocatastral}" maxValue="9999999999999999999999999" minValue="0" label="Codigo Catastral" size="50" thousandSeparator="" decimalSeparator=""/>
                                     <p:message for="codCatastral" display="tooltip"/>
 
-                                    <h:panelGrid columns="7">
-                                        <p:inputMask id="codDPA" value="#{fichaCatastralBB.predio.codDpa}" mask="999999" size="8"><p:ajax event="keyup" listener="#{fichaCatastralBB.actualizarCodigoCatastral()}" update="codCatastral" /></p:inputMask>
-                                        <p:inputMask id="codZona" value="#{fichaCatastralBB.predio.codZona}" mask="99" size="4"><p:ajax event="keyup" listener="#{fichaCatastralBB.actualizarCodigoCatastral()}" update="codCatastral" /></p:inputMask>
-                                        <p:inputMask id="codSector" value="#{fichaCatastralBB.predio.codSector}" mask="99" size="4"><p:ajax event="keyup" listener="#{fichaCatastralBB.actualizarCodigoCatastral()}" update="codCatastral" /></p:inputMask>
-                                        <p:inputMask id="codManzana" value="#{fichaCatastralBB.predio.codManzana}" mask="99" size="4"><p:ajax event="keyup" listener="#{fichaCatastralBB.actualizarCodigoCatastral()}" update="codCatastral" /></p:inputMask>
-                                        <p:inputMask id="codPredio" value="#{fichaCatastralBB.predio.codPredio}" mask="9999" size="6"><p:ajax event="keyup" listener="#{fichaCatastralBB.actualizarCodigoCatastral()}" update="codCatastral" /></p:inputMask>
-                                        <p:inputMask id="codRegTenencia" value="#{fichaCatastralBB.predio.codRegimentenencia}" mask="99" size="6"><p:ajax event="keyup" listener="#{fichaCatastralBB.actualizarCodigoCatastral()}" update="codCatastral" /></p:inputMask>
-                                        <p:inputMask id="codHorizontal" value="#{fichaCatastralBB.predio.codHorizontal}" mask="99" size="6"><p:ajax event="keyup" listener="#{fichaCatastralBB.actualizarCodigoCatastral()}" update="codCatastral" /></p:inputMask>
+                                    <h:outputLabel for="nomCodigocatastralanterior" value="Clave Catastral Anterior" style="font-weight: bold;"/>
+                                    <p:inputNumber id="nomCodigocatastralanterior" value="#{fichaCatastralBB.predio.nomCodigocatastralanterior}" maxValue="9999999999999999999999999" minValue="0" label="Codigo Catastral Anterior" size="50" thousandSeparator="" decimalSeparator=""/>
+                                    <p:message for="nomCodigocatastralanterior" display="tooltip"/>
 
-                                        <h:outputLabel for="codDPA" value="Código nacional" style="font-size:0.7em;" />
-                                        <h:outputLabel for="codZona" value="Zona" style="font-size:0.7em;" />
-                                        <h:outputLabel for="codSector" value="Sector" style="font-size:0.7em;"/>
-                                        <h:outputLabel for="codManzana" value="Manzana" style="font-size:0.7em;"/>
-                                        <h:outputLabel for="codPredio" value="Predio" style="font-size:0.7em;"/>
-                                        <h:outputLabel for="codRegTenencia" value="R. Tenencia" style="font-size:0.7em;"/>
-                                        <h:outputLabel for="codHorizontal" value="P. Horizontal" style="font-size:0.7em;"/>
+                                    <h:panelGrid columns="5">
+                                        <h:outputLabel for="codZona" value="Zona" style="font-weight: bold;" />
+                                        <h:outputLabel for="codSector" value="Sector" style="font-weight: bold;"/>
+                                        <h:outputLabel for="codManzana" value="Manzana" style="font-weight: bold;"/>
+                                        <h:outputLabel for="codPredio" value="Predio" style="font-weight: bold;"/>
+                                        <h:outputLabel for="codHorizontal" value="P. Horizontal" style="font-weight: bold;"/>
 
-                                        <p:message for="codDPA" display="tooltip"/>
+                                        <p:inputNumber id="codZona" value="#{fichaCatastralBB.predio.codZona}" maxValue="99" minValue="0" label="Zona" size="5" thousandSeparator="" decimalSeparator=""/>
+                                        <p:inputNumber id="codSector" value="#{fichaCatastralBB.predio.codSector}" maxValue="99" minValue="0" label="Sector" size="5" thousandSeparator="" decimalSeparator=""/>
+                                        <p:inputNumber id="codManzana" value="#{fichaCatastralBB.predio.codManzana}" maxValue="999" minValue="0" label="Manzana" size="5" thousandSeparator="" decimalSeparator=""/>
+                                        <p:inputNumber id="codPredio" value="#{fichaCatastralBB.predio.codPredio}" maxValue="999" minValue="0" label="Predio" size="5" thousandSeparator="" decimalSeparator=""/>
+                                        <p:inputNumber id="codHorizontal" value="#{fichaCatastralBB.predio.codHorizontal}" maxValue="999" minValue="0" label="P. Horizontal" size="5" thousandSeparator="" decimalSeparator=""/>
+
                                         <p:message for="codZona" display="tooltip"/>
                                         <p:message for="codSector" display="tooltip"/>
                                         <p:message for="codManzana" display="tooltip"/>
                                         <p:message for="codPredio" display="tooltip"/>
-                                        <p:message for="codRegTenencia" display="tooltip"/>
                                         <p:message for="codHorizontal" display="tooltip"/>
                                     </h:panelGrid>
                                     
-                                    <h:outputLabel for="nomCodigocatastralanterior" value="Clave Catastral anterior" style="font-weight: bold;"/>
-                                    <p:inputNumber id="nomCodigocatastralanterior" value="#{fichaCatastralBB.predio.nomCodigocatastralanterior}" maxValue="9999999999999999999999999" minValue="0" label="Codigo Catastral Anterior" size="50" thousandSeparator="" decimalSeparator=""/>
-                                    <p:message for="nomCodigocatastralanterior" display="tooltip"/>
-
-                                    <br/>
-                                    <div style="font-size:1.2em;font-weight:bold;">Dirección del predio</div>
-                                    <p:separator />
-                                    
                                     <h:panelGrid columns="2">
-                                        <h:outputLabel for="txtDireccion" value="Calle principal" style="font-weight: bold;" />
+                                        <h:outputLabel for="codZona" value="txtDireccion" style="font-weight: bold;" />
                                         <h:outputLabel for="nomNumero" value="Número" style="font-weight: bold;"/>
 
-                                        <p:inputText id="txtDireccion" value="#{fichaCatastralBB.predio.txtDireccion}" label="Calle" size="50" maxlength="100"/>
-                                        <p:inputText id="nomNumero" value="#{fichaCatastralBB.predio.nomNumero}" label="Número" size="10" maxlength="20"/>
+                                        <p:inputText id="txtDireccion" value="#{fichaCatastralBB.predio.txtDireccion}" label="Calle" size="5"/>
+                                        <p:inputText id="nomNumero" value="#{fichaCatastralBB.predio.nomNumero}" label="Número" size="5"/>
 
                                         <p:message for="txtDireccion" display="tooltip"/>
                                         <p:message for="nomNumero" display="tooltip"/>
                                     </h:panelGrid>
 
                                     <h:outputLabel for="stsBarrio" value="Barrio/Sitio" style="font-weight: bold;"/>
-                                    <p:inputText id="stsBarrio" value="#{fichaCatastralBB.predio.stsBarrio}" label="Barrio/Sitio" size="50" maxlength="150"/>
+                                    <p:inputText id="stsBarrio" value="#{fichaCatastralBB.predio.stsBarrio}" label="Barrio/Sitio" size="50"/>
                                     <p:message for="stsBarrio" display="tooltip"/>
-                                    
-                                    <br/>
-                                    <div style="font-size:1.2em;font-weight:bold;">Referencias geográficas</div>
-                                    <p:separator />
-                                    <h:outputLabel for="nomCartografia" value="C. Topográfica" style="font-weight: bold;"/>
-                                    <p:inputText id="nomCartografia" value="#{fichaCatastralBB.predio.nomCartografia}" label="C. Topográfica" size="50"/>
-                                    <p:message for="nomCartografia" display="tooltip"/>
-                                    <h:outputLabel for="nomFotoAerea" value="Foto Aérea" style="font-weight: bold;"/>
-                                    <p:inputText id="nomFotoAerea" value="#{fichaCatastralBB.predio.nomFotoAerea}" label="Foto Aérea" size="50"/>
-                                    <p:message for="nomFotoAerea" display="tooltip"/>
-                                    <p style="font-weight:bold;">Coordenadas planas de referencia</p>
-                                    <h:outputLabel for="valCoordenadaEste" value="Coordenada Este" style="font-weight: bold;"/>
-                                    <p:inputText id="valCoordenadaEste" value="#{fichaCatastralBB.predio.valCoordenadaEste}" label="Coordenada Este"/>
-                                    <p:message for="valCoordenadaEste" display="tooltip"/>
-                                    <h:outputLabel for="valCoordenadaNorte" value="Coordenada Norte" style="font-weight: bold;"/>
-                                    <p:inputText id="valCoordenadaNorte" value="#{fichaCatastralBB.predio.valCoordenadaNorte}" label="Coordenada Norte"/>
-                                    <p:message for="valCoordenadaNorte" display="tooltip"/>
-                                    
-                                    <br/>
-                                    <div style="font-size:1.2em;font-weight:bold;">Colindantes</div>
-                                    <p:separator />
-                                    <h:outputLabel for="txtNorte" value="Norte" style="font-weight: bold;"/>
-                                    <p:inputText id="txtNorte" value="#{fichaCatastralBB.predio.txtNorte}" label="Norte" size="50" maxlength="150"/>
-                                    <p:message for="txtNorte" display="tooltip"/>
-                                    <h:outputLabel for="txtSur" value="Sur" style="font-weight: bold;"/>
-                                    <p:inputText id="txtSur" value="#{fichaCatastralBB.predio.txtSur}" label="Sur" size="50" maxlength="150"/>
-                                    <p:message for="txtSur" display="tooltip"/>
-                                    <h:outputLabel for="txtEste" value="Este" style="font-weight: bold;"/>
-                                    <p:inputText id="txtEste" value="#{fichaCatastralBB.predio.txtEste}" label="Este" size="50" maxlength="150"/>
-                                    <p:message for="txtEste" display="tooltip"/>
-                                    <h:outputLabel for="txtOeste" value="Oeste" style="font-weight: bold;"/>
-                                    <p:inputText id="txtOeste" value="#{fichaCatastralBB.predio.txtOeste}" label="Oeste" size="50" maxlength="150"/>
-                                    <p:message for="txtOeste" display="tooltip"/>
-
-                                    <br/>
-                                    <div style="font-size:1.2em;font-weight:bold;">Superficies del predio</div>
-                                    <p:separator />
-                                    <h:outputLabel for="valAreaPredio" value="Área total del terreno" style="font-weight: bold;"/>
-                                    <p:inputNumber id="valAreaPredio" value="#{fichaCatastralBB.predio.valAreaPredio}" label="Area Total" size="50"/>
-                                    <p:message for="valAreaPredio" display="tooltip"/>
-                                    <h:outputLabel for="valAreaFrente" value="Frente principal" style="font-weight: bold;"/>
-                                    <p:inputNumber id="valAreaFrente" value="#{fichaCatastralBB.predio.valAreaFrente}" label="Frente principal" size="50"/>
-                                    <p:message for="valAreaFrente" display="tooltip"/>
-                                    <h:outputLabel for="valAreaConstruccion" value="Área de construcción" style="font-weight: bold;"/>
-                                    <p:inputNumber id="valAreaConstruccion" value="#{fichaCatastralBB.predio.valAreaConstruccion}" label="Fondo Relativo" size="50"/>
-                                    <p:message for="valAreaConstruccion" display="tooltip"/>
 
                                 </h:panelGrid>
                             </div>
@@ -719,8 +662,19 @@
                                     <div class="ui-g-12 ui-md-12 ui-lg-6">
                                         <p style="font-weight: bold;">Dimensiones y superficie</p>
                                         <h:panelGrid >
-                                        </h:panelGrid>
+                                            <h:outputLabel for="areaTotal" value="Area Total" style="font-weight: bold;"/>
+                                            <p:inputNumber id="areaTotal" label="Area Total" size="50"/>
+                                            <p:message for="areaTotal" display="tooltip"/>
 
+                                            <h:outputLabel for="frenteprincipal" value="Frente principal" style="font-weight: bold;"/>
+                                            <p:inputNumber id="frenteprincipal" label="Frente principal" size="50"/>
+                                            <p:message for="frenteprincipal" display="tooltip"/>
+
+                                            <h:outputLabel for="fondoRelativo" value="Fondo Relativo" style="font-weight: bold;"/>
+                                            <p:inputNumber id="fondoRelativo" label="Fondo Relativo" size="50"/>
+                                            <p:message for="fondoRelativo" display="tooltip"/>
+                                        </h:panelGrid>
+                                        
                                         <p style="font-weight: bold;">Cerramiento</p>
                                         <h:panelGrid >
                                             <h:outputLabel for="cerramiento" value="Cerramiento" style="font-weight: bold;"/>
@@ -739,7 +693,7 @@
                                             </p:selectOneMenu>
                                             <p:message for="materialCerramiento" display="tooltip"/>
                                         </h:panelGrid>
-
+                                        
                                     </div>
                                 </div>
                             </p:tab>
