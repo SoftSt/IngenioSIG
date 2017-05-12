@@ -33,13 +33,17 @@
 
 
                     <p:dataTable id="listaPropietario" var="propietario" widgetVar="listaPropietarioTabla"
-                                 value="#{propietarioBB.listaPropietarios}" rowKey="#{propietario.propietario}" filteredValue="#{propietarioBB.listaPropietarioFiltrados}"
+                                 value="#{propietarioBB.listaPropietarios}" rowKey="#{propietario.propietario}" filteredValue="#{propietarioBB.listaPropietariosFiltrados}"
                                  paginator="true" rows="5" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" 
                                  rowsPerPageTemplate="5,10,15" 
                                  emptyMessage="No se han encontrado resultados" 
                                  paginatorPosition="bottom">
 
 
+                        <p:column headerText="id" sortBy="#{propietario.propietario}">
+                            <h:outputText value="#{propietario.propietario}" />
+                        </p:column>
+                        
                         <p:column headerText="Tenencia" sortBy="#{propietario.stsTenencia}">
                             <h:outputText value="#{propietario.stsTenencia}" />
                         </p:column>
@@ -98,34 +102,33 @@
                     <p:outputPanel id="opDetallePropietario">
                         <h:panelGrid columns="1">
 
-                            <h:outputLabel value="Tenencia" style="font-weight: bold;"/>
-                            <p:inputText id="nomPropietario" value="#{propietarioBB.propietario.nomPropietario}" label="Nombre propietario" size="50" required="true">
-                                <f:validateLength minimum="1" maximum="25" />
-                            </p:inputText>
-                            <p:message for="nomPropietario" display="tooltip"/>
-                            
-                            
-                             <h:outputLabel for="stsTipopersoneria" value="Tipo Contribuyente" style="font-weight: bold;"/>
-                            <p:selectOneMenu id="stsTipopersoneria" value="#{contribuyentesBB.contribuyente.stsTipopersoneria}" required="true" style="width:125px" >
-                                <f:selectItem itemLabel="Seleccione tipo de contribuyente..." itemValue="null" />
-                                <f:selectItems value="#{contribuyentesBB.listaTipoPersoneria}" var="tipoPersoneria" itemValue="#{tipoPersoneria}" itemLabel="#{tipoPersoneria.descripcionTipoPersoneria}"/>
+                            <h:outputLabel for="stsTenencia" value="Tenencia" style="font-weight: bold;"/>
+                            <p:selectOneMenu id="stsTenencia" value="#{propietarioBB.propietario.stsTenencia}" required="true" style="width:125px">
+                                <f:selectItem itemLabel="Seleccione la tenencia..." itemValue="null" />
+                                <f:selectItems value="#{propietarioBB.listaTipoTenencia}" var="tipoTenencia" itemValue="#{tipoTenencia}" itemLabel="#{tipoTenencia.stsTenencia}"/>
                             </p:selectOneMenu>
-                            <p:message for="stsTipopersoneria" display="tooltip"/>
-                            
-                            
-                            
-                            
-                            
-                            
+                            <p:message for="stsTenencia" display="tooltip"/>
 
-                            <h:outputLabel value="Area propietario" style="font-weight: bold;"/>
-                            <p:inputNumber id="areaPropietario" value="#{propietarioBB.propietario.valAreapropietario}" size="50" label="Area propietario"/>
-                            <p:message for="areaPropietario" display="tooltip"/>
+                            <h:outputLabel for="stsTransferenciadominio" value="Traslado de dominio" style="font-weight: bold;"/>
+                            <p:selectOneMenu id="stsTransferenciadominio" value="#{propietarioBB.propietario.stsTransferenciadominio}" required="true" style="width:125px">
+                                <f:selectItem itemLabel="Seleccione el traslado..." itemValue="null" />
+                                <f:selectItems value="#{propietarioBB.listaTipoTraslacion}" var="tipoTraslacion" itemValue="#{tipoTraslacion}" itemLabel="#{tipoTraslacion.stsTransferenciadominio}"/>
+                            </p:selectOneMenu>
+                            <p:message for="stsTransferenciadominio" display="tooltip"/>
 
+                            <h:outputLabel for="stsSituacion" value="Situación Actual" style="font-weight: bold;"/>
+                            <p:selectOneMenu id="stsSituacion" value="#{propietarioBB.propietario.stsSituacion}" required="true" style="width:125px" >
+                                <f:selectItem itemLabel="Seleccione el situacion actual..." itemValue="null" />
+                                <f:selectItems value="#{propietarioBB.listaTipoSitActual}" var="tipoSitActual" itemValue="#{tipoSitActual}" itemLabel="#{tipoSitActual.stsSituacion}"/>
+                            </p:selectOneMenu>
+                            <p:message for="stsSituacion" display="tooltip"/>
 
-                            <h:outputLabel value="Valor propietario" style="font-weight: bold;"/>
-                            <p:inputNumber id="valPropietario" value="#{propietarioBB.propietario.valPropietario}" label="Valor propietario" size="50"/>
-                            <p:message for="valPropietario" display="tooltip"/>
+                            <h:outputLabel for="stsEscritura" value="Tiene Escritura" style="font-weight: bold;"/>
+                            <p:selectOneMenu id="stsEscritura" value="#{propietarioBB.propietario.stsEscritura}" required="true" style="width:125px" >
+                                <f:selectItems value="#{propietarioBB.listaTipoEscritura}" var="tipoEscritura" itemValue="#{tipoEscritura}" itemLabel="#{tipoEscritura.stsEscritura}"/>
+                            </p:selectOneMenu>
+                            <p:message for="stsEscritura" display="tooltip"/>
+
                         </h:panelGrid>
                         <h:panelGrid columns="4">
                             <p:commandButton actionListener="#{propietarioBB.actualizarPropietario()}" 

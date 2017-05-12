@@ -5,16 +5,17 @@
  */
 package ec.com.newvi.sic.enums;
 
+import ec.com.newvi.sic.util.ComunUtil;
+
 /**
  *
  * @author Andrés
  */
 public enum EnumSiNo {
-    
-    PROPIETARIO("PROPIETARIO"),
-    ARRENDATARIO("ARRENDATARIO"),
-    POSESIONARIO("POSESIONARIO"),
-    USUFRUCTUARIO("USUFRUCTUARIO");
+
+    SI("SI"),
+    NO("NO"),
+    ND("N/D");
 
     private final String stsEscritura;
 
@@ -24,6 +25,25 @@ public enum EnumSiNo {
 
     public String getStsEscritura() {
         return stsEscritura;
+    }
+
+    @Override
+    public String toString() {
+        return this.name();
+    }
+
+    public static EnumSiNo obtenerEscritura(String nombre) {
+        if (!ComunUtil.esCadenaVacia(nombre)) {
+            for (EnumSiNo escritura : EnumSiNo.values()) {
+                if (escritura.toString().contentEquals(nombre.trim())) {
+                    return escritura;
+                }
+            }
+            return EnumSiNo.ND;
+        } else {
+            return EnumSiNo.ND;
+        }
+
     }
 
 }

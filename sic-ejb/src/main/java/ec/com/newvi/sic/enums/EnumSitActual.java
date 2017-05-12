@@ -5,12 +5,14 @@
  */
 package ec.com.newvi.sic.enums;
 
+import ec.com.newvi.sic.util.ComunUtil;
+
 /**
  *
  * @author Andrés
  */
 public enum EnumSitActual {
-    
+
     PROPIETARIO("PROPIETARIO"),
     ARRENDATARIO("ARRENDATARIO"),
     POSESIONARIO("POSESIONARIO"),
@@ -24,6 +26,24 @@ public enum EnumSitActual {
 
     public String getStsSituacion() {
         return stsSituacion;
+    }
+
+    @Override
+    public String toString() {
+        return this.name();
+    }
+
+    public static EnumSitActual obtenerSituacionActual(String nombre) {
+        if (!ComunUtil.esCadenaVacia(nombre)) {
+            for (EnumSitActual situacionActual : EnumSitActual.values()) {
+                if (situacionActual.toString().contentEquals(nombre.trim())) {
+                    return situacionActual;
+                }
+            }
+            return EnumSitActual.ARRENDATARIO;
+        } else {
+            return EnumSitActual.ARRENDATARIO;
+        }
     }
 
 }

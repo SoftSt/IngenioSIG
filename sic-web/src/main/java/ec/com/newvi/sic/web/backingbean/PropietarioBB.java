@@ -7,6 +7,10 @@ package ec.com.newvi.sic.web.backingbean;
 
 import ec.com.newvi.sic.enums.EnumEstadoRegistro;
 import ec.com.newvi.sic.enums.EnumNewviExcepciones;
+import ec.com.newvi.sic.enums.EnumSiNo;
+import ec.com.newvi.sic.enums.EnumSitActual;
+import ec.com.newvi.sic.enums.EnumTenencia;
+import ec.com.newvi.sic.enums.EnumTraslacion;
 import ec.com.newvi.sic.modelo.Propietario;
 import ec.com.newvi.sic.util.ComunUtil;
 import ec.com.newvi.sic.util.excepciones.NewviExcepcion;
@@ -32,6 +36,10 @@ public class PropietarioBB extends AdminContribuyentesBB {
     private List<Propietario> listaPropietarios;
     private List<Propietario> listaPropietariosFiltrados;
     private EnumPantallaMantenimiento pantallaActual;
+    private EnumTenencia[] listaTipoTenencia;
+    private EnumTraslacion[] listaTipoTraslacion;
+    private EnumSitActual[] listaTipoSitActual;
+    private EnumSiNo[] listaTipoEscritura;
 
     public Propietario getPropietario() {
         return propietario;
@@ -65,10 +73,47 @@ public class PropietarioBB extends AdminContribuyentesBB {
         this.pantallaActual = pantallaActual;
     }
 
+    public EnumTenencia[] getListaTipoTenencia() {
+        return listaTipoTenencia;
+    }
+
+    public void setListaTipoTenencia(EnumTenencia[] listaTipoTenencia) {
+        this.listaTipoTenencia = listaTipoTenencia;
+    }
+
+    public EnumTraslacion[] getListaTipoTraslacion() {
+        return listaTipoTraslacion;
+    }
+
+    public void setListaTipoTraslacion(EnumTraslacion[] listaTipoTraslacion) {
+        this.listaTipoTraslacion = listaTipoTraslacion;
+    }
+
+    public EnumSitActual[] getListaTipoSitActual() {
+        return listaTipoSitActual;
+    }
+
+    public void setListaTipoSitActual(EnumSitActual[] listaTipoSitActual) {
+        this.listaTipoSitActual = listaTipoSitActual;
+    }
+
+    public EnumSiNo[] getListaTipoEscritura() {
+        return listaTipoEscritura;
+    }
+
+    public void setListaTipoEscritura(EnumSiNo[] listaTipoEscritura) {
+        this.listaTipoEscritura = listaTipoEscritura;
+    }
+    
+
     @PostConstruct
     public void init() {
         this.propietario = new Propietario();
         actualizarListadoPropietario();
+        listaTipoTenencia = EnumTenencia.values();
+        listaTipoTraslacion = EnumTraslacion.values();
+        listaTipoEscritura = EnumSiNo.values();
+        listaTipoSitActual = EnumSitActual.values();
         conmutarPantalla(EnumPantallaMantenimiento.PANTALLA_LISTADO);
         establecerTitulo(EnumEtiquetas.PROPIETARIO_LISTA_TITULO,
                 EnumEtiquetas.PROPIETARIO_LISTA_ICONO,

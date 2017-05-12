@@ -5,32 +5,52 @@
  */
 package ec.com.newvi.sic.enums;
 
+import ec.com.newvi.sic.util.ComunUtil;
+
 /**
  *
  * @author NEWVI
  */
-public enum EnumDominio {
-    
+public enum EnumTenencia {
+
     Particular("Particular"),
     Otros("Otros"),
     ND("N/D"),
     Cooperativa("Cooperativa"),
     Comunal("Comunal"),
     Asociacion("Asociacion"),
-    Compañia("Compañia"),
+    Compania("Compañia"),
     Municipal("Municipal"),
     Provincial("Provincial"),
     Estatal("Estatal"),
     Iglesia("Iglesia");
-    
+
     private final String stsTenencia;
 
     public String getStsTenencia() {
         return stsTenencia;
     }
 
-    private EnumDominio(String stsTenencia) {
+    private EnumTenencia(String stsTenencia) {
         this.stsTenencia = stsTenencia;
+    }
+
+    @Override
+    public String toString() {
+        return this.name();
+    }
+
+    public static EnumTenencia obtenerTenencia(String nombre) {
+        if (!ComunUtil.esCadenaVacia(nombre)) {
+            for (EnumTenencia tenencia : EnumTenencia.values()) {
+                if (tenencia.toString().contentEquals(nombre.trim())) {
+                    return tenencia;
+                }
+            }
+            return EnumTenencia.ND;
+        } else {
+            return EnumTenencia.ND;
+        }
     }
 
 }

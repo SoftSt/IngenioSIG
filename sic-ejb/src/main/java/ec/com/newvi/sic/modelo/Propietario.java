@@ -5,7 +5,7 @@
  */
 package ec.com.newvi.sic.modelo;
 
-import ec.com.newvi.sic.enums.EnumDominio;
+import ec.com.newvi.sic.enums.EnumTenencia;
 import ec.com.newvi.sic.enums.EnumEstadoRegistro;
 import ec.com.newvi.sic.enums.EnumSiNo;
 import ec.com.newvi.sic.enums.EnumSitActual;
@@ -13,7 +13,6 @@ import ec.com.newvi.sic.enums.EnumTraslacion;
 import ec.com.newvi.sic.util.ComunUtil;
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.Collection;
 import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -23,13 +22,11 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -51,15 +48,17 @@ public class Propietario implements Serializable {
     @ManyToOne
     private Predios codCatastral;
 
-    @Enumerated(EnumType.STRING)
+    
     @Column(name = "sts_tenencia")
-    private EnumDominio stsTenencia;
+    private String stsTenencia;
+    
     @Size(max = 50)
     @Column(name = "sts_tenenciaotro")
     private String stsTenenciaotro;
-    @Enumerated(EnumType.STRING)
+    
     @Column(name = "sts_transferenciadominio")
-    private EnumTraslacion stsTransferenciadominio;
+    private String stsTransferenciadominio;
+    
     @Column(name = "val_predioareaescritura")
     private BigDecimal valPredioAreaEscritura;
     @Size(max = 100)
@@ -80,12 +79,14 @@ public class Propietario implements Serializable {
     @Size(max = 50)
     @Column(name = "txt_informanterelacion")
     private String txtInformanteRelacion;
-    @Enumerated(EnumType.STRING)
+    
+    
     @Column(name = "sts_situacion")
-    private EnumSitActual stsSituacion;
-    @Enumerated(EnumType.STRING)
+    private String stsSituacion;
+    
     @Column(name = "sts_escritura")
-    private EnumSiNo stsEscritura;
+    private String stsEscritura;
+    
     @Size(max = 10)
     @Column(name = "fec_inscripcion")
     private String fecInscripcion;
@@ -136,12 +137,13 @@ public class Propietario implements Serializable {
         this.codCatastral = codCatastral;
     }
 
-    public EnumDominio getStsTenencia() {
-        return stsTenencia;
+    public EnumTenencia getStsTenencia() {
+        //return stsTenencia;.trim()
+        return EnumTenencia.obtenerTenencia(stsTenencia);
     }
 
-    public void setStsTenencia(EnumDominio stsTenencia) {
-        this.stsTenencia = stsTenencia;
+    public void setStsTenencia(EnumTenencia stsTenencia) {
+        this.stsTenencia = stsTenencia.toString();
     }
 
     public String getStsTenenciaotro() {
@@ -153,11 +155,11 @@ public class Propietario implements Serializable {
     }
 
     public EnumTraslacion getStsTransferenciadominio() {
-        return stsTransferenciadominio;
+        return EnumTraslacion.obtenerTraslacion(stsTransferenciadominio);
     }
 
     public void setStsTransferenciadominio(EnumTraslacion stsTransferenciadominio) {
-        this.stsTransferenciadominio = stsTransferenciadominio;
+        this.stsTransferenciadominio = stsTransferenciadominio.toString();
     }
 
     public BigDecimal getValPredioAreaEscritura() {
@@ -217,19 +219,21 @@ public class Propietario implements Serializable {
     }
 
     public EnumSitActual getStsSituacion() {
-        return stsSituacion;
+        //return stsSituacion;
+        return EnumSitActual.obtenerSituacionActual(stsSituacion);
     }
 
     public void setStsSituacion(EnumSitActual stsSituacion) {
-        this.stsSituacion = stsSituacion;
+        this.stsSituacion = stsSituacion.toString();
     }
 
     public EnumSiNo getStsEscritura() {
-        return stsEscritura;
+        //return stsEscritura;
+        return EnumSiNo.obtenerEscritura(stsEscritura);
     }
 
     public void setStsEscritura(EnumSiNo stsEscritura) {
-        this.stsEscritura = stsEscritura;
+        this.stsEscritura = stsEscritura.toString();
     }
 
     public String getFecInscripcion() {

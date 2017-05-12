@@ -5,36 +5,60 @@
  */
 package ec.com.newvi.sic.enums;
 
+import ec.com.newvi.sic.util.ComunUtil;
+
 /**
  *
  * @author Andrés
  */
 public enum EnumTraslacion {
-    
+
     ND("N/D"),
     COMPRAVENTA("COMPRA VENTA"),
     HERENCIA("HERENCIA"),
-    DONACIÓN("DONACIÓN"),
-    POSESIÓN("POSESIÓN"),
-    PREMUTA("Asociacion"),
-    ADJUDICACIÓN("ADJUDICACIÓN"),
+    DONACION("DONACIÓN"),
+    POSESION("POSESIÓN"),
+    PREMUTA("PREMUTA"),
+    ADJUDICACION("ADJUDICACIÓN"),
     REMATE("REMATE"),
-    PARTICIÓN("PARTICIÓN"),
-    COMPENSACIÓN("COMPENSACIÓN"),
+    PARTICION("PARTICIÓN"),
+    COMPENSACION("COMPENSACIÓN"),
     OTROS("OTROS"),
     PROPIETARIO("PROPIETARIO"),
     ARRENDATARIO("ARRENDATARIO"),
     USUFRUCTUARIO("USUFRUCTUARIO"),
-    PROTOCOLIZACIÓN("PROTOCOLIZACIÓN");
-    
+    PROTOCOLIZACION("PROTOCOLIZACIÓN");
+
     private final String stsTransferenciadominio;
 
     private EnumTraslacion(String stsTransferenciadominio) {
         this.stsTransferenciadominio = stsTransferenciadominio;
     }
 
+//    private EnumTraslacion() {
+//        this.stsTransferenciadominio = super.toString();
+//    }
     public String getStsTransferenciadominio() {
-        return stsTransferenciadominio;
+        return this.stsTransferenciadominio;
+    }
+
+    @Override
+    public String toString() {
+        return this.name();
+        //return stsTransferenciadominio;
+    }
+
+    public static EnumTraslacion obtenerTraslacion(String nombre) {
+        if (!ComunUtil.esCadenaVacia(nombre)) {
+            for (EnumTraslacion traslacion : EnumTraslacion.values()) {
+                if (traslacion.toString().contentEquals(nombre.trim())) {
+                    return traslacion;
+                }
+            }
+            return EnumTraslacion.ND;
+        } else {
+            return EnumTraslacion.ND;
+        }
     }
 
 }
