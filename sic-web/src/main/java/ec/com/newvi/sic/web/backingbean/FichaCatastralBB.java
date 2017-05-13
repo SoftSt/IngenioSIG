@@ -16,6 +16,7 @@ import ec.com.newvi.faces.visorgeografico.source.OSM;
 import ec.com.newvi.faces.visorgeografico.source.TileWMS;
 import ec.com.newvi.sic.enums.EnumEstadoRegistro;
 import ec.com.newvi.sic.enums.EnumNewviExcepciones;
+import ec.com.newvi.sic.modelo.Bloques;
 import ec.com.newvi.sic.modelo.Contribuyentes;
 import ec.com.newvi.sic.modelo.Predios;
 import ec.com.newvi.sic.modelo.Terreno;
@@ -49,6 +50,7 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
     private List<Predios> listaPrediosFiltrados;
     private EnumPantallaMantenimiento pantallaActual;
     private Map mapa;
+    private Bloques bloqueSeleccionado;
     //private Contribuyentes 
     
     private List<Terreno> caracTerreno;
@@ -92,6 +94,14 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
 
     public void setMapa(Map mapa) {
         this.mapa = mapa;
+    }
+
+    public Bloques getBloqueSeleccionado() {
+        return bloqueSeleccionado;
+    }
+
+    public void setBloqueSeleccionado(Bloques bloqueSeleccionado) {
+        this.bloqueSeleccionado = bloqueSeleccionado;
     }
     
     @PostConstruct

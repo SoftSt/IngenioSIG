@@ -90,7 +90,7 @@
                     <p:tooltip style="height:1px" />
                     <p:outputPanel id="opDetalleFichaCatastral">
 
-                        <p:tabView>
+                        <p:tabView dynamic="true" >
                             <p:tab title="Información del predio">
                                 <h:panelGrid>
                                     <br/>
@@ -399,50 +399,46 @@
                                     <p:separator />
 
                                     <p style="font-weight:bold;">Información de Bloques</p>
-                                    <p:dataTable id="listaInformacionBloques" var="informacionBloques" widgetVar="listaInformacionBloquesTabla"
-                                                 value="" rowKey="" filteredValue=""
+                                    <p:dataTable id="listaInformacionBloques" var="bloque" widgetVar="listaInformacionBloquesTabla"
+                                                 value="#{fichaCatastralBB.predio.bloques}" rowKey="#{bloque.codBloques}" selection="#{fichaCatastralBB.bloqueSeleccionado}"
                                                  paginator="true" rows="10" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" 
-                                                 rowsPerPageTemplate="10,15,20" 
+                                                 rowsPerPageTemplate="10,15,20"
                                                  emptyMessage="No se han encontrado resultados" 
                                                  paginatorPosition="bottom">
-
-
-                                        <p:column headerText="Bloque" filterBy="">
-                                            <h:outputText value="" />
+                                        <p:column selectionMode="single" style="width:16px;text-align:center"/>
+                                        <p:ajax event="rowSelectRadio" update="formularioFichaCatastral:j_idt52:listaInformacionPisos" />
+                                        <p:column headerText="Bloque">
+                                            <h:outputText value="#{bloque.nomBloque}" />
                                         </p:column>
-
-                                        <p:column headerText="Piso" sortBy="" filterBy="">
-                                            <h:outputText value="" />
+                                        <p:column headerText="No. Pisos">
+                                            <h:outputText value="#{bloque.valNropisos}" />
                                         </p:column>
                                     </p:dataTable>
 
                                     <p style="font-weight:bold;">Información de Pisos</p>
-                                    <p:dataTable id="listaInformacionPisos" var="informacionPisos" widgetVar="listaInformacionPisosTabla"
-                                                 value="" rowKey="" filteredValue=""
+                                    <p:dataTable id="listaInformacionPisos" var="piso" widgetVar="listaInformacionPisosTabla"
+                                                 value="#{fichaCatastralBB.bloqueSeleccionado.pisosCollection}" rowKey="#{piso.codPisos}" filteredValue=""
                                                  paginator="true" rows="10" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" 
                                                  rowsPerPageTemplate="10,15,20" 
                                                  emptyMessage="No se han encontrado resultados" 
                                                  paginatorPosition="bottom">
 
                                         <p:column headerText="Piso" filterBy="">
-                                            <h:outputText value="" />
+                                            <h:outputText value="#{piso.valPisonumero}" />
                                         </p:column>
 
                                         <p:column headerText="Area" filterBy="">
-                                            <h:outputText value="" />
+                                            <h:outputText value="#{piso.valAreapiso}" />
                                         </p:column>
 
                                         <p:column headerText="Edad contrucción" filterBy="">
-                                            <h:outputText value="" />
+                                            <h:outputText value="#{piso.valAnioconstruccion}" />
                                         </p:column>
 
                                         <p:column headerText="Edad reparación" filterBy="">
-                                            <h:outputText value="" />
+                                            <h:outputText value="#{piso.valAnioreparacion}" />
                                         </p:column>
 
-                                        <p:column headerText="" filterBy="">
-                                            <h:outputText value="" />
-                                        </p:column>
                                     </p:dataTable>
 
                                     <p style="font-weight:bold;">Detalle de construcción</p>
