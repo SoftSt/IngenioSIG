@@ -330,7 +330,7 @@ public class Propietario implements Serializable {
     }
     
     public Boolean esPropietarioValido() {
-        return (!ComunUtil.esNulo(this.propietario));
+        return (!ComunUtil.esNulo(this.proEstado));
     }
 
 }

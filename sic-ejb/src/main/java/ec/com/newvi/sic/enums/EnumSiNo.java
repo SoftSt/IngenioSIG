@@ -29,7 +29,7 @@ public enum EnumSiNo {
 
     @Override
     public String toString() {
-        return this.name();
+        return this.stsEscritura;
     }
 
     public static EnumSiNo obtenerEscritura(String nombre) {

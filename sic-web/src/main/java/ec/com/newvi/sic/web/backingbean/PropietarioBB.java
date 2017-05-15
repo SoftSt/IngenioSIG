@@ -137,7 +137,7 @@ public class PropietarioBB extends AdminContribuyentesBB {
         try {
             contribuyentesServicio.generarNuevoPropietario(propietario, sesionBean.obtenerSesionDto());
             actualizarListadoPropietario();
-            MensajesFaces.mensajeInformacion(EnumNewviExcepciones.INF340.presentarMensaje());
+            MensajesFaces.mensajeInformacion(EnumNewviExcepciones.INF348.presentarMensaje());
         } catch (NewviExcepcion e) {
             LoggerNewvi.getLogNewvi(this.getClass()).error(e, sesionBean.obtenerSesionDto());
             MensajesFaces.mensajeError(e.getMessage());
@@ -154,7 +154,7 @@ public class PropietarioBB extends AdminContribuyentesBB {
             try {
                 contribuyentesServicio.actualizarPropietario(propietario, sesionBean.obtenerSesionDto());
                 actualizarListadoPropietario();
-                MensajesFaces.mensajeInformacion(EnumNewviExcepciones.INF341.presentarMensaje());
+                MensajesFaces.mensajeInformacion(EnumNewviExcepciones.INF349.presentarMensaje());
             } catch (NewviExcepcion e) {
                 LoggerNewvi.getLogNewvi(this.getClass()).error(e, sesionBean.obtenerSesionDto());
                 MensajesFaces.mensajeError(e.getMessage());
@@ -174,7 +174,7 @@ public class PropietarioBB extends AdminContribuyentesBB {
             this.seleccionarPropietarioPorCodigo(idPropietario);
             if (!ComunUtil.esNulo(propietario)) {
                 contribuyentesServicio.eliminarPropietario(propietario, sesionBean.obtenerSesionDto());
-                MensajesFaces.mensajeInformacion(EnumNewviExcepciones.INF342.presentarMensaje());
+                MensajesFaces.mensajeInformacion(EnumNewviExcepciones.INF350.presentarMensaje());
                 actualizarListadoPropietario();
 
             } else {

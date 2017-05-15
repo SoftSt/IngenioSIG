@@ -45,19 +45,19 @@
                         </p:column>
                         
                         <p:column headerText="Tenencia" sortBy="#{propietario.stsTenencia}">
-                            <h:outputText value="#{propietario.stsTenencia}" />
+                            <h:outputText value="#{propietario.stsTenencia.toString()}" />
                         </p:column>
 
                         <p:column headerText="Traslación de dominio" sortBy="#{propietario.stsTransferenciadominio}" >
-                            <h:outputText value="#{propietario.stsTransferenciadominio}" />
+                            <h:outputText value="#{propietario.stsTransferenciadominio.toString()}" />
                         </p:column>
 
                         <p:column headerText="Situación Actual" sortBy="#{propietario.stsSituacion}">
-                            <h:outputText value="#{propietario.stsSituacion}" />
+                            <h:outputText value="#{propietario.stsSituacion.toString()}" />
                         </p:column>
 
                         <p:column headerText="Escritura" sortBy="#{propietario.stsEscritura}">
-                            <h:outputText value="#{propietario.stsEscritura}" />
+                            <h:outputText value="#{propietario.stsEscritura.toString()}" />
                         </p:column>
 
                         <p:column width="80">

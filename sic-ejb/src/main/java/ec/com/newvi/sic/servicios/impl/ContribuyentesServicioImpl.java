@@ -110,7 +110,7 @@ public class ContribuyentesServicioImpl implements ContribuyentesServicio{
         // Validar que los datos no sean incorrectos
         LoggerNewvi.getLogNewvi(this.getClass()).debug("Validando propietario...", sesion);
         if (!nuevoPropietario.esPropietarioValido()) {
-            throw new NewviExcepcion(EnumNewviExcepciones.ERR329);
+            throw new NewviExcepcion(EnumNewviExcepciones.ERR347);
         }
         // Crear el propietario
         LoggerNewvi.getLogNewvi(this.getClass()).debug("Creando propietario...", sesion);
@@ -132,7 +132,7 @@ public class ContribuyentesServicioImpl implements ContribuyentesServicio{
         // Validar que los datos no sean incorrectos
         LoggerNewvi.getLogNewvi(this.getClass()).debug("Validando propietario...", sesion);
         if (!propietario.esPropietarioValido()) {
-            throw new NewviExcepcion(EnumNewviExcepciones.ERR329);
+            throw new NewviExcepcion(EnumNewviExcepciones.ERR347);
         }
         // Editar la propietario
         LoggerNewvi.getLogNewvi(this.getClass()).debug("Editando propietario...", sesion);

@@ -44,7 +44,7 @@ public enum EnumTraslacion {
 
     @Override
     public String toString() {
-        return this.name();
+        return this.stsTransferenciadominio;
         //return stsTransferenciadominio;
     }
 

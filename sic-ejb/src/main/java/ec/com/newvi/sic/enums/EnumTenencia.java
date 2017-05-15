@@ -37,7 +37,7 @@ public enum EnumTenencia {
 
     @Override
     public String toString() {
-        return this.name();
+        return this.stsTenencia;
     }
 
     public static EnumTenencia obtenerTenencia(String nombre) {

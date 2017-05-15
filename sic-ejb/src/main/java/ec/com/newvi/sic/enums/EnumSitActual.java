@@ -30,7 +30,7 @@ public enum EnumSitActual {
 
     @Override
     public String toString() {
-        return this.name();
+        return this.stsSituacion;
     }
 
     public static EnumSitActual obtenerSituacionActual(String nombre) {
