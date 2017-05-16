@@ -9,12 +9,15 @@ import ec.com.newvi.sic.enums.EnumEstadoRegistro;
 import ec.com.newvi.sic.util.ComunUtil;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Collection;
 import java.util.Date;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -22,6 +25,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -94,6 +98,9 @@ public class Pisos implements Serializable {
     @JoinColumn(name = "cod_bloques", referencedColumnName = "cod_bloques")
     @ManyToOne
     private Bloques codBloques;
+    
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "piso", fetch = FetchType.LAZY)
+    private Collection<PisoDetalle> detalles;
 
     public Pisos() {
     }
@@ -270,6 +277,14 @@ public class Pisos implements Serializable {
         this.codBloques = codBloques;
     }
 
+    public Collection<PisoDetalle> getDetalles() {
+        return detalles;
+    }
+
+    public void setDetalles(Collection<PisoDetalle> detalles) {
+        this.detalles = detalles;
+    }
+    
     @Override
     public int hashCode() {
         int hash = 0;
