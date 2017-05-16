@@ -13,7 +13,14 @@ import ec.com.newvi.sic.util.ComunUtil;
  */
 public enum EnumSubGrupoServicios {
     ALCANTARILLADO("ALCANTARILLADO"),
-    CERRAMIENTO("VIAS");
+    VIAS("VÍAS"),
+    OTROS("OTROS"),
+    ABASTECIMIENTO_DE_AGUA("ABASTECIMIENTO DE AGUA"),
+    INSTALACIONES_DEPORTIVAS("INSTALACIONES DEPORTIVAS"),
+    ENERGIA_ELECTRICA("ENERGÍA ELÉCTRICA"),
+    USO("USO"),
+    MATERIAL("MATERIAL"),
+    CERRAMIENTO("CERRAMIENTO");
 
     private final String stsSubgrupo;
 
@@ -37,9 +44,9 @@ public enum EnumSubGrupoServicios {
                     return subGrupoServicio;
                 }
             }
-            return EnumSubGrupoServicios.CERRAMIENTO;
+            return EnumSubGrupoServicios.OTROS;
         } else {
-            return EnumSubGrupoServicios.CERRAMIENTO;
+            return EnumSubGrupoServicios.OTROS;
         }
     }
 }
