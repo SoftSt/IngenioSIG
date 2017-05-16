@@ -147,8 +147,9 @@ public class Predios implements Serializable {
     @Column(name = "aud_mod_ip")
     private String audModIp;    
     
-    @OneToMany(mappedBy = "codCatastral")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "codCatastral", fetch = FetchType.LAZY)
     private Collection<Terreno> caracteristicasTerreno;
+    
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "codCatastral", fetch = FetchType.LAZY)
     private Collection<Bloques> bloques;
     

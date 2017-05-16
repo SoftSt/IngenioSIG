@@ -342,28 +342,24 @@
                                     <div style="font-size:1.2em;font-weight:bold;">Descripción del terreno</div>
                                     <p:separator />
                                     <p:dataTable id="listaDescripcionTerreno" var="descripcionTerreno" widgetVar="listaDescripcionTerrenoTabla"
-                                                 value="" rowKey="" filteredValue=""
+                                                 value="#{fichaCatastralBB.predio.caracteristicasTerreno}" rowKey="#{descripcionTerreno.codTerrenodetalle}" 
                                                  paginator="true" rows="10" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" 
                                                  rowsPerPageTemplate="10,15,20" 
                                                  emptyMessage="No se han encontrado resultados" 
                                                  paginatorPosition="bottom">
 
-
-                                        <p:column headerText="Código" filterBy="">
-                                            <h:outputText value="" />
+                                        <p:column headerText="Grupo" sortBy="#{descripcionTerreno.stsGrupo}">
+                                            <h:outputText value="#{descripcionTerreno.stsGrupo}" />
                                         </p:column>
 
-                                        <p:column headerText="Grupo" sortBy="" filterBy="">
-                                            <h:outputText value="" />
+                                        <p:column headerText="SubGrupo" sortBy="#{descripcionTerreno.stsSubgrupo}">
+                                            <h:outputText value="#{descripcionTerreno.stsSubgrupo}" />
+                                        </p:column>
+                                        
+                                        <p:column headerText="Estado del terreno" sortBy="#{descripcionTerreno.stsSubgrupo}">
+                                            <h:outputText value="#{descripcionTerreno.stsDescripcion}" />
                                         </p:column>
 
-                                        <p:column headerText="Estado del terreno" filterBy="">
-                                            <h:outputText value="" />
-                                        </p:column>
-
-                                        <p:column headerText="Estado" filterBy="">
-                                            <h:outputText value="" />
-                                        </p:column>
                                     </p:dataTable>
 
                                     <br/>
