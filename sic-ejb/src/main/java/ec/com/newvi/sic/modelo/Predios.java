@@ -151,6 +151,9 @@ public class Predios implements Serializable {
     private Collection<Terreno> caracteristicasTerreno;
     
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "codCatastral", fetch = FetchType.LAZY)
+    private Collection<Servicios> servicios;
+    
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "codCatastral", fetch = FetchType.LAZY)
     private Collection<Bloques> bloques;
     
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "codCatastral", fetch = FetchType.LAZY)
@@ -467,6 +470,14 @@ public class Predios implements Serializable {
         this.caracteristicasTerreno = caracteristicasTerreno;
     }
 
+    public Collection<Servicios> getServicios() {
+        return servicios;
+    }
+
+    public void setServicios(Collection<Servicios> servicios) {
+        this.servicios = servicios;
+    }
+    
     public Collection<Bloques> getBloques() {
         return bloques;
     }

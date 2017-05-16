@@ -348,15 +348,11 @@
                                                  emptyMessage="No se han encontrado resultados" 
                                                  paginatorPosition="bottom">
 
-                                        <p:column headerText="Grupo" sortBy="#{descripcionTerreno.stsGrupo}">
-                                            <h:outputText value="#{descripcionTerreno.stsGrupo}" />
-                                        </p:column>
-
-                                        <p:column headerText="SubGrupo" sortBy="#{descripcionTerreno.stsSubgrupo}">
+                                        <p:column headerText="Característica" sortBy="#{descripcionTerreno.stsSubgrupo}">
                                             <h:outputText value="#{descripcionTerreno.stsSubgrupo}" />
                                         </p:column>
                                         
-                                        <p:column headerText="Estado del terreno" sortBy="#{descripcionTerreno.stsSubgrupo}">
+                                        <p:column headerText="Descripción" sortBy="#{descripcionTerreno.stsDescripcion}">
                                             <h:outputText value="#{descripcionTerreno.stsDescripcion}" />
                                         </p:column>
 
@@ -365,28 +361,36 @@
                                     <br/>
                                     <div style="font-size:1.2em;font-weight:bold;">Infraestructura y Servicios</div>
                                     <p:separator />
-                                    <p:dataTable id="listaServiciosBasicos" var="seviciosBasicos" widgetVar="listaSeviciosBasicosTabla"
-                                                 value="" rowKey="" filteredValue=""
+                                    <p:dataTable id="listaServiciosBasicos" var="servicios" widgetVar="listaSeviciosBasicosTabla"
+                                                 value="#{fichaCatastralBB.predio.servicios}" rowKey="#{servicios.codServicios}" filteredValue=""
                                                  paginator="true" rows="10" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" 
                                                  rowsPerPageTemplate="10,15,20" 
                                                  emptyMessage="No se han encontrado resultados" 
                                                  paginatorPosition="bottom">
 
 
-                                        <p:column headerText="Código" filterBy="">
-                                            <h:outputText value="" />
+                                        <p:column headerText="Elemento" sortBy="#{servicios.stsGrupo}">
+                                            <h:outputText value="#{servicios.stsGrupo}" />
                                         </p:column>
 
-                                        <p:column headerText="Grupo" sortBy="" filterBy="">
-                                            <h:outputText value="" />
+                                        <p:column headerText="Característica" sortBy="#{servicios.stsSubGrupo}">
+                                            <h:outputText value="#{servicios.stsSubGrupo}" />
                                         </p:column>
 
-                                        <p:column headerText="Servicios" filterBy="">
-                                            <h:outputText value="" />
+                                        <p:column headerText="Descripción" sortBy="#{servicios.stsDescripcion}">
+                                            <h:outputText value="#{servicios.stsDescripcion}" />
                                         </p:column>
 
-                                        <p:column headerText="Medidor" filterBy="">
-                                            <h:outputText value="" />
+                                        <p:column headerText="Medidor" sortBy="#{servicios.nomMedidor}">
+                                            <h:outputText value="#{servicios.nomMedidor}" />
+                                        </p:column>
+                                        
+                                        <p:column headerText="Estado" sortBy="#{servicios.stsEstado}">
+                                            <h:outputText value="#{servicios.stsEstado}" />
+                                        </p:column>
+                                        
+                                        <p:column headerText="# Medidores" sortBy="#{servicios.numMedidores}">
+                                            <h:outputText value="#{servicios.numMedidores}" />
                                         </p:column>
                                     </p:dataTable>
 
