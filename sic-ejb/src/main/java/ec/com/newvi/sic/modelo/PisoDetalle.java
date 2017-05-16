@@ -5,12 +5,15 @@
  */
 package ec.com.newvi.sic.modelo;
 
+import ec.com.newvi.sic.enums.EnumEstadoRegistro;
 import ec.com.newvi.sic.util.ComunUtil;
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -46,6 +49,26 @@ public class PisoDetalle implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "sts_codigo", referencedColumnName = "domi_codigo")
     private Dominios dominio;
+    
+    @Size(max = 100)
+    @Column(name = "sts_grupo")
+    private String grupo;
+    
+    @Size(max = 100)
+    @Column(name = "sts_subgrupo")
+    private String subgrupo;
+    
+    @Size(max = 100)
+    @Column(name = "sts_descripcion")
+    private String descripcion;
+    
+    @Size(max = 10)
+    @Column(name = "sts_estado")
+    private String estadoDetalle;
+    
+    @Enumerated(EnumType.STRING)
+    @Column(name = "pid_estado")
+    private EnumEstadoRegistro estado;
     
     @Size(max = 50)
     @Column(name = "aud_ing_usu")
@@ -93,6 +116,46 @@ public class PisoDetalle implements Serializable {
 
     public void setDominio(Dominios dominio) {
         this.dominio = dominio;
+    }
+
+    public String getGrupo() {
+        return grupo;
+    }
+
+    public void setGrupo(String grupo) {
+        this.grupo = grupo;
+    }
+
+    public String getSubgrupo() {
+        return subgrupo;
+    }
+
+    public void setSubgrupo(String subgrupo) {
+        this.subgrupo = subgrupo;
+    }
+
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
+
+    public String getEstadoDetalle() {
+        return estadoDetalle;
+    }
+
+    public void setEstadoDetalle(String estadoDetalle) {
+        this.estadoDetalle = estadoDetalle;
+    }
+
+    public EnumEstadoRegistro getEstado() {
+        return estado;
+    }
+
+    public void setEstado(EnumEstadoRegistro estado) {
+        this.estado = estado;
     }
 
     public String getAudIngUsu() {

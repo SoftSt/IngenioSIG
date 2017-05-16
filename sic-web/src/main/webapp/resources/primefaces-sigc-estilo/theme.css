@@ -177,6 +177,7 @@ a.ui-button:active,
     font-weight: normal;
     color: #fff;
 }
+
 .ui-icon-background,
 .ui-state-active .ui-icon-background {
     border: #1976D2;
@@ -245,6 +246,18 @@ a.ui-button:active,
 }
 .ui-state-disabled .ui-icon {
     filter:Alpha(Opacity=35); /* support: IE8 - See #6059 */
+}
+
+button:focus, 
+li:focus, 
+a:focus, 
+a, 
+.ui-button:focus, 
+.ui-icon, 
+.ui-state-default,
+.ui-state-active, 
+.ui-state-focus {
+    outline: none !important;
 }
 
 /* Icons
@@ -586,6 +599,18 @@ a.ui-button:active,
     color: #575757;
 }
 
+.ui-datatable .ui-sortable-column-icon, .ui-treetable .ui-sortable-column-icon {
+    margin: 0 0 0 0.5em;
+}
+
+.ui-datatable .ui-column-filter {
+    margin: 0 0.5em 0 0;
+}
+
+.ui-datatable thead th {
+    text-align: left;
+}
+
 .ui-paginator {
     height: 56px !important;
     padding-top: 30px !important;
@@ -713,3 +738,16 @@ a.ui-button:active,
 
 .ui-panelmenu .ui-panelmenu-header .ui-icon-triangle-1-e:before { background: none; font-family: FontAwesome; content: "\f078"; }
 .ui-panelmenu .ui-panelmenu-header .ui-icon-triangle-1-s:before { background: none; font-family: FontAwesome; content: "\f077"; }
+
+/* ** ** ** ** ** ** ** ** ** ** */
+/* ** Estilos personalizados ** */
+/* ** ** ** ** ** ** ** ** ** ** */
+
+/* Columnas de tablas */
+.ui-datatable thead .column-title-left {
+    text-align: left;
+}
+
+.ui-datatable thead .column-title-right {
+    text-align: right;
+}

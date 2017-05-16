@@ -405,64 +405,53 @@
                                         <p:column style="width:16px">
                                             <p:rowToggler />
                                         </p:column>
-                                        <p:column headerText="Bloque">
+                                        <p:column headerText="Bloque" class="column-title-left">
                                             <h:outputText value="#{bloque.nomBloque}" />
                                         </p:column>
-                                        <p:column headerText="No. Pisos">
+                                        <p:column headerText="No. Pisos" class="column-title-left">
                                             <h:outputText value="#{bloque.valNropisos}" />
                                         </p:column>
                                         <p:rowExpansion>
                                             <p style="font-weight:bold;">Información de Pisos</p>
                                             <p:dataTable id="listaInformacionPisos" var="piso" widgetVar="listaInformacionPisosTabla"
-                                                         value="#{bloque.pisosCollection}" rowKey="#{piso.codPisos}" filteredValue=""
+                                                         value="#{bloque.pisosCollection}" rowKey="#{piso.codPisos}"
                                                          emptyMessage="No se han encontrado resultados">
 
                                                 <p:column style="width:16px">
                                                     <p:rowToggler />
                                                 </p:column>
-                                                <p:column headerText="Piso" filterBy="">
+                                                <p:column headerText="Piso" class="column-title-left" sortBy="#{piso.valPisonumero}">
                                                     <h:outputText value="#{piso.valPisonumero}" />
                                                 </p:column>
 
-                                                <p:column headerText="Área (m2)" filterBy="">
+                                                <p:column headerText="Área (m2)" class="column-title-left" sortBy="#{piso.valAreapiso}">
                                                     <h:outputText value="#{piso.valAreapiso}" />
                                                 </p:column>
 
-                                                <p:column headerText="Edad construcción" filterBy="">
+                                                <p:column headerText="Edad construcción" class="column-title-left" sortBy="#{piso.valAnioconstruccion}">
                                                     <h:outputText value="#{piso.valAnioconstruccion}" />
                                                 </p:column>
 
-                                                <p:column headerText="Edad reparación" filterBy="">
+                                                <p:column headerText="Edad reparación" class="column-title-left" sortBy="#{piso.valAnioreparacion}">
                                                     <h:outputText value="#{piso.valAnioreparacion}" />
                                                 </p:column>
                                                 <p:rowExpansion>
 
                                                     <p style="font-weight:bold;">Detalle de construcción</p>
-                                                    <p:dataTable id="listaElementosConstruccion" var="elementosConstruccion" widgetVar="listaElementosConstruccionTabla"
+                                                    <p:dataTable id="listaElementosConstruccion" var="elementosConstruccion" scrollable="true" scrollHeight="250" widgetVar="listaElementosConstruccionTabla"
                                                                  value="#{piso.detalles}" rowKey="#{elementosConstruccion.codPisoDetalle}" filteredValue=""
-                                                                 paginator="true" rows="10" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" 
-                                                                 rowsPerPageTemplate="10,15,20" 
-                                                                 emptyMessage="No se han encontrado resultados" 
-                                                                 paginatorPosition="bottom">
+                                                                 emptyMessage="No se han encontrado resultados">
 
-                                                        <p:column headerText="Código" filterBy="">
-                                                            <h:outputText value="#{elementosConstruccion.codPisoDetalle}" />
+                                                        <p:column headerText="Elemento de construcción" class="column-title-left" sortBy="#{elementosConstruccion.subgrupo}">
+                                                            <h:outputText value="#{elementosConstruccion.subgrupo}" />
                                                         </p:column>
 
-                                                        <p:column headerText="Grupo" filterBy="">
-                                                            <h:outputText value="#{elementosConstruccion.dominio}" />
+                                                        <p:column headerText="Material de construcción" class="column-title-left" sortBy="#{elementosConstruccion.descripcion}">
+                                                            <h:outputText value="#{elementosConstruccion.descripcion}" />
                                                         </p:column>
 
-                                                        <p:column headerText="SubGrupo" filterBy="">
-                                                            <h:outputText value="#{elementosConstruccion.dominio.domiGrupos}" />
-                                                        </p:column>
-
-                                                        <p:column headerText="Material de construcción" filterBy="">
-                                                            <h:outputText value="#{elementosConstruccion.dominio.domiGrupos}" />
-                                                        </p:column>
-
-                                                        <p:column headerText="Estado" filterBy="">
-                                                            <h:outputText value="#{elementosConstruccion.dominio.domiDescripcion}" />
+                                                        <p:column headerText="Estado" class="column-title-left" sortBy="#{elementosConstruccion.estadoDetalle}">
+                                                            <h:outputText value="#{elementosConstruccion.estadoDetalle}" />
                                                         </p:column>
                                                     </p:dataTable>
                                                 </p:rowExpansion>
