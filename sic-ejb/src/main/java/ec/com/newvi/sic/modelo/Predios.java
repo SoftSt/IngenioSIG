@@ -152,6 +152,9 @@ public class Predios implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "codCatastral", fetch = FetchType.LAZY)
     private Collection<Bloques> bloques;
     
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "codCatastral", fetch = FetchType.LAZY)
+    private Collection<Propietario> propietario;
+    
     public Predios() {
     }
 
@@ -469,6 +472,14 @@ public class Predios implements Serializable {
 
     public void setBloques(Collection<Bloques> bloques) {
         this.bloques = bloques;
+    }
+
+    public Collection<Propietario> getPropietario() {
+        return propietario;
+    }
+
+    public void setPropietario(Collection<Propietario> propietario) {
+        this.propietario = propietario;
     }
 
     @Override
