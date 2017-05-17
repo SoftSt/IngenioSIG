@@ -76,7 +76,7 @@ public class FichaCatastralDto {
 
     private Propietario obtenerPropietarioDesconocido() {
         Propietario propietarioDesconocido = new Propietario();
-        propietarioDesconocido.setPropietario(contribuyentePropietario);
+        propietarioDesconocido.setPropietario(obtenerContribuyenteDesconocido());
         return propietarioDesconocido;
     }
 
