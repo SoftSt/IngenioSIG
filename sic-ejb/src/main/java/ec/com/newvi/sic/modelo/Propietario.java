@@ -13,15 +13,19 @@ import ec.com.newvi.sic.enums.EnumTraslacion;
 import ec.com.newvi.sic.util.ComunUtil;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Collection;
 import java.util.Date;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -42,12 +46,15 @@ public class Propietario implements Serializable {
     @SequenceGenerator(name = "PROPIETARIO_CODIGO_GENERATOR", initialValue = 1, allocationSize = 1, sequenceName = "cat_ciu_propietario_cod_propietarios_seq", schema = "public")
     @GeneratedValue(generator = "PROPIETARIO_CODIGO_GENERATOR")
     @Column(name = "cod_propietarios")
-    private Integer propietario;
+    private Integer codPropietario;
 
     @JoinColumn(name = "cod_catastral", referencedColumnName = "cod_catastral")
     @ManyToOne
     private Predios codCatastral;
-
+    
+    @JoinColumn(name = "cod_personeria", referencedColumnName = "cod_personeria")
+    @ManyToOne
+    private Contribuyentes propietario;
     
     @Column(name = "sts_tenencia")
     private String stsTenencia;
@@ -120,13 +127,14 @@ public class Propietario implements Serializable {
     @Size(max = 30)
     @Column(name = "aud_mod_ip")
     private String audModIp;
+    
 
-    public Integer getPropietario() {
-        return propietario;
+    public Integer getCodPropietario() {
+        return codPropietario;
     }
 
-    public void setPropietario(Integer propietario) {
-        this.propietario = propietario;
+    public void setCodPropietario(Integer codPropietario) {
+        this.codPropietario = codPropietario;
     }
 
     public Predios getCodCatastral() {
@@ -135,6 +143,14 @@ public class Propietario implements Serializable {
 
     public void setCodCatastral(Predios codCatastral) {
         this.codCatastral = codCatastral;
+    }
+
+    public Contribuyentes getPropietario() {
+        return propietario;
+    }
+
+    public void setPropietario(Contribuyentes propietario) {
+        this.propietario = propietario;
     }
 
     public EnumTenencia getStsTenencia() {
@@ -326,7 +342,7 @@ public class Propietario implements Serializable {
     
     @Override
     public String toString() {
-        return "ec.com.newvi.sic.modelo.Propietario[ cod_propietarios=" + propietario + " ]";
+        return "ec.com.newvi.sic.modelo.Propietario[ cod_propietarios=" + codPropietario + " ]";
     }
     
     public Boolean esPropietarioValido() {

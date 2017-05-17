@@ -11,14 +11,13 @@ import ec.com.newvi.faces.visorgeografico.ProjectionCode;
 import ec.com.newvi.faces.visorgeografico.View;
 import ec.com.newvi.faces.visorgeografico.layer.Layer;
 import ec.com.newvi.faces.visorgeografico.layer.Tile;
-import ec.com.newvi.faces.visorgeografico.source.BingMaps;
 import ec.com.newvi.faces.visorgeografico.source.OSM;
 import ec.com.newvi.faces.visorgeografico.source.TileWMS;
 import ec.com.newvi.sic.enums.EnumEstadoRegistro;
 import ec.com.newvi.sic.enums.EnumNewviExcepciones;
 import ec.com.newvi.sic.modelo.Bloques;
-import ec.com.newvi.sic.modelo.Contribuyentes;
 import ec.com.newvi.sic.modelo.Predios;
+import ec.com.newvi.sic.modelo.Propietario;
 import ec.com.newvi.sic.modelo.Terreno;
 import ec.com.newvi.sic.util.ComunUtil;
 import ec.com.newvi.sic.util.excepciones.NewviExcepcion;
@@ -46,15 +45,15 @@ import javax.faces.context.FacesContext;
 public class FichaCatastralBB extends AdminFichaCatastralBB {
 
     private Predios predio;
+    private Propietario propietarioActual;
     private List<Predios> listaPredios;
     private List<Predios> listaPrediosFiltrados;
     private EnumPantallaMantenimiento pantallaActual;
     private Map mapa;
     private Bloques bloqueSeleccionado;
     //private Contribuyentes 
-    
+
     private List<Terreno> caracTerreno;
-    
 
     public Predios getPredio() {
         return predio;
@@ -103,7 +102,15 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
     public void setBloqueSeleccionado(Bloques bloqueSeleccionado) {
         this.bloqueSeleccionado = bloqueSeleccionado;
     }
-    
+
+    public Propietario getPropietarioActual() {
+        return propietarioActual;
+    }
+
+    public void setPropietarioActual(Propietario propietarioActual) {
+        this.propietarioActual = propietarioActual;
+    }
+
     @PostConstruct
     public void init() {
         this.predio = new Predios();
@@ -112,25 +119,24 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
         establecerTitulo(EnumEtiquetas.FICHA_CATASTRAL_LISTA_TITULO,
                 EnumEtiquetas.FICHA_CATASTRAL_LISTA_ICONO,
                 EnumEtiquetas.FICHA_CATASTRAL_LISTA_DESCRIPCION);
-        
+
         mapa = new Map();
         View vistaMapa = new View();
         vistaMapa.setCenter(new Coordinate(BigDecimal.valueOf(-79), BigDecimal.valueOf(-1.2)));
         vistaMapa.setProjection(ProjectionCode.EPSG_4326);
         vistaMapa.setZoom(BigDecimal.valueOf(11));
-        
+
         /*Layer capaBingMaps = new Tile();
         BingMaps bingMaps = new BingMaps();
         bingMaps.setImagerySet(BingMaps.Style.AERIAL);
         bingMaps.setKey("AqFjj-M8JAhbTyEGSjJIY2pnV6dcbYhAYIw-UKyD363yXDWZekrkz0R65obxSnzb");
         capaBingMaps.setSource(bingMaps);
         mapa.getLayers().add(capaBingMaps);*/
-        
         Layer capaOSM = new Tile();
         capaOSM.setOpacity(BigDecimal.valueOf(1));
         capaOSM.setSource(new OSM());
         mapa.getLayers().add(capaOSM);
-        
+
         Layer capaWMS = new Tile();
         TileWMS fuenteWMS = new TileWMS();
         fuenteWMS.setUrl("http://192.168.100.110:8080/geoserver/wms");
@@ -138,15 +144,16 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
         fuenteWMS.setServerType(TileWMS.ServerType.GEOSERVER);
         capaWMS.setSource(fuenteWMS);
         mapa.getLayers().add(capaWMS);
-        
-        /**Layer capaWFS = new Tile();
-        TileWMS fuenteWMS = new TileWMS();
-        fuenteWMS.setUrl("http://192.168.100.110:8080/geoserver/wms");
-        fuenteWMS.setParams(fuenteWMS.new Params("nwi_catastro:he002_lote", Boolean.FALSE));
-        fuenteWMS.setServerType(TileWMS.ServerType.GEOSERVER);
-        capaWMS.setSource(fuenteWMS);
-        mapa.getLayers().add(capaWMS);*/
-        
+
+        /**
+         * Layer capaWFS = new Tile(); TileWMS fuenteWMS = new TileWMS();
+         * fuenteWMS.setUrl("http://192.168.100.110:8080/geoserver/wms");
+         * fuenteWMS.setParams(fuenteWMS.new Params("nwi_catastro:he002_lote",
+         * Boolean.FALSE));
+         * fuenteWMS.setServerType(TileWMS.ServerType.GEOSERVER);
+         * capaWMS.setSource(fuenteWMS);
+        mapa.getLayers().add(capaWMS);
+         */
         mapa.setView(vistaMapa);
     }
 
@@ -240,6 +247,17 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
 
     private void seleccionarPredioPorCodigo(Integer idPredio) throws NewviExcepcion {
         this.predio = catastroServicio.seleccionarPredio(idPredio);
+        this.propietarioActual = contribuyentesServicio.consultarUltimoPropietario(this.predio);
+    }
+
+    public Propietario obtenerPropietario(Predios predioConsulta) {
+        try {
+            return contribuyentesServicio.consultarUltimoPropietario(predioConsulta);
+        } catch (NewviExcepcion e) {
+            LoggerNewvi.getLogNewvi(this.getClass()).error(e, sesionBean.obtenerSesionDto());
+            MensajesFaces.mensajeError(e.getMessage());
+            return null;
+        }
     }
 
     public void cancelarEdicion() {
@@ -270,8 +288,9 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
             throw ValidacionUtils.lanzarExcepcionValidacion(EnumNewviExcepciones.ERR251);
         }
     }
-    
+
     public void actualizarCodigoCatastral() {
         this.predio.actualizarCodigoPredio();
     }
+
 }

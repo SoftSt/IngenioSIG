@@ -6,6 +6,7 @@
 package ec.com.newvi.sic.web.backingbean;
 
 import ec.com.newvi.sic.servicios.CatastroServicio;
+import ec.com.newvi.sic.servicios.ContribuyentesServicio;
 import javax.ejb.EJB;
 
 /**
@@ -15,4 +16,6 @@ import javax.ejb.EJB;
 public abstract class AdminFichaCatastralBB extends AdminSistemaBB {
     @EJB
     protected CatastroServicio catastroServicio;
+    @EJB
+    protected ContribuyentesServicio contribuyentesServicio;
 }

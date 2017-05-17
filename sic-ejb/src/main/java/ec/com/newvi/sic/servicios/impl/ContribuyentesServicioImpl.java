@@ -11,6 +11,7 @@ import ec.com.newvi.sic.dto.SesionDto;
 import ec.com.newvi.sic.enums.EnumEstadoRegistro;
 import ec.com.newvi.sic.enums.EnumNewviExcepciones;
 import ec.com.newvi.sic.modelo.Contribuyentes;
+import ec.com.newvi.sic.modelo.Predios;
 import ec.com.newvi.sic.modelo.Propietario;
 import ec.com.newvi.sic.util.ComunUtil;
 import ec.com.newvi.sic.util.excepciones.NewviExcepcion;
@@ -22,6 +23,8 @@ import javax.annotation.security.PermitAll;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import ec.com.newvi.sic.servicios.ContribuyentesServicio;
+import java.util.Collection;
+import javafx.print.Collation;
 
 /**
  *
@@ -30,18 +33,17 @@ import ec.com.newvi.sic.servicios.ContribuyentesServicio;
 @Stateless
 @PermitAll
 
-public class ContribuyentesServicioImpl implements ContribuyentesServicio{
+public class ContribuyentesServicioImpl implements ContribuyentesServicio {
+
     @EJB
     private ContribuyentesFacade contribuyentesFacade;
     @EJB
     private PropietarioFacade propietarioFacade;
-    
-       
+
     /*------------------------------------------------------------Contribuyentes------------------------------------------------------------*/
-    
     @Override
     public String generarNuevoContribuyente(Contribuyentes nuevoContribuyente, SesionDto sesion) throws NewviExcepcion {
-        
+
         // Validar que los datos no sean incorrectos
         LoggerNewvi.getLogNewvi(this.getClass()).debug("Validando contribuyente...", sesion);
         if (!nuevoContribuyente.esContribuyenteValido()) {
@@ -49,17 +51,17 @@ public class ContribuyentesServicioImpl implements ContribuyentesServicio{
         }
         // Crear el contribuyente
         LoggerNewvi.getLogNewvi(this.getClass()).debug("Creando contribuyente...", sesion);
-        
+
         //Registramos la auditoria de ingreso
         nuevoContribuyente.setAudIngIp(sesion.getDireccionIP());
         nuevoContribuyente.setAudIngUsu(sesion.getUsuarioRegistrado().getUsuPalabraclave().trim());
         Date fechaIngreso = Calendar.getInstance().getTime();
         nuevoContribuyente.setAudIngFec(fechaIngreso);
-        
+
         contribuyentesFacade.create(nuevoContribuyente);
         // Si todo marcha bien enviar nombre del contribuyente
         return nuevoContribuyente.getNomNombres();
-        
+
     }
 
     @Override
@@ -71,13 +73,13 @@ public class ContribuyentesServicioImpl implements ContribuyentesServicio{
         }
         // Editar la contribuyente
         LoggerNewvi.getLogNewvi(this.getClass()).debug("Editando contribuyente...", sesion);
-        
+
         //Registramos la auditoria de modificacion
         contribuyente.setAudModIp(sesion.getDireccionIP());
         contribuyente.setAudModUsu(sesion.getUsuarioRegistrado().getUsuPalabraclave().trim());
         Date fechaModificacion = Calendar.getInstance().getTime();
         contribuyente.setAudModFec(fechaModificacion);
-        
+
         contribuyentesFacade.edit(contribuyente);
         // Si todo marcha bien enviar nombre del Contribuyente
         return contribuyente.getNomNombres();
@@ -102,11 +104,12 @@ public class ContribuyentesServicioImpl implements ContribuyentesServicio{
         contribuyente.setStsPersoneria(EnumEstadoRegistro.E);
         return actualizarContribuyente(contribuyente, sesion);
     }
+
     /*------------------------------------------------------------Propietario------------------------------------------------------------*/
-    
+
     @Override
     public String generarNuevoPropietario(Propietario nuevoPropietario, SesionDto sesion) throws NewviExcepcion {
-        
+
         // Validar que los datos no sean incorrectos
         LoggerNewvi.getLogNewvi(this.getClass()).debug("Validando propietario...", sesion);
         if (!nuevoPropietario.esPropietarioValido()) {
@@ -114,17 +117,17 @@ public class ContribuyentesServicioImpl implements ContribuyentesServicio{
         }
         // Crear el propietario
         LoggerNewvi.getLogNewvi(this.getClass()).debug("Creando propietario...", sesion);
-        
+
         //Registramos la auditoria de ingreso
         nuevoPropietario.setAudIngIp(sesion.getDireccionIP());
         nuevoPropietario.setAudIngUsu(sesion.getUsuarioRegistrado().getUsuPalabraclave().trim());
         Date fechaIngreso = Calendar.getInstance().getTime();
         nuevoPropietario.setAudIngFec(fechaIngreso);
-        
+
         propietarioFacade.create(nuevoPropietario);
         // Si todo marcha bien enviar nombre del propietario
-        return nuevoPropietario.getPropietario().toString();
-        
+        return nuevoPropietario.getCodPropietario().toString();
+
     }
 
     @Override
@@ -136,16 +139,16 @@ public class ContribuyentesServicioImpl implements ContribuyentesServicio{
         }
         // Editar la propietario
         LoggerNewvi.getLogNewvi(this.getClass()).debug("Editando propietario...", sesion);
-        
+
         //Registramos la auditoria de modificacion
         propietario.setAudModIp(sesion.getDireccionIP());
         propietario.setAudModUsu(sesion.getUsuarioRegistrado().getUsuPalabraclave().trim());
         Date fechaModificacion = Calendar.getInstance().getTime();
         propietario.setAudModFec(fechaModificacion);
-        
+
         propietarioFacade.edit(propietario);
         // Si todo marcha bien enviar nombre del Propietario
-        return propietario.getPropietario().toString();
+        return propietario.getCodPropietario().toString();
     }
 
     @Override
@@ -166,5 +169,15 @@ public class ContribuyentesServicioImpl implements ContribuyentesServicio{
     public String eliminarPropietario(Propietario propietario, SesionDto sesion) throws NewviExcepcion {
         propietario.setProEstado(EnumEstadoRegistro.E);
         return actualizarPropietario(propietario, sesion);
+    }
+
+    @Override
+    public Propietario consultarUltimoPropietario(Predios predio) throws NewviExcepcion {
+        for (Propietario propietario : predio.getHistoricoPropietarios()) {
+            if (EnumEstadoRegistro.A.equals(propietario.getProEstado())) {
+                return propietario;
+            }
+        }
+        throw new NewviExcepcion(EnumNewviExcepciones.ERR202);
     }
 }

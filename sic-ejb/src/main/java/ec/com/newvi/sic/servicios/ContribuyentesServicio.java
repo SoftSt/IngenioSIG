@@ -7,6 +7,7 @@ package ec.com.newvi.sic.servicios;
 
 import ec.com.newvi.sic.dto.SesionDto;
 import ec.com.newvi.sic.modelo.Contribuyentes;
+import ec.com.newvi.sic.modelo.Predios;
 import ec.com.newvi.sic.modelo.Propietario;
 import ec.com.newvi.sic.util.excepciones.NewviExcepcion;
 import java.util.List;
@@ -112,4 +113,6 @@ public interface ContribuyentesServicio {
      * @throws NewviExcepcion
      */
     public String eliminarPropietario(Propietario propietario, SesionDto sesion) throws NewviExcepcion;
+    
+    public Propietario consultarUltimoPropietario(Predios predio) throws NewviExcepcion;
 }

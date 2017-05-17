@@ -148,7 +148,7 @@ public class PropietarioBB extends AdminContribuyentesBB {
     }
 
     public void actualizarPropietario() {
-        if (!ComunUtil.esNumeroPositivo(this.propietario.getPropietario())) {
+        if (!ComunUtil.esNumeroPositivo(this.propietario.getCodPropietario())) {
             insertarPropietario();
         } else {
             try {
