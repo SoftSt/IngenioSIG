@@ -13,6 +13,7 @@ import ec.com.newvi.faces.visorgeografico.layer.Layer;
 import ec.com.newvi.faces.visorgeografico.layer.Tile;
 import ec.com.newvi.faces.visorgeografico.source.OSM;
 import ec.com.newvi.faces.visorgeografico.source.TileWMS;
+import ec.com.newvi.sic.dto.FichaCatastralDto;
 import ec.com.newvi.sic.enums.EnumEstadoRegistro;
 import ec.com.newvi.sic.enums.EnumNewviExcepciones;
 import ec.com.newvi.sic.modelo.Bloques;
@@ -28,6 +29,7 @@ import ec.com.newvi.sic.web.enums.EnumPantallaMantenimiento;
 import ec.com.newvi.sic.web.utils.ValidacionUtils;
 import ec.com.newvi.sic.web.utils.WebUtils;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
@@ -48,12 +50,12 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
     private Propietario propietarioActual;
     private List<Predios> listaPredios;
     private List<Predios> listaPrediosFiltrados;
+    private List<FichaCatastralDto> listaFichas;
+    private List<FichaCatastralDto> listaFichasFiltradas;
     private EnumPantallaMantenimiento pantallaActual;
     private Map mapa;
     private Bloques bloqueSeleccionado;
     //private Contribuyentes 
-
-    private List<Terreno> caracTerreno;
 
     public Predios getPredio() {
         return predio;
@@ -71,14 +73,30 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
         this.listaPredios = listaPredios;
     }
 
-    public List<Predios> getListaPrediosFiltrados() {
-        return listaPrediosFiltrados;
-    }
-
     public void setListaPrediosFiltrados(List<Predios> listaPrediosFiltrados) {
         this.listaPrediosFiltrados = listaPrediosFiltrados;
     }
 
+    public List<Predios> getListaPrediosFiltrados() {
+        return listaPrediosFiltrados;
+    }
+
+    public List<FichaCatastralDto> getListaFichas() {
+        return listaFichas;
+    }
+
+    public void setListaFichas(List<FichaCatastralDto> listaFichas) {
+        this.listaFichas = listaFichas;
+    }
+
+    public List<FichaCatastralDto> getListaFichasFiltradas() {
+        return listaFichasFiltradas;
+    }
+
+    public void setListaFichasFiltradas(List<FichaCatastralDto> listaFichasFiltradas) {
+        this.listaFichasFiltradas = listaFichasFiltradas;
+    }
+    
     public EnumPantallaMantenimiento getPantallaActual() {
         return pantallaActual;
     }
@@ -159,6 +177,10 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
 
     private void actualizarListadoPredios() {
         listaPredios = catastroServicio.consultarPredios();
+        listaFichas = new ArrayList<>();
+        listaPredios.forEach((elementoPredio) -> {
+            listaFichas.add(new FichaCatastralDto(elementoPredio));
+        });
     }
 
     public void crearNuevoPredio() {

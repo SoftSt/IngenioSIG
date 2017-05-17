@@ -25,6 +25,7 @@ import javax.ejb.Stateless;
 import ec.com.newvi.sic.servicios.ContribuyentesServicio;
 import java.util.Collection;
 import javafx.print.Collation;
+import javax.persistence.EntityNotFoundException;
 
 /**
  *
@@ -173,11 +174,16 @@ public class ContribuyentesServicioImpl implements ContribuyentesServicio {
 
     @Override
     public Propietario consultarUltimoPropietario(Predios predio) throws NewviExcepcion {
-        for (Propietario propietario : predio.getHistoricoPropietarios()) {
-            if (EnumEstadoRegistro.A.equals(propietario.getProEstado())) {
-                return propietario;
+        try {
+            for (Propietario propietario : predio.getHistoricoPropietarios()) {
+                if (EnumEstadoRegistro.A.equals(propietario.getProEstado())
+                        && !ComunUtil.esNulo(propietario.getPropietario())) {
+                    return propietario;
+                }
             }
+            throw new NewviExcepcion(EnumNewviExcepciones.ERR202);
+        } catch (EntityNotFoundException e) {
+            throw new NewviExcepcion(EnumNewviExcepciones.ERR204, e);
         }
-        throw new NewviExcepcion(EnumNewviExcepciones.ERR202);
     }
 }

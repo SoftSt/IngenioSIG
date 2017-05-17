@@ -31,6 +31,8 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.Size;
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
 
 /**
  *
@@ -54,6 +56,7 @@ public class Propietario implements Serializable {
     
     @JoinColumn(name = "cod_personeria", referencedColumnName = "cod_personeria")
     @ManyToOne
+    @NotFound(action=NotFoundAction.IGNORE)
     private Contribuyentes propietario;
     
     @Column(name = "sts_tenencia")

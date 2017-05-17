@@ -31,27 +31,27 @@
 
                     </p>
                     <p:dataTable id="listaFichaCatastral" var="fichaCatastral" widgetVar="listaFichaCatastralTabla"
-                                 value="#{fichaCatastralBB.listaPredios}" rowKey="#{fichaCatastral.codCatastral}" filteredValue="#{fichaCatastralBB.listaPrediosFiltrados}"
+                                 value="#{fichaCatastralBB.listaFichas}" rowKey="#{fichaCatastral.predio}" filteredValue="#{fichaCatastralBB.listaPrediosFiltrados}"
                                  paginator="true" rows="10" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" 
                                  rowsPerPageTemplate="10,15,20" 
                                  emptyMessage="No se han encontrado resultados" 
                                  paginatorPosition="bottom">
 
 
-                        <p:column headerText="Codigo" sortBy="#{fichaCatastral.nomCodigocatastral}" filterBy="#{fichaCatastral.nomCodigocatastral}">
-                            <h:outputText value="#{fichaCatastral.nomCodigocatastral}" />
+                        <p:column headerText="Codigo" sortBy="#{fichaCatastral.predio.nomCodigocatastral}" filterBy="#{fichaCatastral.predio.nomCodigocatastral}">
+                            <h:outputText value="#{fichaCatastral.predio.nomCodigocatastral}" />
                         </p:column>
 
-                        <p:column headerText="Propietario" sortBy="#{fichaCatastral.codDpa}">
-                            <h:outputText value="#{fichaCatastralBB.obtenerPropietario(fichaCatastral).propietario.codCedularuc}"/>
+                        <p:column headerText="Propietario CI/RUC" sortBy="#{fichaCatastral.contribuyentePropietario.codCedularuc}">
+                            <h:outputText value="#{fichaCatastral.contribuyentePropietario.codCedularuc}"/>
                         </p:column>
 
-                        <p:column headerText="Propietario" sortBy="#{fichaCatastral.codDpa}">
-                            <h:outputText value="#{fichaCatastralBB.obtenerPropietario(fichaCatastral).propietario.nomNombres} #{fichaCatastralBB.obtenerPropietario(fichaCatastral).propietario.nomApellidos}"/>
+                        <p:column headerText="Nombre Propietario" sortBy="#{fichaCatastral.contribuyentePropietario.nomNombres} #{fichaCatastral.contribuyentePropietario.nomApellidos}">
+                            <h:outputText value="#{fichaCatastral.contribuyentePropietario.nomNombres} #{fichaCatastral.contribuyentePropietario.nomApellidos}"/>
                         </p:column>
 
                         <p:column width="80">
-                            <p:commandButton actionListener="#{fichaCatastralBB.eliminarPredio(fichaCatastral.codCatastral)}" 
+                            <p:commandButton actionListener="#{fichaCatastralBB.eliminarPredio(fichaCatastral.predio.codCatastral)}" 
                                              icon="fa fa-trash"
                                              id="eliminarFichaCatastral"
                                              update="listaFichaCatastral :formularioListaFichaCatastral:growl :formularioListaFichaCatastral:messages" >
@@ -61,7 +61,7 @@
                             <p:tooltip id="toolTipDelete" for="eliminarFichaCatastral" value="Eliminar FichaCatastral" showEffect="fade" hideEffect="fade" position="bottom"/>
 
                             <p:commandButton process="listaFichaCatastral" 
-                                             actionListener="#{fichaCatastralBB.seleccionarPredio(fichaCatastral.codCatastral)}"
+                                             actionListener="#{fichaCatastralBB.seleccionarPredio(fichaCatastral.predio.codCatastral)}"
                                              icon="fa fa-edit"
                                              id="editarFichaCatastral"
                                              update="grupoFichaCatastral">
