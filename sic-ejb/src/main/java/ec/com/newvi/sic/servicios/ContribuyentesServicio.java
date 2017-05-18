@@ -8,7 +8,7 @@ package ec.com.newvi.sic.servicios;
 import ec.com.newvi.sic.dto.SesionDto;
 import ec.com.newvi.sic.modelo.Contribuyentes;
 import ec.com.newvi.sic.modelo.Predios;
-import ec.com.newvi.sic.modelo.Propietario;
+import ec.com.newvi.sic.modelo.Propiedad;
 import ec.com.newvi.sic.util.excepciones.NewviExcepcion;
 import java.util.List;
 import javax.annotation.security.PermitAll;
@@ -67,52 +67,52 @@ public interface ContribuyentesServicio {
      * @throws NewviExcepcion
      */
     public String eliminarContribuyente(Contribuyentes contribuyente, SesionDto sesion) throws NewviExcepcion;
-/*------------------------------------------------------------Propietario------------------------------------------------------------*/
+/*------------------------------------------------------------Propiedad------------------------------------------------------------*/
     /**
-     * Genera una nueva Propietario, de acuerdo a un objeto entregado.
+     * Genera una nueva Propiedad, de acuerdo a un objeto entregado.
      *
-     * @param nuevoPropietario El nuevo Propietario a ser ingresado
+     * @param nuevoPropiedad El nuevo Propiedad a ser ingresado
      * @param sesion Sesion que realiza la operación
-     * @return Nombre del nuevo Propietario.
+     * @return Nombre del nuevo Propiedad.
      * @throws NewviExcepcion
      */
-    public String generarNuevoPropietario(Propietario nuevoPropietario, SesionDto sesion) throws NewviExcepcion;
+    public String generarNuevoPropiedad(Propiedad nuevoPropiedad, SesionDto sesion) throws NewviExcepcion;
 
     /**
-     * Actualiza una Propietario existente.
+     * Actualiza una Propiedad existente.
      *
-     * @param propietario El Propietario a actualizar
+     * @param propiedad El Propiedad a actualizar
      * @param sesion Sesion que realiza la operación
-     * @return Nombre de la propietario actualizado
+     * @return Nombre de la propiedad actualizado
      * @throws NewviExcepcion
      */
-    public String actualizarPropietario(Propietario propietario, SesionDto sesion) throws NewviExcepcion;
+    public String actualizarPropiedad(Propiedad propiedad, SesionDto sesion) throws NewviExcepcion;
 
     /**
-     * Devuelve una propietario dado un id
+     * Devuelve una propiedad dado un id
      *
-     * @param idPropietario Integer, código del propietario a obtener
-     * @return propietario
+     * @param idPropiedad Integer, código del propiedad a obtener
+     * @return propiedad
      * @throws NewviExcepcion
      */
-    public Propietario seleccionarPropietario(Integer idPropietario) throws NewviExcepcion;
+    public Propiedad seleccionarPropiedad(Integer idPropiedad) throws NewviExcepcion;
 
     /**
-     * Devuelve un listado de Propietario.
+     * Devuelve un listado de Propiedad.
      *
-     * @return Listado de Propietario
+     * @return Listado de Propiedad
      */
-    public List<Propietario> consultarPropietario();
+    public List<Propiedad> consultarPropiedad();
     
     /**
-     * Elimina un propietario dado
+     * Elimina un propiedad dado
      *
-     * @param propietario El propietario a eliminar
+     * @param propiedad El propiedad a eliminar
      * @param sesion Sesion que realiza la operación
-     * @return Nombre del propietario eliminado
+     * @return Nombre del propiedad eliminado
      * @throws NewviExcepcion
      */
-    public String eliminarPropietario(Propietario propietario, SesionDto sesion) throws NewviExcepcion;
+    public String eliminarPropiedad(Propiedad propiedad, SesionDto sesion) throws NewviExcepcion;
     
-    public Propietario consultarUltimoPropietario(Predios predio) throws NewviExcepcion;
+    public Propiedad consultarUltimoPropiedad(Predios predio) throws NewviExcepcion;
 }

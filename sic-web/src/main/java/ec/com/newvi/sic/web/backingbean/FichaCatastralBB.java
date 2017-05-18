@@ -17,8 +17,9 @@ import ec.com.newvi.sic.dto.FichaCatastralDto;
 import ec.com.newvi.sic.enums.EnumEstadoRegistro;
 import ec.com.newvi.sic.enums.EnumNewviExcepciones;
 import ec.com.newvi.sic.modelo.Bloques;
+import ec.com.newvi.sic.modelo.Contribuyentes;
 import ec.com.newvi.sic.modelo.Predios;
-import ec.com.newvi.sic.modelo.Propietario;
+import ec.com.newvi.sic.modelo.Propiedad;
 import ec.com.newvi.sic.modelo.Terreno;
 import ec.com.newvi.sic.util.ComunUtil;
 import ec.com.newvi.sic.util.excepciones.NewviExcepcion;
@@ -47,9 +48,10 @@ import javax.faces.context.FacesContext;
 public class FichaCatastralBB extends AdminFichaCatastralBB {
 
     private Predios predio;
-    private Propietario propietarioActual;
+    private Propiedad propiedadActual;
     private List<Predios> listaPredios;
     private List<Predios> listaPrediosFiltrados;
+    private Propiedad propiedad;
     private List<FichaCatastralDto> listaFichas;
     private List<FichaCatastralDto> listaFichasFiltradas;
     private EnumPantallaMantenimiento pantallaActual;
@@ -121,13 +123,24 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
         this.bloqueSeleccionado = bloqueSeleccionado;
     }
 
-    public Propietario getPropietarioActual() {
-        return propietarioActual;
+    public Propiedad getPropiedadActual() {
+        return propiedadActual;
     }
 
-    public void setPropietarioActual(Propietario propietarioActual) {
-        this.propietarioActual = propietarioActual;
+    public void setPropiedadActual(Propiedad propiedadActual) {
+        this.propiedadActual = propiedadActual;
     }
+
+    public Propiedad getPropiedad() {
+        return propiedad;
+    }
+
+    public void setPropiedad(Propiedad propiedad) {
+        this.propiedad = propiedad;
+    }
+
+    
+    
 
     @PostConstruct
     public void init() {
@@ -269,12 +282,18 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
 
     private void seleccionarPredioPorCodigo(Integer idPredio) throws NewviExcepcion {
         this.predio = catastroServicio.seleccionarPredio(idPredio);
-        this.propietarioActual = contribuyentesServicio.consultarUltimoPropietario(this.predio);
+        for (FichaCatastralDto fichasCatrastrales : listaFichas) {
+            if(fichasCatrastrales.getPredio().getCodCatastral().equals(idPredio)){
+                propiedad=fichasCatrastrales.getPropiedad();
+            }
+        }
+        
+        this.propiedadActual = contribuyentesServicio.consultarUltimoPropiedad(this.predio);
     }
 
-    public Propietario obtenerPropietario(Predios predioConsulta) {
+    public Propiedad obtenerPropiedad(Predios predioConsulta) {
         try {
-            return contribuyentesServicio.consultarUltimoPropietario(predioConsulta);
+            return contribuyentesServicio.consultarUltimoPropiedad(predioConsulta);
         } catch (NewviExcepcion e) {
             LoggerNewvi.getLogNewvi(this.getClass()).error(e, sesionBean.obtenerSesionDto());
             MensajesFaces.mensajeError(e.getMessage());

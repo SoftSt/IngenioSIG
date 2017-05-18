@@ -6,13 +6,13 @@
 package ec.com.newvi.sic.servicios.impl;
 
 import ec.com.newvi.sic.dao.ContribuyentesFacade;
-import ec.com.newvi.sic.dao.PropietarioFacade;
+import ec.com.newvi.sic.dao.PropiedadFacade;
 import ec.com.newvi.sic.dto.SesionDto;
 import ec.com.newvi.sic.enums.EnumEstadoRegistro;
 import ec.com.newvi.sic.enums.EnumNewviExcepciones;
 import ec.com.newvi.sic.modelo.Contribuyentes;
 import ec.com.newvi.sic.modelo.Predios;
-import ec.com.newvi.sic.modelo.Propietario;
+import ec.com.newvi.sic.modelo.Propiedad;
 import ec.com.newvi.sic.util.ComunUtil;
 import ec.com.newvi.sic.util.excepciones.NewviExcepcion;
 import ec.com.newvi.sic.util.logs.LoggerNewvi;
@@ -39,7 +39,7 @@ public class ContribuyentesServicioImpl implements ContribuyentesServicio {
     @EJB
     private ContribuyentesFacade contribuyentesFacade;
     @EJB
-    private PropietarioFacade propietarioFacade;
+    private PropiedadFacade propiedadFacade;
 
     /*------------------------------------------------------------Contribuyentes------------------------------------------------------------*/
     @Override
@@ -106,79 +106,79 @@ public class ContribuyentesServicioImpl implements ContribuyentesServicio {
         return actualizarContribuyente(contribuyente, sesion);
     }
 
-    /*------------------------------------------------------------Propietario------------------------------------------------------------*/
+    /*------------------------------------------------------------Propiedad------------------------------------------------------------*/
 
     @Override
-    public String generarNuevoPropietario(Propietario nuevoPropietario, SesionDto sesion) throws NewviExcepcion {
+    public String generarNuevoPropiedad(Propiedad nuevoPropiedad, SesionDto sesion) throws NewviExcepcion {
 
         // Validar que los datos no sean incorrectos
-        LoggerNewvi.getLogNewvi(this.getClass()).debug("Validando propietario...", sesion);
-        if (!nuevoPropietario.esPropietarioValido()) {
+        LoggerNewvi.getLogNewvi(this.getClass()).debug("Validando propiedad...", sesion);
+        if (!nuevoPropiedad.esPropiedadValido()) {
             throw new NewviExcepcion(EnumNewviExcepciones.ERR347);
         }
-        // Crear el propietario
-        LoggerNewvi.getLogNewvi(this.getClass()).debug("Creando propietario...", sesion);
+        // Crear el propiedad
+        LoggerNewvi.getLogNewvi(this.getClass()).debug("Creando propiedad...", sesion);
 
         //Registramos la auditoria de ingreso
-        nuevoPropietario.setAudIngIp(sesion.getDireccionIP());
-        nuevoPropietario.setAudIngUsu(sesion.getUsuarioRegistrado().getUsuPalabraclave().trim());
+        nuevoPropiedad.setAudIngIp(sesion.getDireccionIP());
+        nuevoPropiedad.setAudIngUsu(sesion.getUsuarioRegistrado().getUsuPalabraclave().trim());
         Date fechaIngreso = Calendar.getInstance().getTime();
-        nuevoPropietario.setAudIngFec(fechaIngreso);
+        nuevoPropiedad.setAudIngFec(fechaIngreso);
 
-        propietarioFacade.create(nuevoPropietario);
-        // Si todo marcha bien enviar nombre del propietario
-        return nuevoPropietario.getCodPropietario().toString();
+        propiedadFacade.create(nuevoPropiedad);
+        // Si todo marcha bien enviar nombre del propiedad
+        return nuevoPropiedad.getCodPropiedad().toString();
 
     }
 
     @Override
-    public String actualizarPropietario(Propietario propietario, SesionDto sesion) throws NewviExcepcion {
+    public String actualizarPropiedad(Propiedad propiedad, SesionDto sesion) throws NewviExcepcion {
         // Validar que los datos no sean incorrectos
-        LoggerNewvi.getLogNewvi(this.getClass()).debug("Validando propietario...", sesion);
-        if (!propietario.esPropietarioValido()) {
+        LoggerNewvi.getLogNewvi(this.getClass()).debug("Validando propiedad...", sesion);
+        if (!propiedad.esPropiedadValido()) {
             throw new NewviExcepcion(EnumNewviExcepciones.ERR347);
         }
-        // Editar la propietario
-        LoggerNewvi.getLogNewvi(this.getClass()).debug("Editando propietario...", sesion);
+        // Editar la propiedad
+        LoggerNewvi.getLogNewvi(this.getClass()).debug("Editando propiedad...", sesion);
 
         //Registramos la auditoria de modificacion
-        propietario.setAudModIp(sesion.getDireccionIP());
-        propietario.setAudModUsu(sesion.getUsuarioRegistrado().getUsuPalabraclave().trim());
+        propiedad.setAudModIp(sesion.getDireccionIP());
+        propiedad.setAudModUsu(sesion.getUsuarioRegistrado().getUsuPalabraclave().trim());
         Date fechaModificacion = Calendar.getInstance().getTime();
-        propietario.setAudModFec(fechaModificacion);
+        propiedad.setAudModFec(fechaModificacion);
 
-        propietarioFacade.edit(propietario);
-        // Si todo marcha bien enviar nombre del Propietario
-        return propietario.getCodPropietario().toString();
+        propiedadFacade.edit(propiedad);
+        // Si todo marcha bien enviar nombre del Propiedad
+        return propiedad.getCodPropiedad().toString();
     }
 
     @Override
-    public List<Propietario> consultarPropietario() {
-        return propietarioFacade.buscarPropietarios();
+    public List<Propiedad> consultarPropiedad() {
+        return propiedadFacade.buscarPropiedad();
     }
 
     @Override
-    public Propietario seleccionarPropietario(Integer idPropietario) throws NewviExcepcion {
-        if (ComunUtil.esNumeroPositivo(idPropietario)) {
-            return propietarioFacade.find(idPropietario);
+    public Propiedad seleccionarPropiedad(Integer idPropiedad) throws NewviExcepcion {
+        if (ComunUtil.esNumeroPositivo(idPropiedad)) {
+            return propiedadFacade.find(idPropiedad);
         } else {
             throw new NewviExcepcion(EnumNewviExcepciones.ERR011);
         }
     }
 
     @Override
-    public String eliminarPropietario(Propietario propietario, SesionDto sesion) throws NewviExcepcion {
-        propietario.setProEstado(EnumEstadoRegistro.E);
-        return actualizarPropietario(propietario, sesion);
+    public String eliminarPropiedad(Propiedad propiedad, SesionDto sesion) throws NewviExcepcion {
+        propiedad.setProEstado(EnumEstadoRegistro.E);
+        return actualizarPropiedad(propiedad, sesion);
     }
 
     @Override
-    public Propietario consultarUltimoPropietario(Predios predio) throws NewviExcepcion {
+    public Propiedad consultarUltimoPropiedad(Predios predio) throws NewviExcepcion {
         try {
-            for (Propietario propietario : predio.getHistoricoPropietarios()) {
-                if (EnumEstadoRegistro.A.equals(propietario.getProEstado())
-                        && !ComunUtil.esNulo(propietario.getPropietario())) {
-                    return propietario;
+            for (Propiedad propiedad : predio.getHistoricoPropiedad()) {
+                if (EnumEstadoRegistro.A.equals(propiedad.getProEstado())
+                        && !ComunUtil.esNulo(propiedad.getPropiedad())) {
+                    return propiedad;
                 }
             }
             throw new NewviExcepcion(EnumNewviExcepciones.ERR202);

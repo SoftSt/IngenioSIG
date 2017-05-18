@@ -41,14 +41,14 @@ import org.hibernate.annotations.NotFoundAction;
 @Entity
 @Table(name = "cat_ciu_propietario", schema = "public")
 
-public class Propietario implements Serializable {
+public class Propiedad implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
     @SequenceGenerator(name = "PROPIETARIO_CODIGO_GENERATOR", initialValue = 1, allocationSize = 1, sequenceName = "cat_ciu_propietario_cod_propietarios_seq", schema = "public")
     @GeneratedValue(generator = "PROPIETARIO_CODIGO_GENERATOR")
     @Column(name = "cod_propietarios")
-    private Integer codPropietario;
+    private Integer codPropiedad;
 
     @JoinColumn(name = "cod_catastral", referencedColumnName = "cod_catastral")
     @ManyToOne
@@ -57,7 +57,7 @@ public class Propietario implements Serializable {
     @JoinColumn(name = "cod_personeria", referencedColumnName = "cod_personeria")
     @ManyToOne
     @NotFound(action=NotFoundAction.IGNORE)
-    private Contribuyentes propietario;
+    private Contribuyentes contribuyente;
     
     @Column(name = "sts_tenencia")
     private String stsTenencia;
@@ -132,12 +132,12 @@ public class Propietario implements Serializable {
     private String audModIp;
     
 
-    public Integer getCodPropietario() {
-        return codPropietario;
+    public Integer getCodPropiedad() {
+        return codPropiedad;
     }
 
-    public void setCodPropietario(Integer codPropietario) {
-        this.codPropietario = codPropietario;
+    public void setCodPropiedad(Integer codPropiedad) {
+        this.codPropiedad = codPropiedad;
     }
 
     public Predios getCodCatastral() {
@@ -148,12 +148,12 @@ public class Propietario implements Serializable {
         this.codCatastral = codCatastral;
     }
 
-    public Contribuyentes getPropietario() {
-        return propietario;
+    public Contribuyentes getPropiedad() {
+        return contribuyente;
     }
 
-    public void setPropietario(Contribuyentes propietario) {
-        this.propietario = propietario;
+    public void setPropiedad(Contribuyentes contribuyente) {
+        this.contribuyente = contribuyente;
     }
 
     public EnumTenencia getStsTenencia() {
@@ -342,13 +342,23 @@ public class Propietario implements Serializable {
     public void setAudModIp(String audModIp) {
         this.audModIp = audModIp;
     }
+
+    public Contribuyentes getContribuyente() {
+        return contribuyente;
+    }
+
+    public void setContribuyente(Contribuyentes contribuyente) {
+        this.contribuyente = contribuyente;
+    }
+    
+    
     
     @Override
     public String toString() {
-        return "ec.com.newvi.sic.modelo.Propietario[ cod_propietarios=" + codPropietario + " ]";
+        return "ec.com.newvi.sic.modelo.Propiedad[ cod_propietarios=" + codPropiedad + " ]";
     }
     
-    public Boolean esPropietarioValido() {
+    public Boolean esPropiedadValido() {
         return (!ComunUtil.esNulo(this.proEstado));
     }
 

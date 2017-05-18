@@ -157,7 +157,7 @@ public class Predios implements Serializable {
     private Collection<Bloques> bloques;
     
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "codCatastral", fetch = FetchType.LAZY)
-    private Collection<Propietario> historicoPropietarios;
+    private Collection<Propiedad> historicoPropiedad;
     
     public Predios() {
     }
@@ -486,12 +486,12 @@ public class Predios implements Serializable {
         this.bloques = bloques;
     }
 
-    public Collection<Propietario> getHistoricoPropietarios() {
-        return historicoPropietarios;
+    public Collection<Propiedad> getHistoricoPropiedad() {
+        return historicoPropiedad;
     }
 
-    public void setHistoricoPropietarios(Collection<Propietario> historicoPropietarios) {
-        this.historicoPropietarios = historicoPropietarios;
+    public void setHistoricoPropiedad(Collection<Propiedad> historicoPropiedad) {
+        this.historicoPropiedad = historicoPropiedad;
     }
 
     @Override

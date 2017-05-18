@@ -7,7 +7,7 @@ package ec.com.newvi.sic.dao;
 
 import ec.com.newvi.sic.enums.EnumEstadoRegistro;
 import ec.com.newvi.sic.modelo.Bloques;
-import ec.com.newvi.sic.modelo.Propietario;
+import ec.com.newvi.sic.modelo.Propiedad;
 import java.io.Serializable;
 import java.util.List;
 import javax.annotation.security.PermitAll;
@@ -20,13 +20,13 @@ import javax.persistence.Query;
  */
 @Stateless
 @PermitAll
-public class PropietarioFacade extends AbstractFacade<Propietario, Integer> implements Serializable {
+public class PropiedadFacade extends AbstractFacade<Propiedad, Integer> implements Serializable {
 
-    public PropietarioFacade() {
-        super(Propietario.class, Integer.class);
+    public PropiedadFacade() {
+        super(Propiedad.class, Integer.class);
     }
 
-    public List<Propietario> buscarPropietarios() {
+    public List<Propiedad> buscarPropiedad() {
         // Busca un listado de bloques
         Query q = this.getEntityManager().createQuery("SELECT propietario FROM Propietario propietario where propietario.proEstado = :ESTADO");
         q.setParameter("ESTADO", EnumEstadoRegistro.A);

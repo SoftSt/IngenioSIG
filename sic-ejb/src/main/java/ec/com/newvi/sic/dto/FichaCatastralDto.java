@@ -9,7 +9,7 @@ import ec.com.newvi.sic.enums.EnumEstadoRegistro;
 import ec.com.newvi.sic.enums.EnumNewviExcepciones;
 import ec.com.newvi.sic.modelo.Contribuyentes;
 import ec.com.newvi.sic.modelo.Predios;
-import ec.com.newvi.sic.modelo.Propietario;
+import ec.com.newvi.sic.modelo.Propiedad;
 import ec.com.newvi.sic.util.ComunUtil;
 import ec.com.newvi.sic.util.excepciones.NewviExcepcion;
 import javax.persistence.EntityNotFoundException;
@@ -21,30 +21,30 @@ import javax.persistence.EntityNotFoundException;
 public class FichaCatastralDto {
 
     private Predios predio;
-    private Propietario propietarioActual;
-    private Contribuyentes contribuyentePropietario;
+    private Propiedad propiedadActual;
+    private Contribuyentes contribuyentePropiedad;
 
     public FichaCatastralDto() {
         predio = new Predios();
-        contribuyentePropietario = obtenerContribuyenteDesconocido();
-        propietarioActual = new Propietario();
-        propietarioActual.setPropietario(contribuyentePropietario);
+        contribuyentePropiedad = obtenerContribuyenteDesconocido();
+        propiedadActual = new Propiedad();
+        propiedadActual.setPropiedad(contribuyentePropiedad);
     }
 
     public FichaCatastralDto(Predios predio) {
         this.predio = predio;
-        this.propietarioActual = obtenerPropietarioActual(predio);
-        if (ComunUtil.esNulo(propietarioActual) || ComunUtil.esNulo(propietarioActual.getPropietario())) {
-            this.propietarioActual = obtenerPropietarioDesconocido();
+        this.propiedadActual = obtenerPropiedadActual(predio);
+        if (ComunUtil.esNulo(propiedadActual) || ComunUtil.esNulo(propiedadActual.getPropiedad())) {
+            this.propiedadActual = obtenerPropiedadDesconocido();
         }
-        contribuyentePropietario = this.propietarioActual.getPropietario();
+        contribuyentePropiedad = this.propiedadActual.getPropiedad();
     }
 
-    private Propietario obtenerPropietarioActual(Predios predioABuscar) {
-        for (Propietario propietario : predioABuscar.getHistoricoPropietarios()) {
-            if (EnumEstadoRegistro.A.equals(propietario.getProEstado())
-                    && !ComunUtil.esNulo(propietario.getPropietario())) {
-                return propietario;
+    private Propiedad obtenerPropiedadActual(Predios predioABuscar) {
+        for (Propiedad propiedad : predioABuscar.getHistoricoPropiedad()) {
+            if (EnumEstadoRegistro.A.equals(propiedad.getProEstado())
+                    && !ComunUtil.esNulo(propiedad.getPropiedad())) {
+                return propiedad;
             }
         }
         return null;
@@ -58,26 +58,26 @@ public class FichaCatastralDto {
         this.predio = predio;
     }
 
-    public Propietario getPropietario() {
-        return propietarioActual;
+    public Propiedad getPropiedad() {
+        return propiedadActual;
     }
 
-    public void setPropietario(Propietario propietarioActual) {
-        this.propietarioActual = propietarioActual;
+    public void setPropiedad(Propiedad propiedadActual) {
+        this.propiedadActual = propiedadActual;
     }
 
-    public Contribuyentes getContribuyentePropietario() {
-        return contribuyentePropietario;
+    public Contribuyentes getContribuyentePropiedad() {
+        return contribuyentePropiedad;
     }
 
-    public void setContribuyentePropietario(Contribuyentes contribuyentePropietario) {
-        this.contribuyentePropietario = contribuyentePropietario;
+    public void setContribuyentePropiedad(Contribuyentes contribuyentePropiedad) {
+        this.contribuyentePropiedad = contribuyentePropiedad;
     }
 
-    private Propietario obtenerPropietarioDesconocido() {
-        Propietario propietarioDesconocido = new Propietario();
-        propietarioDesconocido.setPropietario(obtenerContribuyenteDesconocido());
-        return propietarioDesconocido;
+    private Propiedad obtenerPropiedadDesconocido() {
+        Propiedad propiedadDesconocido = new Propiedad();
+        propiedadDesconocido.setPropiedad(obtenerContribuyenteDesconocido());
+        return propiedadDesconocido;
     }
 
     private Contribuyentes obtenerContribuyenteDesconocido() {

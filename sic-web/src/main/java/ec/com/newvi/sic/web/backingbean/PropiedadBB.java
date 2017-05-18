@@ -11,7 +11,7 @@ import ec.com.newvi.sic.enums.EnumSiNo;
 import ec.com.newvi.sic.enums.EnumSitActual;
 import ec.com.newvi.sic.enums.EnumTenencia;
 import ec.com.newvi.sic.enums.EnumTraslacion;
-import ec.com.newvi.sic.modelo.Propietario;
+import ec.com.newvi.sic.modelo.Propiedad;
 import ec.com.newvi.sic.util.ComunUtil;
 import ec.com.newvi.sic.util.excepciones.NewviExcepcion;
 import ec.com.newvi.sic.util.logs.LoggerNewvi;
@@ -30,39 +30,39 @@ import javax.faces.bean.ViewScoped;
  */
 @ManagedBean
 @ViewScoped
-public class PropietarioBB extends AdminContribuyentesBB {
+public class PropiedadBB extends AdminContribuyentesBB {
 
-    private Propietario propietario;
-    private List<Propietario> listaPropietarios;
-    private List<Propietario> listaPropietariosFiltrados;
+    private Propiedad propiedad;
+    private List<Propiedad> listaPropiedad;
+    private List<Propiedad> listaPropiedadFiltrados;
     private EnumPantallaMantenimiento pantallaActual;
     private EnumTenencia[] listaTipoTenencia;
     private EnumTraslacion[] listaTipoTraslacion;
     private EnumSitActual[] listaTipoSitActual;
     private EnumSiNo[] listaTipoEscritura;
 
-    public Propietario getPropietario() {
-        return propietario;
+    public Propiedad getPropiedad() {
+        return propiedad;
     }
 
-    public void setPropietario(Propietario propietario) {
-        this.propietario = propietario;
+    public void setPropiedad(Propiedad propiedad) {
+        this.propiedad = propiedad;
     }
 
-    public List<Propietario> getListaPropietarios() {
-        return listaPropietarios;
+    public List<Propiedad> getListaPropiedad() {
+        return listaPropiedad;
     }
 
-    public void setListaPropietarios(List<Propietario> listaPropietarios) {
-        this.listaPropietarios = listaPropietarios;
+    public void setListaPropiedad(List<Propiedad> listaPropiedad) {
+        this.listaPropiedad = listaPropiedad;
     }
 
-    public List<Propietario> getListaPropietariosFiltrados() {
-        return listaPropietariosFiltrados;
+    public List<Propiedad> getListaPropiedadFiltrados() {
+        return listaPropiedadFiltrados;
     }
 
-    public void setListaPropietariosFiltrados(List<Propietario> listaPropietariosFiltrados) {
-        this.listaPropietariosFiltrados = listaPropietariosFiltrados;
+    public void setListaPropiedadFiltrados(List<Propiedad> listaPropiedadFiltrados) {
+        this.listaPropiedadFiltrados = listaPropiedadFiltrados;
     }
 
     public EnumPantallaMantenimiento getPantallaActual() {
@@ -108,8 +108,8 @@ public class PropietarioBB extends AdminContribuyentesBB {
 
     @PostConstruct
     public void init() {
-        this.propietario = new Propietario();
-        actualizarListadoPropietario();
+        this.propiedad = new Propiedad();
+        actualizarListadoPropiedad();
         listaTipoTenencia = EnumTenencia.values();
         listaTipoTraslacion = EnumTraslacion.values();
         listaTipoEscritura = EnumSiNo.values();
@@ -120,23 +120,23 @@ public class PropietarioBB extends AdminContribuyentesBB {
                 EnumEtiquetas.PROPIETARIO_LISTA_DESCRIPCION);
     }
 
-    private void actualizarListadoPropietario() {
-        listaPropietarios = contribuyentesServicio.consultarPropietario();
+    private void actualizarListadoPropiedad() {
+        listaPropiedad = contribuyentesServicio.consultarPropiedad();
     }
 
-    public void crearNuevoPropietario() {
-        this.propietario = new Propietario();
-        this.propietario.setProEstado(EnumEstadoRegistro.A);
+    public void crearNuevoPropiedad() {
+        this.propiedad = new Propiedad();
+        this.propiedad.setProEstado(EnumEstadoRegistro.A);
         conmutarPantalla(EnumPantallaMantenimiento.PANTALLA_EDICION);
         establecerTitulo(EnumEtiquetas.PROPIETARIO_NUEVO_TITULO,
                 EnumEtiquetas.PROPIETARIO_NUEVO_ICONO,
                 EnumEtiquetas.PROPIETARIO_NUEVO_DESCRIPCION);
     }
 
-    public void insertarPropietario() {
+    public void insertarPropiedad() {
         try {
-            contribuyentesServicio.generarNuevoPropietario(propietario, sesionBean.obtenerSesionDto());
-            actualizarListadoPropietario();
+            contribuyentesServicio.generarNuevoPropiedad(propiedad, sesionBean.obtenerSesionDto());
+            actualizarListadoPropiedad();
             MensajesFaces.mensajeInformacion(EnumNewviExcepciones.INF348.presentarMensaje());
         } catch (NewviExcepcion e) {
             LoggerNewvi.getLogNewvi(this.getClass()).error(e, sesionBean.obtenerSesionDto());
@@ -147,13 +147,13 @@ public class PropietarioBB extends AdminContribuyentesBB {
         }
     }
 
-    public void actualizarPropietario() {
-        if (!ComunUtil.esNumeroPositivo(this.propietario.getCodPropietario())) {
-            insertarPropietario();
+    public void actualizarPropiedad() {
+        if (!ComunUtil.esNumeroPositivo(this.propiedad.getCodPropiedad())) {
+            insertarPropiedad();
         } else {
             try {
-                contribuyentesServicio.actualizarPropietario(propietario, sesionBean.obtenerSesionDto());
-                actualizarListadoPropietario();
+                contribuyentesServicio.actualizarPropiedad(propiedad, sesionBean.obtenerSesionDto());
+                actualizarListadoPropiedad();
                 MensajesFaces.mensajeInformacion(EnumNewviExcepciones.INF349.presentarMensaje());
             } catch (NewviExcepcion e) {
                 LoggerNewvi.getLogNewvi(this.getClass()).error(e, sesionBean.obtenerSesionDto());
@@ -169,13 +169,13 @@ public class PropietarioBB extends AdminContribuyentesBB {
                 EnumEtiquetas.PROPIETARIO_LISTA_DESCRIPCION);
     }
 
-    public void eliminarPropietario(Integer idPropietario) {
+    public void eliminarPropiedad(Integer idPropiedad) {
         try {
-            this.seleccionarPropietarioPorCodigo(idPropietario);
-            if (!ComunUtil.esNulo(propietario)) {
-                contribuyentesServicio.eliminarPropietario(propietario, sesionBean.obtenerSesionDto());
+            this.seleccionarPropiedadPorCodigo(idPropiedad);
+            if (!ComunUtil.esNulo(propiedad)) {
+                contribuyentesServicio.eliminarPropiedad(propiedad, sesionBean.obtenerSesionDto());
                 MensajesFaces.mensajeInformacion(EnumNewviExcepciones.INF350.presentarMensaje());
-                actualizarListadoPropietario();
+                actualizarListadoPropiedad();
 
             } else {
                 LoggerNewvi.getLogNewvi(this.getClass()).error(EnumNewviExcepciones.ERR010.presentarMensajeCodigo(), sesionBean.obtenerSesionDto());
@@ -191,9 +191,9 @@ public class PropietarioBB extends AdminContribuyentesBB {
 
     }
 
-    public void seleccionarPropietario(Integer idPropietario) {
+    public void seleccionarPropiedad(Integer idPropiedad) {
         try {
-            this.seleccionarPropietarioPorCodigo(idPropietario);
+            this.seleccionarPropiedadPorCodigo(idPropiedad);
         } catch (NewviExcepcion e) {
             MensajesFaces.mensajeError(e.getMessage());
         } catch (Exception e) {
@@ -206,12 +206,12 @@ public class PropietarioBB extends AdminContribuyentesBB {
                 EnumEtiquetas.PROPIETARIO_EDITAR_DESCRIPCION);
     }
 
-    private void seleccionarPropietarioPorCodigo(Integer idPropietario) throws NewviExcepcion {
-        this.propietario = contribuyentesServicio.seleccionarPropietario(idPropietario);
+    private void seleccionarPropiedadPorCodigo(Integer idPropiedad) throws NewviExcepcion {
+        this.propiedad = contribuyentesServicio.seleccionarPropiedad(idPropiedad);
     }
 
     public void cancelarEdicion() {
-        WebUtils.obtenerContextoPeticion().reset("formularioPropietario:opDetallePropietario");
+        WebUtils.obtenerContextoPeticion().reset("formularioPropiedad:opDetallePropiedad");
         conmutarPantalla(EnumPantallaMantenimiento.PANTALLA_LISTADO);
         establecerTitulo(EnumEtiquetas.PROPIETARIO_LISTA_TITULO,
                 EnumEtiquetas.PROPIETARIO_LISTA_ICONO,

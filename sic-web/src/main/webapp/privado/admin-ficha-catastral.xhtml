@@ -42,12 +42,12 @@
                             <h:outputText value="#{fichaCatastral.predio.nomCodigocatastral}" />
                         </p:column>
 
-                        <p:column headerText="Propietario CI/RUC" sortBy="#{fichaCatastral.contribuyentePropietario.codCedularuc}" filterBy="#{fichaCatastral.contribuyentePropietario.codCedularuc}">
-                            <h:outputText value="#{fichaCatastral.contribuyentePropietario.codCedularuc}"/>
+                        <p:column headerText="Propietario CI/RUC" sortBy="#{fichaCatastral.contribuyentePropiedad.codCedularuc}" filterBy="#{fichaCatastral.contribuyentePropiedad.codCedularuc}">
+                            <h:outputText value="#{fichaCatastral.contribuyentePropiedad.codCedularuc}"/>
                         </p:column>
 
-                        <p:column headerText="Nombre Propietario" sortBy="#{fichaCatastral.contribuyentePropietario.nomApellidos} #{fichaCatastral.contribuyentePropietario.nomNombres}" filterBy="#{fichaCatastral.contribuyentePropietario.nomApellidos} #{fichaCatastral.contribuyentePropietario.nomNombres}" >
-                            <h:outputText value="#{fichaCatastral.contribuyentePropietario.nomApellidos} #{fichaCatastral.contribuyentePropietario.nomNombres}"/>
+                        <p:column headerText="Nombre Propietario" sortBy="#{fichaCatastral.contribuyentePropiedad.nomApellidos} #{fichaCatastral.contribuyentePropiedad.nomNombres}" filterBy="#{fichaCatastral.contribuyentePropiedad.nomApellidos} #{fichaCatastral.contribuyentePropiedad.nomNombres}" >
+                            <h:outputText value="#{fichaCatastral.contribuyentePropiedad.nomApellidos} #{fichaCatastral.contribuyentePropiedad.nomNombres}"/>
                         </p:column>
 
                         <p:column width="80">
@@ -218,24 +218,27 @@
                                     <div style="font-size:1.2em;font-weight:bold;">Propietario</div>
                                     <p:separator />
                                     <h:outputLabel for="ci" value="CI/RUC" style="font-weight: bold;"/>
-                                    <p:inputText id="ci" value="#{fichaCatastral.contribuyentePropietario.codCedularuc}"/>
+                                    <h:outputText id="ci" value="#{fichaCatastralBB.propiedad.contribuyente.codCedularuc}"/>
                                     <p:message for="ci" display="tooltip"/>
-                                    <h:outputLabel for="personeria" value="Apellidos y Nombres / Razón social" style="font-weight: bold;"/>
-                                    <p:inputText id="personeria" label="Apellidos y Nombres / Razón social" size="50"/>
+                                    <h:outputLabel for="personeria" value="Apellidos y Nombres" style="font-weight: bold;"/>
+                                    <h:outputText id="personeria" value="#{fichaCatastralBB.propiedad.contribuyente.nomApellidos.trim()} #{fichaCatastralBB.propiedad.contribuyente.nomNombres.trim()}"/>
                                     <p:message for="personeria" display="tooltip"/>
+                                    <h:outputLabel for="razonSocial" value="Razón social" style="font-weight: bold;"/>
+                                    <h:outputText id="razonSocial" value="#{fichaCatastralBB.propiedad.contribuyente.nomRazonsocial.trim()}"/>
+                                    <p:message for="razonSocial" display="tooltip"/>
                                     <h:panelGrid columns="2">
                                         <h:outputLabel for="direccion" value="Dirección" style="font-weight: bold;"/>
                                         <h:outputLabel for="ciudad" value="Ciudad" style="font-weight: bold;"/>
-                                        <p:inputText id="direccion" label="Dirección" size="50"/>
-                                        <p:inputText id="ciudad" label="Ciudad" size="25"/>
+                                        <h:outputText id="direccion" value="#{fichaCatastralBB.propiedad.contribuyente.txtDireccion.trim()}"/>
+                                        <h:outputText id="ciudad" />
                                         <p:message for="direccion" display="tooltip"/>
                                         <p:message for="ciudad" display="tooltip"/>
                                     </h:panelGrid>
                                     <h:panelGrid columns="2">
                                         <h:outputLabel for="telefono" value="Teléfono" style="font-weight: bold;"/>
                                         <h:outputLabel for="correoElectronico" value="Correo electrónico" style="font-weight: bold;"/>
-                                        <p:inputText id="telefono" label="Teléfono" size="25"/>
-                                        <p:inputText id="correoElectronico" label="Correo electrónico" size="50"/>
+                                        <h:outputText id="telefono" value="#{fichaCatastralBB.propiedad.contribuyente.txtTelefono.trim()}" />
+                                        <h:outputText id="correoElectronico" value="#{fichaCatastralBB.propiedad.contribuyente.txtEmail.trim()}"/>
                                         <p:message for="telefono" display="tooltip"/>
                                         <p:message for="correoElectronico" display="tooltip"/>
                                     </h:panelGrid>
@@ -244,7 +247,7 @@
                                     <div style="font-size:1.2em;font-weight:bold;">Representante legal</div>
                                     <p:separator />
                                     <h:outputLabel for="ciRepresentante" value="CI/RUC" style="font-weight: bold;"/>
-                                    <p:inputText id="ciRepresentante" label="CI/RUC" size="12"/>
+                                    <p:inputText id="ciRepresentante" />
                                     <p:message for="ciRepresentante" display="tooltip"/>
                                     <h:outputLabel for="representante" value="Apellidos y Nombres" style="font-weight: bold;"/>
                                     <p:inputText id="representante" label="Apellidos y Nombres" size="50"/>
@@ -288,7 +291,7 @@
                                         <h:panelGrid columns="2">
                                             <h:outputLabel for="notaria" value="Notaria No." style="font-weight: bold;"/>
                                             <h:outputLabel for="lugarNotaria" value="Lugar" style="font-weight: bold;"/>
-                                            <p:inputText id="notaria" label="Notaria No." size="12"/>
+                                            <h:outputText id="notaria" value="#{fichaCatastralBB.propiedad.txtNotaria}"/>
                                             <p:inputText id="lugarNotaria" label="Lugar" size="25"/>
                                             <p:message for="notaria" display="tooltip"/>
                                             <p:message for="lugarNotaria" display="tooltip"/>
