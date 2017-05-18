@@ -20,8 +20,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -46,9 +44,9 @@ public class PisoDetalle implements Serializable {
     @JoinColumn(name = "cod_pisos", referencedColumnName = "cod_pisos")
     private Pisos piso;
     
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "sts_codigo", referencedColumnName = "domi_codigo")
-    private Dominios dominio;
+    @Size(max = 25)
+    @Column(name = "sts_codigo")
+    private String codigo;
     
     @Size(max = 100)
     @Column(name = "sts_grupo")
@@ -110,12 +108,12 @@ public class PisoDetalle implements Serializable {
         this.piso = piso;
     }
 
-    public Dominios getDominio() {
-        return dominio;
+    public String getCodigo() {
+        return codigo;
     }
 
-    public void setDominio(Dominios dominio) {
-        this.dominio = dominio;
+    public void setCodigo(String codigo) {
+        this.codigo = codigo;
     }
 
     public String getGrupo() {
