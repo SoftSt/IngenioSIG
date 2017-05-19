@@ -91,12 +91,23 @@ public class ParametrosServicioImpl implements ParametrosServicio{
     
     @Override
     public String eliminarDominio (Dominios dominio, SesionDto sesion) throws NewviExcepcion {
-        dominio.setDomiEstado(EnumEstadoRegistro.E);
+        //dominio.setDomiEstado(EnumEstadoRegistro.E);
+        dominio.setEstadoDominio(EnumEstadoRegistro.E);
         return actualizarDominio(dominio, sesion);
     }
     
     @Override
     public List<Dominios> consultarGruposDominios(){
         return dominiosFacade.buscarDominiosGrupos();
+    }
+    
+    @Override
+    public List<Dominios> consultarDominiosPorGrupo(String grupo){
+        return dominiosFacade.buscarDominiosPorGrupo(grupo);
+    }
+    
+    @Override
+    public List<Dominios> consultarHijos(Dominios dominio){
+        return dominiosFacade.buscarHijos(dominio);
     }
 }

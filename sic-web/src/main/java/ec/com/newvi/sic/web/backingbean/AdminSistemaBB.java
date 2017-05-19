@@ -5,8 +5,10 @@
  */
 package ec.com.newvi.sic.web.backingbean;
 
+import ec.com.newvi.sic.servicios.ParametrosServicio;
 import ec.com.newvi.sic.web.enums.EnumEtiquetas;
 import ec.com.newvi.sic.web.sesion.SesionBean;
+import javax.ejb.EJB;
 import javax.inject.Inject;
 
 /**
@@ -17,6 +19,9 @@ public abstract class AdminSistemaBB {
     
     @Inject
     protected SesionBean sesionBean;
+    
+    @EJB
+    protected ParametrosServicio parametrosServicio;
     
     protected EnumEtiquetas tituloPantalla;
     protected EnumEtiquetas iconoPantalla;

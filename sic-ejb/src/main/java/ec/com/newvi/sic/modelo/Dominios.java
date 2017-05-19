@@ -72,9 +72,9 @@ public class Dominios implements Serializable {
     @Size(max = 16)
     @Column(name = "domi_unidad")
     private String domiUnidad;
-    @Enumerated(EnumType.STRING)
+    @Size(max = 1)
     @Column(name = "domi_estado")
-    private EnumEstadoRegistro domiEstado;
+    private String domiEstado;
     @Size(max = 16)
     @Column(name = "domi_ficha")
     private String domiFicha;
@@ -103,6 +103,10 @@ public class Dominios implements Serializable {
     @Size(max = 30)
     @Column(name = "aud_mod_ip")
     private String audModIp;
+    
+    @Enumerated(EnumType.STRING)
+    @Column(name = "estadoDominio")
+    private EnumEstadoRegistro estadoDominio;
 
     public Dominios() {
     }
@@ -204,13 +208,23 @@ public class Dominios implements Serializable {
         this.domiUnidad = domiUnidad;
     }
 
-    public EnumEstadoRegistro getDomiEstado() {
+    public String getDomiEstado() {
         return domiEstado;
     }
 
-    public void setDomiEstado(EnumEstadoRegistro domiEstado) {
+    public void setDomiEstado(String domiEstado) {
         this.domiEstado = domiEstado;
     }
+
+    public EnumEstadoRegistro getEstadoDominio() {
+        return estadoDominio;
+    }
+
+    public void setEstadoDominio(EnumEstadoRegistro estadoDominio) {
+        this.estadoDominio = estadoDominio;
+    }
+    
+    
 
     public String getDomiFicha() {
         return domiFicha;

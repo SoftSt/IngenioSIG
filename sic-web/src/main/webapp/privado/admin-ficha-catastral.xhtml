@@ -358,7 +358,7 @@
                                         <p:column headerText="Característica" sortBy="#{descripcionTerreno.stsSubgrupo}">
                                             <h:outputText value="#{descripcionTerreno.stsSubgrupo}" />
                                         </p:column>
-                                        
+
                                         <p:column headerText="Detalle" sortBy="#{descripcionTerreno.stsDescripcion}">
                                             <h:outputText value="#{descripcionTerreno.stsDescripcion}" />
                                         </p:column>
@@ -368,6 +368,7 @@
                                     <br/>
                                     <div style="font-size:1.2em;font-weight:bold;">Infraestructura y Servicios</div>
                                     <br/>
+                                    <p:commandButton value="Basic" type="button" onclick="PF('dlg1').show();" />
                                     <p:dataTable id="listaServiciosBasicos" var="servicios" widgetVar="listaSeviciosBasicosTabla"
                                                  value="#{fichaCatastralBB.predio.servicios}" rowKey="#{servicios.codServicios}" filteredValue=""
                                                  paginator="true" rows="10" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" 
@@ -378,7 +379,7 @@
                                         <p:column headerText="Código" sortBy="#{servicios.codServicios}" width="60">
                                             <h:outputText value="#{servicios.codServicios}" />
                                         </p:column>
-                                        
+
                                         <p:column headerText="Grupo" sortBy="#{servicios.stsGrupo}">
                                             <h:outputText value="#{servicios.stsGrupo}" />
                                         </p:column>
@@ -394,11 +395,11 @@
                                         <p:column headerText="Medidor" sortBy="#{servicios.nomMedidor}">
                                             <h:outputText value="#{servicios.nomMedidor}" />
                                         </p:column>
-                                        
+
                                         <p:column headerText="Estado" sortBy="#{servicios.stsEstado}">
                                             <h:outputText value="#{servicios.stsEstado}" />
                                         </p:column>
-                                        
+
                                         <p:column headerText="# Medidores" sortBy="#{servicios.numMedidores}">
                                             <h:outputText value="#{servicios.numMedidores}" />
                                         </p:column>
@@ -535,9 +536,27 @@
                             <p:tooltip id="toolTipCancel" for="cancelar" value="Regresar sin guardar cambios" showEffect="fade" hideEffect="fade" position="top"/>
                         </h:panelGrid>
                         <br/>
+
                     </p:outputPanel>
                 </h:form>
+
+                <p:dialog header="Basic Dialog" widgetVar="dlg1" minHeight="40"  showEffect="fade" hideEffect="fade" resizable="false" width="400">
+                    <p:treeTable id="listaArbolDominios" var="dominio" 
+                                 value="#{fichaCatastralBB.listaArbolDominios}">
+                        <p:column selectionMode="multiple" style="width:16px;text-align:center"/>
+                        <!--<p:column headerText="Codigo" sortBy="#{dominio.dominio.domiCodigo}">
+                            <h:outputText value="#{dominio.dominio.domiCodigo}" />
+                        </p:column>-->
+
+                        <p:column headerText="Descripcion" sortBy="#{dominio.dominio.domiDescripcion}">
+                            <h:outputText value="#{dominio.dominio.domiDescripcion}" />
+                        </p:column>            
+
+                    </p:treeTable>
+                </p:dialog>
             </p:panel>
         </h:panelGroup>
+
+
     </ui:define>
 </ui:composition>

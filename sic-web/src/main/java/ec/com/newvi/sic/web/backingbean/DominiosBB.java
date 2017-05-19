@@ -116,7 +116,7 @@ public class DominiosBB extends AdminParametrosBB {
 
     public void crearNuevoDominio() {
         this.dominio = new Dominios();
-        this.dominio.setDomiEstado(EnumEstadoRegistro.A);
+        this.dominio.setEstadoDominio(EnumEstadoRegistro.A);
         conmutarPantalla(EnumPantallaMantenimiento.PANTALLA_EDICION);
         establecerTitulo(EnumEtiquetas.DOMINIOS_NUEVO_TITULO, 
                 EnumEtiquetas.DOMINIOS_NUEVO_ICONO,

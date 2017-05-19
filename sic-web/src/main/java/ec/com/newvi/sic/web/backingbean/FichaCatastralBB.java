@@ -13,11 +13,14 @@ import ec.com.newvi.faces.visorgeografico.layer.Layer;
 import ec.com.newvi.faces.visorgeografico.layer.Tile;
 import ec.com.newvi.faces.visorgeografico.source.OSM;
 import ec.com.newvi.faces.visorgeografico.source.TileWMS;
+import ec.com.newvi.sic.dao.DominiosFacade;
+import ec.com.newvi.sic.dto.DominioDto;
 import ec.com.newvi.sic.dto.FichaCatastralDto;
 import ec.com.newvi.sic.enums.EnumEstadoRegistro;
 import ec.com.newvi.sic.enums.EnumNewviExcepciones;
 import ec.com.newvi.sic.modelo.Bloques;
 import ec.com.newvi.sic.modelo.Contribuyentes;
+import ec.com.newvi.sic.modelo.Dominios;
 import ec.com.newvi.sic.modelo.Predios;
 import ec.com.newvi.sic.modelo.Propiedad;
 import ec.com.newvi.sic.modelo.Terreno;
@@ -33,10 +36,13 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
+import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
+import org.primefaces.model.DefaultTreeNode;
+import org.primefaces.model.TreeNode;
 
 /**
  *
@@ -57,6 +63,13 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
     private EnumPantallaMantenimiento pantallaActual;
     private Map mapa;
     private Bloques bloqueSeleccionado;
+    private TreeNode listaArbolDominios;
+    private List<Dominios> listaDominios;
+    
+    @EJB
+    private DominiosFacade dominiosFacade;
+            
+    
     //private Contribuyentes 
 
     public Predios getPredio() {
@@ -139,6 +152,14 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
         this.propiedad = propiedad;
     }
 
+    public TreeNode getListaArbolDominios() {
+        return listaArbolDominios;
+    }
+
+    public void setListaArbolDominios(TreeNode listaArbolDominios) {
+        this.listaArbolDominios = listaArbolDominios;
+    }
+
     
     
 
@@ -146,6 +167,7 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
     public void init() {
         this.predio = new Predios();
         actualizarListadoPredios();
+        actualizarListadoDominios();
         conmutarPantalla(EnumPantallaMantenimiento.PANTALLA_LISTADO);
         establecerTitulo(EnumEtiquetas.FICHA_CATASTRAL_LISTA_TITULO,
                 EnumEtiquetas.FICHA_CATASTRAL_LISTA_ICONO,
@@ -332,6 +354,25 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
 
     public void actualizarCodigoCatastral() {
         this.predio.actualizarCodigoPredio();
+    }
+    
+    
+    private void actualizarListadoDominios() {
+        List<DominioDto> listadoDominiosDto = new ArrayList<>();
+        for (Dominios dominio : parametrosServicio.consultarDominiosPorGrupo("INFRAESTRUCTURA DE SERVICIOS")) {
+            listadoDominiosDto.add(new DominioDto(dominio, parametrosServicio));
+            //listadoDominiosDto.add(new DominioDto(dominio, dominiosFacade));
+        }
+        try {
+            listaArbolDominios = new DefaultTreeNode();
+            listaArbolDominios = WebUtils.generarArbol(listadoDominiosDto, listaArbolDominios, "getHijos");
+        } catch (NewviExcepcion ex) {
+            LoggerNewvi.getLogNewvi(this.getClass()).error(ex, sesionBean.obtenerSesionDto());
+            MensajesFaces.mensajeError(ex.getMessage());
+        } catch (Exception e) {
+            LoggerNewvi.getLogNewvi(this.getClass()).error(EnumNewviExcepciones.ERR000.presentarMensajeCodigo(), e, sesionBean.obtenerSesionDto());
+            MensajesFaces.mensajeError(e.getMessage());
+        }
     }
 
 }

@@ -66,4 +66,19 @@ public interface ParametrosServicio {
      * @return Listado de dominois filtrado por grupos
      */
     public List<Dominios> consultarGruposDominios();
+    /**
+     * Devuelve un listados de dominios dado un grupo
+     * @param grupo grupo enviado
+     * @return Listado de dominios filtrado por grupo
+     */
+    public List<Dominios> consultarDominiosPorGrupo(String grupo);
+
+    /**
+     * Devuelve el listado de hijos por padre
+     * @param dominio dominio donde se extrara los hijos
+     * @return Listado de hijos
+     */
+    public List<Dominios> consultarHijos(Dominios dominio);
+    
+    
 }

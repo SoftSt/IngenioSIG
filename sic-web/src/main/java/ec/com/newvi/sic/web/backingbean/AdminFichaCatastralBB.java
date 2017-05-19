@@ -18,4 +18,5 @@ public abstract class AdminFichaCatastralBB extends AdminSistemaBB {
     protected CatastroServicio catastroServicio;
     @EJB
     protected ContribuyentesServicio contribuyentesServicio;
+    
 }

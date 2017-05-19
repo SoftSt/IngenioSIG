@@ -59,7 +59,7 @@
                         <p:column headerText="Grupo" sortBy="#{dominio.domiGrupos}" filterBy="#{dominio.domiGrupos}">
                             <f:facet name="filter">
                                 <p:selectOneMenu onchange="PF('listaDominiosTabla').filter()" >
-                                    <f:selectItem itemLabel="Seleccione Uno" itemValue="#{null}" noSelectionOption="true" />
+                                    <f:selectItem itemLabel="Seleccione Uno"/>
                                     <f:selectItems value="#{dominiosBB.listaGruposDominios}" />
                                 </p:selectOneMenu>
                             </f:facet>
