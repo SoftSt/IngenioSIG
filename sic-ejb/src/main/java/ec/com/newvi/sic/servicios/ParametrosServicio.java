@@ -5,6 +5,7 @@
  */
 package ec.com.newvi.sic.servicios;
 
+import ec.com.newvi.sic.dto.DominioDto;
 import ec.com.newvi.sic.dto.SesionDto;
 import ec.com.newvi.sic.modelo.Dominios;
 import ec.com.newvi.sic.util.excepciones.NewviExcepcion;
@@ -79,6 +80,15 @@ public interface ParametrosServicio {
      * @return Listado de hijos
      */
     public List<Dominios> consultarHijos(Dominios dominio);
+    
+    /**
+     * Devuelve un listado de dominios dto referente a un grupo
+     * @param grupo grupo al que pertenece los dominios
+     * @return listado de dominios dto
+     */
+    public List<DominioDto> listarDominiosDto(String grupo);
+    
+    
     
     
 }

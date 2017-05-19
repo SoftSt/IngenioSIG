@@ -537,22 +537,20 @@
                         </h:panelGrid>
                         <br/>
 
+                        
+
                     </p:outputPanel>
                 </h:form>
 
-                <p:dialog header="Basic Dialog" widgetVar="dlg1" minHeight="40"  showEffect="fade" hideEffect="fade" resizable="false" width="400">
-                    <p:treeTable id="listaArbolDominios" var="dominio" 
-                                 value="#{fichaCatastralBB.listaArbolDominios}">
-                        <p:column selectionMode="multiple" style="width:16px;text-align:center"/>
-                        <!--<p:column headerText="Codigo" sortBy="#{dominio.dominio.domiCodigo}">
-                            <h:outputText value="#{dominio.dominio.domiCodigo}" />
-                        </p:column>-->
+                <p:dialog header="Basic Dialog" widgetVar="dlg1" modal="true" showEffect="fade" hideEffect="fade" resizable="false" closable="true" width="550" height="400">
+                    <p:treeTable value="#{fichaCatastralBB.listaArbolDominios}"
+                                     id="listaArbolDominios" var="dominio">
 
-                        <p:column headerText="Descripcion" sortBy="#{dominio.dominio.domiDescripcion}">
-                            <h:outputText value="#{dominio.dominio.domiDescripcion}" />
-                        </p:column>            
+                            <p:column headerText="Descripcion" sortBy="#{dominio.descripcion}">
+                                <h:outputText value="#{dominio.descripcion}"/>
+                            </p:column>            
 
-                    </p:treeTable>
+                        </p:treeTable>
                 </p:dialog>
             </p:panel>
         </h:panelGroup>

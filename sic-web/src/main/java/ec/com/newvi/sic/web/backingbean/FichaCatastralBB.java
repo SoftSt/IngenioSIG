@@ -65,6 +65,8 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
     private Bloques bloqueSeleccionado;
     private TreeNode listaArbolDominios;
     private List<Dominios> listaDominios;
+    private TreeNode[] listaDominiosSeleccionados;
+    
     
     @EJB
     private DominiosFacade dominiosFacade;
@@ -159,6 +161,15 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
     public void setListaArbolDominios(TreeNode listaArbolDominios) {
         this.listaArbolDominios = listaArbolDominios;
     }
+
+    public TreeNode[] getListaDominiosSeleccionados() {
+        return listaDominiosSeleccionados;
+    }
+
+    public void setListaDominiosSeleccionados(TreeNode[] listaDominiosSeleccionados) {
+        this.listaDominiosSeleccionados = listaDominiosSeleccionados;
+    }
+
 
     
     
@@ -358,11 +369,12 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
     
     
     private void actualizarListadoDominios() {
-        List<DominioDto> listadoDominiosDto = new ArrayList<>();
-        for (Dominios dominio : parametrosServicio.consultarDominiosPorGrupo("INFRAESTRUCTURA DE SERVICIOS")) {
+        //List<DominioDto> listadoDominiosDto = new ArrayList<>();
+        List<DominioDto> listadoDominiosDto = parametrosServicio.listarDominiosDto("INFRAESTRUCTURA DE SERVICIOS");
+        /*for (Dominios dominio : parametrosServicio.consultarDominiosPorGrupo("INFRAESTRUCTURA DE SERVICIOS")) {
             listadoDominiosDto.add(new DominioDto(dominio, parametrosServicio));
             //listadoDominiosDto.add(new DominioDto(dominio, dominiosFacade));
-        }
+        }*/
         try {
             listaArbolDominios = new DefaultTreeNode();
             listaArbolDominios = WebUtils.generarArbol(listadoDominiosDto, listaArbolDominios, "getHijos");
