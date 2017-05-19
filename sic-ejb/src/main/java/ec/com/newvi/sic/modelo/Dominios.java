@@ -105,7 +105,7 @@ public class Dominios implements Serializable {
     private String audModIp;
     
     @Enumerated(EnumType.STRING)
-    @Column(name = "estadoDominio")
+    @Column(name = "domi_estado_registro")
     private EnumEstadoRegistro estadoDominio;
 
     public Dominios() {
