@@ -6,6 +6,7 @@
 package ec.com.newvi.sic.servicios.impl;
 
 import ec.com.newvi.sic.dao.BloquesFacade;
+import ec.com.newvi.sic.dao.FotosFacade;
 import ec.com.newvi.sic.dao.PisosFacade;
 import ec.com.newvi.sic.dao.PrediosFacade;
 import ec.com.newvi.sic.dao.TerrenoFacade;
@@ -13,6 +14,7 @@ import ec.com.newvi.sic.dto.SesionDto;
 import ec.com.newvi.sic.enums.EnumEstadoRegistro;
 import ec.com.newvi.sic.enums.EnumNewviExcepciones;
 import ec.com.newvi.sic.modelo.Bloques;
+import ec.com.newvi.sic.modelo.Fotos;
 import ec.com.newvi.sic.modelo.Pisos;
 import ec.com.newvi.sic.modelo.Predios;
 import ec.com.newvi.sic.modelo.Terreno;
@@ -42,6 +44,8 @@ public class CatastroServicioImpl implements CatastroServicio{
     PisosFacade pisosFacade;
     @EJB
     TerrenoFacade terrenoFacade;
+    @EJB
+    FotosFacade fotosFacade;
     
         /*------------------------------------------------------------Predios------------------------------------------------------------*/
     @Override
@@ -298,5 +302,12 @@ public class CatastroServicioImpl implements CatastroServicio{
     public String eliminarTerreno(Terreno terreno, SesionDto sesion) throws NewviExcepcion {
         terreno.setTerEstado(EnumEstadoRegistro.E);
         return actualizarTerreno(terreno, sesion);
+    }
+    
+    /*------------------------------------------------------------Fotos------------------------------------------------------------*/
+    
+    @Override
+    public List<Fotos> consultarFotosPorPredio(int codCatastral){
+        return fotosFacade.buscarFotosPorPredio(codCatastral);
     }
 }

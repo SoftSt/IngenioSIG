@@ -7,6 +7,7 @@ package ec.com.newvi.sic.servicios;
 
 import ec.com.newvi.sic.dto.SesionDto;
 import ec.com.newvi.sic.modelo.Bloques;
+import ec.com.newvi.sic.modelo.Fotos;
 import ec.com.newvi.sic.modelo.Pisos;
 import ec.com.newvi.sic.modelo.Predios;
 import ec.com.newvi.sic.modelo.Terreno;
@@ -206,4 +207,13 @@ public interface CatastroServicio {
      * @throws NewviExcepcion
      */
     public String eliminarTerreno(Terreno terreno, SesionDto sesion) throws NewviExcepcion;
+
+    /*------------------------------------------------------------Fotos------------------------------------------------------------*/
+
+   /**
+    * Consulta todas las imagenes que tiene un predio
+    * @param codCatastral codigo del predio asignado
+    * @return lista de fotos del predio
+    */
+    public List<Fotos> consultarFotosPorPredio(int codCatastral);
 }

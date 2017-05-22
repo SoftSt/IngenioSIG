@@ -543,8 +543,9 @@
 
                 <p:dialog header="Basic Dialog" widgetVar="dlg1" modal="true" showEffect="fade" hideEffect="fade" resizable="false" closable="true" width="550" height="400">
                     <p:treeTable value="#{fichaCatastralBB.listaArbolDominios}"
-                                     id="listaArbolDominios" var="dominio">
-
+                                     id="listaArbolDominios" var="dominio"
+                                     selectionMode="checkbox" selection="#{fichaCatastralBB.listaDominiosSeleccionados}" >
+                        
                             <p:column headerText="Descripcion" sortBy="#{dominio.descripcion}">
                                 <h:outputText value="#{dominio.descripcion}"/>
                             </p:column>            
