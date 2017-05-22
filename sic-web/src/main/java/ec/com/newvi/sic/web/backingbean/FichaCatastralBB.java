@@ -55,8 +55,6 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
 
     private Predios predio;
     private Propiedad propiedadActual;
-    private List<Predios> listaPredios;
-    private List<Predios> listaPrediosFiltrados;
     private Propiedad propiedad;
     private List<FichaCatastralDto> listaFichas;
     private List<FichaCatastralDto> listaFichasFiltradas;
@@ -64,15 +62,7 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
     private Map mapa;
     private Bloques bloqueSeleccionado;
     private TreeNode listaArbolDominios;
-    private List<Dominios> listaDominios;
     private TreeNode[] listaDominiosSeleccionados;
-    
-    
-    @EJB
-    private DominiosFacade dominiosFacade;
-            
-    
-    //private Contribuyentes 
 
     public Predios getPredio() {
         return predio;
@@ -80,22 +70,6 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
 
     public void setPredio(Predios predio) {
         this.predio = predio;
-    }
-
-    public List<Predios> getListaPredios() {
-        return listaPredios;
-    }
-
-    public void setListaPredios(List<Predios> listaPredios) {
-        this.listaPredios = listaPredios;
-    }
-
-    public void setListaPrediosFiltrados(List<Predios> listaPrediosFiltrados) {
-        this.listaPrediosFiltrados = listaPrediosFiltrados;
-    }
-
-    public List<Predios> getListaPrediosFiltrados() {
-        return listaPrediosFiltrados;
     }
 
     public List<FichaCatastralDto> getListaFichas() {
@@ -222,7 +196,7 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
     }
 
     private void actualizarListadoPredios() {
-        listaPredios = catastroServicio.consultarPredios();
+        List<Predios> listaPredios = catastroServicio.consultarPredios();
         listaFichas = new ArrayList<>();
         listaPredios.forEach((elementoPredio) -> {
             listaFichas.add(new FichaCatastralDto(elementoPredio));

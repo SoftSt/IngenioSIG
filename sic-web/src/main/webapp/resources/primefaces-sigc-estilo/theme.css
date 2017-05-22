@@ -33,9 +33,6 @@
     font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
     font-size: 1em;
 }
-.ui-widget.ui-widget-content {
-    border: 1px solid #2196F3;
-}
 .ui-widget-content {
     background: #fff;
     border: 1px solid #d5d5d5;
@@ -60,6 +57,21 @@
 .ui-separator {
     border-top: 1em !important;
     border-color: #d6d6d6 !important;
+}
+
+.ui-dialog .ui-dialog-titlebar-close, 
+.ui-dialog .ui-dialog-titlebar-minimize, 
+.ui-dialog .ui-dialog-titlebar-maximize {
+    padding: 3px 20px 0 1px;
+}
+
+.ui-dialog .ui-dialog-titlebar-close:hover, 
+.ui-dialog .ui-dialog-titlebar-close:focus, 
+.ui-dialog .ui-dialog-titlebar-minimize:hover, 
+.ui-dialog .ui-dialog-titlebar-minimize:focus, 
+.ui-dialog .ui-dialog-titlebar-maximize:hover, 
+.ui-dialog .ui-dialog-titlebar-maximize:focus {
+    padding: 3px 20px 0 1px;
 }
 
 /* Interaction states
@@ -417,7 +429,9 @@ a,
 .ui-icon-plusthick { background-position: -32px -128px; }
 .ui-icon-minus { background-position: -48px -128px; }
 .ui-icon-minusthick { background-position: -64px -128px; }
+.ui-icon-close:before { background: none; font-family: FontAwesome; content: "\f00d"; }
 .ui-icon-close { background-position: -80px -128px; }
+.ui-icon-closethick:before { background: none; font-family: FontAwesome; content: "\f00d"; }
 .ui-icon-closethick { background-position: -96px -128px; }
 .ui-icon-key { background-position: -112px -128px; }
 .ui-icon-lightbulb { background-position: -128px -128px; }
@@ -432,6 +446,7 @@ a,
 .ui-icon-info { background-position: -16px -144px; }
 .ui-icon-notice { background-position: -32px -144px; }
 .ui-icon-help { background-position: -48px -144px; }
+.ui-icon-check:before { background: none; font-family: FontAwesome; content: "\f00c"; }
 .ui-icon-check { background-position: -64px -144px; }
 .ui-icon-bullet { background-position: -80px -144px; }
 .ui-icon-radio-on { background-position: -96px -144px; }
