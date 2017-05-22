@@ -193,6 +193,11 @@
                                     <div style="font-size:1.2em;font-weight:bold;">Fotografías</div>
                                     <p:separator />
 
+                                    <p:galleria value="#{fichaCatastralBB.listaFotosJpg}" var="image" panelWidth="500" panelHeight="313" showCaption="true">
+                                        <p:graphicImage name="src/main/webapp/privado/imagenes#{image}" alt="Image Description for #{image}" title="#{image}"/>
+                                    </p:galleria>
+
+
                                     <br/>
                                     <div style="font-size:1.2em;font-weight:bold;">Colindantes</div>
                                     <p:separator />
@@ -536,21 +541,21 @@
                         </h:panelGrid>
                         <br/>
 
-                        
+
 
                     </p:outputPanel>
                 </h:form>
 
                 <p:dialog header="Basic Dialog" widgetVar="dlg1" modal="true" showEffect="fade" hideEffect="fade" resizable="false" closable="true" width="550" height="400">
                     <p:treeTable value="#{fichaCatastralBB.listaArbolDominios}"
-                                     id="listaArbolDominios" var="dominio"
-                                     selectionMode="checkbox" selection="#{fichaCatastralBB.listaDominiosSeleccionados}" >
-                        
-                            <p:column headerText="Descripcion" sortBy="#{dominio.descripcion}">
-                                <h:outputText value="#{dominio.descripcion}"/>
-                            </p:column>            
+                                 id="listaArbolDominios" var="dominio"
+                                 selectionMode="checkbox" selection="#{fichaCatastralBB.listaDominiosSeleccionados}" >
 
-                        </p:treeTable>
+                        <p:column headerText="Descripcion" sortBy="#{dominio.descripcion}">
+                            <h:outputText value="#{dominio.descripcion}"/>
+                        </p:column>            
+
+                    </p:treeTable>
                 </p:dialog>
             </p:panel>
         </h:panelGroup>

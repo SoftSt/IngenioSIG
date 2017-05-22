@@ -13,17 +13,14 @@ import ec.com.newvi.faces.visorgeografico.layer.Layer;
 import ec.com.newvi.faces.visorgeografico.layer.Tile;
 import ec.com.newvi.faces.visorgeografico.source.OSM;
 import ec.com.newvi.faces.visorgeografico.source.TileWMS;
-import ec.com.newvi.sic.dao.DominiosFacade;
 import ec.com.newvi.sic.dto.DominioDto;
 import ec.com.newvi.sic.dto.FichaCatastralDto;
 import ec.com.newvi.sic.enums.EnumEstadoRegistro;
 import ec.com.newvi.sic.enums.EnumNewviExcepciones;
 import ec.com.newvi.sic.modelo.Bloques;
-import ec.com.newvi.sic.modelo.Contribuyentes;
-import ec.com.newvi.sic.modelo.Dominios;
+import ec.com.newvi.sic.modelo.Fotos;
 import ec.com.newvi.sic.modelo.Predios;
 import ec.com.newvi.sic.modelo.Propiedad;
-import ec.com.newvi.sic.modelo.Terreno;
 import ec.com.newvi.sic.util.ComunUtil;
 import ec.com.newvi.sic.util.excepciones.NewviExcepcion;
 import ec.com.newvi.sic.util.logs.LoggerNewvi;
@@ -63,6 +60,8 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
     private Bloques bloqueSeleccionado;
     private TreeNode listaArbolDominios;
     private TreeNode[] listaDominiosSeleccionados;
+    private List<Fotos> listaFotosPorPredio;
+    private List<String> listaFotosJpg;
 
     public Predios getPredio() {
         return predio;
@@ -143,6 +142,24 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
     public void setListaDominiosSeleccionados(TreeNode[] listaDominiosSeleccionados) {
         this.listaDominiosSeleccionados = listaDominiosSeleccionados;
     }
+
+    public List<Fotos> getListaFotosPorPredio() {
+        return listaFotosPorPredio;
+    }
+
+    public void setListaFotosPorPredio(List<Fotos> listaFotosPorPredio) {
+        this.listaFotosPorPredio = listaFotosPorPredio;
+    }
+
+    public List<String> getListaFotosJpg() {
+        return listaFotosJpg;
+    }
+
+    public void setListaFotosJpg(List<String> listaFotosJpg) {
+        this.listaFotosJpg = listaFotosJpg;
+    }
+    
+    
 
 
     
@@ -287,6 +304,17 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
                 EnumEtiquetas.FICHA_CATASTRAL_EDITAR_DESCRIPCION);
     }
 
+    private void construirImagenes(List<Fotos> imagenes){
+        for (Fotos fotos : imagenes) {
+            listaFotosJpg.add(fotos.getDirFotos()+".jpg");
+        }
+    }
+    
+    private void listarFotosPorPredio(Integer idPredio){
+        listaFotosPorPredio = catastroServicio.consultarFotosPorPredio(idPredio);
+        construirImagenes(listaFotosPorPredio);
+    }
+    
     private void seleccionarPredioPorCodigo(Integer idPredio) throws NewviExcepcion {
         this.predio = catastroServicio.seleccionarPredio(idPredio);
         for (FichaCatastralDto fichasCatrastrales : listaFichas) {
@@ -296,6 +324,8 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
         }
         
         this.propiedadActual = contribuyentesServicio.consultarUltimoPropiedad(this.predio);
+        
+        listarFotosPorPredio(idPredio);
     }
 
     public Propiedad obtenerPropiedad(Predios predioConsulta) {
