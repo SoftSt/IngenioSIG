@@ -243,7 +243,7 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
             insertarPredio();
         } else {
             try {
-                catastroServicio.actualizarPredio(predio, sesionBean.obtenerSesionDto());
+                catastroServicio.actualizarPredio(this.predio, sesionBean.obtenerSesionDto());
                 actualizarListadoPredios();
                 LoggerNewvi.getLogNewvi(this.getClass()).info(EnumNewviExcepciones.INF331.presentarMensaje(), sesionBean.obtenerSesionDto());
                 MensajesFaces.mensajeInformacion(EnumNewviExcepciones.INF331.presentarMensaje());
@@ -387,6 +387,22 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
             LoggerNewvi.getLogNewvi(this.getClass()).error(EnumNewviExcepciones.ERR000.presentarMensajeCodigo(), e, sesionBean.obtenerSesionDto());
             MensajesFaces.mensajeError(e.getMessage());
         }
+    }
+
+    public void agregarNuevoBloque() {
+        Bloques bloque = new Bloques();
+        bloque.setCodCatastral(this.predio);
+        bloque.setNomBloque("Nuevo");
+        this.predio.getBloques().add(bloque);
+        //bloque.getCodBloques();
+        //LoggerNewvi.getLogNewvi(this.getClass()).info();
+
+        /*for (int i = 0; i < 2355; i++) {
+            try {*/
+                actualizarPredio();
+           /* } catch (Exception e) {
+            }
+        }*/
     }
 
 }

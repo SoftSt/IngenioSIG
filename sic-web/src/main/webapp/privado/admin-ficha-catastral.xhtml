@@ -414,6 +414,9 @@
 
                                     <p style="font-weight:bold;">Información de Bloques</p>
                                     <br/>
+                                    <p:commandButton value="Nuevo bloque"
+                                                     actionListener="#{fichaCatastralBB.agregarNuevoBloque()}"
+                                                     update="listaInformacionBloques"/>
                                     <p:dataTable id="listaInformacionBloques" var="bloque" widgetVar="listaInformacionBloquesTabla"
                                                  value="#{fichaCatastralBB.predio.bloques}" rowKey="#{bloque.codBloques}"
                                                  emptyMessage="No se han encontrado resultados">
@@ -428,6 +431,9 @@
                                         </p:column>
                                         <p:rowExpansion>
                                             <p style="font-weight:bold;">Información de Pisos</p>
+                                            <p:commandButton value="Nuevo piso"
+                                                     actionListener="#{fichaCatastralBB.agregarNuevoBloque()}"
+                                                     update="grupoFichaCatastral"/>
                                             <p:dataTable id="listaInformacionPisos" var="piso" widgetVar="listaInformacionPisosTabla"
                                                          value="#{bloque.pisosCollection}" rowKey="#{piso.codPisos}"
                                                          emptyMessage="No se han encontrado resultados">

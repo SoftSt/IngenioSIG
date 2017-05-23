@@ -45,7 +45,7 @@ public class Bloques implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
-    @SequenceGenerator(name = "BLOQUE_CODIGO_GENERATOR", initialValue = 1, allocationSize = 1, sequenceName = "cat_cat_obras_cod_obras_seq", schema = "public")
+    @SequenceGenerator(name = "BLOQUE_CODIGO_GENERATOR", initialValue = 1, allocationSize = 1, sequenceName = "cat_cat_bloques_cod_bloques_seq", schema = "public")
     @GeneratedValue(generator = "BLOQUE_CODIGO_GENERATOR")
     @Column(name = "cod_bloques")
     private Integer codBloques;

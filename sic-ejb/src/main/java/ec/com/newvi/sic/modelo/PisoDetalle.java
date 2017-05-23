@@ -20,6 +20,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -35,8 +36,8 @@ public class PisoDetalle implements Serializable {
     
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Basic(optional = false)
+    @SequenceGenerator(name = "PISODETALLE_CODIGO_GENERATOR", initialValue = 1, allocationSize = 1, sequenceName = "cat_cat_pisosdetalle_cod_pisodetalle_seq", schema = "public")
+    @GeneratedValue(generator = "PISODETALLE_CODIGO_GENERATOR")
     @Column(name = "cod_pisodetalle")
     private Integer codPisoDetalle;
     
