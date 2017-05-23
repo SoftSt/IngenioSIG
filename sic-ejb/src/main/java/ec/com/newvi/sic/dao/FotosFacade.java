@@ -26,7 +26,7 @@ public class FotosFacade extends AbstractFacade<Fotos, Integer> implements Seria
     
     public List<Fotos> buscarFotosPorPredio(int codCatastral){
         // Busca un listado de bloques
-        Query q = this.getEntityManager().createQuery("SELECT foto FROM Fotos foto where foto.codCatastral = :CODCATASTRAL");
+        Query q = this.getEntityManager().createQuery("SELECT foto FROM Fotos foto where foto.codCatastral.codCatastral = :CODCATASTRAL");
         q.setParameter("CODCATASTRAL", codCatastral);
         //@return listado de bloques
         return q.getResultList();        

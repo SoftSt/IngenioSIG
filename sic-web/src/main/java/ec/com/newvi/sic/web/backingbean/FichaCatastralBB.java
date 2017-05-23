@@ -86,7 +86,7 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
     public void setListaFichasFiltradas(List<FichaCatastralDto> listaFichasFiltradas) {
         this.listaFichasFiltradas = listaFichasFiltradas;
     }
-    
+
     public EnumPantallaMantenimiento getPantallaActual() {
         return pantallaActual;
     }
@@ -158,18 +158,13 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
     public void setListaFotosJpg(List<String> listaFotosJpg) {
         this.listaFotosJpg = listaFotosJpg;
     }
-    
-    
-
-
-    
-    
 
     @PostConstruct
     public void init() {
         this.predio = new Predios();
         actualizarListadoPredios();
         actualizarListadoDominios();
+        this.listaFotosJpg = new ArrayList<>();
         conmutarPantalla(EnumPantallaMantenimiento.PANTALLA_LISTADO);
         establecerTitulo(EnumEtiquetas.FICHA_CATASTRAL_LISTA_TITULO,
                 EnumEtiquetas.FICHA_CATASTRAL_LISTA_ICONO,
@@ -206,8 +201,7 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
          * fuenteWMS.setParams(fuenteWMS.new Params("nwi_catastro:he002_lote",
          * Boolean.FALSE));
          * fuenteWMS.setServerType(TileWMS.ServerType.GEOSERVER);
-         * capaWMS.setSource(fuenteWMS);
-        mapa.getLayers().add(capaWMS);
+         * capaWMS.setSource(fuenteWMS); mapa.getLayers().add(capaWMS);
          */
         mapa.setView(vistaMapa);
     }
@@ -304,28 +298,33 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
                 EnumEtiquetas.FICHA_CATASTRAL_EDITAR_DESCRIPCION);
     }
 
-    private void construirImagenes(List<Fotos> imagenes){
+    private void construirImagenes(List<Fotos> imagenes) {
         for (Fotos fotos : imagenes) {
-            listaFotosJpg.add(fotos.getDirFotos()+".jpg");
+            listaFotosJpg.add(fotos.getDirFotos().trim() + ".jpg");
         }
     }
-    
-    private void listarFotosPorPredio(Integer idPredio){
+
+    private void listarFotosPorPredio(Integer idPredio) {
         listaFotosPorPredio = catastroServicio.consultarFotosPorPredio(idPredio);
-        construirImagenes(listaFotosPorPredio);
+        if (!listaFotosPorPredio.isEmpty()) {
+            construirImagenes(listaFotosPorPredio);
+        } else {
+            listaFotosJpg.add("vacio.jpg");
+        }
+
     }
-    
+
     private void seleccionarPredioPorCodigo(Integer idPredio) throws NewviExcepcion {
         this.predio = catastroServicio.seleccionarPredio(idPredio);
         for (FichaCatastralDto fichasCatrastrales : listaFichas) {
-            if(fichasCatrastrales.getPredio().getCodCatastral().equals(idPredio)){
-                propiedad=fichasCatrastrales.getPropiedad();
+            if (fichasCatrastrales.getPredio().getCodCatastral().equals(idPredio)) {
+                propiedad = fichasCatrastrales.getPropiedad();
             }
         }
-        
+
         this.propiedadActual = contribuyentesServicio.consultarUltimoPropiedad(this.predio);
-        
-        listarFotosPorPredio(idPredio);
+
+        listarFotosPorPredio(this.predio.getCodCatastral());
     }
 
     public Propiedad obtenerPropiedad(Predios predioConsulta) {
@@ -370,8 +369,7 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
     public void actualizarCodigoCatastral() {
         this.predio.actualizarCodigoPredio();
     }
-    
-    
+
     private void actualizarListadoDominios() {
         //List<DominioDto> listadoDominiosDto = new ArrayList<>();
         List<DominioDto> listadoDominiosDto = parametrosServicio.listarDominiosDto("INFRAESTRUCTURA DE SERVICIOS");
