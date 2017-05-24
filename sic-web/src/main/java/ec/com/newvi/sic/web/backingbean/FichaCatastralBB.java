@@ -19,6 +19,7 @@ import ec.com.newvi.sic.enums.EnumEstadoRegistro;
 import ec.com.newvi.sic.enums.EnumNewviExcepciones;
 import ec.com.newvi.sic.modelo.Bloques;
 import ec.com.newvi.sic.modelo.Fotos;
+import ec.com.newvi.sic.modelo.Pisos;
 import ec.com.newvi.sic.modelo.Predios;
 import ec.com.newvi.sic.modelo.Propiedad;
 import ec.com.newvi.sic.util.ComunUtil;
@@ -31,6 +32,7 @@ import ec.com.newvi.sic.web.utils.ValidacionUtils;
 import ec.com.newvi.sic.web.utils.WebUtils;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -394,15 +396,29 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
         bloque.setCodCatastral(this.predio);
         bloque.setNomBloque("Nuevo");
         this.predio.getBloques().add(bloque);
-        //bloque.getCodBloques();
-        //LoggerNewvi.getLogNewvi(this.getClass()).info();
+        actualizarPredio();
+    }
 
-        /*for (int i = 0; i < 2355; i++) {
-            try {*/
-                actualizarPredio();
-           /* } catch (Exception e) {
+    public void agregarNuevoPiso(Integer codBloque) throws NewviExcepcion {
+        Pisos piso = new Pisos();
+        piso.setNomPiso("Piso nuevo");
+        piso.setPisEstado(EnumEstadoRegistro.A);
+        
+
+        for (Bloques bloque : this.predio.getBloques()) {
+            if(bloque.getCodBloques().equals(codBloque))
+            {
+                //bloqueSeleccionado = bloque;
+                piso.setCodBloques(bloque);
+                bloque.getPisosCollection().add(piso);
             }
-        }*/
+        }
+        //piso.setCodBloques(bloqueSeleccionado);
+        
+        //bloqueSeleccionado.getPisosCollection().add(piso);
+        
+        catastroServicio.generarNuevoPiso(piso, sesionBean.obtenerSesionDto());
+        actualizarPredio();
     }
 
 }

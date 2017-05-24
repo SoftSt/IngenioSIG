@@ -414,9 +414,16 @@
 
                                     <p style="font-weight:bold;">Información de Bloques</p>
                                     <br/>
+
                                     <p:commandButton value="Nuevo bloque"
                                                      actionListener="#{fichaCatastralBB.agregarNuevoBloque()}"
-                                                     update="listaInformacionBloques"/>
+                                                     id="nuevoBloque"
+                                                     update="grupoFichaCatastral">
+                                        <p:ajax update="toolTipInsert" process="@this" /> 
+                                    </p:commandButton>
+                                    <p:tooltip id="toolTipInsert" for="nuevoBloque" value="Agregar nuevo bloque" showEffect="fade" hideEffect="fade" position="bottom"/>
+
+
                                     <p:dataTable id="listaInformacionBloques" var="bloque" widgetVar="listaInformacionBloquesTabla"
                                                  value="#{fichaCatastralBB.predio.bloques}" rowKey="#{bloque.codBloques}"
                                                  emptyMessage="No se han encontrado resultados">
@@ -431,9 +438,17 @@
                                         </p:column>
                                         <p:rowExpansion>
                                             <p style="font-weight:bold;">Información de Pisos</p>
+
                                             <p:commandButton value="Nuevo piso"
-                                                     actionListener="#{fichaCatastralBB.agregarNuevoBloque()}"
-                                                     update="grupoFichaCatastral"/>
+                                                             actionListener="#{fichaCatastralBB.agregarNuevoPiso(bloque.codBloques)}"
+                                                             id="nuevoPiso"
+                                                             update="grupoFichaCatastral">
+                                                <p:ajax update="toolTipInsertPiso" process="@this" /> 
+                                            </p:commandButton>
+                                            <p:tooltip id="toolTipInsertPiso" for="nuevoPiso" value="Agregar nuevo piso" showEffect="fade" hideEffect="fade" position="bottom"/>
+
+
+
                                             <p:dataTable id="listaInformacionPisos" var="piso" widgetVar="listaInformacionPisosTabla"
                                                          value="#{bloque.pisosCollection}" rowKey="#{piso.codPisos}"
                                                          emptyMessage="No se han encontrado resultados">
