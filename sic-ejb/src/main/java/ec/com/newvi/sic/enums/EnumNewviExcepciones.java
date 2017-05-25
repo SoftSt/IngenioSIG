@@ -79,7 +79,12 @@ public enum EnumNewviExcepciones {
     ERR347("ERR347", "Propietario no válido.", "El propietario ingresado no es válido. Por favor verifique que los datos ingresados son correctos."),
     INF348("INF348", "Propietario ingresado.", "El propietario se ha registrado correctamente."),
     INF349("INF349", "Propietario editado.", "El propietario se ha editado correctamente."),
-    INF350("INF350", "Propietario eliminado.", "El propietario se ha eliminado correctamente.");
+    INF350("INF350", "Propietario eliminado.", "El propietario se ha eliminado correctamente."),
+    INF351("INF351", "Predio ingresado.", "El predio se ha registrado correctamente."),
+    INF352("INF352", "Predio editado.", "El predio se ha editado correctamente."),
+    INF353("INF353", "Predio eliminado.", "El predio se ha eliminado correctamente."),
+    INF354("INF353", "Bloque agregado.", "El bloque se ha agregado correctamente."),
+    INF355("INF353", "Piso agregado.", "El piso se ha agregado correctamente.");
     
     private final String codigoExcepcion;
     private final String nombreExcepcion;
