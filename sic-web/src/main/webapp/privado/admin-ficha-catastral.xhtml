@@ -428,17 +428,27 @@
                                     <p:tooltip id="toolTipInsert" for="nuevoBloque" value="Agregar nuevo bloque" showEffect="fade" hideEffect="fade" position="bottom"/>
 
 
-                                    <p:dataTable id="listaInformacionBloques" var="bloque" widgetVar="listaInformacionBloquesTabla"
+                                    <p:dataTable id="listaInformacionBloques" var="bloque" editable="true" widgetVar="listaInformacionBloquesTabla"
                                                  value="#{fichaCatastralBB.predio.bloques}" rowKey="#{bloque.codBloques}"
                                                  emptyMessage="No se han encontrado resultados">
                                         <p:column style="width:16px">
                                             <p:rowToggler />
                                         </p:column>
                                         <p:column headerText="Bloque" class="column-title-left" width="60">
-                                            <h:outputText value="#{bloque.nomBloque}" />
+                                            <p:cellEditor>
+                                                <f:facet name="output"><h:outputText value="#{bloque.nomBloque}" /></f:facet>
+                                                <f:facet name="input"><p:inputText value="#{bloque.nomBloque}"/></f:facet>
+                                            </p:cellEditor>
                                         </p:column>
+
                                         <p:column headerText="No. Pisos" class="column-title-left">
-                                            <h:outputText value="#{bloque.valNropisos}" />
+                                            <p:cellEditor>
+                                                <f:facet name="output"><h:outputText value="#{bloque.valNropisos}" /></f:facet>
+                                                <f:facet  name="input"><p:inputText value="#{bloque.valNropisos}" /></f:facet>
+                                            </p:cellEditor>
+                                        </p:column>
+                                        <p:column headerText="Opciones" style="width:32px">
+                                            <p:rowEditor/>
                                         </p:column>
                                         <p:rowExpansion>
                                             <p style="font-weight:bold;">Información de Pisos</p>

@@ -428,19 +428,14 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
     }
 
     public void agregarNuevoPiso(Integer codBloque) throws NewviExcepcion {
-        //WebUtils.obtenerContextoPeticion().reset("formularioFichaCatastral:opDetalleFichaCatastral");
         WebUtils.obtenerContextoPeticion().reset("formularioFichaCatastral:opDetalleFichaCatastral");
         Pisos piso = new Pisos();
         piso.setNomPiso("Piso nuevo");
-        //seleccionarPredio(catastroServicio.seleccionarBloque(codBloque).getCodCatastral().getCodCatastral());
         piso.setPisEstado(EnumEstadoRegistro.A);
-        //agregarPisoBloqueSeleccionado(piso, codBloque);
         for (Bloques bloque : this.predio.getBloques()) {
             if (bloque.getCodBloques().equals(codBloque)) {
                 piso.setCodBloques(bloque);
-                
                 bloque.getPisosCollection().add(piso);
-                //break;
             }
         }
         catastroServicio.generarNuevoPiso(piso, sesionBean.obtenerSesionDto());
