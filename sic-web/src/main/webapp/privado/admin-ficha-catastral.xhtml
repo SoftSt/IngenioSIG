@@ -376,7 +376,7 @@
                                     <br/>
                                     <div style="font-size:1.2em;font-weight:bold;">Infraestructura y Servicios</div>
                                     <br/>
-                                    <p:commandButton value="Basic" type="button" onclick="PF('dlg1').show();" />
+                                    <p:commandButton value="Agregar Servicio" type="button" onclick="PF('dlg1').show();" />
                                     <p:dataTable id="listaServiciosBasicos" var="servicios" widgetVar="listaSeviciosBasicosTabla"
                                                  value="#{fichaCatastralBB.predio.servicios}" rowKey="#{servicios.codServicios}" filteredValue=""
                                                  paginator="true" rows="10" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" 
@@ -488,6 +488,8 @@
                                                 <p:rowExpansion>
 
                                                     <p style="font-weight:bold;">Detalle de construcción</p>
+                                                    <br/>
+                                                    <p:commandButton value="Agregar detalles" type="button" onclick="PF('dlg2').show();" />
                                                     <p:dataTable id="listaElementosConstruccion" var="elementosConstruccion" scrollable="true" scrollHeight="250" widgetVar="listaElementosConstruccionTabla"
                                                                  value="#{piso.detalles}" rowKey="#{elementosConstruccion.codPisoDetalle}" filteredValue=""
                                                                  emptyMessage="No se han encontrado resultados">
@@ -581,7 +583,7 @@
                     </p:outputPanel>
                 </h:form>
 
-                <p:dialog header="Basic Dialog" widgetVar="dlg1" modal="true" showEffect="fade" hideEffect="fade" resizable="false" closable="true" width="550" height="400">
+                <p:dialog header="Agregar nuevos servicios" widgetVar="dlg1" modal="true" showEffect="fade" hideEffect="fade" resizable="false" closable="true" width="550" height="400">
                     <p:treeTable value="#{fichaCatastralBB.listaArbolDominios}"
                                  id="listaArbolDominios" var="dominio"
                                  selectionMode="checkbox" selection="#{fichaCatastralBB.listaDominiosSeleccionados}" >
@@ -591,6 +593,18 @@
                         </p:column>            
 
                     </p:treeTable>
+                </p:dialog>
+                <p:dialog header="Agregar detalles al piso" widgetVar="dlg2" modal="true" showEffect="fade" hideEffect="fade" resizable="false" closable="true" width="550" height="400">
+                    <p:treeTable value="#{fichaCatastralBB.listaArbolPisosDetalle}"
+                                 id="listaArbolPisosDetalle" var="dominio"
+                                 selectionMode="checkbox" selection="#{fichaCatastralBB.listaPisosDetalleSeleccionados}" >
+
+                        <p:column headerText="Descripcion" sortBy="#{dominio.descripcion}">
+                            <h:outputText value="#{dominio.descripcion}"/>
+                        </p:column>            
+                    </p:treeTable>
+                    <p:commandButton value="Ingresar detalle" 
+                                     action="#{fichaCatastralBB.ingresarDetallesPiso(fichaCatastralBB.listaPisosDetalleSeleccionados)}"/>
                 </p:dialog>
             </p:panel>
         </h:panelGroup>

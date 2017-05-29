@@ -61,7 +61,9 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
     private Map mapa;
     private Bloques bloqueSeleccionado;
     private TreeNode listaArbolDominios;
+    private TreeNode listaArbolPisosDetalle;
     private TreeNode[] listaDominiosSeleccionados;
+    private TreeNode[] listaPisosDetalleSeleccionados;
     private List<Fotos> listaFotosPorPredio;
     private List<String> listaFotosJpg;
 
@@ -145,6 +147,26 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
         this.listaDominiosSeleccionados = listaDominiosSeleccionados;
     }
 
+    public TreeNode getListaArbolPisosDetalle() {
+        return listaArbolPisosDetalle;
+    }
+
+    public void setListaArbolPisosDetalle(TreeNode listaArbolPisosDetalle) {
+        this.listaArbolPisosDetalle = listaArbolPisosDetalle;
+    }
+
+    public TreeNode[] getListaPisosDetalleSeleccionados() {
+        return listaPisosDetalleSeleccionados;
+    }
+
+    public void setListaPisosDetalleSeleccionados(TreeNode[] listaPisosDetalleSeleccionados) {
+        this.listaPisosDetalleSeleccionados = listaPisosDetalleSeleccionados;
+    }
+
+    
+    
+    
+
     public List<Fotos> getListaFotosPorPredio() {
         return listaFotosPorPredio;
     }
@@ -166,6 +188,7 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
         this.predio = new Predios();
         actualizarListadoPredios();
         actualizarListadoDominios();
+        actualizarListadoPisosDetalle();
         this.listaFotosJpg = new ArrayList<>();
         conmutarPantalla(EnumPantallaMantenimiento.PANTALLA_LISTADO);
         establecerTitulo(EnumEtiquetas.FICHA_CATASTRAL_LISTA_TITULO,
@@ -386,6 +409,20 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
             MensajesFaces.mensajeError(e.getMessage());
         }
     }
+    private void actualizarListadoPisosDetalle() {
+        List<DominioDto> listadoDetallesDto = parametrosServicio.listarDominiosDto("DESCRIPCION EDIFICACION");
+
+        try {
+            listaArbolPisosDetalle = new DefaultTreeNode();
+            listaArbolPisosDetalle = WebUtils.generarArbol(listadoDetallesDto, listaArbolPisosDetalle, "getHijos");
+        } catch (NewviExcepcion ex) {
+            LoggerNewvi.getLogNewvi(this.getClass()).error(ex, sesionBean.obtenerSesionDto());
+            MensajesFaces.mensajeError(ex.getMessage());
+        } catch (Exception e) {
+            LoggerNewvi.getLogNewvi(this.getClass()).error(EnumNewviExcepciones.ERR000.presentarMensajeCodigo(), e, sesionBean.obtenerSesionDto());
+            MensajesFaces.mensajeError(e.getMessage());
+        }
+    }
 
     public void actualizarElementosPredio() throws NewviExcepcion {
         catastroServicio.actualizarPredio(this.predio, sesionBean.obtenerSesionDto());
@@ -452,6 +489,18 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
             MensajesFaces.mensajeError(e.getMessage());
         }
 
+    }
+    
+    
+    public void ingresarDetallesPiso(TreeNode[] listaDetallesPiso){
+        if(listaDetallesPiso != null && listaDetallesPiso.length > 0) {
+            StringBuilder builder = new StringBuilder();
+ 
+            for(TreeNode node : listaDetallesPiso) {
+                builder.append(node.getData().toString());
+                builder.append("<br />");
+            }
+        }
     }
 
 }

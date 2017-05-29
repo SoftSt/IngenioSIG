@@ -118,7 +118,7 @@ public class ParametrosServicioImpl implements ParametrosServicio {
     public List<DominioDto> listarDominiosDto(String grupo) {
         List<DominioDto> listadoDominiosDto = new ArrayList<>();
 
-        for (Dominios dominio : dominiosFacade.buscarDominiosPorGrupo("INFRAESTRUCTURA DE SERVICIOS")) {
+        for (Dominios dominio : dominiosFacade.buscarDominiosPorGrupo(grupo)) {
             listadoDominiosDto.add(new DominioDto(dominio, this));
             //listadoDominiosDto.add(new DominioDto(dominio, dominiosFacade));
         }
