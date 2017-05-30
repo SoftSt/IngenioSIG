@@ -412,6 +412,7 @@ a,
 .ui-icon-calendar:before { background: none; font-family: FontAwesome; content: "\f073"; }
 .ui-icon-calendar { background-position: 16px 16px; }
 .ui-icon-cart { background-position: -48px -112px; }
+.ui-icon-pencil:before { background: none; font-family: FontAwesome; content: "\f040"; }
 .ui-icon-pencil { background-position: -64px -112px; }
 .ui-icon-clock { background-position: -80px -112px; }
 .ui-icon-disk { background-position: -96px -112px; }
@@ -775,4 +776,14 @@ a,
 
 .ui-datatable thead .column-title-right {
     text-align: right;
+}
+
+.ui-row-editor .ui-icon-pencil {
+    margin: -8px 20px 0 20px;
+    position: inherit !important;
+}
+
+.ui-row-editor .ui-icon-close, .ui-row-editor .ui-icon-check {
+    margin: -8px 0 0 10px;
+    position: inherit !important;
 }
