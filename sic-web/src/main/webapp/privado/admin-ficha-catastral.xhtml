@@ -463,55 +463,89 @@
 
 
 
-                                            <p:dataTable id="listaInformacionPisos" var="piso" widgetVar="listaInformacionPisosTabla"
+                                            <p:dataTable id="listaInformacionPisos" var="piso" editable="true" widgetVar="listaInformacionPisosTabla"
                                                          value="#{bloque.pisosCollection}" rowKey="#{piso.codPisos}"
                                                          emptyMessage="No se han encontrado resultados">
 
                                                 <p:column style="width:16px">
                                                     <p:rowToggler />
                                                 </p:column>
-                                                <p:column headerText="Piso" class="column-title-left" sortBy="#{piso.valPisonumero}" width="60">
-                                                    <h:outputText value="#{piso.nomPiso}" />
+                                                <p:column headerText="Piso" class="column-title-left" sortBy="#{piso.nomPiso}" width="60">
+                                                    <p:cellEditor>
+                                                        <f:facet name="output"><h:outputText value="#{piso.nomPiso}" /></f:facet>
+                                                        <f:facet name="input"><p:inputText value="#{piso.nomPiso}"/></f:facet>
+                                                    </p:cellEditor>
                                                 </p:column>
 
                                                 <p:column headerText="Área (m2)" class="column-title-left" sortBy="#{piso.valAreapiso}">
-                                                    <h:outputText value="#{piso.valAreapiso}" />
+                                                    <p:cellEditor>
+                                                        <f:facet name="output"><h:outputText value="#{piso.valAreapiso}" /></f:facet>
+                                                        <f:facet name="input"><p:inputText value="#{piso.valAreapiso}"/></f:facet>
+                                                    </p:cellEditor>
                                                 </p:column>
 
                                                 <p:column headerText="Año construcción" class="column-title-left" sortBy="#{piso.valAnioconstruccion}">
-                                                    <h:outputText value="#{piso.valAnioconstruccion}" />
+                                                    <p:cellEditor>
+                                                        <f:facet name="output"><h:outputText value="#{piso.valAnioconstruccion}" /></f:facet>
+                                                        <f:facet name="input"><p:inputText value="#{piso.valAnioconstruccion}"/></f:facet>
+                                                    </p:cellEditor>
                                                 </p:column>
 
                                                 <p:column headerText="Año reparación" class="column-title-left" sortBy="#{piso.valAnioreparacion}">
-                                                    <h:outputText value="#{piso.valAnioreparacion}" />
+                                                    <p:cellEditor>
+                                                        <f:facet name="output"><h:outputText value="#{piso.valAnioreparacion}" /></f:facet>
+                                                        <f:facet name="input"><p:inputText value="#{piso.valAnioreparacion}"/></f:facet>
+                                                    </p:cellEditor>
+                                                </p:column>
+
+                                                <p:column headerText="Opciones" style="width:32px">
+                                                    <p:rowEditor/>
                                                 </p:column>
                                                 <p:rowExpansion>
 
                                                     <p style="font-weight:bold;">Detalle de construcción</p>
                                                     <br/>
                                                     <p:commandButton value="Agregar detalles" type="button" onclick="PF('dlg2').show();" />
-                                                    <p:dataTable id="listaElementosConstruccion" var="elementosConstruccion" scrollable="true" scrollHeight="250" widgetVar="listaElementosConstruccionTabla"
+                                                    <p:dataTable id="listaElementosConstruccion" editable="true" var="elementosConstruccion" scrollable="true" scrollHeight="250" widgetVar="listaElementosConstruccionTabla"
                                                                  value="#{piso.detalles}" rowKey="#{elementosConstruccion.codPisoDetalle}" filteredValue=""
                                                                  emptyMessage="No se han encontrado resultados">
 
                                                         <p:column headerText="Código" class="column-title-left" sortBy="#{elementosConstruccion.codigo}" width="60">
-                                                            <h:outputText value="#{elementosConstruccion.codigo}" />
+                                                            <p:cellEditor>
+                                                                <f:facet name="output"><h:outputText value="#{elementosConstruccion.codigo}" /></f:facet>
+                                                                <f:facet name="input"><p:inputText value="#{elementosConstruccion.codigo}"/></f:facet>
+                                                            </p:cellEditor>
                                                         </p:column>
 
                                                         <p:column headerText="Grupo" class="column-title-left" sortBy="#{elementosConstruccion.grupo}">
-                                                            <h:outputText value="#{elementosConstruccion.grupo}" />
+                                                            <p:cellEditor>
+                                                                <f:facet name="output"><h:outputText value="#{elementosConstruccion.grupo}" /></f:facet>
+                                                                <f:facet name="input"><p:inputText value="#{elementosConstruccion.grupo}"/></f:facet>
+                                                            </p:cellEditor>
                                                         </p:column>
 
                                                         <p:column headerText="Subgrupo" class="column-title-left" sortBy="#{elementosConstruccion.subgrupo}">
-                                                            <h:outputText value="#{elementosConstruccion.subgrupo}" />
+                                                            <p:cellEditor>
+                                                                <f:facet name="output"><h:outputText value="#{elementosConstruccion.subgrupo}" /></f:facet>
+                                                                <f:facet name="input"><p:inputText value="#{elementosConstruccion.subgrupo}"/></f:facet>
+                                                            </p:cellEditor>
                                                         </p:column>
 
                                                         <p:column headerText="Material de construcción" class="column-title-left" sortBy="#{elementosConstruccion.descripcion}">
-                                                            <h:outputText value="#{elementosConstruccion.descripcion}" />
+                                                            <p:cellEditor>
+                                                                <f:facet name="output"><h:outputText value="#{elementosConstruccion.descripcion}" /></f:facet>
+                                                                <f:facet name="input"><p:inputText value="#{elementosConstruccion.descripcion}"/></f:facet>
+                                                            </p:cellEditor>
                                                         </p:column>
 
                                                         <p:column headerText="Estado" class="column-title-left" sortBy="#{elementosConstruccion.estadoDetalle}">
-                                                            <h:outputText value="#{elementosConstruccion.estadoDetalle}" />
+                                                            <p:cellEditor>
+                                                                <f:facet name="output"><h:outputText value="#{elementosConstruccion.estadoDetalle}" /></f:facet>
+                                                                <f:facet name="input"><p:inputText value="#{elementosConstruccion.estadoDetalle}"/></f:facet>
+                                                            </p:cellEditor>
+                                                        </p:column>
+                                                        <p:column headerText="Opciones" style="width:32px">
+                                                            <p:rowEditor/>
                                                         </p:column>
                                                     </p:dataTable>
                                                 </p:rowExpansion>
@@ -600,11 +634,12 @@
                                  selectionMode="checkbox" selection="#{fichaCatastralBB.listaPisosDetalleSeleccionados}" >
 
                         <p:column headerText="Descripcion" sortBy="#{dominio.descripcion}">
-                            <h:outputText value="#{dominio.descripcion}"/>
+                            <h:outputText value="#{actionListener.descripcion}"/>
                         </p:column>            
                     </p:treeTable>
                     <p:commandButton value="Ingresar detalle" 
-                                     action="#{fichaCatastralBB.ingresarDetallesPiso(fichaCatastralBB.listaPisosDetalleSeleccionados)}"/>
+                                     actionListener="#{fichaCatastralBB.ingresarDetallesPiso(fichaCatastralBB.listaPisosDetalleSeleccionados)}"/>
+
                 </p:dialog>
             </p:panel>
         </h:panelGroup>
