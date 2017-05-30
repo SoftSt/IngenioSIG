@@ -32,10 +32,8 @@ import ec.com.newvi.sic.web.utils.ValidacionUtils;
 import ec.com.newvi.sic.web.utils.WebUtils;
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import javax.annotation.PostConstruct;
-import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.component.UIComponent;
@@ -58,7 +56,6 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
     private List<FichaCatastralDto> listaFichas;
     private List<FichaCatastralDto> listaFichasFiltradas;
     private EnumPantallaMantenimiento pantallaActual;
-    private Map mapa;
     private Bloques bloqueSeleccionado;
     private TreeNode listaArbolDominios;
     private TreeNode listaArbolPisosDetalle;
@@ -97,14 +94,6 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
 
     public void setPantallaActual(EnumPantallaMantenimiento pantallaActual) {
         this.pantallaActual = pantallaActual;
-    }
-
-    public Map getMapa() {
-        return mapa;
-    }
-
-    public void setMapa(Map mapa) {
-        this.mapa = mapa;
     }
 
     public Bloques getBloqueSeleccionado() {
@@ -163,10 +152,6 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
         this.listaPisosDetalleSeleccionados = listaPisosDetalleSeleccionados;
     }
 
-    
-    
-    
-
     public List<Fotos> getListaFotosPorPredio() {
         return listaFotosPorPredio;
     }
@@ -195,40 +180,6 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
                 EnumEtiquetas.FICHA_CATASTRAL_LISTA_ICONO,
                 EnumEtiquetas.FICHA_CATASTRAL_LISTA_DESCRIPCION);
 
-        mapa = new Map();
-        View vistaMapa = new View();
-        vistaMapa.setCenter(new Coordinate(BigDecimal.valueOf(-79), BigDecimal.valueOf(-1.2)));
-        vistaMapa.setProjection(ProjectionCode.EPSG_4326);
-        vistaMapa.setZoom(BigDecimal.valueOf(11));
-
-        /*Layer capaBingMaps = new Tile();
-        BingMaps bingMaps = new BingMaps();
-        bingMaps.setImagerySet(BingMaps.Style.AERIAL);
-        bingMaps.setKey("AqFjj-M8JAhbTyEGSjJIY2pnV6dcbYhAYIw-UKyD363yXDWZekrkz0R65obxSnzb");
-        capaBingMaps.setSource(bingMaps);
-        mapa.getLayers().add(capaBingMaps);*/
-        Layer capaOSM = new Tile();
-        capaOSM.setOpacity(BigDecimal.valueOf(1));
-        capaOSM.setSource(new OSM());
-        mapa.getLayers().add(capaOSM);
-
-        Layer capaWMS = new Tile();
-        TileWMS fuenteWMS = new TileWMS();
-        fuenteWMS.setUrl("http://192.168.100.110:8080/geoserver/wms");
-        fuenteWMS.setParams(fuenteWMS.new Params("nwi_catastro:he002_lote", Boolean.FALSE));
-        fuenteWMS.setServerType(TileWMS.ServerType.GEOSERVER);
-        capaWMS.setSource(fuenteWMS);
-        mapa.getLayers().add(capaWMS);
-
-        /**
-         * Layer capaWFS = new Tile(); TileWMS fuenteWMS = new TileWMS();
-         * fuenteWMS.setUrl("http://192.168.100.110:8080/geoserver/wms");
-         * fuenteWMS.setParams(fuenteWMS.new Params("nwi_catastro:he002_lote",
-         * Boolean.FALSE));
-         * fuenteWMS.setServerType(TileWMS.ServerType.GEOSERVER);
-         * capaWMS.setSource(fuenteWMS); mapa.getLayers().add(capaWMS);
-         */
-        mapa.setView(vistaMapa);
     }
 
     private void actualizarListadoPredios() {
@@ -409,6 +360,7 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
             MensajesFaces.mensajeError(e.getMessage());
         }
     }
+
     private void actualizarListadoPisosDetalle() {
         List<DominioDto> listadoDetallesDto = parametrosServicio.listarDominiosDto("DESCRIPCION EDIFICACION");
 
@@ -426,7 +378,7 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
 
     public void actualizarElementosPredio() throws NewviExcepcion {
         catastroServicio.actualizarPredio(this.predio, sesionBean.obtenerSesionDto());
-        actualizarListadoPredios();
+        seleccionarPredio(predio.getCodCatastral());
     }
 
     public void agregarNuevoBloque() throws NewviExcepcion {
@@ -490,13 +442,12 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
         }
 
     }
-    
-    
-    public void ingresarDetallesPiso(TreeNode[] listaDetallesPiso){
-        if(listaDetallesPiso != null && listaDetallesPiso.length > 0) {
+
+    public void ingresarDetallesPiso(TreeNode[] listaDetallesPiso) {
+        if (listaDetallesPiso != null && listaDetallesPiso.length > 0) {
             StringBuilder builder = new StringBuilder();
- 
-            for(TreeNode node : listaDetallesPiso) {
+
+            for (TreeNode node : listaDetallesPiso) {
                 builder.append(node.getData().toString());
                 builder.append("<br />");
             }
