@@ -38,6 +38,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
+import org.primefaces.event.RowEditEvent;
 import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.TreeNode;
 
@@ -379,6 +380,7 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
     public void actualizarElementosPredio() throws NewviExcepcion {
         catastroServicio.actualizarPredio(this.predio, sesionBean.obtenerSesionDto());
         seleccionarPredio(predio.getCodCatastral());
+        //WebUtils.obtenerContextoPeticion().reset("formularioFichaCatastral:opDetalleFichaCatastral");
     }
 
     public void agregarNuevoBloque() throws NewviExcepcion {
@@ -386,9 +388,7 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
         bloque.setCodCatastral(this.predio);
         bloque.setNomBloque("Nuevo");
         bloque.setBloEstado(EnumEstadoRegistro.A);
-
-        catastroServicio.generarNuevoBloque(bloque, sesionBean.obtenerSesionDto());
-
+        //catastroServicio.generarNuevoBloque(bloque, sesionBean.obtenerSesionDto());
         this.predio.getBloques().add(bloque);
 
         try {
@@ -408,26 +408,31 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
     public void agregarPisoBloqueSeleccionado(Pisos piso, Integer codBloque) throws NewviExcepcion {
         for (Bloques bloque : this.predio.getBloques()) {
             if (bloque.getCodBloques().equals(codBloque)) {
+                //seleccionarPredio(predio.getCodCatastral());
                 piso.setCodBloques(bloque);
-                catastroServicio.generarNuevoPiso(piso, sesionBean.obtenerSesionDto());
                 bloque.getPisosCollection().add(piso);
-                //break;
+                catastroServicio.generarNuevoPiso(piso, sesionBean.obtenerSesionDto());
+                //catastroServicio.actualizarPredio(predio, sesionBean.obtenerSesionDto());
+                catastroServicio.actualizarBloque(bloque, sesionBean.obtenerSesionDto());
+                break;
             }
         }
     }
 
     public void agregarNuevoPiso(Integer codBloque) throws NewviExcepcion {
-        WebUtils.obtenerContextoPeticion().reset("formularioFichaCatastral:opDetalleFichaCatastral");
+        //WebUtils.obtenerContextoPeticion().reset("formularioFichaCatastral:opDetalleFichaCatastral");
         Pisos piso = new Pisos();
         piso.setNomPiso("Piso nuevo");
         piso.setPisEstado(EnumEstadoRegistro.A);
-        for (Bloques bloque : this.predio.getBloques()) {
+        agregarPisoBloqueSeleccionado(piso, codBloque);
+        
+        /*for (Bloques bloque : this.predio.getBloques()) {
             if (bloque.getCodBloques().equals(codBloque)) {
                 piso.setCodBloques(bloque);
                 bloque.getPisosCollection().add(piso);
             }
         }
-        catastroServicio.generarNuevoPiso(piso, sesionBean.obtenerSesionDto());
+        catastroServicio.generarNuevoPiso(piso, sesionBean.obtenerSesionDto());*/
 
         try {
             actualizarElementosPredio();
@@ -451,6 +456,35 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
                 builder.append(node.getData().toString());
                 builder.append("<br />");
             }
+        }
+    }
+
+    public void actualizarBloqueIngresado() {
+        try {
+            catastroServicio.actualizarPredio(this.predio, sesionBean.obtenerSesionDto());
+            LoggerNewvi.getLogNewvi(this.getClass()).info(EnumNewviExcepciones.INF341.presentarMensaje(), sesionBean.obtenerSesionDto());
+            MensajesFaces.mensajeInformacion(EnumNewviExcepciones.INF341.presentarMensaje());
+        } catch (NewviExcepcion e) {
+            LoggerNewvi.getLogNewvi(this.getClass()).error(e, sesionBean.obtenerSesionDto());
+            MensajesFaces.mensajeError(e.getMessage());
+        } catch (Exception e) {
+            LoggerNewvi.getLogNewvi(this.getClass()).error(EnumNewviExcepciones.ERR000.presentarMensajeCodigo(), e, sesionBean.obtenerSesionDto());
+            MensajesFaces.mensajeError(e.getMessage());
+        }
+    }
+    
+    public void actualizarPisoIngresado(Pisos piso) {
+        try {
+            //catastroServicio.actualizarPredio(this.predio, sesionBean.obtenerSesionDto());
+            catastroServicio.actualizarPiso(piso, sesionBean.obtenerSesionDto());
+            LoggerNewvi.getLogNewvi(this.getClass()).info(EnumNewviExcepciones.INF345.presentarMensaje(), sesionBean.obtenerSesionDto());
+            MensajesFaces.mensajeInformacion(EnumNewviExcepciones.INF345.presentarMensaje());
+        } catch (NewviExcepcion e) {
+            LoggerNewvi.getLogNewvi(this.getClass()).error(e, sesionBean.obtenerSesionDto());
+            MensajesFaces.mensajeError(e.getMessage());
+        } catch (Exception e) {
+            LoggerNewvi.getLogNewvi(this.getClass()).error(EnumNewviExcepciones.ERR000.presentarMensajeCodigo(), e, sesionBean.obtenerSesionDto());
+            MensajesFaces.mensajeError(e.getMessage());
         }
     }
 

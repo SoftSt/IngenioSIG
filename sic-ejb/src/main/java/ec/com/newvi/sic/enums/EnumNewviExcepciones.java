@@ -85,6 +85,7 @@ public enum EnumNewviExcepciones {
     INF353("INF353", "Predio eliminado.", "El predio se ha eliminado correctamente."),
     INF354("INF353", "Bloque agregado.", "El bloque se ha agregado correctamente."),
     INF355("INF353", "Piso agregado.", "El piso se ha agregado correctamente.");
+    //INF356("INF356", "Piso editado.", "El bloque se ha editado correctamente.");
     
     private final String codigoExcepcion;
     private final String nombreExcepcion;
