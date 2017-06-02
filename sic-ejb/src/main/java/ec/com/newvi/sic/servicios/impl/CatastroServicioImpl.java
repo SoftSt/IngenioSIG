@@ -7,6 +7,7 @@ package ec.com.newvi.sic.servicios.impl;
 
 import ec.com.newvi.sic.dao.BloquesFacade;
 import ec.com.newvi.sic.dao.FotosFacade;
+import ec.com.newvi.sic.dao.PisosDetalleFacade;
 import ec.com.newvi.sic.dao.PisosFacade;
 import ec.com.newvi.sic.dao.PrediosFacade;
 import ec.com.newvi.sic.dao.TerrenoFacade;
@@ -15,6 +16,7 @@ import ec.com.newvi.sic.enums.EnumEstadoRegistro;
 import ec.com.newvi.sic.enums.EnumNewviExcepciones;
 import ec.com.newvi.sic.modelo.Bloques;
 import ec.com.newvi.sic.modelo.Fotos;
+import ec.com.newvi.sic.modelo.PisoDetalle;
 import ec.com.newvi.sic.modelo.Pisos;
 import ec.com.newvi.sic.modelo.Predios;
 import ec.com.newvi.sic.modelo.Terreno;
@@ -46,6 +48,8 @@ public class CatastroServicioImpl implements CatastroServicio{
     TerrenoFacade terrenoFacade;
     @EJB
     FotosFacade fotosFacade;
+    @EJB
+    PisosDetalleFacade pisosDetalleFacade;
     
         /*------------------------------------------------------------Predios------------------------------------------------------------*/
     @Override
@@ -238,6 +242,29 @@ public class CatastroServicioImpl implements CatastroServicio{
     public String eliminarPiso(Pisos piso, SesionDto sesion) throws NewviExcepcion {
         piso.setPisEstado(EnumEstadoRegistro.E);
         return actualizarPiso(piso, sesion);
+    }
+    
+        /*------------------------------------------------------------PisosDetalle------------------------------------------------------------*/
+    
+    @Override
+    public String actualizarPisoDetalle(PisoDetalle pisoDetalle, SesionDto sesion) throws NewviExcepcion {
+        // Validar que los datos no sean incorrectos
+        LoggerNewvi.getLogNewvi(this.getClass()).debug("Validando detalle piso...", sesion);
+        if (!pisoDetalle.esDetallePisoValido()) {
+            throw new NewviExcepcion(EnumNewviExcepciones.ERR343);
+        }
+        // Editar la piso
+        LoggerNewvi.getLogNewvi(this.getClass()).debug("Editando detalle piso...", sesion);
+
+        //Registramos la auditoria de modificacion
+        pisoDetalle.setAudModIp(sesion.getDireccionIP());
+        pisoDetalle.setAudModUsu(sesion.getUsuarioRegistrado().getUsuPalabraclave().trim());
+        Date fechaModificacion = Calendar.getInstance().getTime();
+        pisoDetalle.setAudModFec(fechaModificacion);
+
+        pisosDetalleFacade.edit(pisoDetalle);
+        // Si todo marcha bien enviar nombre de la piso
+        return pisoDetalle.getCodigo();
     }
         /*------------------------------------------------------------Terreno------------------------------------------------------------*/
     @Override

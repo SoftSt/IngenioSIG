@@ -513,38 +513,32 @@
                                                                  value="#{piso.detalles}" rowKey="#{elementosConstruccion.codPisoDetalle}" filteredValue=""
                                                                  emptyMessage="No se han encontrado resultados">
 
+                                                        <p:ajax event="rowEdit" listener="#{fichaCatastralBB.actualizarDetallePisoIngresado(elementosConstruccion)}" update="listaElementosConstruccion"/>
+                                                        
                                                         <p:column headerText="Código" class="column-title-left" sortBy="#{elementosConstruccion.codigo}" width="60">
-                                                            <p:cellEditor>
-                                                                <f:facet name="output"><h:outputText value="#{elementosConstruccion.codigo}" /></f:facet>
-                                                                <f:facet name="input"><p:inputText value="#{elementosConstruccion.codigo}"/></f:facet>
-                                                            </p:cellEditor>
+                                                            <h:outputText value="#{elementosConstruccion.codigo}" />
                                                         </p:column>
 
                                                         <p:column headerText="Grupo" class="column-title-left" sortBy="#{elementosConstruccion.grupo}" width="60">
-                                                            <p:cellEditor>
-                                                                <f:facet name="output"><h:outputText value="#{elementosConstruccion.grupo}" /></f:facet>
-                                                                <f:facet name="input"><p:inputText value="#{elementosConstruccion.grupo}"/></f:facet>
-                                                            </p:cellEditor>
+                                                            <h:outputText value="#{elementosConstruccion.grupo}" />
                                                         </p:column>
 
                                                         <p:column headerText="Subgrupo" class="column-title-left" sortBy="#{elementosConstruccion.subgrupo}" width="60" >
-                                                            <p:cellEditor>
-                                                                <f:facet name="output"><h:outputText value="#{elementosConstruccion.subgrupo}" /></f:facet>
-                                                                <f:facet name="input"><p:inputText value="#{elementosConstruccion.subgrupo}"/></f:facet>
-                                                            </p:cellEditor>
+                                                            <h:outputText value="#{elementosConstruccion.subgrupo}" />
                                                         </p:column>
-
+                                                        
                                                         <p:column headerText="Material de construcción" class="column-title-left" sortBy="#{elementosConstruccion.descripcion}" width="60">
-                                                            <p:cellEditor>
-                                                                <f:facet name="output"><h:outputText value="#{elementosConstruccion.descripcion}" /></f:facet>
-                                                                <f:facet name="input"><p:inputText value="#{elementosConstruccion.descripcion}"/></f:facet>
-                                                            </p:cellEditor>
+                                                            <h:outputText value="#{elementosConstruccion.descripcion}" />
                                                         </p:column>
 
-                                                        <p:column headerText="Estado" class="column-title-left" sortBy="#{elementosConstruccion.estadoDetalle}" width="60">
+                                                        <p:column headerText="Estado" class="column-title-left" width="60">
                                                             <p:cellEditor>
                                                                 <f:facet name="output"><h:outputText value="#{elementosConstruccion.estadoDetalle}" /></f:facet>
-                                                                <f:facet name="input"><p:inputText value="#{elementosConstruccion.estadoDetalle}"/></f:facet>
+                                                                <f:facet name="input">
+                                                                    <h:selectOneMenu value="#{elementosConstruccion.estadoDetalle}" style="width:100%">
+                                                                        <f:selectItems value="#{fichaCatastralBB.listaEstadosPisoDetalle}" var="estadoPisoDetalle" itemLabel="#{estadoPisoDetalle}" itemValue="#{estadoPisoDetalle.estadoDetalle}" />
+                                                                    </h:selectOneMenu>
+                                                                </f:facet>
                                                             </p:cellEditor>
                                                         </p:column>
                                                         <p:column headerText="Opciones" width="60">
@@ -637,7 +631,7 @@
                                  id="listaArbolPisosDetalle" var="dominio"
                                  selectionMode="single" selection="#{fichaCatastralBB.pisosDetalleSeleccionado}"
                                  style="margin-top:0">
-                        <p:ajax event="select" listener="#{fichaCatastralBB.onNodeSelect}" update="messages" />
+                        <p:ajax event="select" listener="#{fichaCatastralBB.agregarDetallePiso}" update="messages" />
 
                         <p:column headerText="Descripcion" sortBy="#{dominio.descripcion}">
                             <h:outputText value="#{dominio.descripcion}"/>

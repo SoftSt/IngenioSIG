@@ -25,4 +25,6 @@ public class PisosDetalleFacade extends AbstractFacade<PisoDetalle, Integer> imp
     
     
     
+    
+    
 }

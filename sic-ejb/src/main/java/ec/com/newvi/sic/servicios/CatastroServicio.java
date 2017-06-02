@@ -8,6 +8,7 @@ package ec.com.newvi.sic.servicios;
 import ec.com.newvi.sic.dto.SesionDto;
 import ec.com.newvi.sic.modelo.Bloques;
 import ec.com.newvi.sic.modelo.Fotos;
+import ec.com.newvi.sic.modelo.PisoDetalle;
 import ec.com.newvi.sic.modelo.Pisos;
 import ec.com.newvi.sic.modelo.Predios;
 import ec.com.newvi.sic.modelo.Terreno;
@@ -161,6 +162,20 @@ public interface CatastroServicio {
      * @throws NewviExcepcion
      */
     public String eliminarPiso(Pisos piso, SesionDto sesion) throws NewviExcepcion;
+    
+        /*------------------------------------------------------------PisoDetalle------------------------------------------------------------*/
+    /**
+     * Actualiza un Piso existente.
+     *
+     * @param pisoDetalle El detalle del piso a actualizar
+     * @param sesion Sesion que realiza la operación
+     * @return Nombre del detalle del piso actualizado
+     * @throws NewviExcepcion
+     */
+    public String actualizarPisoDetalle(PisoDetalle pisoDetalle, SesionDto sesion) throws NewviExcepcion;
+    
+    
+    
         /*------------------------------------------------------------Terreno------------------------------------------------------------*/
     /**
      * Genera un nuevo Terreno, de acuerdo a un objeto entregado.

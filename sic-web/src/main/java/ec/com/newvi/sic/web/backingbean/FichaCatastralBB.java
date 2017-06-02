@@ -5,16 +5,10 @@
  */
 package ec.com.newvi.sic.web.backingbean;
 
-import ec.com.newvi.faces.visorgeografico.Coordinate;
-import ec.com.newvi.faces.visorgeografico.Map;
-import ec.com.newvi.faces.visorgeografico.ProjectionCode;
-import ec.com.newvi.faces.visorgeografico.View;
-import ec.com.newvi.faces.visorgeografico.layer.Layer;
-import ec.com.newvi.faces.visorgeografico.layer.Tile;
-import ec.com.newvi.faces.visorgeografico.source.OSM;
-import ec.com.newvi.faces.visorgeografico.source.TileWMS;
+import ec.com.newvi.sic.dao.PisosFacade;
 import ec.com.newvi.sic.dto.DominioDto;
 import ec.com.newvi.sic.dto.FichaCatastralDto;
+import ec.com.newvi.sic.enums.EnumEstadoPisoDetalle;
 import ec.com.newvi.sic.enums.EnumEstadoRegistro;
 import ec.com.newvi.sic.enums.EnumNewviExcepciones;
 import ec.com.newvi.sic.enums.EnumRelacionDominios;
@@ -33,18 +27,14 @@ import ec.com.newvi.sic.web.enums.EnumEtiquetas;
 import ec.com.newvi.sic.web.enums.EnumPantallaMantenimiento;
 import ec.com.newvi.sic.web.utils.ValidacionUtils;
 import ec.com.newvi.sic.web.utils.WebUtils;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
-import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import org.primefaces.event.NodeSelectEvent;
-import org.primefaces.event.RowEditEvent;
-import org.primefaces.event.SelectEvent;
 import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.TreeNode;
 
@@ -71,6 +61,7 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
     private List<Fotos> listaFotosPorPredio;
     private List<String> listaFotosJpg;
     private Pisos pisoSeleccionado;
+    private EnumEstadoPisoDetalle[] listaEstadosPisoDetalle;
 
     public Predios getPredio() {
         return predio;
@@ -184,9 +175,20 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
         this.pisoSeleccionado = pisoSeleccionado;
     }
 
+    public EnumEstadoPisoDetalle[] getListaEstadosPisoDetalle() {
+        return listaEstadosPisoDetalle;
+    }
+
+    public void setListaEstadosPisoDetalle(EnumEstadoPisoDetalle[] listaEstadosPisoDetalle) {
+        this.listaEstadosPisoDetalle = listaEstadosPisoDetalle;
+    }
+    
+    
+
     @PostConstruct
     public void init() {
         this.predio = new Predios();
+        listaEstadosPisoDetalle = EnumEstadoPisoDetalle.values();
         actualizarListadoPredios();
         actualizarListadoDominios();
         actualizarListadoPisosDetalle();
@@ -395,7 +397,6 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
     public void actualizarElementosPredio() throws NewviExcepcion {
         catastroServicio.actualizarPredio(this.predio, sesionBean.obtenerSesionDto());
         seleccionarPredio(predio.getCodCatastral());
-        //WebUtils.obtenerContextoPeticion().reset("formularioFichaCatastral:opDetalleFichaCatastral");
     }
 
     public void agregarNuevoBloque() throws NewviExcepcion {
@@ -403,7 +404,6 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
         bloque.setCodCatastral(this.predio);
         bloque.setNomBloque("Nuevo");
         bloque.setBloEstado(EnumEstadoRegistro.A);
-        //catastroServicio.generarNuevoBloque(bloque, sesionBean.obtenerSesionDto());
         this.predio.getBloques().add(bloque);
 
         try {
@@ -423,11 +423,9 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
     public void agregarPisoBloqueSeleccionado(Pisos piso, Integer codBloque) throws NewviExcepcion {
         for (Bloques bloque : this.predio.getBloques()) {
             if (bloque.getCodBloques().equals(codBloque)) {
-                //seleccionarPredio(predio.getCodCatastral());
                 piso.setCodBloques(bloque);
                 bloque.getPisosCollection().add(piso);
                 catastroServicio.generarNuevoPiso(piso, sesionBean.obtenerSesionDto());
-                //catastroServicio.actualizarPredio(predio, sesionBean.obtenerSesionDto());
                 catastroServicio.actualizarBloque(bloque, sesionBean.obtenerSesionDto());
                 break;
             }
@@ -435,8 +433,6 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
     }
 
     public void agregarNuevoPiso(Integer codBloque) throws NewviExcepcion {
-        //WebUtils.obtenerContextoPeticion().reset("formularioFichaCatastral:opDetalleFichaCatastral");
-        //WebUtils.obtenerContextoPeticion().execute("PF('dlg2').show()");
         Pisos piso = new Pisos();
         piso.setNomPiso("Piso nuevo");
         piso.setPisEstado(EnumEstadoRegistro.A);
@@ -456,17 +452,6 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
 
     }
 
-    public void ingresarDetallesPiso(TreeNode[] listaDetallesPiso) {
-        if (listaDetallesPiso != null && listaDetallesPiso.length > 0) {
-            StringBuilder builder = new StringBuilder();
-
-            for (TreeNode node : listaDetallesPiso) {
-                builder.append(node.getData().toString());
-                builder.append("<br />");
-            }
-        }
-    }
-
     public void actualizarBloqueIngresado() {
         try {
             catastroServicio.actualizarPredio(this.predio, sesionBean.obtenerSesionDto());
@@ -483,7 +468,6 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
 
     public void actualizarPisoIngresado(Pisos piso) {
         try {
-            //catastroServicio.actualizarPredio(this.predio, sesionBean.obtenerSesionDto());
             catastroServicio.actualizarPiso(piso, sesionBean.obtenerSesionDto());
             LoggerNewvi.getLogNewvi(this.getClass()).info(EnumNewviExcepciones.INF345.presentarMensaje(), sesionBean.obtenerSesionDto());
             MensajesFaces.mensajeInformacion(EnumNewviExcepciones.INF345.presentarMensaje());
@@ -495,22 +479,23 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
             MensajesFaces.mensajeError(e.getMessage());
         }
     }
-
-    public void agregarPisoDetalle() {
-        if (pisosDetalleSeleccionado != null) {
-            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Selected", pisosDetalleSeleccionado.getData().toString());
-            FacesContext.getCurrentInstance().addMessage(null, message);
+    public void actualizarDetallePisoIngresado(PisoDetalle pisoDetalle) {
+        try {
+            catastroServicio.actualizarPisoDetalle(pisoDetalle, sesionBean.obtenerSesionDto());//cambiar
+            LoggerNewvi.getLogNewvi(this.getClass()).info(EnumNewviExcepciones.INF357.presentarMensaje(), sesionBean.obtenerSesionDto());
+            MensajesFaces.mensajeInformacion(EnumNewviExcepciones.INF357.presentarMensaje());
+        } catch (NewviExcepcion e) {
+            LoggerNewvi.getLogNewvi(this.getClass()).error(e, sesionBean.obtenerSesionDto());
+            MensajesFaces.mensajeError(e.getMessage());
+        } catch (Exception e) {
+            LoggerNewvi.getLogNewvi(this.getClass()).error(EnumNewviExcepciones.ERR000.presentarMensajeCodigo(), e, sesionBean.obtenerSesionDto());
+            MensajesFaces.mensajeError(e.getMessage());
         }
     }
 
-    public void onNodeSelect(NodeSelectEvent event) {
-        //FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Selected", event.getTreeNode().toString());
-        //FacesContext.getCurrentInstance().addMessage(null, message);
+    public void agregarDetallePiso(NodeSelectEvent event) {
         PisoDetalle pisoDetalle = new PisoDetalle();
-
         Dominios hijo = ((DominioDto) event.getTreeNode().getData()).getDominio();
-        ((DominioDto) event.getTreeNode().getData()).getPadre();
-        
         Dominios padre =((DominioDto)event.getTreeNode().getParent().getData()).getDominio();
         
         EnumRelacionDominios nodo = hijo.getDomiRelacion();
@@ -518,17 +503,11 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
             pisoDetalle.setGrupo(hijo.getDomiGrupos());
             pisoDetalle.setSubgrupo(padre.getDomiDescripcion());
             pisoDetalle.setDescripcion(hijo.getDomiDescripcion());
-            //pisoDetalle.setSubgrupo(hijo.getDomiGrupos());
             pisoDetalle.setPiso(pisoSeleccionado);
             pisoDetalle.setEstado(EnumEstadoRegistro.A);
-            
-            //catastroServicio.generar
             pisoSeleccionado.getDetalles().add(pisoDetalle);
-            //catastroServicio.actualizarPiso(pisoSeleccionado, sesionBean.obtenerSesionDto());
             actualizarPisoIngresado(pisoSeleccionado);
             
-            //WebUtils.obtenerContextoPeticion().execute("PF('dlg2').close()");
-
             try {
                 actualizarElementosPredio();
                 LoggerNewvi.getLogNewvi(this.getClass()).info(EnumNewviExcepciones.INF356.presentarMensaje(), sesionBean.obtenerSesionDto());
