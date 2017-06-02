@@ -372,7 +372,17 @@
                                     <br/>
                                     <div style="font-size:1.2em;font-weight:bold;">Infraestructura y Servicios</div>
                                     <br/>
-                                    <p:commandButton value="Agregar Servicio" type="button" onclick="PF('dlg1').show();" />
+
+                                    <p:commandButton value="Agregar Servicio"
+                                                     actionListener="#{fichaCatastralBB.obtenerPredioSeleccionado()}"
+                                                     id="nuevoServicio"
+                                                     update="grupoFichaCatastral">
+                                        <p:ajax update="toolTipInsertServicio" process="@this" />
+                                    </p:commandButton>
+
+                                    <p:tooltip id="toolTipInsertServicio" for="nuevoServicio" value="Agregar nuevo servicio" showEffect="fade" hideEffect="fade" position="bottom"/>
+
+
                                     <p:dataTable id="listaServiciosBasicos" var="servicios" widgetVar="listaSeviciosBasicosTabla"
                                                  value="#{fichaCatastralBB.predio.servicios}" rowKey="#{servicios.codServicios}" filteredValue=""
                                                  paginator="true" rows="10" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" 
@@ -514,7 +524,7 @@
                                                                  emptyMessage="No se han encontrado resultados">
 
                                                         <p:ajax event="rowEdit" listener="#{fichaCatastralBB.actualizarDetallePisoIngresado(elementosConstruccion)}" update="listaElementosConstruccion"/>
-                                                        
+
                                                         <p:column headerText="Código" class="column-title-left" sortBy="#{elementosConstruccion.codigo}" width="60">
                                                             <h:outputText value="#{elementosConstruccion.codigo}" />
                                                         </p:column>
@@ -526,7 +536,7 @@
                                                         <p:column headerText="Subgrupo" class="column-title-left" sortBy="#{elementosConstruccion.subgrupo}" width="60" >
                                                             <h:outputText value="#{elementosConstruccion.subgrupo}" />
                                                         </p:column>
-                                                        
+
                                                         <p:column headerText="Material de construcción" class="column-title-left" sortBy="#{elementosConstruccion.descripcion}" width="60">
                                                             <h:outputText value="#{elementosConstruccion.descripcion}" />
                                                         </p:column>
@@ -615,12 +625,14 @@
                 </h:form>
 
                 <p:dialog header="Agregar nuevos servicios" widgetVar="dlg1" modal="true" showEffect="fade" hideEffect="fade" resizable="false" closable="true" width="550" height="400">
-                    <p:treeTable value="#{fichaCatastralBB.listaArbolDominios}"
-                                 id="listaArbolDominios" var="dominio"
-                                 selectionMode="checkbox" selection="#{fichaCatastralBB.listaDominiosSeleccionados}" >
+                    <p:treeTable value="#{fichaCatastralBB.listaArbolServicios}"
+                                 id="listaArbolServicios" var="servicio"
+                                 selectionMode="single" selection="#{fichaCatastralBB.servicioSeleccionado}" >
 
-                        <p:column headerText="Descripcion" sortBy="#{dominio.descripcion}">
-                            <h:outputText value="#{dominio.descripcion}"/>
+                        <p:ajax event="select" listener="#{fichaCatastralBB.agregarServicio}" update="messages" />
+
+                        <p:column headerText="Descripcion" sortBy="#{servicio.descripcion}">
+                            <h:outputText value="#{servicio.descripcion}"/>
                         </p:column>            
 
                     </p:treeTable>
