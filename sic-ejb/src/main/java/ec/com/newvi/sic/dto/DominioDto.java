@@ -19,6 +19,7 @@ public class DominioDto {
 
     private Dominios dominio;
     private List<DominioDto> hijos;
+    private List<DominioDto> padre;
     private String descripcion;
 
     //public DominioDto(Dominios dominio, DominiosFacade dominiosFacade) {
@@ -51,9 +52,15 @@ public class DominioDto {
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
     }
-    
-    
 
+    public List<DominioDto> getPadre() {
+        return padre;
+    }
+
+    public void setPadre(List<DominioDto> padre) {
+        this.padre = padre;
+    }
+    
     private void obtenerHijos(ParametrosServicio parametrosServicio) {
         this.hijos = new ArrayList<>();
         //List<Dominios> dominiosHijos = dominiosFacade.buscarHijos(this.dominio);

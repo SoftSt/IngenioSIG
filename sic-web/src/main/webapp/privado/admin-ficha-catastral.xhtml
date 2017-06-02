@@ -452,14 +452,14 @@
                                                              actionListener="#{fichaCatastralBB.agregarNuevoPiso(bloque.codBloques)}"
                                                              id="nuevoPiso"
                                                              update="grupoFichaCatastral">
-                                                <p:ajax update="toolTipInsertPiso" process="@this" /> 
+                                                <p:ajax update="toolTipInsertPiso" process="@this" />
                                             </p:commandButton>
                                             <p:tooltip id="toolTipInsertPiso" for="nuevoPiso" value="Agregar nuevo piso" showEffect="fade" hideEffect="fade" position="bottom"/>
 
                                             <p:dataTable id="listaInformacionPisos" var="piso" editable="true" widgetVar="listaInformacionPisosTabla"
                                                          value="#{bloque.pisosCollection}" rowKey="#{piso.codPisos}"
                                                          emptyMessage="No se han encontrado resultados">
-                                                
+
                                                 <p:ajax event="rowEdit" listener="#{fichaCatastralBB.actualizarPisoIngresado(piso)}" update="listaInformacionPisos"/>
 
                                                 <p:column style="width:16px">
@@ -500,7 +500,15 @@
 
                                                     <p style="font-weight:bold;">Detalle de construcción</p>
                                                     <br/>
-                                                    <p:commandButton value="Agregar detalles" type="button" onclick="PF('dlg2').show();" />
+                                                    <p:commandButton value="Agregar detalles"
+                                                                     actionListener="#{fichaCatastralBB.obtenerPisoSeleccionado(piso.codPisos)}"
+                                                                     id="nuevoDetalle"
+                                                                     update="grupoFichaCatastral">
+                                                        <p:ajax update="toolTipInsertDetalle" process="@this" />
+                                                    </p:commandButton>
+
+                                                    <p:tooltip id="toolTipInsertDetalle" for="nuevoDetalle" value="Agregar nuevo detalle" showEffect="fade" hideEffect="fade" position="bottom"/>
+
                                                     <p:dataTable id="listaElementosConstruccion" editable="true" var="elementosConstruccion" scrollable="true" scrollHeight="250" widgetVar="listaElementosConstruccionTabla"
                                                                  value="#{piso.detalles}" rowKey="#{elementosConstruccion.codPisoDetalle}" filteredValue=""
                                                                  emptyMessage="No se han encontrado resultados">
@@ -512,34 +520,34 @@
                                                             </p:cellEditor>
                                                         </p:column>
 
-                                                        <p:column headerText="Grupo" class="column-title-left" sortBy="#{elementosConstruccion.grupo}">
+                                                        <p:column headerText="Grupo" class="column-title-left" sortBy="#{elementosConstruccion.grupo}" width="60">
                                                             <p:cellEditor>
                                                                 <f:facet name="output"><h:outputText value="#{elementosConstruccion.grupo}" /></f:facet>
                                                                 <f:facet name="input"><p:inputText value="#{elementosConstruccion.grupo}"/></f:facet>
                                                             </p:cellEditor>
                                                         </p:column>
 
-                                                        <p:column headerText="Subgrupo" class="column-title-left" sortBy="#{elementosConstruccion.subgrupo}">
+                                                        <p:column headerText="Subgrupo" class="column-title-left" sortBy="#{elementosConstruccion.subgrupo}" width="60" >
                                                             <p:cellEditor>
                                                                 <f:facet name="output"><h:outputText value="#{elementosConstruccion.subgrupo}" /></f:facet>
                                                                 <f:facet name="input"><p:inputText value="#{elementosConstruccion.subgrupo}"/></f:facet>
                                                             </p:cellEditor>
                                                         </p:column>
 
-                                                        <p:column headerText="Material de construcción" class="column-title-left" sortBy="#{elementosConstruccion.descripcion}">
+                                                        <p:column headerText="Material de construcción" class="column-title-left" sortBy="#{elementosConstruccion.descripcion}" width="60">
                                                             <p:cellEditor>
                                                                 <f:facet name="output"><h:outputText value="#{elementosConstruccion.descripcion}" /></f:facet>
                                                                 <f:facet name="input"><p:inputText value="#{elementosConstruccion.descripcion}"/></f:facet>
                                                             </p:cellEditor>
                                                         </p:column>
 
-                                                        <p:column headerText="Estado" class="column-title-left" sortBy="#{elementosConstruccion.estadoDetalle}">
+                                                        <p:column headerText="Estado" class="column-title-left" sortBy="#{elementosConstruccion.estadoDetalle}" width="60">
                                                             <p:cellEditor>
                                                                 <f:facet name="output"><h:outputText value="#{elementosConstruccion.estadoDetalle}" /></f:facet>
                                                                 <f:facet name="input"><p:inputText value="#{elementosConstruccion.estadoDetalle}"/></f:facet>
                                                             </p:cellEditor>
                                                         </p:column>
-                                                        <p:column headerText="Opciones" style="width:32px">
+                                                        <p:column headerText="Opciones" width="60">
                                                             <p:rowEditor/>
                                                         </p:column>
                                                     </p:dataTable>
@@ -598,7 +606,7 @@
                                              value="Cerrar"
                                              id="cancelar"
                                              update="grupoFichaCatastral" 
-                                             process="@this" 
+                                             process="@this"
                                              actionListener="#{fichaCatastralBB.cancelarEdicion()}">
                                 <p:ajax update="toolTipCancel" process="@this" />
                                 <p:resetInput target="panelFichaCatastral" />
@@ -624,16 +632,17 @@
                     </p:treeTable>
                 </p:dialog>
                 <p:dialog header="Agregar detalles al piso" widgetVar="dlg2" modal="true" showEffect="fade" hideEffect="fade" resizable="false" closable="true" width="550" height="400">
+                    <p:growl id="messages" showDetail="true" escape="false"/>
                     <p:treeTable value="#{fichaCatastralBB.listaArbolPisosDetalle}"
                                  id="listaArbolPisosDetalle" var="dominio"
-                                 selectionMode="checkbox" selection="#{fichaCatastralBB.listaPisosDetalleSeleccionados}" >
+                                 selectionMode="single" selection="#{fichaCatastralBB.pisosDetalleSeleccionado}"
+                                 style="margin-top:0">
+                        <p:ajax event="select" listener="#{fichaCatastralBB.onNodeSelect}" update="messages" />
 
                         <p:column headerText="Descripcion" sortBy="#{dominio.descripcion}">
-                            <h:outputText value="#{actionListener.descripcion}"/>
+                            <h:outputText value="#{dominio.descripcion}"/>
                         </p:column>            
                     </p:treeTable>
-                    <p:commandButton value="Ingresar detalle" 
-                                     actionListener="#{fichaCatastralBB.ingresarDetallesPiso(fichaCatastralBB.listaPisosDetalleSeleccionados)}"/>
 
                 </p:dialog>
             </p:panel>

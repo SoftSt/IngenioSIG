@@ -311,7 +311,13 @@ public class Pisos implements Serializable {
         return "ec.com.newvi.sic.modelo.Pisos[ codPisos=" + codPisos + " ]";
     }
     public Boolean esPisoValido() {
-        return (!ComunUtil.esNulo(this.pisEstado));
+        //return (!ComunUtil.esNulo(this.pisEstado));
+        boolean retorno= false;
+        if(!(ComunUtil.esNulo(this.codPisos))||!(ComunUtil.esNulo(this.pisEstado)))
+        {
+            retorno = true;
+        }
+        return retorno;
     }
     
 }
