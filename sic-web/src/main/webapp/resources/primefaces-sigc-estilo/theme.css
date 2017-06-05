@@ -787,3 +787,7 @@ a,
     margin: -8px 0 0 10px;
     position: inherit !important;
 }
+
+.ui-messages-close .ui-icon-close {
+    margin: 0 0 0 -15px;
+}

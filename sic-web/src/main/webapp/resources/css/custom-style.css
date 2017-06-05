@@ -89,3 +89,23 @@ body {
     float: left;
     margin-top: -2px;
 }
+
+.div-mensaje-web { 
+    height: 100%;
+    width: 100%;
+}
+
+.div-mensaje-web .texto {
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -70%);
+    color: #6f6f6f;
+}
+
+.div-mensaje-web .texto .logo {
+    text-align: center;
+    font-size: 4em;
+    width: 100%;
+}
