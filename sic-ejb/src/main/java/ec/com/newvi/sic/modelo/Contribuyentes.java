@@ -72,6 +72,21 @@ public class Contribuyentes implements Serializable {
     @Enumerated(EnumType.STRING)
     @Column(name = "sts_personeria")
     private EnumEstadoRegistro stsPersoneria;
+    @Size(max = 100)
+    @Column(name = "nom_ciudaddomicilio")
+    private String nomCiudadDomicilio;
+    @Size(max = 100)
+    @Column(name = "txt_ciudad")
+    private String txtCiudad;
+    @Size(max = 50)
+    @Column(name = "txt_representante")
+    private String nombreRepresentante;
+    @Size(max = 10)
+    @Column(name = "cod_representantecedula")
+    private String cedulaRepresentante;
+    @Size(max = 100)
+    @Column(name = "txt_representantedireccion")
+    private String direccionRepresentante;
     @Size(max = 50)
     @Column(name = "aud_ing_usu")
     private String audIngUsu;
@@ -249,6 +264,48 @@ public class Contribuyentes implements Serializable {
     public void setAudModIp(String audModIp) {
         this.audModIp = audModIp;
     }
+
+    public String getNomCiudadDomicilio() {
+        return nomCiudadDomicilio;
+    }
+
+    public void setNomCiudadDomicilio(String nomCiudadDomicilio) {
+        this.nomCiudadDomicilio = nomCiudadDomicilio;
+    }
+
+    public String getTxtCiudad() {
+        return txtCiudad;
+    }
+
+    public void setTxtCiudad(String txtCiudad) {
+        this.txtCiudad = txtCiudad;
+    }
+
+    public String getNombreRepresentante() {
+        return nombreRepresentante;
+    }
+
+    public void setNombreRepresentante(String nombreRepresentante) {
+        this.nombreRepresentante = nombreRepresentante;
+    }
+
+    public String getCedulaRepresentante() {
+        return cedulaRepresentante;
+    }
+
+    public void setCedulaRepresentante(String cedulaRepresentante) {
+        this.cedulaRepresentante = cedulaRepresentante;
+    }
+
+    public String getDireccionRepresentante() {
+        return direccionRepresentante;
+    }
+
+    public void setDireccionRepresentante(String direccionRepresentante) {
+        this.direccionRepresentante = direccionRepresentante;
+    }
+    
+    
 
     @Override
     public int hashCode() {

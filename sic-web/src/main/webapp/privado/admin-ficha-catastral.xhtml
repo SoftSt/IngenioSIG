@@ -251,13 +251,13 @@
                                     <div style="font-size:1.2em;font-weight:bold;">Representante legal</div>
                                     <p:separator />
                                     <h:outputLabel for="ciRepresentante" value="CI/RUC" style="font-weight: bold;"/>
-                                    <p:inputText id="ciRepresentante" />
+                                    <h:outputText id="ciRepresentante" value="#{fichaCatastralBB.propiedad.contribuyente.cedulaRepresentante.trim()}"/>
                                     <p:message for="ciRepresentante" display="tooltip"/>
                                     <h:outputLabel for="representante" value="Apellidos y Nombres" style="font-weight: bold;"/>
-                                    <p:inputText id="representante" label="Apellidos y Nombres" size="50"/>
+                                    <h:outputText id="representante" value="#{fichaCatastralBB.propiedad.contribuyente.nombreRepresentante.trim()}"/>
                                     <p:message for="representante" display="tooltip"/>
                                     <h:outputLabel for="repDireccion" value="Dirección" style="font-weight: bold;"/>
-                                    <p:inputText id="repDireccion" label="Dirección" size="50"/>
+                                    <h:outputText id="repDireccion" value="#{fichaCatastralBB.propiedad.contribuyente.direccionRepresentante.trim()}"/>
                                     <p:message for="repDireccion" display="tooltip"/>
 
                                     <br/>
@@ -271,40 +271,48 @@
                                     <div style="font-size:1.2em;font-weight:bold;">Tenencia</div>
                                     <p:separator />
                                     <h:outputLabel for="dominio" value="Dominio" style="font-weight: bold;"/>
-                                    <p:selectOneMenu id="dominio" style="width:200px" >
+                                    <!--<p:selectOneMenu id="dominio" style="width:200px" >
                                         <f:selectItem itemLabel="" itemValue="null" />
-                                    </p:selectOneMenu>
+                                    </p:selectOneMenu>-->
+                                    <h:outputText id="dominio" value="#{fichaCatastralBB.propiedad.stsTenencia}"/>
                                     <p:message for="dominio" display="tooltip"/>
 
                                     <h:outputLabel for="tranferenciaDominio" value="Traslación de dominio" style="font-weight: bold;"/>
-                                    <p:selectOneMenu id="tranferenciaDominio" style="width:200px" >
+                                    <!--<p:selectOneMenu id="tranferenciaDominio" style="width:200px" >
                                         <f:selectItem itemLabel="" itemValue="null" />
-                                    </p:selectOneMenu>
+                                    </p:selectOneMenu>-->
+                                    <h:outputText id="tranferenciaDominio" value="#{fichaCatastralBB.propiedad.stsTransferenciadominio}"/>
                                     <p:message for="tranferenciaDominio" display="tooltip"/>
+                                    
+                                    <h:outputLabel for="situacion" value="Situacion" style="font-weight: bold;"/>
+                                    <h:outputText id="situacion" value="#{fichaCatastralBB.propiedad.stsSituacion}"/>
+                                    <p:message for="situacion" display="tooltip"/>
 
                                     <br/>
                                     <div style="font-size:1.2em;font-weight:bold;">Datos de la escritura</div>
                                     <p:separator />
                                     <h:panelGrid columns="2">
-                                        <h:outputLabel value="Tiene escritura (Si)" style="font-weight: bold;"/>
-                                        <p:selectBooleanCheckbox id="tieneEscritura"/>    
+                                        <h:outputLabel value="Tiene escritura" style="font-weight: bold;"/>
+                                        <!--<p:selectBooleanCheckbox id="tieneEscritura"/>-->
+                                        <h:outputText id="tieneEscritura" value="#{fichaCatastralBB.propiedad.stsEscritura}"/>
                                     </h:panelGrid>
 
                                     <h:panelGrid id="datosEscritura">
 
                                         <h:panelGrid columns="2">
-                                            <h:outputLabel for="notaria" value="Notaria No." style="font-weight: bold;"/>
+                                            <h:outputLabel for="notaria" value="Notaria" style="font-weight: bold;"/>
                                             <h:outputLabel for="lugarNotaria" value="Lugar" style="font-weight: bold;"/>
                                             <h:outputText id="notaria" value="#{fichaCatastralBB.propiedad.txtNotaria}"/>
-                                            <p:inputText id="lugarNotaria" label="Lugar" size="25"/>
+                                            <h:outputText id="lugarNotaria" value="#{fichaCatastralBB.propiedad.txtCiudad}"/>
                                             <p:message for="notaria" display="tooltip"/>
                                             <p:message for="lugarNotaria" display="tooltip"/>
                                         </h:panelGrid>
                                         <h:outputLabel value="Fecha de inscripción" style="font-weight: bold;"/>
-                                        <p:calendar id="fechaInscripcion" navigator="true" label="Fecha de inscripción" 
+                                        <!--<p:calendar id="fechaInscripcion" navigator="true" label="Fecha de inscripción" 
                                                     showOn="button" size="10" pattern="dd/MM/yyyy" mask="true" >
                                             <p:watermark for="fechaInscripcion" value="dd/mm/aaaa"/>
-                                        </p:calendar>
+                                        </p:calendar>-->
+                                        <h:outputText id="fechaInscripcion" value="#{fichaCatastralBB.propiedad.fecInscripcion}"/>
                                         <p:message for="fechaInscripcion" display="tooltip"/>
 
 
@@ -313,10 +321,11 @@
                                         <p:message for="registroNumero" display="tooltip"/>
 
                                         <h:outputLabel value="Fecha escritura pública" style="font-weight: bold;"/>
-                                        <p:calendar id="fechaEscritutaPublica" navigator="true" label="Fecha escritura pública" 
+                                        <!--<p:calendar id="fechaEscritutaPublica" navigator="true" label="Fecha escritura pública" 
                                                     showOn="button" size="10" pattern="dd/MM/yyyy" mask="true" >
                                             <p:watermark for="fechaEscritutaPublica" value="dd/mm/aaaa"/>
-                                        </p:calendar>
+                                        </p:calendar>-->
+                                        <h:outputText id="fechaEscritutaPublica" value="#{fichaCatastralBB.propiedad.fecEscritura}"/>
                                         <p:message for="fechaEscritutaPublica" display="tooltip"/>
                                     </h:panelGrid>
 
@@ -334,11 +343,11 @@
                                     <div style="font-size:1.2em;font-weight:bold;">Informante</div>
                                     <p:separator />
                                     <h:outputLabel for="informante" value="Informante" style="font-weight: bold;"/>
-                                    <p:inputText id="informante" label="Informante" size="50"/>
+                                    <h:outputText id="informante" value="#{fichaCatastralBB.propiedad.txtInformante}"/>
                                     <p:message for="informante" display="tooltip"/>
 
                                     <h:outputLabel for="relacionInformante" value="Relación" style="font-weight: bold;"/>
-                                    <p:inputText id="relacionInformante" label="Relación" size="50"/>
+                                    <h:outputText id="relacionInformante" value="#{fichaCatastralBB.propiedad.txtInformanteRelacion}"/>
                                     <p:message for="relacionInformante" display="tooltip"/>
 
                                 </h:panelGrid>
