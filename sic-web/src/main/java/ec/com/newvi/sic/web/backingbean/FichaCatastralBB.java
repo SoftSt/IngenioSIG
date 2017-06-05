@@ -407,7 +407,7 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
 
     public void actualizarElementosPredio() throws NewviExcepcion {
         catastroServicio.actualizarPredio(this.predio, sesionBean.obtenerSesionDto());
-        seleccionarPredio(predio.getCodCatastral());
+        seleccionarPredio(this.predio.getCodCatastral());
     }
 
     public void agregarNuevoBloque() throws NewviExcepcion {
@@ -540,7 +540,6 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
     }
 
     public void agregarServicio(NodeSelectEvent event) {
-        //PisoDetalle pisoDetalle = new PisoDetalle();
         Servicios servicio = new Servicios();
         Dominios hijo = ((DominioDto) event.getTreeNode().getData()).getDominio();
         Dominios padre = ((DominioDto) event.getTreeNode().getParent().getData()).getDominio();
@@ -548,23 +547,16 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
         EnumRelacionDominios nodo = hijo.getDomiRelacion();
         if (!nodo.equals(EnumRelacionDominios.SubNodo) && !nodo.equals(EnumRelacionDominios.Nodo)) {
             servicio.setStsGrupo(EnumGrupoServicios.obtenerGrupoServicio(hijo.getDomiGrupos()));
-            //servicio.setStsGrupo(hijo.getDomiGrupos());
             servicio.setStsSubGrupo(EnumSubGrupoServicios.obtenerSubGrupoServicio(padre.getDomiDescripcion()));
-            //servicio.setStsSubGrupo(padre.getDomiDescripcion());
             servicio.setStsDescripcion(EnumDescripcionServicios.obtenerDescripcion(hijo.getDomiDescripcion()));
-            //servicio.setStsDescripcion(hijo.getDomiDescripcion());
             servicio.setCodCatastral(this.predio);
             servicio.setSerEstado(EnumEstadoRegistro.A);
-            //pisoSeleccionado.getDetalles().add(pisoDetalle);
             this.predio.getServicios().add(servicio);
-            actualizarPredio();
-            //pisoSeleccionado.getDetalles().add(pisoDetalle);
-            //actualizarPisoIngresado(pisoSeleccionado);
-
+            //actualizarPredio();
             try {
                 actualizarElementosPredio();
-                LoggerNewvi.getLogNewvi(this.getClass()).info(EnumNewviExcepciones.INF356.presentarMensaje(), sesionBean.obtenerSesionDto());
-                MensajesFaces.mensajeInformacion(EnumNewviExcepciones.INF356.presentarMensaje());
+                LoggerNewvi.getLogNewvi(this.getClass()).info(EnumNewviExcepciones.INF358.presentarMensaje(), sesionBean.obtenerSesionDto());
+                MensajesFaces.mensajeInformacion(EnumNewviExcepciones.INF358.presentarMensaje());
             } catch (NewviExcepcion e) {
                 LoggerNewvi.getLogNewvi(this.getClass()).error(e, sesionBean.obtenerSesionDto());
                 MensajesFaces.mensajeError(e.getMessage());
