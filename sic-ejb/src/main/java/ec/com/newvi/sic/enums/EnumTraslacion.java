@@ -35,9 +35,6 @@ public enum EnumTraslacion {
         this.stsTransferenciadominio = stsTransferenciadominio;
     }
 
-//    private EnumTraslacion() {
-//        this.stsTransferenciadominio = super.toString();
-//    }
     public String getStsTransferenciadominio() {
         return this.stsTransferenciadominio;
     }
@@ -45,7 +42,6 @@ public enum EnumTraslacion {
     @Override
     public String toString() {
         return this.stsTransferenciadominio;
-        //return stsTransferenciadominio;
     }
 
     public static EnumTraslacion obtenerTraslacion(String nombre) {

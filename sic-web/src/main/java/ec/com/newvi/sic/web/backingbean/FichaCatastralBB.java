@@ -5,7 +5,6 @@
  */
 package ec.com.newvi.sic.web.backingbean;
 
-import ec.com.newvi.sic.dao.PisosFacade;
 import ec.com.newvi.sic.dto.DominioDto;
 import ec.com.newvi.sic.dto.FichaCatastralDto;
 import ec.com.newvi.sic.enums.EnumDescripcionServicios;
@@ -14,7 +13,11 @@ import ec.com.newvi.sic.enums.EnumEstadoRegistro;
 import ec.com.newvi.sic.enums.EnumGrupoServicios;
 import ec.com.newvi.sic.enums.EnumNewviExcepciones;
 import ec.com.newvi.sic.enums.EnumRelacionDominios;
+import ec.com.newvi.sic.enums.EnumSiNo;
+import ec.com.newvi.sic.enums.EnumSitActual;
 import ec.com.newvi.sic.enums.EnumSubGrupoServicios;
+import ec.com.newvi.sic.enums.EnumTenencia;
+import ec.com.newvi.sic.enums.EnumTraslacion;
 import ec.com.newvi.sic.modelo.Bloques;
 import ec.com.newvi.sic.modelo.Dominios;
 import ec.com.newvi.sic.modelo.Fotos;
@@ -67,6 +70,11 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
     private List<String> listaFotosJpg;
     private Pisos pisoSeleccionado;
     private EnumEstadoPisoDetalle[] listaEstadosPisoDetalle;
+    private EnumTenencia[] listaTenenciaDominios;
+    private EnumTraslacion[] listaTraslacion;
+    private EnumSitActual[] listaSituacionActual;
+    private EnumSiNo[] listaEstadoEscritura;
+    
 
     public Predios getPredio() {
         return predio;
@@ -196,6 +204,43 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
         this.listaEstadosPisoDetalle = listaEstadosPisoDetalle;
     }
 
+    public EnumTenencia[] getListaTenenciaDominios() {
+        return listaTenenciaDominios;
+    }
+
+    public void setListaTenenciaDominios(EnumTenencia[] listaTenenciaDominios) {
+        this.listaTenenciaDominios = listaTenenciaDominios;
+    }
+
+    public EnumTraslacion[] getListaTraslacion() {
+        return listaTraslacion;
+    }
+
+    public void setListaTraslacion(EnumTraslacion[] listaTraslacion) {
+        this.listaTraslacion = listaTraslacion;
+    }
+
+    public EnumSitActual[] getListaSituacionActual() {
+        return listaSituacionActual;
+    }
+
+    public void setListaSituacionActual(EnumSitActual[] listaSituacionActual) {
+        this.listaSituacionActual = listaSituacionActual;
+    }
+
+    public EnumSiNo[] getListaEstadoEscritura() {
+        return listaEstadoEscritura;
+    }
+
+    public void setListaEstadoEscritura(EnumSiNo[] listaEstadoEscritura) {
+        this.listaEstadoEscritura = listaEstadoEscritura;
+    }
+    
+    
+    
+
+   
+
     @PostConstruct
     public void init() {
         this.predio = new Predios();
@@ -204,6 +249,10 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
         actualizarListadoServicios();
         actualizarListadoPisosDetalle();
         this.listaFotosJpg = new ArrayList<>();
+        listaTenenciaDominios = EnumTenencia.values();
+        listaTraslacion = EnumTraslacion.values();
+        listaSituacionActual = EnumSitActual.values();
+        listaEstadoEscritura = EnumSiNo.values();
         conmutarPantalla(EnumPantallaMantenimiento.PANTALLA_LISTADO);
         establecerTitulo(EnumEtiquetas.FICHA_CATASTRAL_LISTA_TITULO,
                 EnumEtiquetas.FICHA_CATASTRAL_LISTA_ICONO,
@@ -265,7 +314,7 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
                 EnumEtiquetas.FICHA_CATASTRAL_LISTA_ICONO,
                 EnumEtiquetas.FICHA_CATASTRAL_LISTA_DESCRIPCION);
     }
-
+    
     public void eliminarPredio(Integer idPredio) {
         try {
             this.seleccionarPredioPorCodigo(idPredio);
@@ -569,6 +618,23 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
     
     public void obtenerPredioSeleccionado() throws NewviExcepcion {
         WebUtils.obtenerContextoPeticion().execute("PF('dlg1').show()");
+    }
+    
+    
+    public void actualizarPropiedad() {
+            try {
+                contribuyentesServicio.actualizarPropiedad(this.propiedad, sesionBean.obtenerSesionDto());
+                actualizarListadoPredios();
+                LoggerNewvi.getLogNewvi(this.getClass()).info(EnumNewviExcepciones.INF352.presentarMensaje(), sesionBean.obtenerSesionDto());
+                MensajesFaces.mensajeInformacion(EnumNewviExcepciones.INF352.presentarMensaje());
+            } catch (NewviExcepcion e) {
+                LoggerNewvi.getLogNewvi(this.getClass()).error(e, sesionBean.obtenerSesionDto());
+                MensajesFaces.mensajeError(e.getMessage());
+            } catch (Exception e) {
+                LoggerNewvi.getLogNewvi(this.getClass()).error(EnumNewviExcepciones.ERR000.presentarMensajeCodigo(), e, sesionBean.obtenerSesionDto());
+                MensajesFaces.mensajeError(e.getMessage());
+            }
+        
     }
 
 }
