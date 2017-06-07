@@ -260,7 +260,7 @@ public class Propiedad implements Serializable {
     }
 
     public void setFecInscripcion(String fecInscripcion) {
-        this.fecInscripcion = fecInscripcion;
+        this.fecInscripcion = fecInscripcion.toString();
     }
 
     public String getFecEscritura() {
@@ -268,7 +268,7 @@ public class Propiedad implements Serializable {
     }
 
     public void setFecEscritura(String fecEscritura) {
-        this.fecEscritura = fecEscritura;
+        this.fecEscritura = fecEscritura.toString();
     }
 
     public String getFecRegistro() {

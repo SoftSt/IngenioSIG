@@ -87,7 +87,8 @@ public enum EnumNewviExcepciones {
     INF355("INF353", "Piso agregado.", "El piso se ha agregado correctamente."),
     INF356("INF356", "Detalle piso agregado.", "El detalle del piso se ha agregado correctamente."),
     INF357("INF357", "Detalle piso actualizado.", "El detalle del piso se ha actualizado correctamente."),
-    INF358("INF358", "Servicio agregado.", "El servicio se ha agregado correctamente.");
+    INF358("INF358", "Servicio agregado.", "El servicio se ha agregado correctamente."),
+    INF359("INF359", "Propiedad actualizada.", "La propiedad se ha actualizado correctamente.");
     
     private final String codigoExcepcion;
     private final String nombreExcepcion;

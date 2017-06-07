@@ -74,7 +74,6 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
     private EnumTraslacion[] listaTraslacion;
     private EnumSitActual[] listaSituacionActual;
     private EnumSiNo[] listaEstadoEscritura;
-    
 
     public Predios getPredio() {
         return predio;
@@ -235,11 +234,6 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
     public void setListaEstadoEscritura(EnumSiNo[] listaEstadoEscritura) {
         this.listaEstadoEscritura = listaEstadoEscritura;
     }
-    
-    
-    
-
-   
 
     @PostConstruct
     public void init() {
@@ -314,7 +308,7 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
                 EnumEtiquetas.FICHA_CATASTRAL_LISTA_ICONO,
                 EnumEtiquetas.FICHA_CATASTRAL_LISTA_DESCRIPCION);
     }
-    
+
     public void eliminarPredio(Integer idPredio) {
         try {
             this.seleccionarPredioPorCodigo(idPredio);
@@ -615,26 +609,27 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
             }
         }
     }
-    
+
     public void obtenerPredioSeleccionado() throws NewviExcepcion {
         WebUtils.obtenerContextoPeticion().execute("PF('dlg1').show()");
     }
+
+    public void actualizarPropiedad(int cod_propiedad) {
+        try {
+            contribuyentesServicio.actualizarPropiedad(this.propiedad, sesionBean.obtenerSesionDto());
+            LoggerNewvi.getLogNewvi(this.getClass()).info(EnumNewviExcepciones.INF359.presentarMensaje(), sesionBean.obtenerSesionDto());
+            MensajesFaces.mensajeInformacion(EnumNewviExcepciones.INF359.presentarMensaje());
+        } catch (NewviExcepcion e) {
+            LoggerNewvi.getLogNewvi(this.getClass()).error(e, sesionBean.obtenerSesionDto());
+            MensajesFaces.mensajeError(e.getMessage());
+        } catch (Exception e) {
+            LoggerNewvi.getLogNewvi(this.getClass()).error(EnumNewviExcepciones.ERR000.presentarMensajeCodigo(), e, sesionBean.obtenerSesionDto());
+            MensajesFaces.mensajeError(e.getMessage());
+        }
+    }
     
-    
-    public void actualizarPropiedad() {
-            try {
-                contribuyentesServicio.actualizarPropiedad(this.propiedad, sesionBean.obtenerSesionDto());
-                actualizarListadoPredios();
-                LoggerNewvi.getLogNewvi(this.getClass()).info(EnumNewviExcepciones.INF352.presentarMensaje(), sesionBean.obtenerSesionDto());
-                MensajesFaces.mensajeInformacion(EnumNewviExcepciones.INF352.presentarMensaje());
-            } catch (NewviExcepcion e) {
-                LoggerNewvi.getLogNewvi(this.getClass()).error(e, sesionBean.obtenerSesionDto());
-                MensajesFaces.mensajeError(e.getMessage());
-            } catch (Exception e) {
-                LoggerNewvi.getLogNewvi(this.getClass()).error(EnumNewviExcepciones.ERR000.presentarMensajeCodigo(), e, sesionBean.obtenerSesionDto());
-                MensajesFaces.mensajeError(e.getMessage());
-            }
-        
+    public void cancelarEdicionPropiedad() {
+        WebUtils.obtenerContextoPeticion().execute("PF('dlgPropiedad').close()");
     }
 
 }
