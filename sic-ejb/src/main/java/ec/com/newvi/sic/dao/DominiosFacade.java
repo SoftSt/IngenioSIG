@@ -46,11 +46,11 @@ public class DominiosFacade extends AbstractFacade<Dominios, Integer> implements
         return q.getResultList();
     }
 
-    public List<Dominios> buscarDominiosPorGrupo(String grupo) {
+    public List<Dominios> buscarDominiosPorGrupo(String grupo, String relacion) {
         // Busca un listado de dominios
         Query q = this.getEntityManager().createQuery("SELECT dominio FROM Dominios dominio where dominio.domiGrupos=:GRUPOS AND TRIM(dominio.domiRelacion) =:RELACION");
         q.setParameter("GRUPOS", grupo);
-        q.setParameter("RELACION", EnumRelacionDominios.Nodo.toString());
+        q.setParameter("RELACION", relacion);
         //@return listado de dominios
         return q.getResultList();
     }

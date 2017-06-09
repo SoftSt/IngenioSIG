@@ -70,9 +70,10 @@ public interface ParametrosServicio {
     /**
      * Devuelve un listados de dominios dado un grupo
      * @param grupo grupo enviado
+     * @param relacion relacion enviada
      * @return Listado de dominios filtrado por grupo
      */
-    public List<Dominios> consultarDominiosPorGrupo(String grupo);
+    public List<Dominios> consultarDominiosPorGrupo(String grupo, String relacion);
 
     /**
      * Devuelve el listado de hijos por padre
@@ -84,9 +85,10 @@ public interface ParametrosServicio {
     /**
      * Devuelve un listado de dominios dto referente a un grupo
      * @param grupo grupo al que pertenece los dominios
+     * @param relacion relacion al que pertenece los dominios
      * @return listado de dominios dto
      */
-    public List<DominioDto> listarDominiosDto(String grupo);
+    public List<DominioDto> listarDominiosDto(String grupo, String relacion);
     
     
     

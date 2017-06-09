@@ -105,8 +105,8 @@ public class ParametrosServicioImpl implements ParametrosServicio {
     }
 
     @Override
-    public List<Dominios> consultarDominiosPorGrupo(String grupo) {
-        return dominiosFacade.buscarDominiosPorGrupo(grupo);
+    public List<Dominios> consultarDominiosPorGrupo(String grupo, String relacion) {
+        return dominiosFacade.buscarDominiosPorGrupo(grupo,relacion);
     }
 
     @Override
@@ -115,10 +115,10 @@ public class ParametrosServicioImpl implements ParametrosServicio {
     }
 
     @Override
-    public List<DominioDto> listarDominiosDto(String grupo) {
+    public List<DominioDto> listarDominiosDto(String grupo, String relacion) {
         List<DominioDto> listadoDominiosDto = new ArrayList<>();
 
-        for (Dominios dominio : dominiosFacade.buscarDominiosPorGrupo(grupo)) {
+        for (Dominios dominio : dominiosFacade.buscarDominiosPorGrupo(grupo,relacion)) {
             listadoDominiosDto.add(new DominioDto(dominio, this));
             //listadoDominiosDto.add(new DominioDto(dominio, dominiosFacade));
         }

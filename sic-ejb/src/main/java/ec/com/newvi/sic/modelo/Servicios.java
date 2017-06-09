@@ -5,10 +5,7 @@
  */
 package ec.com.newvi.sic.modelo;
 
-import ec.com.newvi.sic.enums.EnumDescripcionServicios;
 import ec.com.newvi.sic.enums.EnumEstadoRegistro;
-import ec.com.newvi.sic.enums.EnumGrupoServicios;
-import ec.com.newvi.sic.enums.EnumSubGrupoServicios;
 import ec.com.newvi.sic.util.ComunUtil;
 import java.io.Serializable;
 import java.util.Date;
@@ -115,28 +112,28 @@ public class Servicios implements Serializable {
         this.stsCodigo = stsCodigo;
     }
 
-    public EnumGrupoServicios getStsGrupo() {
-        return EnumGrupoServicios.obtenerGrupoServicio(stsGrupo);
+    public String getStsGrupo() {
+        return stsGrupo;
     }
 
-    public void setStsGrupo(EnumGrupoServicios stsGrupo) {
-        this.stsGrupo = stsGrupo.toString();
+    public void setStsGrupo(String stsGrupo) {
+        this.stsGrupo = stsGrupo;
     }
 
-    public EnumSubGrupoServicios getStsSubGrupo() {
-        return EnumSubGrupoServicios.obtenerSubGrupoServicio(stsSubGrupo);
+    public String getStsSubGrupo() {
+        return stsSubGrupo;
     }
 
-    public void setStsSubGrupo(EnumSubGrupoServicios stsSubGrupo) {
-        this.stsSubGrupo = stsSubGrupo.toString();
+    public void setStsSubGrupo(String stsSubGrupo) {
+        this.stsSubGrupo = stsSubGrupo;
     }
 
-    public Enum getStsDescripcion() {
-        return EnumDescripcionServicios.obtenerDescripcion(stsDescripcion);
+    public String getStsDescripcion() {
+        return stsDescripcion;
     }
 
-    public void setStsDescripcion(EnumDescripcionServicios stsDescripcion) {
-        this.stsDescripcion = stsDescripcion.toString();
+    public void setStsDescripcion(String stsDescripcion) {
+        this.stsDescripcion = stsDescripcion;
     }
 
     public String getStsEstado() {

@@ -7,15 +7,12 @@ package ec.com.newvi.sic.web.backingbean;
 
 import ec.com.newvi.sic.dto.DominioDto;
 import ec.com.newvi.sic.dto.FichaCatastralDto;
-import ec.com.newvi.sic.enums.EnumDescripcionServicios;
 import ec.com.newvi.sic.enums.EnumEstadoPisoDetalle;
 import ec.com.newvi.sic.enums.EnumEstadoRegistro;
-import ec.com.newvi.sic.enums.EnumGrupoServicios;
 import ec.com.newvi.sic.enums.EnumNewviExcepciones;
 import ec.com.newvi.sic.enums.EnumRelacionDominios;
 import ec.com.newvi.sic.enums.EnumSiNo;
 import ec.com.newvi.sic.enums.EnumSitActual;
-import ec.com.newvi.sic.enums.EnumSubGrupoServicios;
 import ec.com.newvi.sic.enums.EnumTenencia;
 import ec.com.newvi.sic.enums.EnumTraslacion;
 import ec.com.newvi.sic.modelo.Bloques;
@@ -26,6 +23,7 @@ import ec.com.newvi.sic.modelo.Pisos;
 import ec.com.newvi.sic.modelo.Predios;
 import ec.com.newvi.sic.modelo.Propiedad;
 import ec.com.newvi.sic.modelo.Servicios;
+import ec.com.newvi.sic.modelo.Terreno;
 import ec.com.newvi.sic.util.ComunUtil;
 import ec.com.newvi.sic.util.excepciones.NewviExcepcion;
 import ec.com.newvi.sic.util.logs.LoggerNewvi;
@@ -62,10 +60,12 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
     private EnumPantallaMantenimiento pantallaActual;
     private Bloques bloqueSeleccionado;
     private TreeNode listaArbolServicios;
+    private TreeNode listaArbolDescripcionTerreno;
     private TreeNode listaArbolPisosDetalle;
     private TreeNode[] listaDominiosSeleccionados;
     private TreeNode pisosDetalleSeleccionado;
     private TreeNode servicioSeleccionado;
+    private TreeNode descripcionTerrenoSeleccionado;
     private List<Fotos> listaFotosPorPredio;
     private List<String> listaFotosJpg;
     private Pisos pisoSeleccionado;
@@ -139,6 +139,14 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
         this.listaArbolServicios = listaArbolServicios;
     }
 
+    public TreeNode getListaArbolDescripcionTerreno() {
+        return listaArbolDescripcionTerreno;
+    }
+
+    public void setListaArbolDescripcionTerreno(TreeNode listaArbolDescripcionTerreno) {
+        this.listaArbolDescripcionTerreno = listaArbolDescripcionTerreno;
+    }
+
     public TreeNode[] getListaDominiosSeleccionados() {
         return listaDominiosSeleccionados;
     }
@@ -169,6 +177,14 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
 
     public void setServicioSeleccionado(TreeNode servicioSeleccionado) {
         this.servicioSeleccionado = servicioSeleccionado;
+    }
+
+    public TreeNode getDescripcionTerrenoSeleccionado() {
+        return descripcionTerrenoSeleccionado;
+    }
+
+    public void setDescripcionTerrenoSeleccionado(TreeNode descripcionTerrenoSeleccionado) {
+        this.descripcionTerrenoSeleccionado = descripcionTerrenoSeleccionado;
     }
 
     public List<Fotos> getListaFotosPorPredio() {
@@ -241,6 +257,7 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
         listaEstadosPisoDetalle = EnumEstadoPisoDetalle.values();
         actualizarListadoPredios();
         actualizarListadoServicios();
+        actualizarListadoDescripcionTerreno();
         actualizarListadoPisosDetalle();
         this.listaFotosJpg = new ArrayList<>();
         listaTenenciaDominios = EnumTenencia.values();
@@ -419,7 +436,12 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
     }
 
     private void actualizarListadoServicios() {
-        List<DominioDto> listadoDominiosDto = parametrosServicio.listarDominiosDto("INFRAESTRUCTURA DE SERVICIOS");
+        List<DominioDto> listadoDominiosDto = parametrosServicio.listarDominiosDto("INFRAESTRUCTURA DE SERVICIOS","Nodo");
+        List<DominioDto> listadoDominiosDtoCerramiento = parametrosServicio.listarDominiosDto("CERRAMIENTO", "SubNodo");
+        
+        for (DominioDto dominioDto : listadoDominiosDtoCerramiento) {
+            listadoDominiosDto.add(dominioDto);
+        }
 
         try {
             listaArbolServicios = new DefaultTreeNode();
@@ -433,8 +455,23 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
         }
     }
 
+    private void actualizarListadoDescripcionTerreno() {
+        List<DominioDto> listadoDominiosDto = parametrosServicio.listarDominiosDto("DESCRIPCION DEL TERRENO","Nodo");
+
+        try {
+            listaArbolDescripcionTerreno = new DefaultTreeNode();
+            listaArbolDescripcionTerreno = WebUtils.generarArbol(listadoDominiosDto, listaArbolDescripcionTerreno, "getHijos");
+        } catch (NewviExcepcion ex) {
+            LoggerNewvi.getLogNewvi(this.getClass()).error(ex, sesionBean.obtenerSesionDto());
+            MensajesFaces.mensajeError(ex.getMessage());
+        } catch (Exception e) {
+            LoggerNewvi.getLogNewvi(this.getClass()).error(EnumNewviExcepciones.ERR000.presentarMensajeCodigo(), e, sesionBean.obtenerSesionDto());
+            MensajesFaces.mensajeError(e.getMessage());
+        }
+    }
+
     private void actualizarListadoPisosDetalle() {
-        List<DominioDto> listadoDetallesDto = parametrosServicio.listarDominiosDto("DESCRIPCION EDIFICACION");
+        List<DominioDto> listadoDetallesDto = parametrosServicio.listarDominiosDto("DESCRIPCION EDIFICACION", "Nodo");
 
         try {
             listaArbolPisosDetalle = new DefaultTreeNode();
@@ -519,6 +556,19 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
             MensajesFaces.mensajeError(e.getMessage());
         }
     }
+    public void actualizarServicioIngresado() {
+        try {
+            catastroServicio.actualizarPredio(this.predio, sesionBean.obtenerSesionDto());
+            LoggerNewvi.getLogNewvi(this.getClass()).info(EnumNewviExcepciones.INF361.presentarMensaje(), sesionBean.obtenerSesionDto());
+            MensajesFaces.mensajeInformacion(EnumNewviExcepciones.INF361.presentarMensaje());
+        } catch (NewviExcepcion e) {
+            LoggerNewvi.getLogNewvi(this.getClass()).error(e, sesionBean.obtenerSesionDto());
+            MensajesFaces.mensajeError(e.getMessage());
+        } catch (Exception e) {
+            LoggerNewvi.getLogNewvi(this.getClass()).error(EnumNewviExcepciones.ERR000.presentarMensajeCodigo(), e, sesionBean.obtenerSesionDto());
+            MensajesFaces.mensajeError(e.getMessage());
+        }
+    }
 
     public void actualizarPisoIngresado(Pisos piso) {
         try {
@@ -551,14 +601,15 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
     public void agregarDetallePiso(NodeSelectEvent event) {
         PisoDetalle pisoDetalle = new PisoDetalle();
         Dominios hijo = ((DominioDto) event.getTreeNode().getData()).getDominio();
-        Dominios padre = ((DominioDto) event.getTreeNode().getParent().getData()).getDominio();
 
         EnumRelacionDominios nodo = hijo.getDomiRelacion();
         if (!nodo.equals(EnumRelacionDominios.SubNodo) && !nodo.equals(EnumRelacionDominios.Nodo)) {
+            Dominios padre = ((DominioDto) event.getTreeNode().getParent().getData()).getDominio();
             pisoDetalle.setGrupo(hijo.getDomiGrupos());
             pisoDetalle.setSubgrupo(padre.getDomiDescripcion());
             pisoDetalle.setDescripcion(hijo.getDomiDescripcion());
             pisoDetalle.setPiso(pisoSeleccionado);
+            pisoDetalle.setCodigo(hijo.getDomiCodigo());
             pisoDetalle.setEstado(EnumEstadoRegistro.A);
             pisoSeleccionado.getDetalles().add(pisoDetalle);
             actualizarPisoIngresado(pisoSeleccionado);
@@ -579,23 +630,25 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
 
     public void obtenerPisoSeleccionado(Integer codPisos) throws NewviExcepcion {
         pisoSeleccionado = catastroServicio.seleccionarPiso(codPisos);
-        WebUtils.obtenerContextoPeticion().execute("PF('dlg2').show()");
+        WebUtils.obtenerContextoPeticion().execute("PF('dlgDetallePiso').show()");
     }
 
     public void agregarServicio(NodeSelectEvent event) {
         Servicios servicio = new Servicios();
         Dominios hijo = ((DominioDto) event.getTreeNode().getData()).getDominio();
-        Dominios padre = ((DominioDto) event.getTreeNode().getParent().getData()).getDominio();
+        
 
         EnumRelacionDominios nodo = hijo.getDomiRelacion();
         if (!nodo.equals(EnumRelacionDominios.SubNodo) && !nodo.equals(EnumRelacionDominios.Nodo)) {
-            servicio.setStsGrupo(EnumGrupoServicios.obtenerGrupoServicio(hijo.getDomiGrupos()));
-            servicio.setStsSubGrupo(EnumSubGrupoServicios.obtenerSubGrupoServicio(padre.getDomiDescripcion()));
-            servicio.setStsDescripcion(EnumDescripcionServicios.obtenerDescripcion(hijo.getDomiDescripcion()));
+            Dominios padre = ((DominioDto) event.getTreeNode().getParent().getData()).getDominio();
+            servicio.setStsGrupo(hijo.getDomiGrupos());
+            servicio.setStsSubGrupo(padre.getDomiDescripcion());
+            servicio.setStsDescripcion(hijo.getDomiDescripcion());
             servicio.setCodCatastral(this.predio);
+            servicio.setStsCodigo(hijo.getDomiCodigo());
             servicio.setSerEstado(EnumEstadoRegistro.A);
             this.predio.getServicios().add(servicio);
-            //actualizarPredio();
+
             try {
                 actualizarElementosPredio();
                 LoggerNewvi.getLogNewvi(this.getClass()).info(EnumNewviExcepciones.INF358.presentarMensaje(), sesionBean.obtenerSesionDto());
@@ -609,9 +662,42 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
             }
         }
     }
+    
+    public void agregarDescripcionTerreno(NodeSelectEvent event) {
+        Terreno terreno = new Terreno();
+        Dominios hijo = ((DominioDto) event.getTreeNode().getData()).getDominio();
 
-    public void obtenerPredioSeleccionado() throws NewviExcepcion {
-        WebUtils.obtenerContextoPeticion().execute("PF('dlg1').show()");
+        EnumRelacionDominios nodo = hijo.getDomiRelacion();
+        if (!nodo.equals(EnumRelacionDominios.SubNodo) && !nodo.equals(EnumRelacionDominios.Nodo)) {
+            Dominios padre = ((DominioDto) event.getTreeNode().getParent().getData()).getDominio();
+            terreno.setStsGrupo(hijo.getDomiGrupos());
+            terreno.setStsSubgrupo(padre.getDomiDescripcion());
+            terreno.setStsDescripcion(hijo.getDomiDescripcion());
+            terreno.setCodCatastral(this.predio);
+            terreno.setTerEstado(EnumEstadoRegistro.A);
+            terreno.setStsCodigo(hijo.getDomiCodigo());
+            this.predio.getCaracteristicasTerreno().add(terreno);
+
+            try {
+                actualizarElementosPredio();
+                LoggerNewvi.getLogNewvi(this.getClass()).info(EnumNewviExcepciones.INF360.presentarMensaje(), sesionBean.obtenerSesionDto());
+                MensajesFaces.mensajeInformacion(EnumNewviExcepciones.INF360.presentarMensaje());
+            } catch (NewviExcepcion e) {
+                LoggerNewvi.getLogNewvi(this.getClass()).error(e, sesionBean.obtenerSesionDto());
+                MensajesFaces.mensajeError(e.getMessage());
+            } catch (Exception e) {
+                LoggerNewvi.getLogNewvi(this.getClass()).error(EnumNewviExcepciones.ERR000.presentarMensajeCodigo(), e, sesionBean.obtenerSesionDto());
+                MensajesFaces.mensajeError(e.getMessage());
+            }
+        }
+    }
+
+    public void abrirDialogServicios() throws NewviExcepcion {
+        WebUtils.obtenerContextoPeticion().execute("PF('dlgServicios').show()");
+    }
+    
+    public void abrirDialogDescripcionTerreno() throws NewviExcepcion {
+        WebUtils.obtenerContextoPeticion().execute("PF('dlgDescripcionTerreno').show()");
     }
 
     public void actualizarPropiedad(int cod_propiedad) {

@@ -339,6 +339,17 @@
                                     <br/>
                                     <div style="font-size:1.2em;font-weight:bold;">Descripción del terreno</div>
                                     <br/>
+
+                                    <p:commandButton value="Agregar Descripcion del terreno"
+                                                     actionListener="#{fichaCatastralBB.abrirDialogDescripcionTerreno()}"
+                                                     id="nuevaDescripcionTerreno"
+                                                     update="listaDescripcionTerreno">
+                                        <p:ajax update="toolTipInsertDescripcion" process="@this" />
+                                    </p:commandButton>
+
+
+                                    <p:tooltip id="toolTipInsertDescripcion" for="nuevaDescripcionTerreno" value="Agregar nuevo descripcion de terreno" showEffect="fade" hideEffect="fade" position="bottom"/>
+
                                     <p:dataTable id="listaDescripcionTerreno" var="descripcionTerreno" widgetVar="listaDescripcionTerrenoTabla"
                                                  value="#{fichaCatastralBB.predio.caracteristicasTerreno}" rowKey="#{descripcionTerreno.codTerrenodetalle}" 
                                                  paginator="true" rows="10" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" 
@@ -365,7 +376,7 @@
                                     <br/>
 
                                     <p:commandButton value="Agregar Servicio"
-                                                     actionListener="#{fichaCatastralBB.obtenerPredioSeleccionado()}"
+                                                     actionListener="#{fichaCatastralBB.abrirDialogServicios()}"
                                                      id="nuevoServicio"
                                                      update="listaServiciosBasicos">
                                         <p:ajax update="toolTipInsertServicio" process="@this" />
@@ -374,40 +385,71 @@
                                     <p:tooltip id="toolTipInsertServicio" for="nuevoServicio" value="Agregar nuevo servicio" showEffect="fade" hideEffect="fade" position="bottom"/>
 
 
-                                    <p:dataTable id="listaServiciosBasicos" var="servicios" widgetVar="listaSeviciosBasicosTabla"
+                                    <p:dataTable id="listaServiciosBasicos" var="servicios" editable="true" widgetVar="listaSeviciosBasicosTabla"
                                                  value="#{fichaCatastralBB.predio.servicios}" rowKey="#{servicios.codServicios}" filteredValue=""
                                                  paginator="true" rows="10" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" 
                                                  rowsPerPageTemplate="10,15,20" 
                                                  emptyMessage="No se han encontrado resultados" 
                                                  paginatorPosition="bottom">
 
-                                        <p:column headerText="Código" sortBy="#{servicios.codServicios}" width="60">
+                                        <p:ajax event="rowEdit" listener="#{fichaCatastralBB.actualizarServicioIngresado}" update="listaServiciosBasicos"/>
+
+                                        <p:column headerText="Código" sortBy="#{servicios.codServicios}" width="20">
                                             <h:outputText value="#{servicios.codServicios}" />
                                         </p:column>
 
-                                        <p:column headerText="Grupo" sortBy="#{servicios.stsGrupo}">
+                                        <p:column headerText="Grupo" sortBy="#{servicios.stsGrupo}" width="40">
                                             <h:outputText value="#{servicios.stsGrupo}" />
                                         </p:column>
 
-                                        <p:column headerText="Servicios" sortBy="#{servicios.stsSubGrupo}">
+                                        <p:column headerText="Servicios" sortBy="#{servicios.stsSubGrupo}" width="40">
                                             <h:outputText value="#{servicios.stsSubGrupo}" />
                                         </p:column>
 
-                                        <p:column headerText="Descripción" sortBy="#{servicios.stsDescripcion.toString()}">
-                                            <h:outputText value="#{servicios.stsDescripcion.toString()}" />
+                                        <p:column headerText="Descripción" sortBy="#{servicios.stsDescripcion}" width="40">
+                                            <h:outputText value="#{servicios.stsDescripcion}" />
                                         </p:column>
 
-                                        <p:column headerText="Medidor" sortBy="#{servicios.nomMedidor}">
+                                        <!--<p:column headerText="Medidor" sortBy="#{servicios.nomMedidor}">
                                             <h:outputText value="#{servicios.nomMedidor}" />
-                                        </p:column>
+                                        </p:column>-->
 
-                                        <p:column headerText="Estado" sortBy="#{servicios.stsEstado}">
+                                        <!--<p:column headerText="Estado" sortBy="#{servicios.stsEstado}">
                                             <h:outputText value="#{servicios.stsEstado}" />
+                                        </p:column>-->
+
+                                        <!--<p:column headerText="# Medidores" sortBy="#{servicios.numMedidores}">
+                                            <h:outputText value="#{servicios.numMedidores}" />
+                                        </p:column>-->
+
+
+                                        <p:column headerText="Medidor" class="column-title-left" sortBy="#{servicios.nomMedidor}" width="35">
+                                            <p:cellEditor>
+                                                <f:facet name="output"><h:outputText value="#{servicios.nomMedidor}" /></f:facet>
+                                                <f:facet name="input"><p:inputText value="#{servicios.nomMedidor}"/></f:facet>
+                                            </p:cellEditor>
+                                        </p:column>
+                                        
+                                        <p:column headerText="Estado" class="column-title-left" sortBy="#{servicios.stsEstado}" width="35">
+                                            <p:cellEditor>
+                                                <f:facet name="output"><h:outputText value="#{servicios.stsEstado}" /></f:facet>
+                                                <f:facet name="input"><p:inputText value="#{servicios.stsEstado}"/></f:facet>
+                                            </p:cellEditor>
+                                        </p:column>
+                                        
+                                        <p:column headerText="# Medidores" class="column-title-left" sortBy="#{servicios.numMedidores}" width="35">
+                                            <p:cellEditor>
+                                                <f:facet name="output"><h:outputText value="#{servicios.numMedidores}" /></f:facet>
+                                                <f:facet name="input"><p:inputText value="#{servicios.numMedidores}"/></f:facet>
+                                            </p:cellEditor>
                                         </p:column>
 
-                                        <p:column headerText="# Medidores" sortBy="#{servicios.numMedidores}">
-                                            <h:outputText value="#{servicios.numMedidores}" />
+                                        <p:column headerText="Opciones" width="18">
+                                            <p:rowEditor/>
                                         </p:column>
+
+
+
                                     </p:dataTable>
 
                                     <br/>
@@ -613,12 +655,12 @@
                     </p:outputPanel>
                 </h:form>
 
-                <p:dialog header="Agregar nuevos servicios" widgetVar="dlg1" modal="true" showEffect="fade" hideEffect="fade" resizable="false" closable="true" width="550" height="400">
+                <p:dialog header="Agregar nuevos servicios" widgetVar="dlgServicios" modal="true" showEffect="fade" hideEffect="fade" resizable="false" closable="true" width="550" height="400">
                     <p:treeTable value="#{fichaCatastralBB.listaArbolServicios}"
                                  id="listaArbolServicios" var="servicio"
                                  selectionMode="single" selection="#{fichaCatastralBB.servicioSeleccionado}" >
 
-                        <p:ajax event="select" listener="#{fichaCatastralBB.agregarServicio}" update="messages" />
+                        <p:ajax event="select" listener="#{fichaCatastralBB.agregarServicio}" update="grupoFichaCatastral" />
 
                         <p:column headerText="Descripcion" sortBy="#{servicio.descripcion}">
                             <h:outputText value="#{servicio.descripcion}"/>
@@ -626,7 +668,7 @@
 
                     </p:treeTable>
                 </p:dialog>
-                <p:dialog header="Agregar detalles al piso" widgetVar="dlg2" modal="true" showEffect="fade" hideEffect="fade" resizable="false" closable="true" width="550" height="400">
+                <p:dialog header="Agregar detalles al piso" widgetVar="dlgDetallePiso" modal="true" showEffect="fade" hideEffect="fade" resizable="false" closable="true" width="550" height="400">
                     <p:growl id="messages" showDetail="true" escape="false"/>
                     <p:treeTable value="#{fichaCatastralBB.listaArbolPisosDetalle}"
                                  id="listaArbolPisosDetalle" var="dominio"
@@ -691,15 +733,15 @@
                                 <p:inputText id="notaria" value="#{fichaCatastralBB.propiedad.txtNotaria}" size="50"/>                                        
                                 <p:message for="notaria" display="tooltip"/>
 
-                                
+
                                 <p:outputLabel for="propFechaEscritura" value="Fecha escritura pública" style="font-weight: bold;" />
                                 <p:inputMask id="propFechaEscritura" value="#{fichaCatastralBB.propiedad.fecEscritura}" mask="99/99/9999"/>
                                 <p:message for="propFechaEscritura" display="tooltip"/>
-                                
+
                                 <p:outputLabel for="propFechaInscripcion" value="Fecha de inscripción " style="font-weight: bold;" />
                                 <p:inputMask id="propFechaInscripcion" value="#{fichaCatastralBB.propiedad.fecInscripcion}" mask="99/99/9999"/>
                                 <p:message for="propFechaInscripcion" display="tooltip"/>
-                                
+
                                 <!--<h:outputLabel value="Fecha de inscripción" style="font-weight: bold;"/>
                                 <p:calendar id="propFechaInscripcion" navigator="true" value="#{fichaCatastralBB.propiedad.fecInscripcion}" label="Fecha de inscripción" 
                                             showOn="button" size="10" pattern="dd/MM/yyyy" mask="true" >
@@ -743,6 +785,20 @@
                             <br/>
                         </h:panelGrid>
                     </h:form>
+                </p:dialog>
+
+                <p:dialog header="Agregar nuevos descripcion al terreno" widgetVar="dlgDescripcionTerreno" modal="true" showEffect="fade" hideEffect="fade" resizable="false" closable="true" width="550" height="400">
+                    <p:treeTable value="#{fichaCatastralBB.listaArbolDescripcionTerreno}"
+                                 id="listaArbolDescripcionTerreno" var="descripcionTerreno"
+                                 selectionMode="single" selection="#{fichaCatastralBB.descripcionTerrenoSeleccionado}" >
+
+                        <p:ajax event="select" listener="#{fichaCatastralBB.agregarDescripcionTerreno}" update="grupoFichaCatastral" />
+
+                        <p:column headerText="Descripcion" sortBy="#{descripcionTerreno.descripcion}">
+                            <h:outputText value="#{descripcionTerreno.descripcion}"/>
+                        </p:column>            
+
+                    </p:treeTable>
                 </p:dialog>
             </p:panel>
         </h:panelGroup>
