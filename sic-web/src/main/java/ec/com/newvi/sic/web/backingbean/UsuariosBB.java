@@ -226,16 +226,20 @@ public class UsuariosBB extends AdminSeguridadesBB {
 
     public void validarEmail(FacesContext arg0, UIComponent arg1, Object arg2) throws NewviExcepcion {
         String usuEmail =arg2.toString();
-        try {
-            if (!ValidacionUtils.validarCorreoElectronico(usuEmail.trim())) {
-                throw ValidacionUtils.lanzarExcepcionValidacion(EnumNewviExcepciones.ERR251);
-            }else if (seguridadesServicio.esEmailRepetido(arg2.toString())) {    
-                throw ValidacionUtils.lanzarExcepcionValidacion(EnumNewviExcepciones.ERR328);
+        if (!esPantallaActual("PANTALLA_EDICION")) {
+            
+            try {
+                if (!ValidacionUtils.validarCorreoElectronico(usuEmail.trim())) {
+                    throw ValidacionUtils.lanzarExcepcionValidacion(EnumNewviExcepciones.ERR251);
+                } else if (seguridadesServicio.esEmailRepetido(arg2.toString())) {
+                    throw ValidacionUtils.lanzarExcepcionValidacion(EnumNewviExcepciones.ERR328);
+                }
+            } catch (NewviExcepcion e) {
+                LoggerNewvi.getLogNewvi(this.getClass()).error(e, sesionBean.obtenerSesionDto());
+                MensajesFaces.mensajeError(e.getMessage());
             }
-        } catch (NewviExcepcion e) {
-            LoggerNewvi.getLogNewvi(this.getClass()).error(e, sesionBean.obtenerSesionDto());
-            MensajesFaces.mensajeError(e.getMessage());
         }
+        
     }
 
 }
