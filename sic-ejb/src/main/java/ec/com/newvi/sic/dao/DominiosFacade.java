@@ -9,6 +9,8 @@ import ec.com.newvi.sic.enums.EnumEstadoRegistro;
 import ec.com.newvi.sic.enums.EnumRelacionDominios;
 import ec.com.newvi.sic.modelo.Dominios;
 import java.io.Serializable;
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.List;
 import javax.annotation.security.PermitAll;
 import javax.ejb.Stateless;
@@ -70,5 +72,121 @@ public class DominiosFacade extends AbstractFacade<Dominios, Integer> implements
         //@return listado de dominios
         return (Dominios) q.getSingleResult();
     }
+    //TODO Crear una variable entorno para cambiar el nombre de la tabla a consultar
+
+    public BigDecimal obtenerCOFF(BigDecimal dominio, String domiCalculo) {
+
+        Query q = this.getEntityManager().createNativeQuery(""
+                + "select d.domi_coefic "
+                + "from cat_cat_dominios d "
+                + "where d.domi_minimo < ? or d.domi_minimo = ? and "
+                + "d.domi_maximo > ? or d.domi_maximo = ? and "
+                + "rtrim(d.domi_calculo) = ?");
+        q.setParameter(1, dominio);
+        q.setParameter(2, dominio);
+        q.setParameter(3, dominio);
+        q.setParameter(4, dominio);
+        q.setParameter(5, domiCalculo);
+
+        //return Double.parseDouble((q.getResultList().toString()).substring(1, 7));
+        return new BigDecimal((q.getResultList().toString()).substring(1, 7));
+
+    }
+    public BigDecimal obtenerVDEPRE(BigDecimal dominio, String domiDescripcion) {
+        String domiCalculo = "ESTADO DE REPARACION";
+        
+        Query q = this.getEntityManager().createNativeQuery(""
+                + "select d.domi_coefic "
+                + "from cat_cat_dominios d "
+                + "where d.domi_minimo < ? or d.domi_minimo = ? and "
+                + "d.domi_maximo > ? or d.domi_maximo = ? and "
+                + "rtrim(d.domi_descripcion) = ? and "
+                + "rtrim(d.domi_calculo) = ?");
+        q.setParameter(1, dominio);
+        q.setParameter(2, dominio);
+        q.setParameter(3, dominio);
+        q.setParameter(4, dominio);
+        q.setParameter(5, domiDescripcion);
+        q.setParameter(6, domiCalculo);
+
+        //return Double.parseDouble((q.getResultList().toString()).substring(1, 7));
+        return new BigDecimal((q.getResultList().toString()).substring(1, 7));
+
+    }
+
+    public BigDecimal obtenerValor(Integer idPredio, String domiCalculo) {
+
+        Query q = this.getEntityManager().createNativeQuery(""
+                + "select sum(B.domi_coefic)"
+                + "from cat_cat_dominios B, cat_cat_terreno A "
+                + "where A.sts_codigo = B.domi_codigo"
+                + " and rtrim(B.domi_calculo) = ? "
+                + " and cod_catastral = ?");
+
+        q.setParameter(1, domiCalculo);
+        q.setParameter(2, idPredio);
+
+        return new BigDecimal((q.getResultList().toString()).substring(1, 7));
+        //return Double.parseDouble((q.getResultList().toString()).substring(1, 7));
+    }
+
+    public BigDecimal obtenerDetalleContruccion(Integer codPisos, String domiCalculo) {
+        String domiGrupo = "DESCRIPCION EDIFICACION";
+        BigDecimal resultado = new BigDecimal(0.0);
+
+        Query q = this.getEntityManager().createNativeQuery(""
+                + " select sum(B.domi_coefic)"
+                + " from cat_cat_dominios B, cat_cat_pisosdetalle A "
+                + " where A.sts_codigo = B.domi_codigo "
+                + " and rtrim(B.domi_grupos) = ? "
+                + " and rtrim(B.domi_calculo) = ? "
+                //+ " B.domi_coefic is not null "
+                + " and cod_pisos = ?");
+
+        q.setParameter(1, domiGrupo);
+        q.setParameter(2, domiCalculo);
+        q.setParameter(3, codPisos);
+
+        try {
+            resultado = new BigDecimal((q.getResultList().toString()).substring(1, 7));
+        } catch (Exception e) {
+        }
+
+        return resultado;
+    }
+    
+    /*Select domi_coefic as valor from cat_cat_dominios  where rtrim(domi_codigo) = '200102' and rtrim(domi_calculo) = 'ZONAS VALORADAS M2'*/
+    public BigDecimal obtenerVTERRENO(String domiCodigo) {
+        String domiCalculo = "ZONAS VALORADAS M2";
+        
+        Query q = this.getEntityManager().createNativeQuery(""
+                + "select d.domi_coefic "
+                + "from cat_cat_dominios d "
+                + "where rtrim(d.domi_codigo) = ? and "
+                + "rtrim(d.domi_calculo) = ?");
+        q.setParameter(1, domiCodigo);
+        q.setParameter(2, domiCalculo);
+
+        //return Double.parseDouble((q.getResultList().toString()).substring(1, 7));
+        return new BigDecimal((q.getResultList().toString()).substring(1, 7));
+
+    }
+    
+    public BigDecimal obtenerValorPorCodigo(String domiCodigo) {
+        
+        Query q = this.getEntityManager().createNativeQuery(""
+                + "select d.domi_coefic "
+                + "from cat_cat_dominios d "
+                + "where rtrim(d.domi_codigo) = ? ");
+        q.setParameter(1, domiCodigo);
+
+        //return Double.parseDouble((q.getResultList().toString()).substring(1, 7));
+        return new BigDecimal((q.getResultList().toString()).substring(1, 7));
+
+    }
+    
+    /*Select domi_coefic as valor from cat_cat_dominios  where rtrim(domi_codigo) =*/
+    
+    
 
 }

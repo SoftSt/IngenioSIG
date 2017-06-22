@@ -9,7 +9,7 @@ import ec.com.newvi.sic.enums.EnumEstadoRegistro;
 import ec.com.newvi.sic.enums.EnumRelacionDominios;
 import ec.com.newvi.sic.util.ComunUtil;
 import java.io.Serializable;
-import java.math.BigDecimal;
+//import java.math.BigDecimal;
 import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -68,7 +68,7 @@ public class Dominios implements Serializable {
     private String domiCodame;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "domi_coefic")
-    private BigDecimal domiCoefic;
+    private Double domiCoefic;
     @Size(max = 16)
     @Column(name = "domi_unidad")
     private String domiUnidad;
@@ -82,9 +82,9 @@ public class Dominios implements Serializable {
     @Column(name = "domi_tipo")
     private String domiTipo;
     @Column(name = "domi_minimo")
-    private BigDecimal domiMinimo;
+    private Double domiMinimo;
     @Column(name = "domi_maximo")
-    private BigDecimal domiMaximo;
+    private Double domiMaximo;
     @Size(max = 50)
     @Column(name = "aud_ing_usu")
     private String audIngUsu;
@@ -192,11 +192,11 @@ public class Dominios implements Serializable {
         this.domiCodame = domiCodame;
     }
 
-    public BigDecimal getDomiCoefic() {
+    public Double getDomiCoefic() {
         return domiCoefic;
     }
 
-    public void setDomiCoefic(BigDecimal domiCoefic) {
+    public void setDomiCoefic(Double domiCoefic) {
         this.domiCoefic = domiCoefic;
     }
 
@@ -242,19 +242,19 @@ public class Dominios implements Serializable {
         this.domiTipo = domiTipo;
     }
 
-    public BigDecimal getDomiMinimo() {
+    public Double getDomiMinimo() {
         return domiMinimo;
     }
 
-    public void setDomiMinimo(BigDecimal domiMinimo) {
+    public void setDomiMinimo(Double domiMinimo) {
         this.domiMinimo = domiMinimo;
     }
 
-    public BigDecimal getDomiMaximo() {
+    public Double getDomiMaximo() {
         return domiMaximo;
     }
 
-    public void setDomiMaximo(BigDecimal domiMaximo) {
+    public void setDomiMaximo(Double domiMaximo) {
         this.domiMaximo = domiMaximo;
     }
 

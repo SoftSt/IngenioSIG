@@ -162,6 +162,12 @@ public interface CatastroServicio {
      * @throws NewviExcepcion
      */
     public String eliminarPiso(Pisos piso, SesionDto sesion) throws NewviExcepcion;
+    /**
+     * Obtiene los datos del piso por bloque
+     * @param codBloque codigo del bloque
+     * @return Piso
+     */
+    public Object[] obtenerDatosPisoPorBloque(Integer codBloque);
     
         /*------------------------------------------------------------PisoDetalle------------------------------------------------------------*/
     /**

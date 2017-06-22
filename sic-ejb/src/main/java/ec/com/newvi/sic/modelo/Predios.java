@@ -121,6 +121,8 @@ public class Predios implements Serializable {
     private String nomIntervenido;
     @Column(name = "val_areafrente")
     private BigDecimal valAreaFrente;    
+    @Column(name = "val_areafondo")
+    private BigDecimal valAreaFondo;    
     @Column(name = "val_areaconstruccion")
     private BigDecimal valAreaConstruccion;
     @Column(name = "val_areapredio")
@@ -406,6 +408,14 @@ public class Predios implements Serializable {
         this.valAreaPredio = valAreaPredio;
     }
 
+    public BigDecimal getValAreaFondo() {
+        return valAreaFondo;
+    }
+
+    public void setValAreaFondo(BigDecimal valAreaFondo) {
+        this.valAreaFondo = valAreaFondo;
+    } 
+    
     public EnumEstadoRegistro getCatEstado() {
         return catEstado;
     }

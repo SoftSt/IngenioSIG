@@ -1,4 +1,4 @@
-/*
+                /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
@@ -9,6 +9,7 @@ import ec.com.newvi.sic.dto.DominioDto;
 import ec.com.newvi.sic.dto.SesionDto;
 import ec.com.newvi.sic.modelo.Dominios;
 import ec.com.newvi.sic.util.excepciones.NewviExcepcion;
+import java.math.BigDecimal;
 import java.util.List;
 import javax.annotation.security.PermitAll;
 import javax.ejb.Local;
@@ -90,7 +91,48 @@ public interface ParametrosServicio {
      */
     public List<DominioDto> listarDominiosDto(String grupo, String relacion);
     
+    /**
+     * Obtencion del COFF
+     * @param dominio dominio minimo y maximo del dominio
+     * @param calculo tipo calculo
+     * @return valor COFF
+     */
+    public BigDecimal obtenerCOFF(BigDecimal dominio, String calculo);
+    /**
+     * Valoracion de factores
+     * @param idPredio codigo del predio a valorar
+     * @param domiCalculo parametro por el cual será valorado
+     * @return coeficiente del factor
+     */
     
+    public BigDecimal obtenerValor(Integer idPredio, String domiCalculo);
+    /**
+     * Calculo del Detalle de construcción
+     * @param codPisos codigo del piso a valorar
+     * @param domiCalculo parametro por el cual será calculado
+     * @return coeficiente del detalle de contrucción
+     */
+    public BigDecimal obtenerDetalleContruccion(Integer codPisos, String domiCalculo);
+    /**
+     * Calculo del valor de depreciación
+     * @param dominio dominio minimo y maximo del dominio
+     * @param domiDescripcion parametro por el cual sera calculado
+     * @return  valor de VDEPRE
+     */
+    public BigDecimal obtenerVDEPRE(BigDecimal dominio, String domiDescripcion);
+    /**
+     * Calculo del valor del terreno
+     * @param domiCodigo codigo por el cual se buscara el valor
+     * @return valor de VTERRENO
+     */
+    public BigDecimal obtenerVTERRENO(String domiCodigo);
+    
+    /**
+     * Obtiene el valor de un coeficiente por codigo
+     * @param domiCodigo codigo del dominio
+     * @return coefiente dominio
+     */
+    public BigDecimal obtenerValorPorCodigo(String domiCodigo);
     
     
 }

@@ -37,7 +37,8 @@ import javax.ejb.Stateless;
  */
 @Stateless
 @PermitAll
-public class CatastroServicioImpl implements CatastroServicio{
+public class CatastroServicioImpl implements CatastroServicio {
+
     @EJB
     PrediosFacade prediosFacade;
     @EJB
@@ -50,8 +51,8 @@ public class CatastroServicioImpl implements CatastroServicio{
     FotosFacade fotosFacade;
     @EJB
     PisosDetalleFacade pisosDetalleFacade;
-    
-        /*------------------------------------------------------------Predios------------------------------------------------------------*/
+
+    /*------------------------------------------------------------Predios------------------------------------------------------------*/
     @Override
     public String generarNuevoPredio(Predios nuevoPredio, SesionDto sesion) throws NewviExcepcion {
 
@@ -71,7 +72,7 @@ public class CatastroServicioImpl implements CatastroServicio{
 
         prediosFacade.create(nuevoPredio);
         // Si todo marcha bien enviar nombre del predio
-        return nuevoPredio.getNomCodigocatastral ();
+        return nuevoPredio.getNomCodigocatastral();
 
     }
 
@@ -93,7 +94,7 @@ public class CatastroServicioImpl implements CatastroServicio{
 
         prediosFacade.edit(predio);
         // Si todo marcha bien enviar nombre de la predio
-        return predio.getNomCodigocatastral ();
+        return predio.getNomCodigocatastral();
     }
 
     @Override
@@ -115,7 +116,8 @@ public class CatastroServicioImpl implements CatastroServicio{
         predio.setCatEstado(EnumEstadoRegistro.E);
         return actualizarPredio(predio, sesion);
     }
-        /*------------------------------------------------------------Bloques------------------------------------------------------------*/
+
+    /*------------------------------------------------------------Bloques------------------------------------------------------------*/
     @Override
     public String generarNuevoBloque(Bloques nuevoBloque, SesionDto sesion) throws NewviExcepcion {
 
@@ -179,7 +181,8 @@ public class CatastroServicioImpl implements CatastroServicio{
         bloque.setBloEstado(EnumEstadoRegistro.E);
         return actualizarBloque(bloque, sesion);
     }
-        /*------------------------------------------------------------Pisos------------------------------------------------------------*/
+
+    /*------------------------------------------------------------Pisos------------------------------------------------------------*/
     @Override
     public String generarNuevoPiso(Pisos nuevoPiso, SesionDto sesion) throws NewviExcepcion {
 
@@ -243,9 +246,13 @@ public class CatastroServicioImpl implements CatastroServicio{
         piso.setPisEstado(EnumEstadoRegistro.E);
         return actualizarPiso(piso, sesion);
     }
-    
-        /*------------------------------------------------------------PisosDetalle------------------------------------------------------------*/
-    
+
+    @Override
+    public Object[] obtenerDatosPisoPorBloque(Integer codBloque) {
+        return pisosFacade.obtenerDatosPisoPorBloque(codBloque);
+    }
+
+    /*------------------------------------------------------------PisosDetalle------------------------------------------------------------*/
     @Override
     public String actualizarPisoDetalle(PisoDetalle pisoDetalle, SesionDto sesion) throws NewviExcepcion {
         // Validar que los datos no sean incorrectos
@@ -266,7 +273,8 @@ public class CatastroServicioImpl implements CatastroServicio{
         // Si todo marcha bien enviar nombre de la piso
         return pisoDetalle.getCodigo();
     }
-        /*------------------------------------------------------------Terreno------------------------------------------------------------*/
+
+    /*------------------------------------------------------------Terreno------------------------------------------------------------*/
     @Override
     public String generarNuevoTerreno(Terreno nuevoTerreno, SesionDto sesion) throws NewviExcepcion {
 
@@ -330,11 +338,10 @@ public class CatastroServicioImpl implements CatastroServicio{
         terreno.setTerEstado(EnumEstadoRegistro.E);
         return actualizarTerreno(terreno, sesion);
     }
-    
+
     /*------------------------------------------------------------Fotos------------------------------------------------------------*/
-    
     @Override
-    public List<Fotos> consultarFotosPorPredio(int codCatastral){
+    public List<Fotos> consultarFotosPorPredio(int codCatastral) {
         return fotosFacade.buscarFotosPorPredio(codCatastral);
     }
 }

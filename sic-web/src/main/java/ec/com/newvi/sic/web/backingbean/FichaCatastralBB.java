@@ -32,13 +32,17 @@ import ec.com.newvi.sic.web.enums.EnumEtiquetas;
 import ec.com.newvi.sic.web.enums.EnumPantallaMantenimiento;
 import ec.com.newvi.sic.web.utils.ValidacionUtils;
 import ec.com.newvi.sic.web.utils.WebUtils;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
+import javax.websocket.OnOpen;
 import org.primefaces.event.NodeSelectEvent;
 import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.TreeNode;
@@ -252,7 +256,7 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
     }
 
     @PostConstruct
-    public void init() {
+    public void init() {        
         this.predio = new Predios();
         listaEstadosPisoDetalle = EnumEstadoPisoDetalle.values();
         actualizarListadoPredios();
@@ -351,6 +355,7 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
     public void seleccionarPredio(Integer idPredio) {
         try {
             this.seleccionarPredioPorCodigo(idPredio);
+            calcularAvaluo();
         } catch (NewviExcepcion e) {
             MensajesFaces.mensajeError(e.getMessage());
         } catch (Exception e) {
@@ -436,9 +441,9 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
     }
 
     private void actualizarListadoServicios() {
-        List<DominioDto> listadoDominiosDto = parametrosServicio.listarDominiosDto("INFRAESTRUCTURA DE SERVICIOS","Nodo");
+        List<DominioDto> listadoDominiosDto = parametrosServicio.listarDominiosDto("INFRAESTRUCTURA DE SERVICIOS", "Nodo");
         List<DominioDto> listadoDominiosDtoCerramiento = parametrosServicio.listarDominiosDto("CERRAMIENTO", "SubNodo");
-        
+
         for (DominioDto dominioDto : listadoDominiosDtoCerramiento) {
             listadoDominiosDto.add(dominioDto);
         }
@@ -456,7 +461,7 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
     }
 
     private void actualizarListadoDescripcionTerreno() {
-        List<DominioDto> listadoDominiosDto = parametrosServicio.listarDominiosDto("DESCRIPCION DEL TERRENO","Nodo");
+        List<DominioDto> listadoDominiosDto = parametrosServicio.listarDominiosDto("DESCRIPCION DEL TERRENO", "Nodo");
 
         try {
             listaArbolDescripcionTerreno = new DefaultTreeNode();
@@ -556,6 +561,7 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
             MensajesFaces.mensajeError(e.getMessage());
         }
     }
+
     public void actualizarServicioIngresado() {
         try {
             catastroServicio.actualizarPredio(this.predio, sesionBean.obtenerSesionDto());
@@ -636,7 +642,6 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
     public void agregarServicio(NodeSelectEvent event) {
         Servicios servicio = new Servicios();
         Dominios hijo = ((DominioDto) event.getTreeNode().getData()).getDominio();
-        
 
         EnumRelacionDominios nodo = hijo.getDomiRelacion();
         if (!nodo.equals(EnumRelacionDominios.SubNodo) && !nodo.equals(EnumRelacionDominios.Nodo)) {
@@ -662,7 +667,7 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
             }
         }
     }
-    
+
     public void agregarDescripcionTerreno(NodeSelectEvent event) {
         Terreno terreno = new Terreno();
         Dominios hijo = ((DominioDto) event.getTreeNode().getData()).getDominio();
@@ -695,7 +700,7 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
     public void abrirDialogServicios() throws NewviExcepcion {
         WebUtils.obtenerContextoPeticion().execute("PF('dlgServicios').show()");
     }
-    
+
     public void abrirDialogDescripcionTerreno() throws NewviExcepcion {
         WebUtils.obtenerContextoPeticion().execute("PF('dlgDescripcionTerreno').show()");
     }
@@ -713,9 +718,81 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
             MensajesFaces.mensajeError(e.getMessage());
         }
     }
-    
+   
     public void cancelarEdicionPropiedad() {
         WebUtils.obtenerContextoPeticion().execute("PF('dlgPropiedad').close()");
+    }
+    
+    public BigDecimal obtenerValoracionFondoRelativo(BigDecimal area, BigDecimal frente){
+        BigDecimal v1, v2;
+        
+        v1 = new BigDecimal(0);
+        v2 = new BigDecimal(0);
+        
+        v1 = area.divide(frente, 4, RoundingMode.CEILING);
+        v2 = frente.divide(v1, 4, RoundingMode.CEILING);
+        
+        
+        return parametrosServicio.obtenerCOFF(v2, "FACTOR FRENTE FONDO");
+    
+    }
+
+    public void calcularAvaluo() {
+        BigDecimal coff, cot, cofo, cubi, cero, fa1 = new BigDecimal(0), div = new BigDecimal(5), vestruc, vcabado, vextra, areapiso, edad=new BigDecimal(0), vdepre, vterreno, area, frente, v1,v2,v3;
+        Object[] objetoPiso;
+        Integer codigo, codigo_piso, reposicion;
+        String piso = "", estado="", zona=this.predio.getCodZona(), sector = this.predio.getCodSector(), consulta;
+        
+        frente = this.predio.getValAreaFrente();
+        area = this.predio.getValAreaFondo();
+        codigo = this.predio.getCodCatastral();
+
+        // Calculo del fondo relativo COFF
+        coff = obtenerValoracionFondoRelativo(area, frente);
+        // Coeficiente de Topografía COT
+        cot = parametrosServicio.obtenerValor(codigo, "TOPOGRAFIA");
+        // Coeficinte de Erosion
+        cero = parametrosServicio.obtenerValor(codigo, "LOCALIZACION");
+        // Coeficinte de forma COFO
+        cofo = parametrosServicio.obtenerValor(codigo, "FORMA");
+        // Coeficinte de Ubicacion
+        cubi = parametrosServicio.obtenerValor(codigo, "OCUPACION");
+
+        fa1=(fa1.add(coff).add(cot).add(cofo).add(cero).add(cubi)).divide(div, 4, RoundingMode.CEILING);
+        
+        // CALCULO DEL PRECIO BASE PARA EL TERRENO
+        // SE TOMA EN CUENTA UNA VALORACION POR LAS ZONAS y SECTORES DEL MUNICIPIO.
+         consulta = "20"+zona+sector;
+         
+         vterreno = parametrosServicio.obtenerVTERRENO(consulta);
+        
+
+
+        for (Object pisos : catastroServicio.obtenerDatosPisoPorBloque(2090)) {
+            objetoPiso = (Object[]) pisos;
+            codigo_piso = (Integer)objetoPiso[0];
+            piso = (String)objetoPiso[1];
+            areapiso = (BigDecimal)objetoPiso[2];
+            edad = new BigDecimal((Double)objetoPiso[3]);
+            reposicion = (Integer)objetoPiso[4];
+            estado = (String)objetoPiso[5];
+        }
+        
+        //Factor de depreciación de inmueble por piso y depreciacion
+        vdepre = parametrosServicio.obtenerVDEPRE(edad, estado);
+                
+        
+
+        //Detalle de construccion Estructura
+        vestruc = parametrosServicio.obtenerDetalleContruccion(2090, "ESTRUCTURA");
+        v1 = parametrosServicio.obtenerValorPorCodigo("210101");
+        //Destalle de construccion Acabados
+        vcabado = parametrosServicio.obtenerDetalleContruccion(2090, "ACABADOS");
+        v2 = parametrosServicio.obtenerValorPorCodigo("210102");
+        //Detalle de construccion Extras
+        vextra = parametrosServicio.obtenerDetalleContruccion(2090, "EXTRAS");
+        v3 = parametrosServicio.obtenerValorPorCodigo("210103");
+
     }
 
 }

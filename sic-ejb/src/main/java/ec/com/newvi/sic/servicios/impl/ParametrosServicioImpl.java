@@ -15,6 +15,7 @@ import ec.com.newvi.sic.servicios.ParametrosServicio;
 import ec.com.newvi.sic.util.ComunUtil;
 import ec.com.newvi.sic.util.excepciones.NewviExcepcion;
 import ec.com.newvi.sic.util.logs.LoggerNewvi;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -106,7 +107,7 @@ public class ParametrosServicioImpl implements ParametrosServicio {
 
     @Override
     public List<Dominios> consultarDominiosPorGrupo(String grupo, String relacion) {
-        return dominiosFacade.buscarDominiosPorGrupo(grupo,relacion);
+        return dominiosFacade.buscarDominiosPorGrupo(grupo, relacion);
     }
 
     @Override
@@ -118,11 +119,41 @@ public class ParametrosServicioImpl implements ParametrosServicio {
     public List<DominioDto> listarDominiosDto(String grupo, String relacion) {
         List<DominioDto> listadoDominiosDto = new ArrayList<>();
 
-        for (Dominios dominio : dominiosFacade.buscarDominiosPorGrupo(grupo,relacion)) {
+        for (Dominios dominio : dominiosFacade.buscarDominiosPorGrupo(grupo, relacion)) {
             listadoDominiosDto.add(new DominioDto(dominio, this));
             //listadoDominiosDto.add(new DominioDto(dominio, dominiosFacade));
         }
-        
+
         return listadoDominiosDto;
+    }
+
+    @Override
+    public BigDecimal obtenerCOFF(BigDecimal dominio, String calculo) {
+        return dominiosFacade.obtenerCOFF(dominio, calculo);
+    }
+
+    @Override
+    public BigDecimal obtenerValor(Integer idPredio, String domiCalculo) {
+        return dominiosFacade.obtenerValor(idPredio, domiCalculo);
+    }
+
+    @Override
+    public BigDecimal obtenerDetalleContruccion(Integer codPisos, String domiCalculo) {
+        return dominiosFacade.obtenerDetalleContruccion(codPisos, domiCalculo);
+    }
+
+    @Override
+    public BigDecimal obtenerVDEPRE(BigDecimal dominio, String domiDescripcion) {
+        return dominiosFacade.obtenerVDEPRE(dominio, domiDescripcion);
+    }
+
+    @Override
+    public BigDecimal obtenerVTERRENO(String domiCodigo) {
+        return dominiosFacade.obtenerVTERRENO(domiCodigo);
+    }
+
+    @Override
+    public BigDecimal obtenerValorPorCodigo(String domiCodigo) {
+        return dominiosFacade.obtenerValorPorCodigo(domiCodigo);
     }
 }
