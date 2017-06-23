@@ -116,6 +116,13 @@ public interface CatastroServicio {
      * @throws NewviExcepcion
      */
     public String eliminarBloque(Bloques bloque, SesionDto sesion) throws NewviExcepcion;
+    
+    /**
+     * Devuelve un listado de bloques por un codigo catastral
+     * @param codCatastral codigo del predio por el cual vamos a buscar los bloques
+     * @return Listado de bos filtrados por codigo catastrak
+     */
+    public List<Bloques> buscarBloquesPorCodigoCatastral(Integer codCatastral);
         /*------------------------------------------------------------Pisos------------------------------------------------------------*/
     /**
      * Genera un nuevo Piso, de acuerdo a un objeto entregado.

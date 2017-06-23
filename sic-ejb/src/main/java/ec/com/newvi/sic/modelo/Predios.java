@@ -97,7 +97,9 @@ public class Predios implements Serializable {
     @Column(name = "val_coordenadaeste")
     private BigDecimal valCoordenadaEste;
     @Column(name = "val_coordenadanorte")
-    private BigDecimal valCoordenadaNorte;    
+    private BigDecimal valCoordenadaNorte;
+    @Column(name = "vat_terreno")
+    private BigDecimal valTerreno;
     @Size(max = 100)
     @Column(name = "txt_norte")
     private String txtNorte;
@@ -127,6 +129,24 @@ public class Predios implements Serializable {
     private BigDecimal valAreaConstruccion;
     @Column(name = "val_areapredio")
     private BigDecimal valAreaPredio;    
+    @Column(name = "val_edifica")
+    private BigDecimal valEdifica;    
+    @Column(name = "val_predio")
+    private BigDecimal valPredio;    
+    @Column(name = "val_cem")
+    private BigDecimal valCem;    
+    @Column(name = "val_bomberos")
+    private BigDecimal valBomberos;    
+    @Column(name = "val_emision")
+    private BigDecimal valEmision;    
+    @Column(name = "val_basura")
+    private BigDecimal valBasura;    
+    @Column(name = "val_ambientales")
+    private BigDecimal valAmbientales;    
+    @Column(name = "val_impuesto")
+    private BigDecimal valImpuesto;    
+    @Column(name = "val_imppredial")
+    private BigDecimal valImppredial;    
     @Enumerated(EnumType.STRING)
     @Column(name = "cat_estado")
     private EnumEstadoRegistro catEstado;
@@ -328,6 +348,86 @@ public class Predios implements Serializable {
         this.valCoordenadaNorte = valCoordenadaNorte;
     }
 
+    public BigDecimal getValTerreno() {
+        return valTerreno;
+    }
+
+    public void setValTerreno(BigDecimal valTerreno) {
+        this.valTerreno = valTerreno;
+    }
+
+    public BigDecimal getValEdifica() {
+        return valEdifica;
+    }
+
+    public void setValEdifica(BigDecimal valEdifica) {
+        this.valEdifica = valEdifica;
+    }
+
+    public BigDecimal getValPredio() {
+        return valPredio;
+    }
+
+    public void setValPredio(BigDecimal valPredio) {
+        this.valPredio = valPredio;
+    }
+
+    public BigDecimal getValCem() {
+        return valCem;
+    }
+
+    public void setValCem(BigDecimal valCem) {
+        this.valCem = valCem;
+    }
+
+    public BigDecimal getValBomberos() {
+        return valBomberos;
+    }
+
+    public void setValBomberos(BigDecimal valBomberos) {
+        this.valBomberos = valBomberos;
+    }
+
+    public BigDecimal getValEmision() {
+        return valEmision;
+    }
+
+    public void setValEmision(BigDecimal valEmision) {
+        this.valEmision = valEmision;
+    }
+
+    public BigDecimal getValBasura() {
+        return valBasura;
+    }
+
+    public void setValBasura(BigDecimal valBasura) {
+        this.valBasura = valBasura;
+    }
+
+    public BigDecimal getValAmbientales() {
+        return valAmbientales;
+    }
+
+    public void setValAmbientales(BigDecimal valAmbientales) {
+        this.valAmbientales = valAmbientales;
+    }
+
+    public BigDecimal getValImpuesto() {
+        return valImpuesto;
+    }
+
+    public void setValImpuesto(BigDecimal valImpuesto) {
+        this.valImpuesto = valImpuesto;
+    }
+
+    public BigDecimal getValImppredial() {
+        return valImppredial;
+    }
+
+    public void setValImppredial(BigDecimal valImppredial) {
+        this.valImppredial = valImppredial;
+    }
+    
     public String getTxtNorte() {
         return txtNorte;
     }

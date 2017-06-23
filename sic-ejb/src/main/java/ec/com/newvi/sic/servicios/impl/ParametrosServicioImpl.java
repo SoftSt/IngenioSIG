@@ -5,11 +5,13 @@
  */
 package ec.com.newvi.sic.servicios.impl;
 
+import ec.com.newvi.sic.dao.ConstantesImpuestosFacade;
 import ec.com.newvi.sic.dao.DominiosFacade;
 import ec.com.newvi.sic.dto.DominioDto;
 import ec.com.newvi.sic.enums.EnumEstadoRegistro;
 import ec.com.newvi.sic.dto.SesionDto;
 import ec.com.newvi.sic.enums.EnumNewviExcepciones;
+import ec.com.newvi.sic.modelo.ConstantesImpuestos;
 import ec.com.newvi.sic.modelo.Dominios;
 import ec.com.newvi.sic.servicios.ParametrosServicio;
 import ec.com.newvi.sic.util.ComunUtil;
@@ -34,6 +36,8 @@ public class ParametrosServicioImpl implements ParametrosServicio {
 
     @EJB
     private DominiosFacade dominiosFacade;
+    @EJB
+    private ConstantesImpuestosFacade constantesFacade;
 
     /*------------------------------------------------------------Dominios------------------------------------------------------------*/
     @Override
@@ -148,12 +152,22 @@ public class ParametrosServicioImpl implements ParametrosServicio {
     }
 
     @Override
-    public BigDecimal obtenerVTERRENO(String domiCodigo) {
-        return dominiosFacade.obtenerVTERRENO(domiCodigo);
+    public BigDecimal obtenerValorPorCodigoCalculo(String domiCodigo, String domiCalculo) {
+        return dominiosFacade.obtenerValorPorCodigoCalculo(domiCodigo, domiCalculo);
     }
 
     @Override
     public BigDecimal obtenerValorPorCodigo(String domiCodigo) {
         return dominiosFacade.obtenerValorPorCodigo(domiCodigo);
+    }
+
+    @Override
+    public List<ConstantesImpuestos> obtenerConstantesImpuestosPorTipo(String stsTipo) {
+        return constantesFacade.obtenerConstantesImpuestosPorTipo(stsTipo);
+    }
+
+    @Override
+    public Boolean tieneBasura(Integer codCatastral) {
+        return dominiosFacade.tieneBasura(codCatastral);
     }
 }

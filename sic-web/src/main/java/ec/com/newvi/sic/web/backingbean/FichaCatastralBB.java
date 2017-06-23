@@ -7,6 +7,7 @@ package ec.com.newvi.sic.web.backingbean;
 
 import ec.com.newvi.sic.dto.DominioDto;
 import ec.com.newvi.sic.dto.FichaCatastralDto;
+import ec.com.newvi.sic.dto.SesionDto;
 import ec.com.newvi.sic.enums.EnumEstadoPisoDetalle;
 import ec.com.newvi.sic.enums.EnumEstadoRegistro;
 import ec.com.newvi.sic.enums.EnumNewviExcepciones;
@@ -16,6 +17,7 @@ import ec.com.newvi.sic.enums.EnumSitActual;
 import ec.com.newvi.sic.enums.EnumTenencia;
 import ec.com.newvi.sic.enums.EnumTraslacion;
 import ec.com.newvi.sic.modelo.Bloques;
+import ec.com.newvi.sic.modelo.ConstantesImpuestos;
 import ec.com.newvi.sic.modelo.Dominios;
 import ec.com.newvi.sic.modelo.Fotos;
 import ec.com.newvi.sic.modelo.PisoDetalle;
@@ -63,6 +65,7 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
     private List<FichaCatastralDto> listaFichasFiltradas;
     private EnumPantallaMantenimiento pantallaActual;
     private Bloques bloqueSeleccionado;
+    private Bloques bloqueAvaluo;
     private TreeNode listaArbolServicios;
     private TreeNode listaArbolDescripcionTerreno;
     private TreeNode listaArbolPisosDetalle;
@@ -73,6 +76,7 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
     private List<Fotos> listaFotosPorPredio;
     private List<String> listaFotosJpg;
     private Pisos pisoSeleccionado;
+    private Pisos pisoAvaluo;
     private EnumEstadoPisoDetalle[] listaEstadosPisoDetalle;
     private EnumTenencia[] listaTenenciaDominios;
     private EnumTraslacion[] listaTraslacion;
@@ -256,7 +260,7 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
     }
 
     @PostConstruct
-    public void init() {        
+    public void init() {
         this.predio = new Predios();
         listaEstadosPisoDetalle = EnumEstadoPisoDetalle.values();
         actualizarListadoPredios();
@@ -718,34 +722,55 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
             MensajesFaces.mensajeError(e.getMessage());
         }
     }
-   
+
     public void cancelarEdicionPropiedad() {
         WebUtils.obtenerContextoPeticion().execute("PF('dlgPropiedad').close()");
     }
-    
-    public BigDecimal obtenerValoracionFondoRelativo(BigDecimal area, BigDecimal frente){
+
+    public BigDecimal obtenerValoracionFondoRelativo(BigDecimal area, BigDecimal frente) {
         BigDecimal v1, v2;
-        
+
         v1 = new BigDecimal(0);
         v2 = new BigDecimal(0);
-        
+
         v1 = area.divide(frente, 4, RoundingMode.CEILING);
         v2 = frente.divide(v1, 4, RoundingMode.CEILING);
-        
-        
+
         return parametrosServicio.obtenerCOFF(v2, "FACTOR FRENTE FONDO");
-    
+
     }
 
-    public void calcularAvaluo() {
-        BigDecimal coff, cot, cofo, cubi, cero, fa1 = new BigDecimal(0), div = new BigDecimal(5), vestruc, vcabado, vextra, areapiso, edad=new BigDecimal(0), vdepre, vterreno, area, frente, v1,v2,v3;
+    public void calcularAvaluo() throws NewviExcepcion {
+        BigDecimal coff, cot, cofo, cubi, cero, fa1, div, vestruc, vcabado, vextra, areapiso, edad, vdepre, vterreno, area, frente, v1, v2, v3, valor_terreno, cosB, areaB, cost, valPredio, c1, c2, c3, c4, c5, c6, basura, aPagar;
         Object[] objetoPiso;
-        Integer codigo, codigo_piso, reposicion;
-        String piso = "", estado="", zona=this.predio.getCodZona(), sector = this.predio.getCodSector(), consulta;
-        
+        Integer codigo, codigo_piso, reposicion, codigo_bloque;
+        String piso, estado, zona, sector, consulta;
+        Boolean ba;
+
+        codigo = this.predio.getCodCatastral();
+        fa1 = new BigDecimal(0);
+        div = new BigDecimal(5);
         frente = this.predio.getValAreaFrente();
         area = this.predio.getValAreaFondo();
-        codigo = this.predio.getCodCatastral();
+        cosB = new BigDecimal(0);
+        areaB = new BigDecimal(0);
+        cost = new BigDecimal(0);
+
+        c1 = new BigDecimal(0);
+        c2 = new BigDecimal(0);
+        c3 = new BigDecimal(0);
+        c4 = new BigDecimal(0);
+        c5 = new BigDecimal(0);
+        c6 = new BigDecimal(0);
+
+        aPagar = new BigDecimal(0);
+
+        piso = "";
+        estado = "";
+        zona = this.predio.getCodZona();
+        sector = this.predio.getCodSector();
+
+        edad = new BigDecimal(0);
 
         // Calculo del fondo relativo COFF
         coff = obtenerValoracionFondoRelativo(area, frente);
@@ -758,40 +783,111 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
         // Coeficinte de Ubicacion
         cubi = parametrosServicio.obtenerValor(codigo, "OCUPACION");
 
-        fa1=(fa1.add(coff).add(cot).add(cofo).add(cero).add(cubi)).divide(div, 4, RoundingMode.CEILING);
-        
+        fa1 = (fa1.add(coff).add(cot).add(cofo).add(cero).add(cubi)).divide(div, 4, RoundingMode.CEILING);
+
         // CALCULO DEL PRECIO BASE PARA EL TERRENO
         // SE TOMA EN CUENTA UNA VALORACION POR LAS ZONAS y SECTORES DEL MUNICIPIO.
-         consulta = "20"+zona+sector;
-         
-         vterreno = parametrosServicio.obtenerVTERRENO(consulta);
-        
+        consulta = "20" + zona + sector;
 
+        vterreno = parametrosServicio.obtenerValorPorCodigoCalculo(consulta, "ZONAS VALORADAS M2");
 
-        for (Object pisos : catastroServicio.obtenerDatosPisoPorBloque(2090)) {
-            objetoPiso = (Object[]) pisos;
-            codigo_piso = (Integer)objetoPiso[0];
-            piso = (String)objetoPiso[1];
-            areapiso = (BigDecimal)objetoPiso[2];
-            edad = new BigDecimal((Double)objetoPiso[3]);
-            reposicion = (Integer)objetoPiso[4];
-            estado = (String)objetoPiso[5];
+        valor_terreno = (fa1.multiply(area)).multiply(vterreno);
+
+        //this.predio.setValTerreno(valor_terreno);
+        //actualizarPredio();
+        List<Bloques> bloques = catastroServicio.buscarBloquesPorCodigoCatastral(codigo);
+
+        for (Bloques bloque : bloques) {
+
+            codigo_bloque = bloque.getCodBloques();
+
+            for (Object pisos : catastroServicio.obtenerDatosPisoPorBloque(codigo_bloque)) {
+                objetoPiso = (Object[]) pisos;
+                codigo_piso = (Integer) objetoPiso[0];
+                piso = (String) objetoPiso[1];
+                areapiso = (BigDecimal) objetoPiso[2];
+                edad = new BigDecimal((Double) objetoPiso[3]);
+                reposicion = (Integer) objetoPiso[4];
+                estado = (String) objetoPiso[5];
+
+                //Factor de depreciación de inmueble por piso y depreciacion
+                vdepre = parametrosServicio.obtenerVDEPRE(edad, estado);
+
+                //Detalle de construccion Estructura
+                vestruc = parametrosServicio.obtenerDetalleContruccion(codigo_piso, "ESTRUCTURA");
+                v1 = parametrosServicio.obtenerValorPorCodigo("210101");
+                //Destalle de construccion Acabados
+                vcabado = parametrosServicio.obtenerDetalleContruccion(codigo_piso, "ACABADOS");
+                v2 = parametrosServicio.obtenerValorPorCodigo("210102");
+                //Detalle de construccion Extras
+                vextra = parametrosServicio.obtenerDetalleContruccion(codigo_piso, "EXTRAS");
+                v3 = parametrosServicio.obtenerValorPorCodigo("210103");
+
+                // Factos de costos del pios es igual a la suma de los factores por el área menos la depreciación del bien por edad y estado
+                cosB = (vestruc.multiply(v1)).add(vcabado.multiply(v2)).add(vextra.multiply(v3)).subtract(((vestruc.multiply(v1)).add(vcabado.multiply(v2)).add(vextra.multiply(v3))).multiply(vdepre));
+                areaB = areaB.add(areapiso);
+                cost = cost.add(cosB);
+
+                // Ubica valor de calculos en la tabla de pisos
+                pisoAvaluo = catastroServicio.seleccionarPiso(codigo_piso);
+
+                pisoAvaluo.setValFactordepreciacion(vdepre);
+                pisoAvaluo.setValSumafactores(vestruc.add(vcabado).add(vextra));
+                pisoAvaluo.setValConstante(fa1);
+                pisoAvaluo.setValMetro2(((vestruc.multiply(v1)).add(vcabado.multiply(v2)).add(vextra.multiply(v3))).multiply(vdepre));
+                pisoAvaluo.setValPiso(cosB);
+
+                //catastroServicio.actualizarPiso(pisoAvaluo, sesionBean.obtenerSesionDto());
+            }
+
+            // Actualiza Valores por Bloque
+            bloqueAvaluo = catastroServicio.seleccionarBloque(codigo_bloque);
+
+            bloqueAvaluo.setValAreabloque(areaB);
+            bloqueAvaluo.setValBloque(cosB);
+
+            //catastroServicio.actualizarBloque(bloqueAvaluo, sesionBean.obtenerSesionDto());
+            // Actualiza Valoración de Terreno y Contrucción
+            this.predio.setValEdifica(cost);
+            this.predio.setValAreaConstruccion(areaB);
+
+            valPredio = valor_terreno.add(cost);
+
+            this.predio.setValPredio(valPredio);
+
+            //catastroServicio.actualizarPredio(this.predio, sesionBean.obtenerSesionDto());
+            // Constantes catastro urbano
+            List<ConstantesImpuestos> constantesImpuestos = parametrosServicio.obtenerConstantesImpuestosPorTipo("URBANO");
+
+            for (ConstantesImpuestos constantesImpuesto : constantesImpuestos) {
+                c1 = constantesImpuesto.getValBomberos();
+                c2 = constantesImpuesto.getValServiciosadministrativos();
+                c3 = constantesImpuesto.getValCem();
+                c4 = constantesImpuesto.getValBasura();
+                c5 = constantesImpuesto.getValTasaaplicada();
+                c6 = constantesImpuesto.getValAmbientales();
+            }
+
+            // Ubica Valor recoleccion de basura segun Zona mirar domi_calculo = TASA RECOLECCIÓN DE BASURA            
+            consulta = "60" + zona;
+            basura = parametrosServicio.obtenerValorPorCodigoCalculo(consulta, "TASA RECOLECCIÓN DE BASURA");
+            ba = parametrosServicio.tieneBasura(codigo);
+
+            if (ba) {
+                aPagar = ((valPredio.multiply(c5)).add(c2)).add(c3).add(c6).add((valPredio.multiply(c1)).multiply(c5)).add(basura);
+                // Actualiza otros valores calculados
+                this.predio.setValCem(c3);
+                this.predio.setValBomberos((valPredio.multiply(c1)).multiply(c5));
+                this.predio.setValEmision(c2);
+                this.predio.setValBasura(basura);
+                this.predio.setValAmbientales(c6);
+                this.predio.setValImpuesto(valPredio.add(c5));
+                this.predio.setValImppredial(aPagar);
+                //catastroServicio.actualizarPredio(this.predio, sesionBean.obtenerSesionDto());
+
+            }
+
         }
-        
-        //Factor de depreciación de inmueble por piso y depreciacion
-        vdepre = parametrosServicio.obtenerVDEPRE(edad, estado);
-                
-        
-
-        //Detalle de construccion Estructura
-        vestruc = parametrosServicio.obtenerDetalleContruccion(2090, "ESTRUCTURA");
-        v1 = parametrosServicio.obtenerValorPorCodigo("210101");
-        //Destalle de construccion Acabados
-        vcabado = parametrosServicio.obtenerDetalleContruccion(2090, "ACABADOS");
-        v2 = parametrosServicio.obtenerValorPorCodigo("210102");
-        //Detalle de construccion Extras
-        vextra = parametrosServicio.obtenerDetalleContruccion(2090, "EXTRAS");
-        v3 = parametrosServicio.obtenerValorPorCodigo("210103");
 
     }
 

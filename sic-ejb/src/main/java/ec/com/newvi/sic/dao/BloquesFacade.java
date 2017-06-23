@@ -32,5 +32,13 @@ public class BloquesFacade extends AbstractFacade<Bloques, Integer> implements S
         //@return listado de bloques
         return q.getResultList();        
     } 
+    
+    public List<Bloques> buscarBloquesPorCodigoCatastral(Integer codCatastral){
+        // Busca un listado de bloques
+        Query q = this.getEntityManager().createQuery("SELECT bloque FROM Bloques bloque where bloque.codCatastral = :CODCATASTRAL");
+        q.setParameter("CODCATASTRAL", codCatastral);
+        //@return listado de bloques
+        return q.getResultList();        
+    } 
 
 }

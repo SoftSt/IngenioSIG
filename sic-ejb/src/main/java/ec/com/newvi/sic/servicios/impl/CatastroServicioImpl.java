@@ -182,6 +182,11 @@ public class CatastroServicioImpl implements CatastroServicio {
         return actualizarBloque(bloque, sesion);
     }
 
+    @Override
+    public List<Bloques> buscarBloquesPorCodigoCatastral(Integer codCatastral) {
+        return bloquesFacade.buscarBloquesPorCodigoCatastral(codCatastral);
+    }
+
     /*------------------------------------------------------------Pisos------------------------------------------------------------*/
     @Override
     public String generarNuevoPiso(Pisos nuevoPiso, SesionDto sesion) throws NewviExcepcion {

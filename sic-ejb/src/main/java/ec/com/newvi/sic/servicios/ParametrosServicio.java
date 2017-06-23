@@ -7,6 +7,7 @@ package ec.com.newvi.sic.servicios;
 
 import ec.com.newvi.sic.dto.DominioDto;
 import ec.com.newvi.sic.dto.SesionDto;
+import ec.com.newvi.sic.modelo.ConstantesImpuestos;
 import ec.com.newvi.sic.modelo.Dominios;
 import ec.com.newvi.sic.util.excepciones.NewviExcepcion;
 import java.math.BigDecimal;
@@ -125,7 +126,7 @@ public interface ParametrosServicio {
      * @param domiCodigo codigo por el cual se buscara el valor
      * @return valor de VTERRENO
      */
-    public BigDecimal obtenerVTERRENO(String domiCodigo);
+    public BigDecimal obtenerValorPorCodigoCalculo(String domiCodigo, String domiCalculo);
     
     /**
      * Obtiene el valor de un coeficiente por codigo
@@ -133,6 +134,19 @@ public interface ParametrosServicio {
      * @return coefiente dominio
      */
     public BigDecimal obtenerValorPorCodigo(String domiCodigo);
+    /**
+     * Indica si tiene basura
+     * @param codCatastral codigo del predio
+     * @return true si si tiene basura
+     */
+    public Boolean tieneBasura(Integer codCatastral);
     
+    /*-----------------------------------------------------------------------Constantes Impuestos------------------------------------------------------------------------------*/
+    /**
+     * Devuelve una lista de constantes de impuestos
+     * @param stsTipo el tipo por el cual se buscará
+     * @return lista de constantes impuestos
+     */
+    public List<ConstantesImpuestos> obtenerConstantesImpuestosPorTipo(String stsTipo);
     
 }
