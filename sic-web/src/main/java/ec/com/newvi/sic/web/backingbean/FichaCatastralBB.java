@@ -5,6 +5,7 @@
  */
 package ec.com.newvi.sic.web.backingbean;
 
+import ec.com.newvi.sic.dto.AvaluoDto;
 import ec.com.newvi.sic.dto.DominioDto;
 import ec.com.newvi.sic.dto.FichaCatastralDto;
 import ec.com.newvi.sic.dto.SesionDto;
@@ -59,6 +60,7 @@ import org.primefaces.model.TreeNode;
 public class FichaCatastralBB extends AdminFichaCatastralBB {
 
     private Predios predio;
+    private Predios predioAvaluo;
     private Propiedad propiedadActual;
     private Propiedad propiedad;
     private List<FichaCatastralDto> listaFichas;
@@ -390,6 +392,7 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
 
     private void seleccionarPredioPorCodigo(Integer idPredio) throws NewviExcepcion {
         this.predio = catastroServicio.seleccionarPredio(idPredio);
+        //this.predio.setCodManzana(this.predio.getCodManzana().trim());
         for (FichaCatastralDto fichasCatrastrales : listaFichas) {
             if (fichasCatrastrales.getPredio().getCodCatastral().equals(idPredio)) {
                 propiedad = fichasCatrastrales.getPropiedad();
@@ -772,6 +775,8 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
 
         edad = new BigDecimal(0);
 
+        predioAvaluo = catastroServicio.seleccionarPredio(codigo);
+
         // Calculo del fondo relativo COFF
         coff = obtenerValoracionFondoRelativo(area, frente);
         // Coeficiente de Topografía COT
@@ -793,8 +798,9 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
 
         valor_terreno = (fa1.multiply(area)).multiply(vterreno);
 
-        //this.predio.setValTerreno(valor_terreno);
-        //actualizarPredio();
+        predioAvaluo.setValTerreno(valor_terreno);
+        catastroServicio.actualizarPredio(predioAvaluo, sesionBean.obtenerSesionDto());
+
         List<Bloques> bloques = catastroServicio.buscarBloquesPorCodigoCatastral(codigo);
 
         for (Bloques bloque : bloques) {
@@ -837,7 +843,7 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
                 pisoAvaluo.setValMetro2(((vestruc.multiply(v1)).add(vcabado.multiply(v2)).add(vextra.multiply(v3))).multiply(vdepre));
                 pisoAvaluo.setValPiso(cosB);
 
-                //catastroServicio.actualizarPiso(pisoAvaluo, sesionBean.obtenerSesionDto());
+                catastroServicio.actualizarPiso(pisoAvaluo, sesionBean.obtenerSesionDto());
             }
 
             // Actualiza Valores por Bloque
@@ -846,49 +852,65 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
             bloqueAvaluo.setValAreabloque(areaB);
             bloqueAvaluo.setValBloque(cosB);
 
-            //catastroServicio.actualizarBloque(bloqueAvaluo, sesionBean.obtenerSesionDto());
-            // Actualiza Valoración de Terreno y Contrucción
-            this.predio.setValEdifica(cost);
-            this.predio.setValAreaConstruccion(areaB);
+            catastroServicio.actualizarBloque(bloqueAvaluo, sesionBean.obtenerSesionDto());
+        }
+        //Actualiza Valoración de Terreno y Contrucción
+        predioAvaluo.setValEdifica(cost);
+        predioAvaluo.setValAreaConstruccion(areaB);
 
-            valPredio = valor_terreno.add(cost);
+        valPredio = valor_terreno.add(cost);
 
-            this.predio.setValPredio(valPredio);
+        predioAvaluo.setValPredio(valPredio);
+        catastroServicio.actualizarPredio(predioAvaluo, sesionBean.obtenerSesionDto());
 
-            //catastroServicio.actualizarPredio(this.predio, sesionBean.obtenerSesionDto());
-            // Constantes catastro urbano
-            List<ConstantesImpuestos> constantesImpuestos = parametrosServicio.obtenerConstantesImpuestosPorTipo("URBANO");
+        // Constantes catastro urbano
+        List<ConstantesImpuestos> constantesImpuestos = parametrosServicio.obtenerConstantesImpuestosPorTipo("URBANO");
 
-            for (ConstantesImpuestos constantesImpuesto : constantesImpuestos) {
-                c1 = constantesImpuesto.getValBomberos();
-                c2 = constantesImpuesto.getValServiciosadministrativos();
-                c3 = constantesImpuesto.getValCem();
-                c4 = constantesImpuesto.getValBasura();
-                c5 = constantesImpuesto.getValTasaaplicada();
-                c6 = constantesImpuesto.getValAmbientales();
-            }
+        for (ConstantesImpuestos constantesImpuesto : constantesImpuestos) {
+            c1 = constantesImpuesto.getValBomberos();
+            c2 = constantesImpuesto.getValServiciosadministrativos();
+            c3 = constantesImpuesto.getValCem();
+            c4 = constantesImpuesto.getValBasura();
+            c5 = constantesImpuesto.getValTasaaplicada();
+            c6 = constantesImpuesto.getValAmbientales();
+        }
 
-            // Ubica Valor recoleccion de basura segun Zona mirar domi_calculo = TASA RECOLECCIÓN DE BASURA            
-            consulta = "60" + zona;
-            basura = parametrosServicio.obtenerValorPorCodigoCalculo(consulta, "TASA RECOLECCIÓN DE BASURA");
-            ba = parametrosServicio.tieneBasura(codigo);
+        // Ubica Valor recoleccion de basura segun Zona mirar domi_calculo = TASA RECOLECCIÓN DE BASURA            
+        consulta = "60" + zona;
+        basura = parametrosServicio.obtenerValorPorCodigoCalculo(consulta, "TASA RECOLECCIÓN DE BASURA");
+        ba = parametrosServicio.tieneBasura(codigo);
 
-            if (ba) {
-                aPagar = ((valPredio.multiply(c5)).add(c2)).add(c3).add(c6).add((valPredio.multiply(c1)).multiply(c5)).add(basura);
-                // Actualiza otros valores calculados
-                this.predio.setValCem(c3);
-                this.predio.setValBomberos((valPredio.multiply(c1)).multiply(c5));
-                this.predio.setValEmision(c2);
-                this.predio.setValBasura(basura);
-                this.predio.setValAmbientales(c6);
-                this.predio.setValImpuesto(valPredio.add(c5));
-                this.predio.setValImppredial(aPagar);
-                //catastroServicio.actualizarPredio(this.predio, sesionBean.obtenerSesionDto());
-
-            }
+        if (ba) {
+            aPagar = ((valPredio.multiply(c5)).add(c2)).add(c3).add(c6).add((valPredio.multiply(c1)).multiply(c5)).add(basura);
+            // Actualiza otros valores calculados
+            predioAvaluo.setValCem(c3);
+            predioAvaluo.setValBomberos((valPredio.multiply(c1)).multiply(c5));
+            predioAvaluo.setValEmision(c2);
+            predioAvaluo.setValBasura(basura);
+            predioAvaluo.setValAmbientales(c6);
+            predioAvaluo.setValImpuesto(valPredio.add(c5));
+            predioAvaluo.setValImppredial(aPagar);
+            catastroServicio.actualizarPredio(predioAvaluo, sesionBean.obtenerSesionDto());
 
         }
 
+    }
+    
+    
+    public void generarArbolAvaluo(){
+        AvaluoDto raiz = new AvaluoDto();
+         List<AvaluoDto> hijos = new ArrayList<>();
+        
+        
+        AvaluoDto area = new AvaluoDto();
+        area.setDescripcion("Area predio");
+        area.setValor(this.predio.getValAreaConstruccion());
+        
+        hijos.add(area);
+        
+        raiz.setHijos(hijos);
+        
+        
     }
 
 }

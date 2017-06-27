@@ -25,7 +25,7 @@ public class ConstantesImpuestosFacade extends AbstractFacade<ConstantesImpuesto
     }
     
     public List<ConstantesImpuestos> obtenerConstantesImpuestosPorTipo(String stsTipo){
-        Query q = this.getEntityManager().createQuery("SELECT constantes FROM ConstantesImpuestos constantes where constantes.stsTipo :TIPO");
+        Query q = this.getEntityManager().createQuery("SELECT constantes FROM ConstantesImpuestos constantes where constantes.stsTipo = :TIPO");
         q.setParameter("TIPO", stsTipo);
         //@return listado de Constantes Impuestos
         return q.getResultList();

@@ -175,6 +175,12 @@ public interface CatastroServicio {
      * @return Piso
      */
     public Object[] obtenerDatosPisoPorBloque(Integer codBloque);
+    /**
+     * Obtiene el listado de pisos por bloque
+     * @param codBloques codigo del bloque
+     * @return Lista de pisos
+     */
+    public Pisos buscarPisosPorCodigoBloque(Integer codBloques);
     
         /*------------------------------------------------------------PisoDetalle------------------------------------------------------------*/
     /**

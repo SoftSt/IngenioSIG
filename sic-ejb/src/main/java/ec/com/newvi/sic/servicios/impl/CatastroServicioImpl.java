@@ -91,6 +91,8 @@ public class CatastroServicioImpl implements CatastroServicio {
         predio.setAudModUsu(sesion.getUsuarioRegistrado().getUsuPalabraclave().trim());
         Date fechaModificacion = Calendar.getInstance().getTime();
         predio.setAudModFec(fechaModificacion);
+        
+        predio.setCodManzana(predio.getCodManzana().trim()); 
 
         prediosFacade.edit(predio);
         // Si todo marcha bien enviar nombre de la predio
@@ -255,6 +257,10 @@ public class CatastroServicioImpl implements CatastroServicio {
     @Override
     public Object[] obtenerDatosPisoPorBloque(Integer codBloque) {
         return pisosFacade.obtenerDatosPisoPorBloque(codBloque);
+    }
+    @Override
+    public Pisos buscarPisosPorCodigoBloque(Integer codBloques){
+        return pisosFacade.buscarPisosPorCodigoBloque(codBloques);
     }
 
     /*------------------------------------------------------------PisosDetalle------------------------------------------------------------*/
