@@ -11,20 +11,27 @@ import ec.com.newvi.sic.dao.PisosDetalleFacade;
 import ec.com.newvi.sic.dao.PisosFacade;
 import ec.com.newvi.sic.dao.PrediosFacade;
 import ec.com.newvi.sic.dao.TerrenoFacade;
+import ec.com.newvi.sic.dto.AvaluoDto;
 import ec.com.newvi.sic.dto.SesionDto;
 import ec.com.newvi.sic.enums.EnumEstadoRegistro;
 import ec.com.newvi.sic.enums.EnumNewviExcepciones;
 import ec.com.newvi.sic.modelo.Bloques;
+import ec.com.newvi.sic.modelo.ConstantesImpuestos;
 import ec.com.newvi.sic.modelo.Fotos;
 import ec.com.newvi.sic.modelo.PisoDetalle;
 import ec.com.newvi.sic.modelo.Pisos;
 import ec.com.newvi.sic.modelo.Predios;
 import ec.com.newvi.sic.modelo.Terreno;
 import ec.com.newvi.sic.servicios.CatastroServicio;
+import ec.com.newvi.sic.servicios.ParametrosServicio;
 import ec.com.newvi.sic.util.ComunUtil;
 import ec.com.newvi.sic.util.excepciones.NewviExcepcion;
 import ec.com.newvi.sic.util.logs.LoggerNewvi;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import javax.annotation.security.PermitAll;
@@ -51,6 +58,8 @@ public class CatastroServicioImpl implements CatastroServicio {
     FotosFacade fotosFacade;
     @EJB
     PisosDetalleFacade pisosDetalleFacade;
+    @EJB
+    ParametrosServicio parametrosServicio;
 
     /*------------------------------------------------------------Predios------------------------------------------------------------*/
     @Override
@@ -355,4 +364,198 @@ public class CatastroServicioImpl implements CatastroServicio {
     public List<Fotos> consultarFotosPorPredio(int codCatastral) {
         return fotosFacade.buscarFotosPorPredio(codCatastral);
     }
+    
+    @Override
+    public List<AvaluoDto> obtenerAvaluoPredio(Predios predio, SesionDto sesion) throws NewviExcepcion {
+        BigDecimal coff, cot, cofo, cubi, cero, fa1, div, vestruc, vcabado, vextra, areapiso, edad, vdepre, vterreno, area, frente, v1, v2, v3, valor_terreno, cosB, areaB, cost, valPredio, c1, c2, c3, c4, c5, c6, basura, aPagar;
+        Object[] objetoPiso;
+        Integer codigo, codigo_piso, reposicion, codigo_bloque;
+        String nombrePiso, estado, zona, sector, consulta;
+        Boolean ba;
+
+        codigo = predio.getCodCatastral();
+        fa1 = new BigDecimal(0);
+        div = new BigDecimal(5);
+        frente = predio.getValAreaFrente();
+        area = predio.getValAreaFondo();
+        cosB = new BigDecimal(0);
+        areaB = new BigDecimal(0);
+        cost = new BigDecimal(0);
+
+        List<AvaluoDto> nodo = new ArrayList<>();
+        List<AvaluoDto> listaCaracteristicasPisosDto;
+        List<AvaluoDto> listaPisosDto;
+
+        c1 = new BigDecimal(0);
+        c2 = new BigDecimal(0);
+        c3 = new BigDecimal(0);
+        c4 = new BigDecimal(0);
+        c5 = new BigDecimal(0);
+        c6 = new BigDecimal(0);
+
+        aPagar = BigDecimal.ZERO;
+
+        nombrePiso = "";
+        estado = "";
+        zona = predio.getCodZona();
+        sector = predio.getCodSector();
+
+        edad = BigDecimal.ZERO;
+
+        // Calculo del fondo relativo COFF
+        coff = obtenerValoracionFondoRelativo(area, frente);
+        // Coeficiente de Topografía COT
+        cot = parametrosServicio.obtenerValor(codigo, "TOPOGRAFIA");
+        insertarElementosArbolAvaluo("Topografía", cot, null, nodo);
+        // Coeficinte de Erosion
+        cero = parametrosServicio.obtenerValor(codigo, "LOCALIZACION");
+        insertarElementosArbolAvaluo("Erosión", cero, null, nodo);
+        // Coeficinte de forma COFO
+        cofo = parametrosServicio.obtenerValor(codigo, "FORMA");
+        insertarElementosArbolAvaluo("Forma", cofo, null, nodo);
+        // Coeficinte de Ubicacion
+        cubi = parametrosServicio.obtenerValor(codigo, "OCUPACION");
+        insertarElementosArbolAvaluo("Ubicación", cubi, null, nodo);
+
+        fa1 = (fa1.add(coff).add(cot).add(cofo).add(cero).add(cubi)).divide(div, 4, RoundingMode.CEILING);
+        insertarElementosArbolAvaluo("Promedio de factores", fa1, null, nodo);
+
+        // CALCULO DEL PRECIO BASE PARA EL TERRENO
+        // SE TOMA EN CUENTA UNA VALORACION POR LAS ZONAS y SECTORES DEL MUNICIPIO.
+        consulta = "20" + zona + sector;
+
+        vterreno = parametrosServicio.obtenerValorPorCodigoCalculo(consulta, "ZONAS VALORADAS M2");
+        insertarElementosArbolAvaluo("Precio base en M2 en la zona " + zona + " sector " + sector, vterreno, null, nodo);
+
+        valor_terreno = (fa1.multiply(area)).multiply(vterreno);
+
+        predio.setValTerreno(valor_terreno);
+        actualizarPredio(predio, sesion);
+
+        for (Bloques bloque : predio.getBloques()) {
+
+            listaCaracteristicasPisosDto = new ArrayList<>();
+            listaPisosDto = new ArrayList<>();
+
+            codigo_bloque = bloque.getCodBloques();
+
+            for (Pisos piso : bloque.getPisosCollection()) {
+
+                codigo_piso = piso.getCodPisos();
+                nombrePiso = piso.getNomPiso();
+                areapiso = piso.getValAreapiso();
+                insertarElementosArbolAvaluo("Area", areapiso, null, listaCaracteristicasPisosDto);
+
+                edad = new BigDecimal(piso.obtenerEdadPiso());
+                insertarElementosArbolAvaluo("Edad", edad, null, listaCaracteristicasPisosDto);
+
+                reposicion = piso.getValAnioreparacion();
+                estado = piso.getStsEstado();
+
+                //Factor de depreciación de inmueble por piso y depreciacion
+                vdepre = parametrosServicio.obtenerVDEPRE(edad, estado);
+
+                //Detalle de construccion Estructura
+                vestruc = parametrosServicio.obtenerDetalleContruccion(codigo_piso, "ESTRUCTURA");
+                v1 = parametrosServicio.obtenerValorPorCodigo("210101");
+                //Destalle de construccion Acabados
+                vcabado = parametrosServicio.obtenerDetalleContruccion(codigo_piso, "ACABADOS");
+                v2 = parametrosServicio.obtenerValorPorCodigo("210102");
+                //Detalle de construccion Extras
+                vextra = parametrosServicio.obtenerDetalleContruccion(codigo_piso, "EXTRAS");
+                v3 = parametrosServicio.obtenerValorPorCodigo("210103");
+
+                // Factos de costos del pios es igual a la suma de los factores por el área menos la depreciación del bien por edad y estado
+                cosB = (vestruc.multiply(v1)).add(vcabado.multiply(v2)).add(vextra.multiply(v3)).subtract(((vestruc.multiply(v1)).add(vcabado.multiply(v2)).add(vextra.multiply(v3))).multiply(vdepre));
+                areaB = areaB.add(areapiso);
+                cost = cost.add(cosB);
+
+                // Ubica valor de calculos en la tabla de pisos
+                piso = seleccionarPiso(codigo_piso);
+
+                piso.setValFactordepreciacion(vdepre);
+                piso.setValSumafactores(vestruc.add(vcabado).add(vextra));
+                piso.setValConstante(fa1);
+                piso.setValMetro2(((vestruc.multiply(v1)).add(vcabado.multiply(v2)).add(vextra.multiply(v3))).multiply(vdepre));
+                piso.setValPiso(cosB);
+
+                actualizarPiso(piso, sesion);
+
+                insertarElementosArbolAvaluo("Piso: " + nombrePiso, null, listaCaracteristicasPisosDto, listaPisosDto);
+            }
+
+            // Actualiza Valores por Bloque
+            bloque = seleccionarBloque(codigo_bloque);
+
+            bloque.setValAreabloque(areaB);
+            bloque.setValBloque(cosB);
+
+            actualizarBloque(bloque, sesion);
+
+            insertarElementosArbolAvaluo("Bloque: " + bloque.getNomBloque(), null, listaPisosDto, nodo);
+        }
+        //Actualiza Valoración de Terreno y Contrucción
+        predio.setValEdifica(cost);
+        predio.setValAreaConstruccion(areaB);
+
+        valPredio = valor_terreno.add(cost);
+
+        predio.setValPredio(valPredio);
+        actualizarPredio(predio, sesion);
+
+        // Constantes catastro urbano
+        List<ConstantesImpuestos> constantesImpuestos = parametrosServicio.obtenerConstantesImpuestosPorTipo("URBANO");
+
+        for (ConstantesImpuestos constantesImpuesto : constantesImpuestos) {
+            c1 = constantesImpuesto.getValBomberos();
+            c2 = constantesImpuesto.getValServiciosadministrativos();
+            c3 = constantesImpuesto.getValCem();
+            c4 = constantesImpuesto.getValBasura();
+            c5 = constantesImpuesto.getValTasaaplicada();
+            c6 = constantesImpuesto.getValAmbientales();
+        }
+
+        // Ubica Valor recoleccion de basura segun Zona mirar domi_calculo = TASA RECOLECCIÓN DE BASURA            
+        consulta = "60" + zona;
+        basura = parametrosServicio.obtenerValorPorCodigoCalculo(consulta, "TASA RECOLECCIÓN DE BASURA");
+        ba = parametrosServicio.tieneBasura(codigo);
+
+        if (ba) {
+            aPagar = ((valPredio.multiply(c5)).add(c2)).add(c3).add(c6).add((valPredio.multiply(c1)).multiply(c5)).add(basura);
+            // Actualiza otros valores calculados
+            predio.setValCem(c3);
+            predio.setValBomberos((valPredio.multiply(c1)).multiply(c5));
+            predio.setValEmision(c2);
+            predio.setValBasura(basura);
+            predio.setValAmbientales(c6);
+            predio.setValImpuesto(valPredio.add(c5));
+            predio.setValImppredial(aPagar);
+            actualizarPredio(predio, sesion);
+
+        }
+
+        //insertarElementosArbolAvaluo("Raiz", null, nodo, this.raiz, null);
+        return nodo;
+    }
+    
+    private BigDecimal obtenerValoracionFondoRelativo(BigDecimal area, BigDecimal frente) {
+        
+        BigDecimal v1, v2;
+        v1 = area.divide(frente, 4, RoundingMode.CEILING);
+        v2 = frente.divide(v1, 4, RoundingMode.CEILING);
+
+        return parametrosServicio.obtenerCOFF(v2, "FACTOR FRENTE FONDO");
+
+    }
+
+    private void insertarElementosArbolAvaluo(String descripcion, BigDecimal valor, List<AvaluoDto> hijos, List<AvaluoDto> raiz) {
+        AvaluoDto nodoRaiz = new AvaluoDto();
+        
+        nodoRaiz.setDescripcion(descripcion.trim());
+        nodoRaiz.setValor(valor);
+        nodoRaiz.setHijos(hijos);
+        //nodoRaiz.setValor2("prueba");
+        raiz.add(nodoRaiz);
+    }
+    
 }

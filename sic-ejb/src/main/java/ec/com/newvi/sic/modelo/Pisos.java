@@ -9,6 +9,7 @@ import ec.com.newvi.sic.enums.EnumEstadoRegistro;
 import ec.com.newvi.sic.util.ComunUtil;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import javax.persistence.Basic;
@@ -319,5 +320,10 @@ public class Pisos implements Serializable {
         }
         return retorno;
     }
+    
+    public Integer obtenerEdadPiso() {
+        Calendar cal = Calendar.getInstance();
+        return cal.get(Calendar.YEAR) - (this.getValAnioconstruccion() + 1);
+    } 
     
 }

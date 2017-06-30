@@ -5,6 +5,7 @@
  */
 package ec.com.newvi.sic.servicios;
 
+import ec.com.newvi.sic.dto.AvaluoDto;
 import ec.com.newvi.sic.dto.SesionDto;
 import ec.com.newvi.sic.modelo.Bloques;
 import ec.com.newvi.sic.modelo.Fotos;
@@ -250,4 +251,14 @@ public interface CatastroServicio {
     * @return lista de fotos del predio
     */
     public List<Fotos> consultarFotosPorPredio(int codCatastral);
+        /*------------------------------------------------------------Avalúos------------------------------------------------------------*/
+    
+    /**
+     * Devuelve el avalúo del predio, dado un predio.
+     * @param predio Predio a calcular el avalúo
+     * @param sesion Usuario que genera el avalúo
+     * @return Listado de tipo AvaluoDto que tiene los valores jerarquizados.
+     * @throws NewviExcepcion
+     */
+    public List<AvaluoDto> obtenerAvaluoPredio(Predios predio, SesionDto sesion) throws NewviExcepcion;
 }
