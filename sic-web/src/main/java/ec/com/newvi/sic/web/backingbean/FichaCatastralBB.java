@@ -786,7 +786,7 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
         raiz.add(nodoRaiz);
     }
 
-    public void calcularAvaluo() throws NewviExcepcion {
+    /*public void calcularAvaluo() throws NewviExcepcion {
         BigDecimal coff, cot, cofo, cubi, cero, fa1, div, vestruc, vcabado, vextra, areapiso, edad, vdepre, vterreno, area, frente, v1, v2, v3, valor_terreno, cosB, areaB, cost, valPredio, c1, c2, c3, c4, c5, c6, basura, aPagar;
         Object[] objetoPiso;
         Integer codigo, codigo_piso, reposicion, codigo_bloque;
@@ -802,7 +802,7 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
         areaB = new BigDecimal(0);
         cost = new BigDecimal(0);
 
-        raiz = new AvaluoDto();
+        //raiz = new AvaluoDto();
         nodo = new ArrayList<>();
         List<AvaluoDto> listaCaracteristicasPisosDto;
         List<AvaluoDto> listaPisosDto;
@@ -851,6 +851,8 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
         insertarElementosArbolAvaluo("Precio base en M2 en la zona " + zona + " sector " + sector, vterreno, null, this.nodo);
 
         valor_terreno = (fa1.multiply(area)).multiply(vterreno);
+        
+        insertarElementosArbolAvaluo(sector, aPagar, nodo, nodo);
 
         predioAvaluo.setValTerreno(valor_terreno);
         catastroServicio.actualizarPredio(predioAvaluo, sesionBean.obtenerSesionDto());
@@ -963,6 +965,11 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
         //insertarElementosArbolAvaluo("Raiz", null, this.nodo, this.raiz, null);
         generarArbolAvaluo();
 
+    }*/
+    
+    public void calcularAvaluo() throws NewviExcepcion{
+        this.nodo= catastroServicio.obtenerAvaluoPredio(this.predio, sesionBean.obtenerSesionDto());
+        generarArbolAvaluo();
     }
 
 }

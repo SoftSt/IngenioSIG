@@ -21,9 +21,8 @@ public class AvaluoDto {
     
 
     private String descripcion;
-    private BigDecimal valor;
+    private Object valor;
     private List<AvaluoDto> hijos;
-    private Object valor2;
 
     public List<AvaluoDto> getHijos() {
         return hijos;
@@ -41,20 +40,12 @@ public class AvaluoDto {
         this.descripcion = descripcion;
     }
 
-    public BigDecimal getValor() {
+    public Object getValor() {
         return valor;
     }
 
-    public void setValor(BigDecimal valor) {
+    public void setValor(Object valor) {
         this.valor = valor;
-    }
-
-    public Object getValor2() {
-        return valor2;
-    }
-
-    public void setValor2(Object valor2) {
-        this.valor2 = valor2;
     }
 
     public AvaluoDto() {

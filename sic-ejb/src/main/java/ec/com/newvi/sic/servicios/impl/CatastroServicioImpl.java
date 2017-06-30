@@ -374,24 +374,24 @@ public class CatastroServicioImpl implements CatastroServicio {
         Boolean ba;
 
         codigo = predio.getCodCatastral();
-        fa1 = new BigDecimal(0);
+        fa1 = BigDecimal.ZERO;
         div = new BigDecimal(5);
         frente = predio.getValAreaFrente();
         area = predio.getValAreaFondo();
-        cosB = new BigDecimal(0);
-        areaB = new BigDecimal(0);
-        cost = new BigDecimal(0);
+        cosB = BigDecimal.ZERO;
+        areaB = BigDecimal.ZERO;
+        cost = BigDecimal.ZERO;
 
         List<AvaluoDto> nodo = new ArrayList<>();
         List<AvaluoDto> listaCaracteristicasPisosDto;
         List<AvaluoDto> listaPisosDto;
 
-        c1 = new BigDecimal(0);
-        c2 = new BigDecimal(0);
-        c3 = new BigDecimal(0);
-        c4 = new BigDecimal(0);
-        c5 = new BigDecimal(0);
-        c6 = new BigDecimal(0);
+        c1 = BigDecimal.ZERO;
+        c2 = BigDecimal.ZERO;
+        c3 = BigDecimal.ZERO;
+        c4 = BigDecimal.ZERO;
+        c5 = BigDecimal.ZERO;
+        c6 = BigDecimal.ZERO;
 
         aPagar = BigDecimal.ZERO;
 
@@ -443,17 +443,21 @@ public class CatastroServicioImpl implements CatastroServicio {
 
                 codigo_piso = piso.getCodPisos();
                 nombrePiso = piso.getNomPiso();
+                
+                edad = new BigDecimal(piso.obtenerEdadPiso());
+                insertarElementosArbolAvaluo("Edad", edad, null, listaCaracteristicasPisosDto);
+                
+                estado = piso.getStsEstado();
+                insertarElementosArbolAvaluo("Estado", estado, null, listaCaracteristicasPisosDto);
+                
                 areapiso = piso.getValAreapiso();
                 insertarElementosArbolAvaluo("Area", areapiso, null, listaCaracteristicasPisosDto);
 
-                edad = new BigDecimal(piso.obtenerEdadPiso());
-                insertarElementosArbolAvaluo("Edad", edad, null, listaCaracteristicasPisosDto);
-
-                reposicion = piso.getValAnioreparacion();
-                estado = piso.getStsEstado();
+                //reposicion = piso.getValAnioreparacion();
 
                 //Factor de depreciación de inmueble por piso y depreciacion
                 vdepre = parametrosServicio.obtenerVDEPRE(edad, estado);
+                insertarElementosArbolAvaluo("Factor Depresiación", vdepre, null, listaCaracteristicasPisosDto);
 
                 //Detalle de construccion Estructura
                 vestruc = parametrosServicio.obtenerDetalleContruccion(codigo_piso, "ESTRUCTURA");
@@ -548,7 +552,7 @@ public class CatastroServicioImpl implements CatastroServicio {
 
     }
 
-    private void insertarElementosArbolAvaluo(String descripcion, BigDecimal valor, List<AvaluoDto> hijos, List<AvaluoDto> raiz) {
+    private void insertarElementosArbolAvaluo(String descripcion, Object valor, List<AvaluoDto> hijos, List<AvaluoDto> raiz) {
         AvaluoDto nodoRaiz = new AvaluoDto();
         
         nodoRaiz.setDescripcion(descripcion.trim());
