@@ -76,7 +76,7 @@ public class DominiosFacade extends AbstractFacade<Dominios, Integer> implements
     //TODO Crear una variable entorno para cambiar el nombre de la tabla a consultar
 
     public BigDecimal obtenerCOFF(BigDecimal dominio, String domiCalculo) {
-
+        BigDecimal resultado = new BigDecimal(0.0);
         Query q = this.getEntityManager().createNativeQuery(""
                 + "select d.domi_coefic "
                 + "from cat_cat_dominios d "
@@ -89,13 +89,18 @@ public class DominiosFacade extends AbstractFacade<Dominios, Integer> implements
         q.setParameter(4, dominio);
         q.setParameter(5, domiCalculo);
 
-        //return Double.parseDouble((q.getResultList().toString()).substring(1, 7));
-        return new BigDecimal((q.getResultList().toString()).substring(1, 7));
+        try {
+            resultado = new BigDecimal((q.getResultList().toString()).substring(1, 7));
+        } catch (Exception e) {
+        }
+
+        return resultado;
 
     }
 
     public BigDecimal obtenerVDEPRE(BigDecimal dominio, String domiDescripcion) {
         String domiCalculo = "ESTADO DE REPARACION";
+        BigDecimal resultado = new BigDecimal(0.0);
 
         Query q = this.getEntityManager().createNativeQuery(""
                 + "select d.domi_coefic "
@@ -111,13 +116,17 @@ public class DominiosFacade extends AbstractFacade<Dominios, Integer> implements
         q.setParameter(5, domiDescripcion);
         q.setParameter(6, domiCalculo);
 
-        //return Double.parseDouble((q.getResultList().toString()).substring(1, 7));
-        return new BigDecimal((q.getResultList().toString()).substring(1, 7));
+        try {
+            resultado = new BigDecimal((q.getResultList().toString()).substring(1, 7));
+        } catch (Exception e) {
+        }
+
+        return resultado;
 
     }
 
     public BigDecimal obtenerValor(Integer idPredio, String domiCalculo) {
-
+        BigDecimal resultado = new BigDecimal(0.0);
         Query q = this.getEntityManager().createNativeQuery(""
                 + "select sum(B.domi_coefic)"
                 + "from cat_cat_dominios B, cat_cat_terreno A "
@@ -128,8 +137,12 @@ public class DominiosFacade extends AbstractFacade<Dominios, Integer> implements
         q.setParameter(1, domiCalculo);
         q.setParameter(2, idPredio);
 
-        return new BigDecimal((q.getResultList().toString()).substring(1, 7));
-        //return Double.parseDouble((q.getResultList().toString()).substring(1, 7));
+        try {
+            resultado = new BigDecimal((q.getResultList().toString()).substring(1, 7));
+        } catch (Exception e) {
+        }
+
+        return resultado;
     }
 
     public BigDecimal obtenerDetalleContruccion(Integer codPisos, String domiCalculo) {
@@ -160,7 +173,7 @@ public class DominiosFacade extends AbstractFacade<Dominios, Integer> implements
     /*Select domi_coefic as valor from cat_cat_dominios  where rtrim(domi_codigo) = '200102' and rtrim(domi_calculo) = 'ZONAS VALORADAS M2'*/
     public BigDecimal obtenerValorPorCodigoCalculo(String domiCodigo, String domiCalculo) {
         //String domiCalculo = "ZONAS VALORADAS M2";
-
+        BigDecimal resultado = new BigDecimal(0.0);
         Query q = this.getEntityManager().createNativeQuery(""
                 + "select d.domi_coefic "
                 + "from cat_cat_dominios d "
@@ -169,20 +182,29 @@ public class DominiosFacade extends AbstractFacade<Dominios, Integer> implements
         q.setParameter(1, domiCodigo);
         q.setParameter(2, domiCalculo);
 
-        //return Double.parseDouble((q.getResultList().toString()).substring(1, 7));
-        return new BigDecimal((q.getResultList().toString()).substring(1, 7));
+        try {
+            resultado = new BigDecimal((q.getResultList().toString()).substring(1, 7));
+        } catch (Exception e) {
+        }
+
+        return resultado;
 
     }
 
     public BigDecimal obtenerValorPorCodigo(String domiCodigo) {
-
+        BigDecimal resultado = new BigDecimal(0.0);
         Query q = this.getEntityManager().createNativeQuery(""
                 + "select d.domi_coefic "
                 + "from cat_cat_dominios d "
                 + "where rtrim(d.domi_codigo) = ? ");
         q.setParameter(1, domiCodigo);
 
-        return new BigDecimal((q.getResultList().toString()).substring(1, 7));
+        try {
+            resultado = new BigDecimal((q.getResultList().toString()).substring(1, 7));
+        } catch (Exception e) {
+        }
+
+        return resultado;
 
     }
 
@@ -197,7 +219,7 @@ public class DominiosFacade extends AbstractFacade<Dominios, Integer> implements
                 + " and cod_catastral = ?");
 
         q.setParameter(1, codCatastral);
-        
+
         try {
             BigDecimal a = new BigDecimal((q.getResultList().toString()).substring(1, 7));
             resultado = true;
