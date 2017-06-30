@@ -100,8 +100,8 @@ public class CatastroServicioImpl implements CatastroServicio {
         predio.setAudModUsu(sesion.getUsuarioRegistrado().getUsuPalabraclave().trim());
         Date fechaModificacion = Calendar.getInstance().getTime();
         predio.setAudModFec(fechaModificacion);
-        
-        predio.setCodManzana(predio.getCodManzana().trim()); 
+
+        predio.setCodManzana(predio.getCodManzana().trim());
 
         prediosFacade.edit(predio);
         // Si todo marcha bien enviar nombre de la predio
@@ -198,6 +198,85 @@ public class CatastroServicioImpl implements CatastroServicio {
         return bloquesFacade.buscarBloquesPorCodigoCatastral(codCatastral);
     }
 
+    @Override
+    public AvaluoDto obtenerAvaluoBloque(Bloques bloque, BigDecimal promedioFactores, SesionDto sesion) throws NewviExcepcion {
+        BigDecimal vestruc, vcabado, vextra, areapiso, edad, vdepre, v1, v2, v3, costoPiso, costoBloque;
+        BigDecimal areaBloque;
+        List<AvaluoDto> listaPisosDto;
+        List<AvaluoDto> listaCaracteristicasPisosDto = new ArrayList<>();
+        listaPisosDto = new ArrayList<>();
+
+        Integer codigo_piso, codigo_bloque;
+        String nombrePiso, estado;
+        
+        nombrePiso = "";
+        estado = "";
+        areaBloque = BigDecimal.ZERO;
+        costoBloque = BigDecimal.ZERO;
+        costoPiso = BigDecimal.ZERO;
+        
+        codigo_bloque = bloque.getCodBloques();
+
+        for (Pisos piso : bloque.getPisosCollection()) {
+
+            codigo_piso = piso.getCodPisos();
+            nombrePiso = piso.getNomPiso();
+
+            edad = new BigDecimal(piso.obtenerEdadPiso());
+            listaCaracteristicasPisosDto.add(generarElementoArbolAvaluo("Edad", edad, null));
+
+            estado = piso.getStsEstado();
+            listaCaracteristicasPisosDto.add(generarElementoArbolAvaluo("Estado", estado, null));
+
+            areapiso = piso.getValAreapiso();
+            listaCaracteristicasPisosDto.add(generarElementoArbolAvaluo("Area", areapiso, null));
+
+            //reposicion = piso.getValAnioreparacion();
+            //Factor de depreciación de inmueble por piso y depreciacion
+            vdepre = parametrosServicio.obtenerVDEPRE(edad, estado);
+            listaCaracteristicasPisosDto.add(generarElementoArbolAvaluo("Factor Depresiación", vdepre, null));
+
+            //Detalle de construccion Estructura
+            vestruc = parametrosServicio.obtenerDetalleContruccion(codigo_piso, "ESTRUCTURA");
+            v1 = parametrosServicio.obtenerValorPorCodigo("210101");
+            //Destalle de construccion Acabados
+            vcabado = parametrosServicio.obtenerDetalleContruccion(codigo_piso, "ACABADOS");
+            v2 = parametrosServicio.obtenerValorPorCodigo("210102");
+            //Detalle de construccion Extras
+            vextra = parametrosServicio.obtenerDetalleContruccion(codigo_piso, "EXTRAS");
+            v3 = parametrosServicio.obtenerValorPorCodigo("210103");
+
+            // Factos de costos del pios es igual a la suma de los factores por el área menos la depreciación del bien por edad y estado
+            costoPiso = (vestruc.multiply(v1)).add(vcabado.multiply(v2)).add(vextra.multiply(v3)).subtract(((vestruc.multiply(v1)).add(vcabado.multiply(v2)).add(vextra.multiply(v3))).multiply(vdepre));
+            areaBloque = areaBloque.add(areapiso);
+            costoBloque = costoBloque.add(costoPiso);
+
+            // Ubica valor de calculos en la tabla de pisos
+            piso = seleccionarPiso(codigo_piso);
+
+            piso.setValFactordepreciacion(vdepre);
+            piso.setValSumafactores(vestruc.add(vcabado).add(vextra));
+            piso.setValConstante(promedioFactores);
+            piso.setValMetro2(((vestruc.multiply(v1)).add(vcabado.multiply(v2)).add(vextra.multiply(v3))).multiply(vdepre));
+            piso.setValPiso(costoPiso);
+
+            actualizarPiso(piso, sesion);
+
+            listaPisosDto.add(generarElementoArbolAvaluo("Piso: " + nombrePiso, null, listaCaracteristicasPisosDto));
+
+        }
+
+        // Actualiza Valores por Bloque
+        bloque = seleccionarBloque(codigo_bloque);
+
+        bloque.setValAreabloque(areaBloque);
+        bloque.setValBloque(costoBloque);
+
+        actualizarBloque(bloque, sesion);
+
+        return generarElementoArbolAvaluo("Bloque: " + bloque.getNomBloque(), null, listaPisosDto);
+    }
+
     /*------------------------------------------------------------Pisos------------------------------------------------------------*/
     @Override
     public String generarNuevoPiso(Pisos nuevoPiso, SesionDto sesion) throws NewviExcepcion {
@@ -267,8 +346,9 @@ public class CatastroServicioImpl implements CatastroServicio {
     public Object[] obtenerDatosPisoPorBloque(Integer codBloque) {
         return pisosFacade.obtenerDatosPisoPorBloque(codBloque);
     }
+
     @Override
-    public Pisos buscarPisosPorCodigoBloque(Integer codBloques){
+    public Pisos buscarPisosPorCodigoBloque(Integer codBloques) {
         return pisosFacade.buscarPisosPorCodigoBloque(codBloques);
     }
 
@@ -364,27 +444,23 @@ public class CatastroServicioImpl implements CatastroServicio {
     public List<Fotos> consultarFotosPorPredio(int codCatastral) {
         return fotosFacade.buscarFotosPorPredio(codCatastral);
     }
-    
+
     @Override
     public List<AvaluoDto> obtenerAvaluoPredio(Predios predio, SesionDto sesion) throws NewviExcepcion {
-        BigDecimal coff, cot, cofo, cubi, cero, fa1, div, vestruc, vcabado, vextra, areapiso, edad, vdepre, vterreno, area, frente, v1, v2, v3, valor_terreno, cosB, areaB, cost, valPredio, c1, c2, c3, c4, c5, c6, basura, aPagar;
-        Object[] objetoPiso;
-        Integer codigo, codigo_piso, reposicion, codigo_bloque;
-        String nombrePiso, estado, zona, sector, consulta;
+        BigDecimal coff, cot, cofo, cubi, cero, promedioFactores, div, vterreno, area, frente, valor_terreno, areaB, costoPredio, valPredio, c1, c2, c3, c4, c5, c6, basura, aPagar;
+        Integer codigo;
+        String zona, sector, consulta;
         Boolean ba;
 
         codigo = predio.getCodCatastral();
-        fa1 = BigDecimal.ZERO;
+        promedioFactores = BigDecimal.ZERO;
         div = new BigDecimal(5);
         frente = predio.getValAreaFrente();
         area = predio.getValAreaFondo();
-        cosB = BigDecimal.ZERO;
         areaB = BigDecimal.ZERO;
-        cost = BigDecimal.ZERO;
+        costoPredio = BigDecimal.ZERO;
 
         List<AvaluoDto> nodo = new ArrayList<>();
-        List<AvaluoDto> listaCaracteristicasPisosDto;
-        List<AvaluoDto> listaPisosDto;
 
         c1 = BigDecimal.ZERO;
         c2 = BigDecimal.ZERO;
@@ -395,114 +471,48 @@ public class CatastroServicioImpl implements CatastroServicio {
 
         aPagar = BigDecimal.ZERO;
 
-        nombrePiso = "";
-        estado = "";
         zona = predio.getCodZona();
         sector = predio.getCodSector();
-
-        edad = BigDecimal.ZERO;
 
         // Calculo del fondo relativo COFF
         coff = obtenerValoracionFondoRelativo(area, frente);
         // Coeficiente de Topografía COT
         cot = parametrosServicio.obtenerValor(codigo, "TOPOGRAFIA");
-        insertarElementosArbolAvaluo("Topografía", cot, null, nodo);
+        nodo.add(generarElementoArbolAvaluo("Topografía", cot, null));
         // Coeficinte de Erosion
         cero = parametrosServicio.obtenerValor(codigo, "LOCALIZACION");
-        insertarElementosArbolAvaluo("Erosión", cero, null, nodo);
+        nodo.add(generarElementoArbolAvaluo("Erosión", cero, null));
         // Coeficinte de forma COFO
         cofo = parametrosServicio.obtenerValor(codigo, "FORMA");
-        insertarElementosArbolAvaluo("Forma", cofo, null, nodo);
+        nodo.add(generarElementoArbolAvaluo("Forma", cofo, null));
         // Coeficinte de Ubicacion
         cubi = parametrosServicio.obtenerValor(codigo, "OCUPACION");
-        insertarElementosArbolAvaluo("Ubicación", cubi, null, nodo);
+        nodo.add(generarElementoArbolAvaluo("Ubicación", cubi, null));
 
-        fa1 = (fa1.add(coff).add(cot).add(cofo).add(cero).add(cubi)).divide(div, 4, RoundingMode.CEILING);
-        insertarElementosArbolAvaluo("Promedio de factores", fa1, null, nodo);
+        promedioFactores = (promedioFactores.add(coff).add(cot).add(cofo).add(cero).add(cubi)).divide(div, 4, RoundingMode.CEILING);
+        nodo.add(generarElementoArbolAvaluo("Promedio de factores", promedioFactores, null));
 
         // CALCULO DEL PRECIO BASE PARA EL TERRENO
         // SE TOMA EN CUENTA UNA VALORACION POR LAS ZONAS y SECTORES DEL MUNICIPIO.
         consulta = "20" + zona + sector;
 
         vterreno = parametrosServicio.obtenerValorPorCodigoCalculo(consulta, "ZONAS VALORADAS M2");
-        insertarElementosArbolAvaluo("Precio base en M2 en la zona " + zona + " sector " + sector, vterreno, null, nodo);
+        nodo.add(generarElementoArbolAvaluo("Precio base en M2 en la zona " + zona + " sector " + sector, vterreno, null));
 
-        valor_terreno = (fa1.multiply(area)).multiply(vterreno);
+        valor_terreno = (promedioFactores.multiply(area)).multiply(vterreno);
 
         predio.setValTerreno(valor_terreno);
         actualizarPredio(predio, sesion);
 
         for (Bloques bloque : predio.getBloques()) {
-
-            listaCaracteristicasPisosDto = new ArrayList<>();
-            listaPisosDto = new ArrayList<>();
-
-            codigo_bloque = bloque.getCodBloques();
-
-            for (Pisos piso : bloque.getPisosCollection()) {
-
-                codigo_piso = piso.getCodPisos();
-                nombrePiso = piso.getNomPiso();
-                
-                edad = new BigDecimal(piso.obtenerEdadPiso());
-                insertarElementosArbolAvaluo("Edad", edad, null, listaCaracteristicasPisosDto);
-                
-                estado = piso.getStsEstado();
-                insertarElementosArbolAvaluo("Estado", estado, null, listaCaracteristicasPisosDto);
-                
-                areapiso = piso.getValAreapiso();
-                insertarElementosArbolAvaluo("Area", areapiso, null, listaCaracteristicasPisosDto);
-
-                //reposicion = piso.getValAnioreparacion();
-
-                //Factor de depreciación de inmueble por piso y depreciacion
-                vdepre = parametrosServicio.obtenerVDEPRE(edad, estado);
-                insertarElementosArbolAvaluo("Factor Depresiación", vdepre, null, listaCaracteristicasPisosDto);
-
-                //Detalle de construccion Estructura
-                vestruc = parametrosServicio.obtenerDetalleContruccion(codigo_piso, "ESTRUCTURA");
-                v1 = parametrosServicio.obtenerValorPorCodigo("210101");
-                //Destalle de construccion Acabados
-                vcabado = parametrosServicio.obtenerDetalleContruccion(codigo_piso, "ACABADOS");
-                v2 = parametrosServicio.obtenerValorPorCodigo("210102");
-                //Detalle de construccion Extras
-                vextra = parametrosServicio.obtenerDetalleContruccion(codigo_piso, "EXTRAS");
-                v3 = parametrosServicio.obtenerValorPorCodigo("210103");
-
-                // Factos de costos del pios es igual a la suma de los factores por el área menos la depreciación del bien por edad y estado
-                cosB = (vestruc.multiply(v1)).add(vcabado.multiply(v2)).add(vextra.multiply(v3)).subtract(((vestruc.multiply(v1)).add(vcabado.multiply(v2)).add(vextra.multiply(v3))).multiply(vdepre));
-                areaB = areaB.add(areapiso);
-                cost = cost.add(cosB);
-
-                // Ubica valor de calculos en la tabla de pisos
-                piso = seleccionarPiso(codigo_piso);
-
-                piso.setValFactordepreciacion(vdepre);
-                piso.setValSumafactores(vestruc.add(vcabado).add(vextra));
-                piso.setValConstante(fa1);
-                piso.setValMetro2(((vestruc.multiply(v1)).add(vcabado.multiply(v2)).add(vextra.multiply(v3))).multiply(vdepre));
-                piso.setValPiso(cosB);
-
-                actualizarPiso(piso, sesion);
-
-                insertarElementosArbolAvaluo("Piso: " + nombrePiso, null, listaCaracteristicasPisosDto, listaPisosDto);
-            }
-
-            // Actualiza Valores por Bloque
-            bloque = seleccionarBloque(codigo_bloque);
-
-            bloque.setValAreabloque(areaB);
-            bloque.setValBloque(cosB);
-
-            actualizarBloque(bloque, sesion);
-
-            insertarElementosArbolAvaluo("Bloque: " + bloque.getNomBloque(), null, listaPisosDto, nodo);
+            nodo.add(obtenerAvaluoBloque(bloque, promedioFactores, sesion));
+            costoPredio.add(bloque.getValBloque());
         }
         //Actualiza Valoración de Terreno y Contrucción
-        predio.setValEdifica(cost);
+        predio.setValEdifica(costoPredio);
         predio.setValAreaConstruccion(areaB);
 
-        valPredio = valor_terreno.add(cost);
+        valPredio = valor_terreno.add(costoPredio);
 
         predio.setValPredio(valPredio);
         actualizarPredio(predio, sesion);
@@ -541,9 +551,9 @@ public class CatastroServicioImpl implements CatastroServicio {
         //insertarElementosArbolAvaluo("Raiz", null, nodo, this.raiz, null);
         return nodo;
     }
-    
+
     private BigDecimal obtenerValoracionFondoRelativo(BigDecimal area, BigDecimal frente) {
-        
+
         BigDecimal v1, v2;
         v1 = area.divide(frente, 4, RoundingMode.CEILING);
         v2 = frente.divide(v1, 4, RoundingMode.CEILING);
@@ -552,14 +562,14 @@ public class CatastroServicioImpl implements CatastroServicio {
 
     }
 
-    private void insertarElementosArbolAvaluo(String descripcion, Object valor, List<AvaluoDto> hijos, List<AvaluoDto> raiz) {
+    private AvaluoDto generarElementoArbolAvaluo(String descripcion, Object valor, List<AvaluoDto> hijos) {
         AvaluoDto nodoRaiz = new AvaluoDto();
-        
+
         nodoRaiz.setDescripcion(descripcion.trim());
         nodoRaiz.setValor(valor);
         nodoRaiz.setHijos(hijos);
         //nodoRaiz.setValor2("prueba");
-        raiz.add(nodoRaiz);
+        return nodoRaiz;
     }
-    
+
 }

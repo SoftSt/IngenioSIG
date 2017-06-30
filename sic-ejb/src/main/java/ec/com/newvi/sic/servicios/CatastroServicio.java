@@ -14,6 +14,7 @@ import ec.com.newvi.sic.modelo.Pisos;
 import ec.com.newvi.sic.modelo.Predios;
 import ec.com.newvi.sic.modelo.Terreno;
 import ec.com.newvi.sic.util.excepciones.NewviExcepcion;
+import java.math.BigDecimal;
 import java.util.List;
 import javax.annotation.security.PermitAll;
 import javax.ejb.Local;
@@ -124,6 +125,16 @@ public interface CatastroServicio {
      * @return Listado de bos filtrados por codigo catastrak
      */
     public List<Bloques> buscarBloquesPorCodigoCatastral(Integer codCatastral);
+    
+    /**
+     * Obtiene el avalúo de un bloque, dado un bloque y el promedio de factores del predio al que pertenece
+     * @param bloque Bloque al que se va a calcular el avalúo
+     * @param promedioFactores Promedio de los factores para el cálculo
+     * @param sesion Usuario que realiza la consulta
+     * @return Objeto AvaluoDto que contiene el avalúo del bloque
+     * @throws NewviExcepcion 
+     */
+    public AvaluoDto obtenerAvaluoBloque(Bloques bloque, BigDecimal promedioFactores, SesionDto sesion) throws NewviExcepcion;
         /*------------------------------------------------------------Pisos------------------------------------------------------------*/
     /**
      * Genera un nuevo Piso, de acuerdo a un objeto entregado.
