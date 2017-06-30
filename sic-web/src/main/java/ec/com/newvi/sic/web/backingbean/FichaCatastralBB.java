@@ -65,10 +65,13 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
     private Propiedad propiedad;
     private List<FichaCatastralDto> listaFichas;
     private List<FichaCatastralDto> listaFichasFiltradas;
+    private AvaluoDto raiz;
+    private List<AvaluoDto> nodo;
     private EnumPantallaMantenimiento pantallaActual;
     private Bloques bloqueSeleccionado;
     private Bloques bloqueAvaluo;
     private TreeNode listaArbolServicios;
+    private TreeNode listaArbolAvaluo;
     private TreeNode listaArbolDescripcionTerreno;
     private TreeNode listaArbolPisosDetalle;
     private TreeNode[] listaDominiosSeleccionados;
@@ -147,6 +150,14 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
 
     public void setListaArbolServicios(TreeNode listaArbolServicios) {
         this.listaArbolServicios = listaArbolServicios;
+    }
+
+    public TreeNode getListaArbolAvaluo() {
+        return listaArbolAvaluo;
+    }
+
+    public void setListaArbolAvaluo(TreeNode listaArbolAvaluo) {
+        this.listaArbolAvaluo = listaArbolAvaluo;
     }
 
     public TreeNode getListaArbolDescripcionTerreno() {
@@ -259,6 +270,14 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
 
     public void setListaEstadoEscritura(EnumSiNo[] listaEstadoEscritura) {
         this.listaEstadoEscritura = listaEstadoEscritura;
+    }
+
+    public AvaluoDto getRaiz() {
+        return raiz;
+    }
+
+    public void setRaiz(AvaluoDto raiz) {
+        this.raiz = raiz;
     }
 
     @PostConstruct
@@ -458,6 +477,20 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
         try {
             listaArbolServicios = new DefaultTreeNode();
             listaArbolServicios = WebUtils.generarArbol(listadoDominiosDto, listaArbolServicios, "getHijos");
+        } catch (NewviExcepcion ex) {
+            LoggerNewvi.getLogNewvi(this.getClass()).error(ex, sesionBean.obtenerSesionDto());
+            MensajesFaces.mensajeError(ex.getMessage());
+        } catch (Exception e) {
+            LoggerNewvi.getLogNewvi(this.getClass()).error(EnumNewviExcepciones.ERR000.presentarMensajeCodigo(), e, sesionBean.obtenerSesionDto());
+            MensajesFaces.mensajeError(e.getMessage());
+        }
+    }
+
+    private void generarArbolAvaluo() {
+
+        try {
+            listaArbolAvaluo = new DefaultTreeNode();
+            listaArbolAvaluo = WebUtils.generarArbol(this.nodo, listaArbolAvaluo, "getHijos");
         } catch (NewviExcepcion ex) {
             LoggerNewvi.getLogNewvi(this.getClass()).error(ex, sesionBean.obtenerSesionDto());
             MensajesFaces.mensajeError(ex.getMessage());
@@ -743,6 +776,16 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
 
     }
 
+    public void insertarElementosArbolAvaluo(String descripcion, BigDecimal valor, List<AvaluoDto> hijos, List<AvaluoDto> raiz) {
+        AvaluoDto nodoRaiz = new AvaluoDto();
+        
+        nodoRaiz.setDescripcion(descripcion.trim());
+        nodoRaiz.setValor(valor);
+        nodoRaiz.setHijos(hijos);
+        //nodoRaiz.setValor2("prueba");
+        raiz.add(nodoRaiz);
+    }
+
     public void calcularAvaluo() throws NewviExcepcion {
         BigDecimal coff, cot, cofo, cubi, cero, fa1, div, vestruc, vcabado, vextra, areapiso, edad, vdepre, vterreno, area, frente, v1, v2, v3, valor_terreno, cosB, areaB, cost, valPredio, c1, c2, c3, c4, c5, c6, basura, aPagar;
         Object[] objetoPiso;
@@ -758,6 +801,11 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
         cosB = new BigDecimal(0);
         areaB = new BigDecimal(0);
         cost = new BigDecimal(0);
+
+        raiz = new AvaluoDto();
+        nodo = new ArrayList<>();
+        List<AvaluoDto> listaCaracteristicasPisosDto;
+        List<AvaluoDto> listaPisosDto;
 
         c1 = new BigDecimal(0);
         c2 = new BigDecimal(0);
@@ -781,20 +829,26 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
         coff = obtenerValoracionFondoRelativo(area, frente);
         // Coeficiente de Topografía COT
         cot = parametrosServicio.obtenerValor(codigo, "TOPOGRAFIA");
+        insertarElementosArbolAvaluo("Topografía", cot, null, this.nodo);
         // Coeficinte de Erosion
         cero = parametrosServicio.obtenerValor(codigo, "LOCALIZACION");
+        insertarElementosArbolAvaluo("Erosión", cero, null, this.nodo);
         // Coeficinte de forma COFO
         cofo = parametrosServicio.obtenerValor(codigo, "FORMA");
+        insertarElementosArbolAvaluo("Forma", cofo, null, this.nodo);
         // Coeficinte de Ubicacion
         cubi = parametrosServicio.obtenerValor(codigo, "OCUPACION");
+        insertarElementosArbolAvaluo("Ubicación", cubi, null, this.nodo);
 
         fa1 = (fa1.add(coff).add(cot).add(cofo).add(cero).add(cubi)).divide(div, 4, RoundingMode.CEILING);
+        insertarElementosArbolAvaluo("Promedio de factores", fa1, null, this.nodo);
 
         // CALCULO DEL PRECIO BASE PARA EL TERRENO
         // SE TOMA EN CUENTA UNA VALORACION POR LAS ZONAS y SECTORES DEL MUNICIPIO.
         consulta = "20" + zona + sector;
 
         vterreno = parametrosServicio.obtenerValorPorCodigoCalculo(consulta, "ZONAS VALORADAS M2");
+        insertarElementosArbolAvaluo("Precio base en M2 en la zona " + zona + " sector " + sector, vterreno, null, this.nodo);
 
         valor_terreno = (fa1.multiply(area)).multiply(vterreno);
 
@@ -805,14 +859,22 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
 
         for (Bloques bloque : bloques) {
 
+            listaCaracteristicasPisosDto = new ArrayList<>();
+            listaPisosDto = new ArrayList<>();
+
             codigo_bloque = bloque.getCodBloques();
 
             for (Object pisos : catastroServicio.obtenerDatosPisoPorBloque(codigo_bloque)) {
+
                 objetoPiso = (Object[]) pisos;
                 codigo_piso = (Integer) objetoPiso[0];
                 piso = (String) objetoPiso[1];
                 areapiso = (BigDecimal) objetoPiso[2];
+                insertarElementosArbolAvaluo("Area", areapiso, null, listaCaracteristicasPisosDto);
+
                 edad = new BigDecimal((Double) objetoPiso[3]);
+                insertarElementosArbolAvaluo("Edad", edad, null, listaCaracteristicasPisosDto);
+
                 reposicion = (Integer) objetoPiso[4];
                 estado = (String) objetoPiso[5];
 
@@ -844,6 +906,8 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
                 pisoAvaluo.setValPiso(cosB);
 
                 catastroServicio.actualizarPiso(pisoAvaluo, sesionBean.obtenerSesionDto());
+
+                insertarElementosArbolAvaluo("Piso: " + piso, null, listaCaracteristicasPisosDto, listaPisosDto);
             }
 
             // Actualiza Valores por Bloque
@@ -853,6 +917,8 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
             bloqueAvaluo.setValBloque(cosB);
 
             catastroServicio.actualizarBloque(bloqueAvaluo, sesionBean.obtenerSesionDto());
+
+            insertarElementosArbolAvaluo("Bloque: " + bloque.getNomBloque(), null, listaPisosDto, this.nodo);
         }
         //Actualiza Valoración de Terreno y Contrucción
         predioAvaluo.setValEdifica(cost);
@@ -894,23 +960,9 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
 
         }
 
-    }
-    
-    
-    public void generarArbolAvaluo(){
-        AvaluoDto raiz = new AvaluoDto();
-         List<AvaluoDto> hijos = new ArrayList<>();
-        
-        
-        AvaluoDto area = new AvaluoDto();
-        area.setDescripcion("Area predio");
-        area.setValor(this.predio.getValAreaConstruccion());
-        
-        hijos.add(area);
-        
-        raiz.setHijos(hijos);
-        
-        
+        //insertarElementosArbolAvaluo("Raiz", null, this.nodo, this.raiz, null);
+        generarArbolAvaluo();
+
     }
 
 }

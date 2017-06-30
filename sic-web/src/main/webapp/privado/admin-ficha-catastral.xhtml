@@ -386,7 +386,7 @@
 
 
                                     <p:dataTable id="listaServiciosBasicos" var="servicios" editable="true" widgetVar="listaSeviciosBasicosTabla"
-                                                 value="#{fichaCatastralBB.predio.servicios}" rowKey="#{servicios.codServicios}" filteredValue=""
+                                                 rowKey="#{servicios.codServicios}" filteredValue=""
                                                  paginator="true" rows="10" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" 
                                                  rowsPerPageTemplate="10,15,20" 
                                                  emptyMessage="No se han encontrado resultados" 
@@ -429,14 +429,14 @@
                                                 <f:facet name="input"><p:inputText value="#{servicios.nomMedidor}"/></f:facet>
                                             </p:cellEditor>
                                         </p:column>
-                                        
+
                                         <p:column headerText="Estado" class="column-title-left" sortBy="#{servicios.stsEstado}" width="35">
                                             <p:cellEditor>
                                                 <f:facet name="output"><h:outputText value="#{servicios.stsEstado}" /></f:facet>
                                                 <f:facet name="input"><p:inputText value="#{servicios.stsEstado}"/></f:facet>
                                             </p:cellEditor>
                                         </p:column>
-                                        
+
                                         <p:column headerText="# Medidores" class="column-title-left" sortBy="#{servicios.numMedidores}" width="35">
                                             <p:cellEditor>
                                                 <f:facet name="output"><h:outputText value="#{servicios.numMedidores}" /></f:facet>
@@ -604,26 +604,19 @@
                                     <br/>
                                     <div style="font-size:1.2em;font-weight:bold;">Resumen Avalúo</div>
                                     <p:separator />
-                                    <p:dataTable id="listaResumen" var="resumen" widgetVar="listaResumenTabla"
-                                                 value="" rowKey="" filteredValue=""
-                                                 paginator="true" rows="10" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" 
-                                                 rowsPerPageTemplate="10,15,20" 
-                                                 emptyMessage="No se han encontrado resultados" 
-                                                 paginatorPosition="bottom">
 
+                                    <p:treeTable value="#{fichaCatastralBB.listaArbolAvaluo}"
+                                                 id="listaArbolAvaluo" var="avaluo">
 
-                                        <p:column headerText="Código" filterBy="">
-                                            <h:outputText value="" />
+                                        <p:column headerText="Descripcion">
+                                            <h:outputText value="#{avaluo.descripcion}"/>
                                         </p:column>
 
-                                        <p:column headerText="Descripción" sortBy="" filterBy="">
-                                            <h:outputText value="" />
+                                        <p:column headerText="Valor">
+                                            <h:outputText value="#{avaluo.valor}" style="align-content: flex-end"/>
                                         </p:column>
 
-                                        <p:column headerText="Valor" sortBy="" filterBy="">
-                                            <h:outputText value="" />
-                                        </p:column>
-                                    </p:dataTable>
+                                    </p:treeTable>
                                 </h:panelGrid>
                             </p:tab>
                         </p:tabView>
