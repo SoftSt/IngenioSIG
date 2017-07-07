@@ -152,8 +152,15 @@ public class ParametrosServicioImpl implements ParametrosServicio {
     }
 
     @Override
-    public BigDecimal obtenerVDEPRE(BigDecimal dominio, String domiDescripcion) {
-        return dominiosFacade.obtenerVDEPRE(dominio, domiDescripcion);
+    public BigDecimal obtenerValorDepreciacion(BigDecimal dominio, String domiDescripcion) {
+        for (Dominios objetoDominio : dominiosFacade.buscarDominiosPorEstadoReparacion(domiDescripcion)) {
+            if ((BigDecimal.valueOf(objetoDominio.getDomiMinimo()).compareTo(dominio) <= 0)
+                    && (BigDecimal.valueOf(objetoDominio.getDomiMaximo()).compareTo(dominio) >= 0)) {
+                return BigDecimal.valueOf(objetoDominio.getDomiCoefic());
+            }
+        }
+        return BigDecimal.ZERO;
+        //return dominiosFacade.obtenerValorDepreciacion(dominio, domiDescripcion);
     }
 
     @Override

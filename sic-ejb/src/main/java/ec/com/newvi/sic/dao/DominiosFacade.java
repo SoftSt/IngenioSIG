@@ -57,6 +57,16 @@ public class DominiosFacade extends AbstractFacade<Dominios, Integer> implements
         //@return listado de dominios
         return q.getResultList();
     }
+    
+    public List<Dominios> buscarDominiosPorEstadoReparacion(String descripcion) {
+        // Busca un listado de dominios
+        Query q = this.getEntityManager().createQuery("SELECT dominio FROM Dominios dominio where TRIM(dominio.domiDescripcion) = TRIM(:DESCRIPCION) and TRIM(dominio.domiCalculo) = :CALCULO");
+        //q.setParameter("ESTADO", EnumEstadoRegistro.A);
+        q.setParameter("DESCRIPCION", descripcion);
+        q.setParameter("CALCULO", "ESTADO DE REPARACION");
+        //@return listado de dominios
+        return q.getResultList();
+    }
 
     public List<Dominios> buscarHijos(Dominios dominio) {
         // Busca un listado de dominios
@@ -98,7 +108,7 @@ public class DominiosFacade extends AbstractFacade<Dominios, Integer> implements
 
     }
 
-    public BigDecimal obtenerVDEPRE(BigDecimal dominio, String domiDescripcion) {
+    public BigDecimal obtenerValorDepreciacion(BigDecimal dominio, String domiDescripcion) {
         String domiCalculo = "ESTADO DE REPARACION";
         BigDecimal resultado = new BigDecimal(0.0);
 

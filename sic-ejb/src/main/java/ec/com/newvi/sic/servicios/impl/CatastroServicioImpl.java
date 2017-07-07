@@ -200,7 +200,7 @@ public class CatastroServicioImpl implements CatastroServicio {
 
     @Override
     public List<AvaluoDto> obtenerAvaluoPisos(Pisos piso, BigDecimal promedioFactores, SesionDto sesion) throws NewviExcepcion {
-        BigDecimal areapiso, edad, vdepre;
+        BigDecimal areapiso, edad, valorDepreciacion;
         Integer codigo_piso;
         String estado;
 
@@ -220,10 +220,10 @@ public class CatastroServicioImpl implements CatastroServicio {
         listaCaracteristicasPisosDto.add(generarElementoArbolAvaluo("Area", areapiso.toString(), null, null));
 
         //Factor de depreciación de inmueble por piso y depreciacion
-        vdepre = parametrosServicio.obtenerVDEPRE(edad, estado);
-        listaCaracteristicasPisosDto.add(generarElementoArbolAvaluo("Factor Depresiación", vdepre.toString(), null, null));
+        valorDepreciacion = parametrosServicio.obtenerValorDepreciacion(edad, estado);
+        listaCaracteristicasPisosDto.add(generarElementoArbolAvaluo("Factor Depresiación", valorDepreciacion.toString(), null, null));
 
-        listaCaracteristicasPisosDto.add(generarElementoArbolAvaluo("Detalles piso", null, null, obtenerListaDetallesPiso(piso, vdepre, promedioFactores)));
+        listaCaracteristicasPisosDto.add(generarElementoArbolAvaluo("Detalles piso", null, null, obtenerListaDetallesPiso(piso, valorDepreciacion, promedioFactores)));
 
         actualizarPiso(piso, sesion);
 

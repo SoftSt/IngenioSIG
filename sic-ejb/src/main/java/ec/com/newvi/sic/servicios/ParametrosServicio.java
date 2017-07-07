@@ -127,7 +127,7 @@ public interface ParametrosServicio {
      * @param domiDescripcion parametro por el cual sera calculado
      * @return  valor de VDEPRE
      */
-    public BigDecimal obtenerVDEPRE(BigDecimal dominio, String domiDescripcion);
+    public BigDecimal obtenerValorDepreciacion(BigDecimal dominio, String domiDescripcion);
     /**
      * Calculo del valor del terreno
      * @param domiCodigo codigo por el cual se buscara el valor
