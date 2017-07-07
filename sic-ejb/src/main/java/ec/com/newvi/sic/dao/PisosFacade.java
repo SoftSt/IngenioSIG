@@ -32,15 +32,15 @@ public class PisosFacade extends AbstractFacade<Pisos, Integer> implements Seria
         //@return listado de bloques
         return q.getResultList();
     }
-    
+
     public Pisos buscarPisosPorCodigoBloque(Integer codBloques) {
         // Busca un listado de bloques
         Query q = this.getEntityManager().createQuery("SELECT piso FROM Pisos piso where piso.codBloques.codBloques = :BLOQUE");
         q.setParameter("BLOQUE", codBloques);
         //@return listado de bloques
-        return (Pisos)q.getSingleResult();
+        return (Pisos) q.getSingleResult();
     }
-    
+
     public Object[] obtenerDatosPisoPorBloque(Integer codBloque) {
         //String domiGrupo = "DESCRIPCION EDIFICACION";
         //BigDecimal resultado = new BigDecimal(0.0);
@@ -51,7 +51,7 @@ public class PisosFacade extends AbstractFacade<Pisos, Integer> implements Seria
                 + " where cod_bloques = ? ");
 
         q.setParameter(1, codBloque);
-        
+
         return q.getResultList().toArray();
         //return Double.parseDouble((q.getResultList().toString()).substring(1, 7));
     }

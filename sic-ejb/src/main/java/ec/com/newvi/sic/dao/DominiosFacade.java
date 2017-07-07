@@ -169,6 +169,24 @@ public class DominiosFacade extends AbstractFacade<Dominios, Integer> implements
 
         return resultado;
     }
+    public Object[] obtenerDetallesPiso(Integer codPisos, String domiCalculo) {
+        String domiGrupo = "DESCRIPCION EDIFICACION";
+
+        Query q = this.getEntityManager().createNativeQuery(""
+                + " select sts_subgrupo, sts_descripcion, domi_coefic"
+                + " from cat_cat_dominios B, cat_cat_pisosdetalle A "
+                + " where A.sts_codigo = B.domi_codigo "
+                + " and rtrim(B.domi_grupos) = ? "
+                + " and rtrim(B.domi_calculo) = ? "
+                //+ " B.domi_coefic is not null "
+                + " and cod_pisos = ?");
+
+        q.setParameter(1, domiGrupo);
+        q.setParameter(2, domiCalculo);
+        q.setParameter(3, codPisos);
+
+        return q.getResultList().toArray();
+    }
 
     /*Select domi_coefic as valor from cat_cat_dominios  where rtrim(domi_codigo) = '200102' and rtrim(domi_calculo) = 'ZONAS VALORADAS M2'*/
     public BigDecimal obtenerValorPorCodigoCalculo(String domiCodigo, String domiCalculo) {

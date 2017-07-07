@@ -193,6 +193,15 @@ public interface CatastroServicio {
      * @return Lista de pisos
      */
     public Pisos buscarPisosPorCodigoBloque(Integer codBloques);
+    /**
+     * 
+     * @param piso
+     * @param promedioFactores
+     * @param sesion
+     * @return
+     * @throws NewviExcepcion 
+     */
+    public List<AvaluoDto> obtenerAvaluoPisos(Pisos piso, BigDecimal promedioFactores, SesionDto sesion) throws NewviExcepcion;
     
         /*------------------------------------------------------------PisoDetalle------------------------------------------------------------*/
     /**

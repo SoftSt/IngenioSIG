@@ -21,7 +21,8 @@ public class AvaluoDto {
     
 
     private String descripcion;
-    private Object valor;
+    private String valor;
+    private String factor;
     private List<AvaluoDto> hijos;
 
     public List<AvaluoDto> getHijos() {
@@ -40,12 +41,20 @@ public class AvaluoDto {
         this.descripcion = descripcion;
     }
 
-    public Object getValor() {
+    public String getValor() {
         return valor;
     }
 
-    public void setValor(Object valor) {
+    public void setValor(String valor) {
         this.valor = valor;
+    }
+
+    public String getFactor() {
+        return factor;
+    }
+
+    public void setFactor(String factor) {
+        this.factor = factor;
     }
 
     public AvaluoDto() {

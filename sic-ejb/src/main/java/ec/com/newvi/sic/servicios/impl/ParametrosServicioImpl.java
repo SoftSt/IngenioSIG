@@ -147,6 +147,11 @@ public class ParametrosServicioImpl implements ParametrosServicio {
     }
 
     @Override
+    public Object[] obtenerDetallesPiso(Integer codPisos, String domiCalculo) {
+        return dominiosFacade.obtenerDetallesPiso(codPisos, domiCalculo);
+    }
+
+    @Override
     public BigDecimal obtenerVDEPRE(BigDecimal dominio, String domiDescripcion) {
         return dominiosFacade.obtenerVDEPRE(dominio, domiDescripcion);
     }

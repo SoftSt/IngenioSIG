@@ -115,6 +115,13 @@ public interface ParametrosServicio {
      */
     public BigDecimal obtenerDetalleContruccion(Integer codPisos, String domiCalculo);
     /**
+     * Obtien los detalles del piso
+     * @param codPisos codigo del piso a consultar
+     * @param domiCalculo parametro por el cual será calculado
+     * @return objeto de pisos
+     */
+    public Object[] obtenerDetallesPiso(Integer codPisos, String domiCalculo);
+    /**
      * Calculo del valor de depreciación
      * @param dominio dominio minimo y maximo del dominio
      * @param domiDescripcion parametro por el cual sera calculado

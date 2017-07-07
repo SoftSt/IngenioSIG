@@ -612,8 +612,12 @@
                                             <h:outputText value="#{avaluo.descripcion}"/>
                                         </p:column>
 
-                                        <p:column headerText="Valor">
-                                            <h:outputText value="#{avaluo.valor}" style="align-content: flex-end"/>
+                                        <p:column headerText="Valor" style="text-align: center">
+                                            <h:outputText value="#{avaluo.valor}"/>
+                                        </p:column>
+                                        
+                                        <p:column headerText="Factor" style="text-align: center">
+                                            <h:outputText value="#{avaluo.factor}"/>
                                         </p:column>
 
                                     </p:treeTable>
