@@ -9,6 +9,9 @@ import ec.com.newvi.sic.dto.DominioDto;
 import ec.com.newvi.sic.dto.SesionDto;
 import ec.com.newvi.sic.modelo.ConstantesImpuestos;
 import ec.com.newvi.sic.modelo.Dominios;
+import ec.com.newvi.sic.modelo.PisoDetalle;
+import ec.com.newvi.sic.modelo.Pisos;
+import ec.com.newvi.sic.modelo.Predios;
 import ec.com.newvi.sic.util.excepciones.NewviExcepcion;
 import java.math.BigDecimal;
 import java.util.List;
@@ -100,27 +103,27 @@ public interface ParametrosServicio {
      */
     public BigDecimal obtenerCOFF(BigDecimal dominio, String calculo);
     /**
-     * Valoracion de factores
-     * @param idPredio codigo del predio a valorar
+     * Valoracion de factores Terreno
+     * @param predio Predio a valorar
      * @param domiCalculo parametro por el cual será valorado
      * @return coeficiente del factor
      */
     
-    public BigDecimal obtenerValor(Integer idPredio, String domiCalculo);
+    public BigDecimal obtenerCoeficienteTerreno(Predios predio, String domiCalculo);
     /**
-     * Calculo del Detalle de construcción
-     * @param codPisos codigo del piso a valorar
+     * Calculo del Coeficiente de construcción
+     * @param piso Piso a valorar
      * @param domiCalculo parametro por el cual será calculado
      * @return coeficiente del detalle de contrucción
      */
-    public BigDecimal obtenerDetalleContruccion(Integer codPisos, String domiCalculo);
+    public BigDecimal obtenerCoeficienteConstruccion(Pisos piso, String domiCalculo);
     /**
      * Obtien los detalles del piso
-     * @param codPisos codigo del piso a consultar
+     * @param detalle codigo del detalle de piso a consultar
      * @param domiCalculo parametro por el cual será calculado
      * @return objeto de pisos
      */
-    public Object[] obtenerDetallesPiso(Integer codPisos, String domiCalculo);
+    public BigDecimal obtenerCoeficienteDetallePiso(PisoDetalle detalle, String domiCalculo);
     /**
      * Calculo del valor de depreciación
      * @param dominio dominio minimo y maximo del dominio
@@ -140,7 +143,7 @@ public interface ParametrosServicio {
      * @param domiCodigo codigo del dominio
      * @return coefiente dominio
      */
-    public BigDecimal obtenerValorPorCodigo(String domiCodigo);
+    public BigDecimal obtenerTotalCoeficienteDominiosPorCodigo(String domiCodigo);
     /**
      * Indica si tiene basura
      * @param codCatastral codigo del predio

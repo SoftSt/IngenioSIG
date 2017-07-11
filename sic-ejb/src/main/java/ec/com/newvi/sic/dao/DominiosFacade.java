@@ -58,12 +58,40 @@ public class DominiosFacade extends AbstractFacade<Dominios, Integer> implements
         return q.getResultList();
     }
     
+    public List<Dominios> buscarDominiosPorCodigo(String codigo) {
+        // Busca un listado de dominios
+        Query q = this.getEntityManager().createQuery("SELECT dominio FROM Dominios dominio where TRIM(dominio.domiCodigo)=TRIM(:CODIGO) ");
+        q.setParameter("CODIGO", codigo);
+        //@return listado de dominios
+        return q.getResultList();
+    }
+    
+    public List<Dominios> buscarDominiosPorCodigoYCalculo(String codigo, String calculo) {
+        // Busca un listado de dominios
+        Query q = this.getEntityManager().createQuery("SELECT dominio FROM Dominios dominio where TRIM(dominio.domiCodigo)=TRIM(:CODIGO) and TRIM(dominio.domiCalculo)=TRIM(:CALCULO) ");
+        q.setParameter("CODIGO", codigo);
+        q.setParameter("CALCULO", calculo);
+        //@return listado de dominios
+        return q.getResultList();
+    }
+    
     public List<Dominios> buscarDominiosPorEstadoReparacion(String descripcion) {
         // Busca un listado de dominios
         Query q = this.getEntityManager().createQuery("SELECT dominio FROM Dominios dominio where TRIM(dominio.domiDescripcion) = TRIM(:DESCRIPCION) and TRIM(dominio.domiCalculo) = :CALCULO");
         //q.setParameter("ESTADO", EnumEstadoRegistro.A);
         q.setParameter("DESCRIPCION", descripcion);
         q.setParameter("CALCULO", "ESTADO DE REPARACION");
+        //@return listado de dominios
+        return q.getResultList();
+    }
+    
+    public List<Dominios> buscarDominiosPorGrupoCodigoYCalculo(String codigo, String grupo, String calculo) {
+        // Busca un listado de dominios
+        Query q = this.getEntityManager().createQuery("SELECT dominio FROM Dominios dominio where TRIM(dominio.domiCodigo) = TRIM(:CODIGO) AND TRIM(dominio.domiGrupos) = TRIM(:GRUPO) AND TRIM(dominio.domiCalculo) = TRIM(:CALCULO) ");
+        //q.setParameter("ESTADO", EnumEstadoRegistro.A);
+        q.setParameter("GRUPO", grupo);
+        q.setParameter("CODIGO", codigo);
+        q.setParameter("CALCULO", calculo);
         //@return listado de dominios
         return q.getResultList();
     }
@@ -108,33 +136,6 @@ public class DominiosFacade extends AbstractFacade<Dominios, Integer> implements
 
     }
 
-    public BigDecimal obtenerValorDepreciacion(BigDecimal dominio, String domiDescripcion) {
-        String domiCalculo = "ESTADO DE REPARACION";
-        BigDecimal resultado = new BigDecimal(0.0);
-
-        Query q = this.getEntityManager().createNativeQuery(""
-                + "select d.domi_coefic "
-                + "from cat_cat_dominios d "
-                + "where d.domi_minimo < ? or d.domi_minimo = ? and "
-                + "d.domi_maximo > ? or d.domi_maximo = ? and "
-                + "rtrim(d.domi_descripcion) = ? and "
-                + "rtrim(d.domi_calculo) = ?");
-        q.setParameter(1, dominio);
-        q.setParameter(2, dominio);
-        q.setParameter(3, dominio);
-        q.setParameter(4, dominio);
-        q.setParameter(5, domiDescripcion);
-        q.setParameter(6, domiCalculo);
-
-        try {
-            resultado = new BigDecimal((q.getResultList().toString()).substring(1, 7));
-        } catch (Exception e) {
-        }
-
-        return resultado;
-
-    }
-
     public BigDecimal obtenerValor(Integer idPredio, String domiCalculo) {
         BigDecimal resultado = new BigDecimal(0.0);
         Query q = this.getEntityManager().createNativeQuery(""
@@ -155,7 +156,7 @@ public class DominiosFacade extends AbstractFacade<Dominios, Integer> implements
         return resultado;
     }
 
-    public BigDecimal obtenerDetalleContruccion(Integer codPisos, String domiCalculo) {
+    public BigDecimal obtenerDetalleConstruccion(Integer codPisos, String domiCalculo) {
         String domiGrupo = "DESCRIPCION EDIFICACION";
         BigDecimal resultado = new BigDecimal(0.0);
 
@@ -209,23 +210,6 @@ public class DominiosFacade extends AbstractFacade<Dominios, Integer> implements
                 + "rtrim(d.domi_calculo) = ?");
         q.setParameter(1, domiCodigo);
         q.setParameter(2, domiCalculo);
-
-        try {
-            resultado = new BigDecimal((q.getResultList().toString()).substring(1, 7));
-        } catch (Exception e) {
-        }
-
-        return resultado;
-
-    }
-
-    public BigDecimal obtenerValorPorCodigo(String domiCodigo) {
-        BigDecimal resultado = new BigDecimal(0.0);
-        Query q = this.getEntityManager().createNativeQuery(""
-                + "select d.domi_coefic "
-                + "from cat_cat_dominios d "
-                + "where rtrim(d.domi_codigo) = ? ");
-        q.setParameter(1, domiCodigo);
 
         try {
             resultado = new BigDecimal((q.getResultList().toString()).substring(1, 7));

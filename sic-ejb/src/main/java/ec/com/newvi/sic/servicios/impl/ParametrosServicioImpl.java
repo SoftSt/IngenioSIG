@@ -13,6 +13,10 @@ import ec.com.newvi.sic.dto.SesionDto;
 import ec.com.newvi.sic.enums.EnumNewviExcepciones;
 import ec.com.newvi.sic.modelo.ConstantesImpuestos;
 import ec.com.newvi.sic.modelo.Dominios;
+import ec.com.newvi.sic.modelo.PisoDetalle;
+import ec.com.newvi.sic.modelo.Pisos;
+import ec.com.newvi.sic.modelo.Predios;
+import ec.com.newvi.sic.modelo.Terreno;
 import ec.com.newvi.sic.servicios.ParametrosServicio;
 import ec.com.newvi.sic.util.ComunUtil;
 import ec.com.newvi.sic.util.excepciones.NewviExcepcion;
@@ -137,18 +141,36 @@ public class ParametrosServicioImpl implements ParametrosServicio {
     }
 
     @Override
-    public BigDecimal obtenerValor(Integer idPredio, String domiCalculo) {
-        return dominiosFacade.obtenerValor(idPredio, domiCalculo);
+    public BigDecimal obtenerCoeficienteTerreno(Predios predio, String domiCalculo) {
+        List<Dominios> listaDominiosTerreno;
+        BigDecimal totalCoeficienteCalculo = BigDecimal.ZERO;
+        for (Terreno terreno : predio.getCaracteristicasTerreno()) {
+            listaDominiosTerreno = dominiosFacade.buscarDominiosPorCodigoYCalculo(terreno.getStsCodigo(), domiCalculo);
+            for (Dominios dominio : listaDominiosTerreno) {
+                totalCoeficienteCalculo = totalCoeficienteCalculo.add(BigDecimal.valueOf(dominio.getDomiCoefic()));
+            }
+        }
+        return totalCoeficienteCalculo;
     }
 
     @Override
-    public BigDecimal obtenerDetalleContruccion(Integer codPisos, String domiCalculo) {
-        return dominiosFacade.obtenerDetalleContruccion(codPisos, domiCalculo);
+    public BigDecimal obtenerCoeficienteConstruccion(Pisos piso, String domiCalculo) {
+        BigDecimal totalDetalleConstruccion = BigDecimal.ZERO;
+        for (PisoDetalle detalle : piso.getDetalles()) {
+            totalDetalleConstruccion = totalDetalleConstruccion.add(obtenerCoeficienteDetallePiso(detalle, domiCalculo));
+        }
+        return totalDetalleConstruccion;
     }
 
     @Override
-    public Object[] obtenerDetallesPiso(Integer codPisos, String domiCalculo) {
-        return dominiosFacade.obtenerDetallesPiso(codPisos, domiCalculo);
+    public BigDecimal obtenerCoeficienteDetallePiso(PisoDetalle detalle, String domiCalculo) {
+        List<Dominios> listaDominios;
+        BigDecimal totalDetalle = BigDecimal.ZERO;
+        listaDominios = dominiosFacade.buscarDominiosPorGrupoCodigoYCalculo(detalle.getCodigo(), "DESCRIPCION EDIFICACION", domiCalculo);
+        for (Dominios dominio : listaDominios) {
+            totalDetalle = totalDetalle.add(BigDecimal.valueOf(dominio.getDomiCoefic()));
+        }
+        return totalDetalle;
     }
 
     @Override
@@ -160,7 +182,6 @@ public class ParametrosServicioImpl implements ParametrosServicio {
             }
         }
         return BigDecimal.ZERO;
-        //return dominiosFacade.obtenerValorDepreciacion(dominio, domiDescripcion);
     }
 
     @Override
@@ -169,8 +190,12 @@ public class ParametrosServicioImpl implements ParametrosServicio {
     }
 
     @Override
-    public BigDecimal obtenerValorPorCodigo(String domiCodigo) {
-        return dominiosFacade.obtenerValorPorCodigo(domiCodigo);
+    public BigDecimal obtenerTotalCoeficienteDominiosPorCodigo(String domiCodigo) {
+        BigDecimal totalCoeficiente = BigDecimal.ZERO;
+        for (Dominios dominio : dominiosFacade.buscarDominiosPorCodigo(domiCodigo)) {
+            totalCoeficiente = totalCoeficiente.add(BigDecimal.valueOf(dominio.getDomiCoefic()));
+        }        
+        return totalCoeficiente;
     }
 
     @Override
