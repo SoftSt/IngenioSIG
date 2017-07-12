@@ -218,7 +218,7 @@ public class CatastroServicioImpl implements CatastroServicio {
         listaCaracteristicasPisosDto.add(generarElementoArbolAvaluo("Estado", estado, null, null));
 
         areapiso = piso.getValAreapiso();
-        listaCaracteristicasPisosDto.add(generarElementoArbolAvaluo("Area", areapiso.toString(), null, null));
+        listaCaracteristicasPisosDto.add(generarElementoArbolAvaluo("Area", areapiso.setScale(2, BigDecimal.ROUND_UP).toString(), null, null));
 
         //Factor de depreciación de inmueble por piso y depreciacion
         valorDepreciacion = parametrosServicio.obtenerValorDepreciacion(edad, estado);
@@ -527,9 +527,9 @@ public class CatastroServicioImpl implements CatastroServicio {
         zona = predio.getCodZona();
         sector = predio.getCodSector();
 
-        nodo.add(generarElementoArbolAvaluo("Area", area.toString(), null, null));
-        nodo.add(generarElementoArbolAvaluo("Frente", frente.toString(), null, null));
-        nodo.add(generarElementoArbolAvaluo("Fondo relativo", predio.getValAreaFondo().toString(), null, null));
+        nodo.add(generarElementoArbolAvaluo("Area", area.setScale(2, BigDecimal.ROUND_UP).toString(), null, null));
+        nodo.add(generarElementoArbolAvaluo("Frente", frente.setScale(2, BigDecimal.ROUND_UP).toString(), null, null));
+        nodo.add(generarElementoArbolAvaluo("Fondo relativo", predio.getValAreaFondo().setScale(2, BigDecimal.ROUND_UP).toString(), null, null));
 
         // Calculo del fondo relativo COFF
         coff = obtenerValoracionFondoRelativo(area, frente);
@@ -549,14 +549,14 @@ public class CatastroServicioImpl implements CatastroServicio {
         nodo.add(generarElementoArbolAvaluo("Ubicación", cubi.toString(), null, null));
 
         promedioFactores = (promedioFactores.add(coff).add(cot).add(cofo).add(cero).add(cubi)).divide(div, 4, RoundingMode.CEILING);
-        nodo.add(generarElementoArbolAvaluo("Promedio de factores", promedioFactores.toString(), null, null));
+        nodo.add(generarElementoArbolAvaluo("Promedio de factores", promedioFactores.setScale(2, BigDecimal.ROUND_UP).toString(), null, null));
 
         // CALCULO DEL PRECIO BASE PARA EL TERRENO
         // SE TOMA EN CUENTA UNA VALORACION POR LAS ZONAS y SECTORES DEL MUNICIPIO.
         consulta = "20" + zona + sector;
 
         vterreno = parametrosServicio.obtenerValorPorCodigoCalculo(consulta, "ZONAS VALORADAS M2");
-        nodo.add(generarElementoArbolAvaluo("Precio base en M2 en la zona " + zona + " sector " + sector, vterreno.toString(), null, null));
+        nodo.add(generarElementoArbolAvaluo("Precio base en M2 en la zona " + zona + " sector " + sector, vterreno.setScale(2, BigDecimal.ROUND_UP).toString(), null, null));
 
         valor_terreno = (promedioFactores.multiply(area)).multiply(vterreno);
 
