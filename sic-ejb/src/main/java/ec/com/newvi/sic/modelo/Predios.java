@@ -35,6 +35,33 @@ import javax.validation.constraints.Size;
 
 public class Predios implements Serializable {
 
+    @Size(max = 100)
+    @Column(name = "nom_predio")
+    private String nomPredio;
+    @Size(max = 25)
+    @Column(name = "sts_urbanomarginal")
+    private String stsUrbanomarginal;
+    @Size(max = 25)
+    @Column(name = "sts_sectorhomogeneo")
+    private String stsSectorhomogeneo;
+    @Size(max = 25)
+    @Column(name = "sts_planospredio")
+    private String stsPlanospredio;
+    @Column(name = "val_otro1")
+    private BigDecimal valOtro1;
+    @Column(name = "val_otro2")
+    private BigDecimal valOtro2;
+    @Size(max = 50)
+    @Column(name = "cat_casosespeciales")
+    private String catCasosespeciales;
+    @Size(max = 2147483647)
+    @Column(name = "txt_observacion")
+    private String txtObservacion;
+    @Column(name = "cat_estado")
+    private EnumEstadoRegistro catEstado;
+    @OneToMany(mappedBy = "codCatastral")
+    private Collection<Avaluo> avaluoCollection;
+
     private static final long serialVersionUID = -1L;
     
     @Id
@@ -147,9 +174,6 @@ public class Predios implements Serializable {
     private BigDecimal valImpuesto;    
     @Column(name = "val_imppredial")
     private BigDecimal valImppredial;    
-    @Enumerated(EnumType.STRING)
-    @Column(name = "cat_estado")
-    private EnumEstadoRegistro catEstado;
     @Size(max = 50)
     @Column(name = "aud_ing_usu")
     private String audIngUsu;
@@ -635,6 +659,80 @@ public class Predios implements Serializable {
     
     public void actualizarCodigoPredio() {
         this.nomCodigocatastral = this.codDpa.concat(this.codZona).concat(this.codSector).concat(this.codManzana).concat(this.codPredio).concat(this.codRegimentenencia).concat(this.codHorizontal);
+    }
+
+    public String getNomPredio() {
+        return nomPredio;
+    }
+
+    public void setNomPredio(String nomPredio) {
+        this.nomPredio = nomPredio;
+    }
+
+    public String getStsUrbanomarginal() {
+        return stsUrbanomarginal;
+    }
+
+    public void setStsUrbanomarginal(String stsUrbanomarginal) {
+        this.stsUrbanomarginal = stsUrbanomarginal;
+    }
+
+    public String getStsSectorhomogeneo() {
+        return stsSectorhomogeneo;
+    }
+
+    public void setStsSectorhomogeneo(String stsSectorhomogeneo) {
+        this.stsSectorhomogeneo = stsSectorhomogeneo;
+    }
+
+    public String getStsPlanospredio() {
+        return stsPlanospredio;
+    }
+
+    public void setStsPlanospredio(String stsPlanospredio) {
+        this.stsPlanospredio = stsPlanospredio;
+    }
+
+    public BigDecimal getValOtro1() {
+        return valOtro1;
+    }
+
+    public void setValOtro1(BigDecimal valOtro1) {
+        this.valOtro1 = valOtro1;
+    }
+
+    public BigDecimal getValOtro2() {
+        return valOtro2;
+    }
+
+    public void setValOtro2(BigDecimal valOtro2) {
+        this.valOtro2 = valOtro2;
+    }
+
+    public String getCatCasosespeciales() {
+        return catCasosespeciales;
+    }
+
+    public void setCatCasosespeciales(String catCasosespeciales) {
+        this.catCasosespeciales = catCasosespeciales;
+    }
+
+    public String getTxtObservacion() {
+        return txtObservacion;
+    }
+
+    public void setTxtObservacion(String txtObservacion) {
+        this.txtObservacion = txtObservacion;
+    }
+
+    
+
+    public Collection<Avaluo> getAvaluoCollection() {
+        return avaluoCollection;
+    }
+
+    public void setAvaluoCollection(Collection<Avaluo> avaluoCollection) {
+        this.avaluoCollection = avaluoCollection;
     }
 
 }

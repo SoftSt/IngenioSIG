@@ -767,5 +767,9 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
         this.nodo = catastroServicio.obtenerAvaluoPredio(this.predio, sesionBean.obtenerSesionDto());
         generarArbolAvaluo();
     }
+    public void simularCalcularAvaluo() throws NewviExcepcion{
+        catastroServicio.obtenerAvaluoPredio(this.predio, sesionBean.obtenerSesionDto());
+        
+    }
 
 }

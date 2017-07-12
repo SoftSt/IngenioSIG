@@ -281,4 +281,13 @@ public interface CatastroServicio {
      * @throws NewviExcepcion
      */
     public List<AvaluoDto> obtenerAvaluoPredio(Predios predio, SesionDto sesion) throws NewviExcepcion;
+    
+    /**
+     * Genera la simulacion del calculo de los avaluos
+     * @param predio 
+     * @param sesion
+     * @throws NewviExcepcion 
+     */
+    
+    //public void obtenerSimulacionAvaluoPredio(Predios predio, SesionDto sesion) throws NewviExcepcion;
 }
