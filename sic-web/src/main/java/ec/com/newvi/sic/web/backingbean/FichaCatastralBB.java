@@ -5,6 +5,8 @@
  */
 package ec.com.newvi.sic.web.backingbean;
 
+import ec.com.newvi.componente.reporte.Reporte;
+import ec.com.newvi.componente.reporte.ReporteGenerador;
 import ec.com.newvi.sic.dto.AvaluoDto;
 import ec.com.newvi.sic.dto.DominioDto;
 import ec.com.newvi.sic.dto.FichaCatastralDto;
@@ -35,9 +37,13 @@ import ec.com.newvi.sic.web.enums.EnumEtiquetas;
 import ec.com.newvi.sic.web.enums.EnumPantallaMantenimiento;
 import ec.com.newvi.sic.web.utils.ValidacionUtils;
 import ec.com.newvi.sic.web.utils.WebUtils;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -47,6 +53,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.websocket.OnOpen;
 import org.primefaces.event.NodeSelectEvent;
+import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.TreeNode;
 
@@ -763,13 +770,35 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
         WebUtils.obtenerContextoPeticion().execute("PF('dlgPropiedad').close()");
     }
 
-    public void calcularAvaluo() throws NewviExcepcion{
+    public void calcularAvaluo() throws NewviExcepcion {
         this.nodo = catastroServicio.obtenerAvaluoPredio(this.predio, sesionBean.obtenerSesionDto());
         generarArbolAvaluo();
     }
-    public void simularCalcularAvaluo() throws NewviExcepcion{
-        catastroServicio.obtenerAvaluoPredio(this.predio, sesionBean.obtenerSesionDto());
-        
+
+    public DefaultStreamedContent imprimir() {
+        return generarReportes();
+    }
+
+    protected DefaultStreamedContent generarReportes() {
+        try {
+            DefaultStreamedContent dscXlsPa;
+            Reporte reporte = new Reporte(ReporteGenerador.FormatoReporte.PDF, new ArrayList(), new HashMap<String, Class>(), "/opt/newReport.jasper", "ninguno", new HashMap<String, Object>());
+            if (ComunUtil.esNulo(reporte)) {
+                return null;
+            }
+            InputStream streamPa = new ByteArrayInputStream((byte[]) reporte.getDatos());
+            dscXlsPa = new DefaultStreamedContent(streamPa, reporte.getMimeType().name(), "ejemplo." + reporte.getArchivoExtension());
+            streamPa.reset();
+            streamPa.close();
+            return dscXlsPa;
+        } catch (IOException ex) {
+            LoggerNewvi.getLogNewvi(this.getClass()).error(ex, sesionBean.obtenerSesionDto());
+            MensajesFaces.mensajeError(ex.getMessage());
+        } catch (Exception ex) {
+            LoggerNewvi.getLogNewvi(this.getClass()).error(ex, sesionBean.obtenerSesionDto());
+            return null;
+        }
+        return null;
     }
 
 }

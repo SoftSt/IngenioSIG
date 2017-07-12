@@ -615,7 +615,7 @@
                                         <p:column headerText="Valor" style="text-align: center">
                                             <h:outputText value="#{avaluo.valor}"/>
                                         </p:column>
-                                        
+
                                         <p:column headerText="Factor" style="text-align: center">
                                             <h:outputText value="#{avaluo.factor}"/>
                                         </p:column>
@@ -625,7 +625,7 @@
                             </p:tab>
                         </p:tabView>
                         <br/>
-                        <h:panelGrid columns="4">
+                        <h:panelGrid columns="6">
 
                             <p:commandButton actionListener="#{fichaCatastralBB.actualizarPredio()}" 
                                              update="grupoFichaCatastral" 
@@ -646,6 +646,18 @@
                                 <p:resetInput target="panelFichaCatastral" />
                             </p:commandButton>
                             <p:tooltip id="toolTipCancel" for="cancelar" value="Regresar sin guardar cambios" showEffect="fade" hideEffect="fade" position="top"/>
+
+                            <p:commandButton icon="fa fa-close" 
+                                             value="Imprimir" 
+                                             id="imprimir"
+                                             update="grupoFichaCatastral"
+                                             process="@this"
+                                             ajax="false"  
+                                             onclick="PrimeFaces.monitorDownload(start, stop);">
+                                <p:fileDownload value="#{fichaCatastralBB.imprimir()}" />
+                            </p:commandButton>
+                            <p:tooltip id="toolTipImprimir" for="cancelar" value="Imprimir" showEffect="fade" hideEffect="fade" position="top"/>
+
                         </h:panelGrid>
                         <br/>
 

@@ -57,6 +57,7 @@ public class Predios implements Serializable {
     @Size(max = 2147483647)
     @Column(name = "txt_observacion")
     private String txtObservacion;
+    @Enumerated(EnumType.STRING)
     @Column(name = "cat_estado")
     private EnumEstadoRegistro catEstado;
     @OneToMany(mappedBy = "codCatastral")
