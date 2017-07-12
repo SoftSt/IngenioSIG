@@ -323,7 +323,7 @@ public class Pisos implements Serializable {
     
     public Integer obtenerEdadPiso() {
         Calendar cal = Calendar.getInstance();
-        return cal.get(Calendar.YEAR) - (this.getValAnioconstruccion() + 1);
+        return cal.get(Calendar.YEAR) - this.getValAnioconstruccion() + 1;
     } 
     
 }
