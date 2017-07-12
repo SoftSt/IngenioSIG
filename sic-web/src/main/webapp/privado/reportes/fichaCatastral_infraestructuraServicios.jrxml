@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="fichaCatastral_infraestructuraServicios" language="groovy" pageWidth="555" pageHeight="802" columnWidth="555" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="5338e16d-a3af-4255-a5e5-4bc9b811b564">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<field name="field1" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band height="16" splitType="Stretch">
+			<rectangle>
+				<reportElement x="5" y="0" width="545" height="15" uuid="d7b4ed68-1537-4254-a860-e0d7d68e180c"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="20" y="0" width="228" height="15" uuid="cf2178f4-432c-47f0-a85a-b7632f031c05"/>
+				<textElement>
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Infraestructura y Servicios]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="15" splitType="Stretch">
+			<staticText>
+				<reportElement x="5" y="0" width="92" height="15" uuid="6ee81f19-7fcc-4f5e-b336-7c7009dc2879"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Código]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="97" y="0" width="136" height="15" uuid="dee38b4e-6b20-42b7-b919-07e866afe44c"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Grupo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="233" y="0" width="133" height="15" uuid="66a22aa6-920c-4bf4-a160-8a2f2e60210b"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Detalle]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="366" y="0" width="92" height="15" uuid="f1bd4c94-7c33-47c0-9a5b-e630e89cc9fe"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Estado]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="458" y="0" width="92" height="15" uuid="1e4e5229-4114-42d4-8e82-a5bfd6d42079"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Medidor]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="15" splitType="Stretch">
+			<textField>
+				<reportElement x="5" y="0" width="92" height="15" uuid="33d41c88-ab98-4f36-b90d-334963f41b73"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{field1}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="97" y="0" width="136" height="15" uuid="99e4d1b2-ca4e-48f4-b124-0729beabe917"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{field1}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="233" y="0" width="133" height="15" uuid="45768c1b-7d5f-44c6-9ab2-557876c5f510"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{field1}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="366" y="0" width="92" height="15" uuid="a87fb619-fc77-454f-afb6-2b0d57b7c1e3"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{field1}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="458" y="0" width="92" height="15" uuid="b3ef752a-8cb9-4fa2-ae6c-0360a32eba68"/>
+				<box>
+					<topPen lineWidth="1.0"/>
+					<leftPen lineWidth="1.0"/>
+					<bottomPen lineWidth="1.0"/>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{field1}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>
