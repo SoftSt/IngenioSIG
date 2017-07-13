@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                template="/WEB-INF/templates/default.xhtml"
+                xmlns:p="http://primefaces.org/ui">
+    <ui:define name="content">
+        <h:panelGroup id="grupoAvaluos">
+            <p:panel id="panelListaAvaluos" rendered="#{avaluoBB.esPantallaActual('PANTALLA_LISTADO')}">
+                <h:form id="formularioListaAvaluos">
+
+                    <p:growl id="growl" showDetail="true" sticky="true" life="800" />
+                    <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+                    <p>
+                        <h2>
+                            <h:outputText styleClass="#{avaluoBB.iconoPantalla.textoEtiqueta}"/>
+                            <h:outputText value=" #{avaluoBB.tituloPantalla.textoEtiqueta}"/>
+                        </h2>
+                    </p>
+                    <p>#{avaluoBB.descripcionPantalla.textoEtiqueta}</p>
+                </h:form>  
+
+            </p:panel>
+
+
+
+
+        </h:panelGroup>
+    </ui:define>
+</ui:composition>

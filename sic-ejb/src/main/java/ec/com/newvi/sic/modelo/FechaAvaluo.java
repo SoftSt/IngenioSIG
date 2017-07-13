@@ -5,8 +5,9 @@
  */
 package ec.com.newvi.sic.modelo;
 
+import ec.com.newvi.sic.enums.EnumEstadoRegistro;
+import ec.com.newvi.sic.util.ComunUtil;
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -16,7 +17,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -28,20 +29,21 @@ import javax.validation.constraints.Size;
  */
 @Entity
 @Table(name = "cat_cat_fechaavaluo")
-
+@NamedQueries({
+    @NamedQuery(name = "FechaAvaluo.findAll", query = "SELECT f FROM FechaAvaluo f")})
 public class FechaAvaluo implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Basic(optional = false)
+    @SequenceGenerator(name = "FECHAAVALUO_CODIGO_GENERATOR", initialValue = 1, allocationSize = 1, sequenceName = "cat_cat_fechaavaluo_fecav_id_seq", schema = "public")
+    @GeneratedValue(generator = "FECHAAVALUO_CODIGO_GENERATOR")
     @Column(name = "fecav_id")
     private Integer fecavId;
     @Column(name = "fecav_fechaavaluo")
     @Temporal(TemporalType.DATE)
     private Date fecavFechaavaluo;
     @Column(name = "fecav_estado")
-    private Character fecavEstado;
+    private EnumEstadoRegistro fecavEstado;
     @Size(max = 50)
     @Column(name = "aud_ing_usu")
     private String audIngUsu;
@@ -60,8 +62,6 @@ public class FechaAvaluo implements Serializable {
     @Size(max = 30)
     @Column(name = "aud_mod_ip")
     private String audModIp;
-    @OneToMany(mappedBy = "fecavId")
-    private Collection<Avaluo> avaluoCollection;
 
     public FechaAvaluo() {
     }
@@ -86,11 +86,11 @@ public class FechaAvaluo implements Serializable {
         this.fecavFechaavaluo = fecavFechaavaluo;
     }
 
-    public Character getFecavEstado() {
+    public EnumEstadoRegistro getFecavEstado() {
         return fecavEstado;
     }
 
-    public void setFecavEstado(Character fecavEstado) {
+    public void setFecavEstado(EnumEstadoRegistro fecavEstado) {
         this.fecavEstado = fecavEstado;
     }
 
@@ -142,14 +142,6 @@ public class FechaAvaluo implements Serializable {
         this.audModIp = audModIp;
     }
 
-    public Collection<Avaluo> getAvaluoCollection() {
-        return avaluoCollection;
-    }
-
-    public void setAvaluoCollection(Collection<Avaluo> avaluoCollection) {
-        this.avaluoCollection = avaluoCollection;
-    }
-
     @Override
     public int hashCode() {
         int hash = 0;
@@ -175,4 +167,7 @@ public class FechaAvaluo implements Serializable {
         return "ec.com.newvi.sic.modelo.FechaAvaluo[ fecavId=" + fecavId + " ]";
     }
     
+    public Boolean esFechaAvaluoValido() {
+        return (!ComunUtil.esNulo(this.fecavId));
+    }
 }

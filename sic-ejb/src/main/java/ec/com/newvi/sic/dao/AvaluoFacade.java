@@ -25,7 +25,7 @@ public class AvaluoFacade extends AbstractFacade<Avaluo, Integer> implements Ser
         super(Avaluo.class, Integer.class);
     }
     
-    public List<Avaluo> buscarBloques(Integer fecav_id){
+    public List<Avaluo> buscarAvaluo(Integer fecav_id){
         // Busca un listado de bloques
         Query q = this.getEntityManager().createQuery("SELECT avaluo FROM Avaluo avaluo where avaluo.avalEstado =:ESTADO and avaluo.fecavId.fecavId =:CODIGOFECHA");
         q.setParameter("ESTADO", EnumEstadoRegistro.A);

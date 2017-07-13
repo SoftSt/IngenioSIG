@@ -7,7 +7,9 @@ package ec.com.newvi.sic.servicios;
 
 import ec.com.newvi.sic.dto.AvaluoDto;
 import ec.com.newvi.sic.dto.SesionDto;
+import ec.com.newvi.sic.modelo.Avaluo;
 import ec.com.newvi.sic.modelo.Bloques;
+import ec.com.newvi.sic.modelo.FechaAvaluo;
 import ec.com.newvi.sic.modelo.Fotos;
 import ec.com.newvi.sic.modelo.PisoDetalle;
 import ec.com.newvi.sic.modelo.Pisos;
@@ -290,4 +292,24 @@ public interface CatastroServicio {
      */
     
     //public void obtenerSimulacionAvaluoPredio(Predios predio, SesionDto sesion) throws NewviExcepcion;
+    
+    /*------------------------------------------------------------FechaAvaluo------------------------------------------------------------*/
+    /**
+     * Genera una nueva FechaAvaluo
+     * @param nuevoFechaAvaluo nueva Fecha
+     * @param sesion Usuario que genera la fecha avalúo
+     * @return id de fechaAvaluo
+     * @throws NewviExcepcion 
+     */
+    public FechaAvaluo generarNuevaFechaAvaluo(FechaAvaluo nuevoFechaAvaluo, SesionDto sesion) throws NewviExcepcion;
+    
+        /*------------------------------------------------------------Avaluo------------------------------------------------------------*/
+    /**
+     * Genera un nuevo Avaluo
+     * @param nuevoAvaluo nuevo Avaluo
+     * @param sesion Usuario que genera el avalúo
+     * @return id de avaluo
+     * @throws NewviExcepcion 
+     */
+    public Integer generarNuevoAvaluo(Avaluo nuevoAvaluo, SesionDto sesion) throws NewviExcepcion;
 }
