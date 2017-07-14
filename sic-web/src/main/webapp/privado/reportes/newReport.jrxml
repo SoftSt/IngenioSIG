@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="240fd7c8-daae-4d60-869c-ac6eb700ef02">
 	<property name="ireport.zoom" value="0.9090909090909113"/>
-	<property name="ireport.x" value="71"/>
-	<property name="ireport.y" value="37"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -24,7 +24,9 @@
 		</box>
 	</style>
 	<subDataset name="Table Dataset 1" uuid="78264a72-459a-4634-a5d1-012cc223f63e"/>
+	<parameter name="TITULO_REPORTE" class="java.lang.String"/>
 	<field name="codcat" class="java.lang.String"/>
+	<field name="valAreaFrente" class="java.math.BigDecimal"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -64,6 +66,10 @@
 				</textElement>
 				<text><![CDATA[AL ]]></text>
 			</staticText>
+			<textField>
+				<reportElement x="282" y="19" width="164" height="20" uuid="379f6479-e86e-4e98-be36-1b88f214ba50"/>
+				<textFieldExpression><![CDATA[$P{TITULO_REPORTE}]]></textFieldExpression>
+			</textField>
 		</band>
 	</pageHeader>
 	<columnHeader>
@@ -224,7 +230,7 @@
 					<rightPen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{codcat}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{valAreaFrente}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="320" y="0" width="80" height="24" uuid="a262ffb4-01e0-40e8-9bce-21e81adbb491"/>

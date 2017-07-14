@@ -46,6 +46,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
@@ -782,7 +783,27 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
     protected DefaultStreamedContent generarReportes() {
         try {
             DefaultStreamedContent dscXlsPa;
-            Reporte reporte = new Reporte(ReporteGenerador.FormatoReporte.PDF, new ArrayList(), new HashMap<String, Class>(), "/opt/newReport.jasper", "ninguno", new HashMap<String, Object>());
+            
+            
+            List<Predios> predioImprimir = new ArrayList<>();
+            int i = 0;
+            for (FichaCatastralDto ficha : this.listaFichas) {
+                i++;
+                predioImprimir.add(ficha.getPredio());
+                if (i >= 50) {
+                    break;
+                }
+                
+            }
+            
+            Map<String, Class> paramRepA = new HashMap<String, Class>();
+            paramRepA.put("predios", Predios.class);
+            paramRepA.put("reportepredios", List.class);
+            
+            Map<String, Object> parametrosReporte = new HashMap<>();
+            parametrosReporte.put("TITULO_REPORTE", "REPORTECITO");
+            
+            Reporte reporte = new Reporte(ReporteGenerador.FormatoReporte.PDF, predioImprimir, paramRepA, "/opt/newReport.jasper", "/reportepredios//predios", parametrosReporte);
             if (ComunUtil.esNulo(reporte)) {
                 return null;
             }

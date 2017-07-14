@@ -151,39 +151,37 @@ public class Reporte {
         this.xml = xml;
     }
 
-    public Reporte(ReporteGenerador.FormatoReporte formatoReporte, List informacionReporte, Map<String, Class> paramsXml, String nombreJasper, String xPath, Map<String, Object> adicionalesParamsAporte) throws NewviExcepcion {
+    public Reporte(ReporteGenerador.FormatoReporte formatoReporte, List informacionReporte, Map<String, Class> paramsXml, String nombreJasper, String xPath, Map<String, Object> adicionalesParams) throws NewviExcepcion {
         this.mimeType = formatoReporte;
         this.archivoJasperNombreRuta = nombreJasper;
         this.xpath = xPath;
-        this.params = adicionalesParamsAporte;
+        this.params = new HashMap<>();
         if (ReporteGenerador.FormatoReporte.XLSX.equals(this.mimeType)) {
             this.archivoExtension = "xlsx";
         } else {
             this.archivoExtension = "pdf";
         }
         this.xml = ReporteGenerador.generarXml(paramsXml, informacionReporte);
-        this.procesarParametros();
+        this.procesarParametrosGenerales();
+        this.procesarParametrosReporte(adicionalesParams);
         this.procesarImpresion();
     }
 
-    private void procesarParametros() {
-        this.params = this.armarParametrosReporte();
+    private void procesarParametrosGenerales() {
+        String rutaReporte = "/opt/";
+        this.params.put("ARCHIVO_REPORTE", rutaReporte);
+        this.params.put("DATASOURCE_EXPRESSION", this.xpath);
+        Locale locale = new Locale("es", "US");
+        this.params.put("LOCALE", locale);
+        TimeZone timeZone = TimeZone.getTimeZone("America/Guayaquil");
+        this.params.put("REPORT_TIME_ZONE", timeZone);
+        this.params.put("NOMBRE_SISTEMA", "SICG");
+        this.params.put("NOMBRE_USUARIO", "USUARIO");
+        this.params.put("RUTA_IMAGENES", "/opt/");
     }
 
-    private Map<String, Object> armarParametrosReporte() {
-        Map<String, Object> parametrosEspecificosMotor = new HashMap<String, Object>();
-        String rutaReporte = "/opt/";
-        parametrosEspecificosMotor.put("ARCHIVO_REPORTE", rutaReporte);
-        parametrosEspecificosMotor.put("DATASOURCE_EXPRESSION", this.xpath);
-        Locale locale = new Locale("es", "US");
-        parametrosEspecificosMotor.put("LOCALE", locale);
-        TimeZone timeZone = TimeZone.getTimeZone("America/Guayaquil");
-        parametrosEspecificosMotor.put("DATASOURCE_EXPRESSION", timeZone);
-        parametrosEspecificosMotor.put("NOMBRE_SISTEMA", "SICG");
-        parametrosEspecificosMotor.put("NOMBRE_USUARIO", "USUARIO");
-        parametrosEspecificosMotor.put("RUTA_IMAGENES", "/opt/");
-        parametrosEspecificosMotor.putAll(this.params);
-        return parametrosEspecificosMotor;
+    private void procesarParametrosReporte(Map<String, Object> adicionalesParams) {
+        this.params.putAll(adicionalesParams);
     }
 
     private void procesarImpresion() throws NewviExcepcion {
@@ -192,7 +190,7 @@ public class Reporte {
                 String xmlHeader = "<?xml version=\"1.0\" encoding=\"" + "ISO-8859-1" + "\" ?>\n";
                 this.xml = xmlHeader + this.xml;
             }
-            this.datos = ReporteGenerador.generarReporte(new FileInputStream(this.archivoJasperNombreRuta), Reporte.doc2bytes(DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new InputSource(new StringReader(this.xml)))), ReporteGenerador.FormatoReporte.PDF);
+            this.datos = ReporteGenerador.generarReporte(new FileInputStream(this.archivoJasperNombreRuta), Reporte.doc2bytes(DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new InputSource(new StringReader(this.xml)))), ReporteGenerador.FormatoReporte.PDF, this.params);
         } catch (Exception e) {
             throw new NewviExcepcion(EnumNewviExcepciones.ERR000);
         }

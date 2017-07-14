@@ -38,16 +38,15 @@ public class ReporteGenerador {
         PDF
     }
 
-    public static byte[] generarReporte(InputStream reportStream, byte[] sourceData, FormatoReporte reportFormat) throws JRException{
+    public static byte[] generarReporte(InputStream reportStream, byte[] sourceData, FormatoReporte reportFormat, Map<String, Object> params) throws JRException{
         JasperReport jasperReport = (JasperReport) JRLoader.loadObject(reportStream);
         if (jasperReport == null) {
             throw new JRException("Cannot build report from stream");
         }
 
         jasperReport.setProperty(JRTextField.PROPERTY_PRINT_KEEP_FULL_TEXT, "true");
-        Map<String, Object> params = new HashMap<>();
         params.put(JRXPathQueryExecuterFactory.XML_INPUT_STREAM, new ByteArrayInputStream(sourceData));
-        JRXmlDataSource source = new JRXmlDataSource(new ByteArrayInputStream(sourceData));
+        JRXmlDataSource source = new JRXmlDataSource(new ByteArrayInputStream(sourceData), (String) params.get("DATASOURCE_EXPRESSION"));
         source.setDatePattern("yyyy-MM-dd'T'HH:mm:ssXXX");
         JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, params, source);
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
