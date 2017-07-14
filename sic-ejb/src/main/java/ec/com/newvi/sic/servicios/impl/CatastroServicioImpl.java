@@ -513,127 +513,135 @@ public class CatastroServicioImpl implements CatastroServicio {
         promedioFactores = BigDecimal.ZERO;
         div = new BigDecimal(5);
         frente = predio.getValAreaFrente();
-        //area = predio.getValAreaFondo();
-        area = predio.getValAreaPredio();
-        areaConstruccion = BigDecimal.ZERO;
-        valorEdificacion = BigDecimal.ZERO;
 
         List<AvaluoDto> nodo = new ArrayList<>();
         List<AvaluoDto> listaOtrosRubros = new ArrayList<>();
 
-        c1 = BigDecimal.ZERO;
-        c2 = BigDecimal.ZERO;
-        c3 = BigDecimal.ZERO;
-        c4 = BigDecimal.ZERO;
-        c5 = BigDecimal.ZERO;
-        c6 = BigDecimal.ZERO;
+        //if (frente.signum()==0) {
+        if (frente.compareTo(BigDecimal.ZERO) == 0) {
+            LoggerNewvi.getLogNewvi(this.getClass()).debug("Existen valores negativos no se realizó el calculo del avaluo...", sesion);
+            return null;
+        } else {
+            area = predio.getValAreaPredio();
+            areaConstruccion = BigDecimal.ZERO;
+            valorEdificacion = BigDecimal.ZERO;
 
-        aPagar = BigDecimal.ZERO;
+            c1 = BigDecimal.ZERO;
+            c2 = BigDecimal.ZERO;
+            c3 = BigDecimal.ZERO;
+            c4 = BigDecimal.ZERO;
+            c5 = BigDecimal.ZERO;
+            c6 = BigDecimal.ZERO;
 
-        zona = predio.getCodZona();
-        sector = predio.getCodSector();
+            aPagar = BigDecimal.ZERO;
 
-        nodo.add(generarElementoArbolAvaluo("Area", area.setScale(2, BigDecimal.ROUND_UP).toString(), null, null));
-        nodo.add(generarElementoArbolAvaluo("Frente", frente.setScale(2, BigDecimal.ROUND_UP).toString(), null, null));
-        nodo.add(generarElementoArbolAvaluo("Fondo relativo", predio.getValAreaFondo().setScale(2, BigDecimal.ROUND_UP).toString(), null, null));
+            zona = predio.getCodZona();
+            sector = predio.getCodSector();
 
-        // Calculo del fondo relativo COFF
-        coff = obtenerValoracionFondoRelativo(area, frente);
-        nodo.add(generarElementoArbolAvaluo("Factor frente fondo", coff.toString(), null, null));
+            nodo.add(generarElementoArbolAvaluo("Area", area.setScale(2, BigDecimal.ROUND_UP).toString(), null, null));
+            nodo.add(generarElementoArbolAvaluo("Frente", frente.setScale(2, BigDecimal.ROUND_UP).toString(), null, null));
+            nodo.add(generarElementoArbolAvaluo("Fondo relativo", predio.getValAreaFondo().setScale(2, BigDecimal.ROUND_UP).toString(), null, null));
 
-        // Coeficiente de Topografía COT
-        cot = parametrosServicio.obtenerCoeficienteTerreno(predio, "TOPOGRAFIA");
-        nodo.add(generarElementoArbolAvaluo("Topografía", cot.toString(), null, null));
-        // Coeficinte de Erosion
-        cero = parametrosServicio.obtenerCoeficienteTerreno(predio, "LOCALIZACION");
-        nodo.add(generarElementoArbolAvaluo("Erosión", cero.toString(), null, null));
-        // Coeficinte de forma COFO
-        cofo = parametrosServicio.obtenerCoeficienteTerreno(predio, "FORMA");
-        nodo.add(generarElementoArbolAvaluo("Forma", cofo.toString(), null, null));
-        // Coeficinte de Ubicacion
-        cubi = parametrosServicio.obtenerCoeficienteTerreno(predio, "OCUPACION");
-        nodo.add(generarElementoArbolAvaluo("Ubicación", cubi.toString(), null, null));
+            // Calculo del fondo relativo COFF
+            coff = obtenerValoracionFondoRelativo(area, frente);
+            nodo.add(generarElementoArbolAvaluo("Factor frente fondo", coff.toString(), null, null));
 
-        promedioFactores = (promedioFactores.add(coff).add(cot).add(cofo).add(cero).add(cubi)).divide(div, 4, RoundingMode.CEILING);
-        nodo.add(generarElementoArbolAvaluo("Promedio de factores", promedioFactores.setScale(2, BigDecimal.ROUND_UP).toString(), null, null));
+            // Coeficiente de Topografía COT
+            cot = parametrosServicio.obtenerCoeficienteTerreno(predio, "TOPOGRAFIA");
+            nodo.add(generarElementoArbolAvaluo("Topografía", cot.toString(), null, null));
+            // Coeficinte de Erosion
+            cero = parametrosServicio.obtenerCoeficienteTerreno(predio, "LOCALIZACION");
+            nodo.add(generarElementoArbolAvaluo("Erosión", cero.toString(), null, null));
+            // Coeficinte de forma COFO
+            cofo = parametrosServicio.obtenerCoeficienteTerreno(predio, "FORMA");
+            nodo.add(generarElementoArbolAvaluo("Forma", cofo.toString(), null, null));
+            // Coeficinte de Ubicacion
+            cubi = parametrosServicio.obtenerCoeficienteTerreno(predio, "OCUPACION");
+            nodo.add(generarElementoArbolAvaluo("Ubicación", cubi.toString(), null, null));
 
-        // CALCULO DEL PRECIO BASE PARA EL TERRENO
-        // SE TOMA EN CUENTA UNA VALORACION POR LAS ZONAS y SECTORES DEL MUNICIPIO.
-        consulta = "20" + zona + sector;
+            promedioFactores = (promedioFactores.add(coff).add(cot).add(cofo).add(cero).add(cubi)).divide(div, 4, RoundingMode.CEILING);
+            nodo.add(generarElementoArbolAvaluo("Promedio de factores", promedioFactores.setScale(2, BigDecimal.ROUND_UP).toString(), null, null));
 
-        vterreno = parametrosServicio.obtenerValorPorCodigoCalculo(consulta, "ZONAS VALORADAS M2");
-        nodo.add(generarElementoArbolAvaluo("Precio base en M2 en la zona " + zona + " sector " + sector, vterreno.setScale(2, BigDecimal.ROUND_UP).toString(), null, null));
+            // CALCULO DEL PRECIO BASE PARA EL TERRENO
+            // SE TOMA EN CUENTA UNA VALORACION POR LAS ZONAS y SECTORES DEL MUNICIPIO.
+            consulta = "20" + zona + sector;
 
-        valor_terreno = (promedioFactores.multiply(area)).multiply(vterreno);
+            vterreno = parametrosServicio.obtenerValorPorCodigoCalculo(consulta, "ZONAS VALORADAS M2");
+            nodo.add(generarElementoArbolAvaluo("Precio base en M2 en la zona " + zona + " sector " + sector, vterreno.setScale(2, BigDecimal.ROUND_UP).toString(), null, null));
 
-        predio.setValTerreno(valor_terreno);
-        actualizarPredio(predio, sesion);
+            valor_terreno = (promedioFactores.multiply(area)).multiply(vterreno);
 
-        for (Bloques bloque : predio.getBloques()) {
-            nodo.add(obtenerAvaluoBloque(bloque, promedioFactores, sesion));
-            valorEdificacion = valorEdificacion.add(bloque.getValBloque());
-            areaConstruccion = areaConstruccion.add(bloque.getValAreabloque());
-            nodo.add(generarElementoArbolAvaluo("Costo Total bloque", bloque.getValBloque().setScale(2, BigDecimal.ROUND_UP).toString(), null, null));
+            predio.setValTerreno(valor_terreno);
+            actualizarPredio(predio, sesion);
+
+            for (Bloques bloque : predio.getBloques()) {
+                nodo.add(obtenerAvaluoBloque(bloque, promedioFactores, sesion));
+                valorEdificacion = valorEdificacion.add(bloque.getValBloque());
+                areaConstruccion = areaConstruccion.add(bloque.getValAreabloque());
+                nodo.add(generarElementoArbolAvaluo("Costo Total bloque", bloque.getValBloque().setScale(2, BigDecimal.ROUND_UP).toString(), null, null));
+            }
+
+            nodo.add(generarElementoArbolAvaluo("Valor del terreno", valor_terreno.setScale(2, BigDecimal.ROUND_UP).toPlainString(), null, null));
+            //Actualiza Valoración de Terreno y Contrucción
+            predio.setValEdifica(valorEdificacion);
+            nodo.add(generarElementoArbolAvaluo("Valor de la edificacion", valorEdificacion.setScale(2, BigDecimal.ROUND_UP).toString(), null, null));
+            predio.setValAreaConstruccion(areaConstruccion);
+
+            valPredio = valor_terreno.add(valorEdificacion);
+            nodo.add(generarElementoArbolAvaluo("Valor del predio", valPredio.setScale(2, BigDecimal.ROUND_UP).toString(), null, null));
+
+            predio.setValPredio(valPredio);
+            actualizarPredio(predio, sesion);
+
+            // Constantes catastro urbano
+            List<ConstantesImpuestos> constantesImpuestos = parametrosServicio.obtenerConstantesImpuestosPorTipo("URBANO");
+
+            for (ConstantesImpuestos constantesImpuesto : constantesImpuestos) {
+                c1 = constantesImpuesto.getValBomberos();
+                c2 = constantesImpuesto.getValServiciosadministrativos();
+                c3 = constantesImpuesto.getValCem();
+                c4 = constantesImpuesto.getValBasura();
+                c5 = constantesImpuesto.getValTasaaplicada();
+                c6 = constantesImpuesto.getValAmbientales();
+            }
+
+            // Ubica Valor recoleccion de basura segun Zona mirar domi_calculo = TASA RECOLECCIÓN DE BASURA            
+            consulta = "60" + zona;
+            basura = parametrosServicio.obtenerValorPorCodigoCalculo(consulta, "TASA RECOLECCIÓN DE BASURA");
+            ba = parametrosServicio.tieneBasura(codigo);
+
+            if (ba) {
+                basura = BigDecimal.ZERO;
+            }
+            aPagar = ((valPredio.multiply(c5)).add(c2)).add(c3).add(c6).add((valPredio.multiply(c1)).multiply(c5)).add(basura);
+            // Actualiza otros valores calculados
+            predio.setValCem(c3);
+            predio.setValBomberos((valPredio.multiply(c1)).multiply(c5));
+            predio.setValEmision(c2);
+            predio.setValBasura(basura);
+            predio.setValAmbientales(c6);
+            predio.setValImpuesto(valPredio.multiply(c5));
+            predio.setValImppredial(aPagar);
+            actualizarPredio(predio, sesion);
+
+            nodo.add(generarElementoArbolAvaluo("Impuesto predial", predio.getValImpuesto().setScale(2, BigDecimal.ROUND_UP).toString(), null, null));
+
+            listaOtrosRubros.add(generarElementoArbolAvaluo("Bomberos", predio.getValBomberos().setScale(2, BigDecimal.ROUND_UP).toString(), null, null));
+            listaOtrosRubros.add(generarElementoArbolAvaluo("Costo emisión", predio.getValEmision().setScale(2, BigDecimal.ROUND_UP).toString(), null, null));
+            listaOtrosRubros.add(generarElementoArbolAvaluo("CEM", predio.getValCem().setScale(2, BigDecimal.ROUND_UP).toString(), null, null));
+            listaOtrosRubros.add(generarElementoArbolAvaluo("Servicios ambientales", predio.getValAmbientales().setScale(2, BigDecimal.ROUND_UP).toString(), null, null));
+            listaOtrosRubros.add(generarElementoArbolAvaluo("Tasa recolección basura", predio.getValBasura().setScale(2, BigDecimal.ROUND_UP).toString(), null, null));
+
+            nodo.add(generarElementoArbolAvaluo("OTROS RUBROS", null, null, listaOtrosRubros));
+
+            nodo.add(generarElementoArbolAvaluo("A pagar", predio.getValImppredial().setScale(2, BigDecimal.ROUND_UP).toString(), null, null));
+
+            //insertarElementosArbolAvaluo("Raiz", null, nodo, this.raiz, null);
+            return nodo;
         }
-
-        nodo.add(generarElementoArbolAvaluo("Valor del terreno", valor_terreno.setScale(2, BigDecimal.ROUND_UP).toPlainString(), null, null));
-        //Actualiza Valoración de Terreno y Contrucción
-        predio.setValEdifica(valorEdificacion);
-        nodo.add(generarElementoArbolAvaluo("Valor de la edificacion", valorEdificacion.setScale(2, BigDecimal.ROUND_UP).toString(), null, null));
-        predio.setValAreaConstruccion(areaConstruccion);
-
-        valPredio = valor_terreno.add(valorEdificacion);
-        nodo.add(generarElementoArbolAvaluo("Valor del predio", valPredio.setScale(2, BigDecimal.ROUND_UP).toString(), null, null));
-
-        predio.setValPredio(valPredio);
-        actualizarPredio(predio, sesion);
-
-        // Constantes catastro urbano
-        List<ConstantesImpuestos> constantesImpuestos = parametrosServicio.obtenerConstantesImpuestosPorTipo("URBANO");
-
-        for (ConstantesImpuestos constantesImpuesto : constantesImpuestos) {
-            c1 = constantesImpuesto.getValBomberos();
-            c2 = constantesImpuesto.getValServiciosadministrativos();
-            c3 = constantesImpuesto.getValCem();
-            c4 = constantesImpuesto.getValBasura();
-            c5 = constantesImpuesto.getValTasaaplicada();
-            c6 = constantesImpuesto.getValAmbientales();
-        }
-
-        // Ubica Valor recoleccion de basura segun Zona mirar domi_calculo = TASA RECOLECCIÓN DE BASURA            
-        consulta = "60" + zona;
-        basura = parametrosServicio.obtenerValorPorCodigoCalculo(consulta, "TASA RECOLECCIÓN DE BASURA");
-        ba = parametrosServicio.tieneBasura(codigo);
-
-        if (ba) {
-            basura = BigDecimal.ZERO;
-        }
-        aPagar = ((valPredio.multiply(c5)).add(c2)).add(c3).add(c6).add((valPredio.multiply(c1)).multiply(c5)).add(basura);
-        // Actualiza otros valores calculados
-        predio.setValCem(c3);
-        predio.setValBomberos((valPredio.multiply(c1)).multiply(c5));
-        predio.setValEmision(c2);
-        predio.setValBasura(basura);
-        predio.setValAmbientales(c6);
-        predio.setValImpuesto(valPredio.multiply(c5));
-        predio.setValImppredial(aPagar);
-        actualizarPredio(predio, sesion);
-
-        nodo.add(generarElementoArbolAvaluo("Impuesto predial", predio.getValImpuesto().setScale(2, BigDecimal.ROUND_UP).toString(), null, null));
-
-        listaOtrosRubros.add(generarElementoArbolAvaluo("Bomberos", predio.getValBomberos().setScale(2, BigDecimal.ROUND_UP).toString(), null, null));
-        listaOtrosRubros.add(generarElementoArbolAvaluo("Costo emisión", predio.getValEmision().setScale(2, BigDecimal.ROUND_UP).toString(), null, null));
-        listaOtrosRubros.add(generarElementoArbolAvaluo("CEM", predio.getValCem().setScale(2, BigDecimal.ROUND_UP).toString(), null, null));
-        listaOtrosRubros.add(generarElementoArbolAvaluo("Servicios ambientales", predio.getValAmbientales().setScale(2, BigDecimal.ROUND_UP).toString(), null, null));
-        listaOtrosRubros.add(generarElementoArbolAvaluo("Tasa recolección basura", predio.getValBasura().setScale(2, BigDecimal.ROUND_UP).toString(), null, null));
-
-        nodo.add(generarElementoArbolAvaluo("OTROS RUBROS", null, null, listaOtrosRubros));
-
-        nodo.add(generarElementoArbolAvaluo("A pagar", predio.getValImppredial().setScale(2, BigDecimal.ROUND_UP).toString(), null, null));
-
-        //insertarElementosArbolAvaluo("Raiz", null, nodo, this.raiz, null);
-        return nodo;
     }
+
+    
 
     private BigDecimal obtenerValoracionFondoRelativo(BigDecimal area, BigDecimal frente) {
 
@@ -660,6 +668,7 @@ public class CatastroServicioImpl implements CatastroServicio {
         BigDecimal coeficiente = parametrosServicio.obtenerCoeficienteDetallePiso(pisoDetalle, elementoCalculo);
         return generarElementoArbolAvaluo(pisoDetalle.getSubgrupo(), pisoDetalle.getDescripcion(), coeficiente.toString(), null);
     }
+
     @Override
     public FechaAvaluo generarNuevaFechaAvaluo(FechaAvaluo nuevoFechaAvaluo, SesionDto sesion) throws NewviExcepcion {
         // Validar que los datos no sean incorrectos
@@ -677,10 +686,11 @@ public class CatastroServicioImpl implements CatastroServicio {
         nuevoFechaAvaluo.setAudIngFec(fechaIngreso);
 
         fechaAvaluoFacade.create(nuevoFechaAvaluo);
-        
+
         // Si todo marcha bien enviar id de la fecha avaluo
         return nuevoFechaAvaluo;
     }
+
     @Override
     public Integer generarNuevoAvaluo(Avaluo nuevoAvaluo, SesionDto sesion) throws NewviExcepcion {
         // Validar que los datos no sean incorrectos
@@ -698,7 +708,7 @@ public class CatastroServicioImpl implements CatastroServicio {
         nuevoAvaluo.setAudIngFec(fechaIngreso);
 
         avaluoFacade.create(nuevoAvaluo);
-        
+
         // Si todo marcha bien enviar id de avaluo
         return nuevoAvaluo.getAvalId();
     }
