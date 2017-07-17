@@ -790,7 +790,7 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
             for (FichaCatastralDto ficha : this.listaFichas) {
                 i++;
                 predioImprimir.add(ficha.getPredio());
-                if (i >= 50) {
+                if (i >= 500) {
                     break;
                 }
                 

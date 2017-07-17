@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="240fd7c8-daae-4d60-869c-ac6eb700ef02">
 	<property name="ireport.zoom" value="0.9090909090909113"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="29"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -25,8 +25,23 @@
 	</style>
 	<subDataset name="Table Dataset 1" uuid="78264a72-459a-4634-a5d1-012cc223f63e"/>
 	<parameter name="TITULO_REPORTE" class="java.lang.String"/>
-	<field name="codcat" class="java.lang.String"/>
+	<parameter name="VAL_SERVICIOS" class="java.math.BigDecimal"/>
 	<field name="valAreaFrente" class="java.math.BigDecimal"/>
+	<field name="codCatastral" class="java.lang.Integer"/>
+	<field name="codcat" class="java.math.BigDecimal"/>
+	<field name="valCem" class="java.math.BigDecimal"/>
+	<field name="valTerreno" class="java.math.BigDecimal"/>
+	<field name="valEdifica" class="java.math.BigDecimal"/>
+	<field name="valPredio" class="java.math.BigDecimal"/>
+	<variable name="SUMA_TOTAL" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{valAreaFrente}]]></variableExpression>
+	</variable>
+	<variable name="codcat_1" class="java.lang.Integer" resetType="Page" calculation="Count">
+		<variableExpression><![CDATA[$F{codcat}]]></variableExpression>
+	</variable>
+	<variable name="codcat_2" class="java.lang.Integer" resetType="Column" calculation="Count">
+		<variableExpression><![CDATA[$F{codcat}]]></variableExpression>
+	</variable>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -66,8 +81,9 @@
 				</textElement>
 				<text><![CDATA[AL ]]></text>
 			</staticText>
-			<textField>
-				<reportElement x="282" y="19" width="164" height="20" uuid="379f6479-e86e-4e98-be36-1b88f214ba50"/>
+			<textField isBlankWhenNull="true">
+				<reportElement x="320" y="19" width="171" height="20" uuid="379f6479-e86e-4e98-be36-1b88f214ba50"/>
+				<textElement textAlignment="Center"/>
 				<textFieldExpression><![CDATA[$P{TITULO_REPORTE}]]></textFieldExpression>
 			</textField>
 		</band>
@@ -105,7 +121,7 @@
 					<rightPen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<text><![CDATA[CI/RUC]]></text>
+				<text><![CDATA[CI/RUC FRENTE]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="240" y="0" width="80" height="35" uuid="a255ade3-b1a5-4169-b0b0-773a565585a2"/>
@@ -188,7 +204,7 @@
 	</columnHeader>
 	<detail>
 		<band height="24" splitType="Stretch">
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="0" y="0" width="80" height="24" uuid="1fd43ff4-6c68-4655-821e-dc8963bbcc2e"/>
 				<box>
 					<topPen lineWidth="1.0"/>
@@ -197,9 +213,9 @@
 					<rightPen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{codcat}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{codCatastral}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="80" y="0" width="80" height="24" uuid="eae3b73d-f2bb-470c-98e2-6d6401babbb1"/>
 				<box>
 					<topPen lineWidth="1.0"/>
@@ -210,7 +226,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{codcat}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="160" y="0" width="80" height="24" uuid="f531a60f-13c5-4d35-a92c-dde9f2eb5bb3"/>
 				<box>
 					<topPen lineWidth="1.0"/>
@@ -221,7 +237,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{codcat}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="240" y="0" width="80" height="24" uuid="150eb316-aa43-4de6-a27a-c881cf6db6a5"/>
 				<box>
 					<topPen lineWidth="1.0"/>
@@ -232,7 +248,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{valAreaFrente}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="320" y="0" width="80" height="24" uuid="a262ffb4-01e0-40e8-9bce-21e81adbb491"/>
 				<box>
 					<topPen lineWidth="1.0"/>
@@ -241,9 +257,9 @@
 					<rightPen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{codcat}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{valEdifica}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="400" y="0" width="80" height="24" uuid="bd818e66-ab72-443c-91b7-fc2689a4ce4e"/>
 				<box>
 					<topPen lineWidth="1.0"/>
@@ -252,9 +268,9 @@
 					<rightPen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{codcat}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{valPredio}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="480" y="0" width="80" height="24" uuid="3b646e13-39a7-4d81-bf42-b1d1efa36889"/>
 				<box>
 					<topPen lineWidth="1.0"/>
@@ -265,7 +281,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{codcat}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="560" y="0" width="80" height="24" uuid="cc435806-2525-4b5f-9ed4-18e22e473de7"/>
 				<box>
 					<topPen lineWidth="1.0"/>
@@ -274,9 +290,9 @@
 					<rightPen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{codcat}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{valCem}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="640" y="0" width="80" height="24" uuid="66cca8de-a0f2-4607-9f07-657177046fc1"/>
 				<box>
 					<topPen lineWidth="1.0"/>
@@ -285,9 +301,9 @@
 					<rightPen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{codcat}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{VAL_SERVICIOS}]]></textFieldExpression>
 			</textField>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="720" y="0" width="82" height="24" uuid="a3b02fc6-8da4-4e8c-98cd-47428dcfcba6"/>
 				<box>
 					<topPen lineWidth="1.0"/>
@@ -326,19 +342,23 @@
 					<bottomPen lineWidth="1.0"/>
 					<rightPen lineWidth="1.0"/>
 				</box>
-				<textElement verticalAlignment="Middle"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
 				<text><![CDATA[TOTAL]]></text>
 			</staticText>
-			<textField>
-				<reportElement x="720" y="0" width="82" height="42" uuid="75d9ed62-b17a-491b-8d6b-46b0a6979161"/>
+			<textField isBlankWhenNull="true">
+				<reportElement x="720" y="0" width="82" height="42" uuid="7b5a827f-e833-4db6-afa0-6dfc27d78712"/>
 				<box>
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
 					<bottomPen lineWidth="1.0"/>
 					<rightPen lineWidth="1.0"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{codcat}]]></textFieldExpression>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{SUMA_TOTAL}]]></textFieldExpression>
 			</textField>
 		</band>
 	</summary>
