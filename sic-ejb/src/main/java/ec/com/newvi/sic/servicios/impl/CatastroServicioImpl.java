@@ -674,7 +674,7 @@ public class CatastroServicioImpl implements CatastroServicio {
         // Validar que los datos no sean incorrectos
         LoggerNewvi.getLogNewvi(this.getClass()).debug("Validando fecha avaluo...", sesion);
         if (!nuevoFechaAvaluo.esFechaAvaluoValido()) {
-            throw new NewviExcepcion(EnumNewviExcepciones.ERR343);
+            throw new NewviExcepcion(EnumNewviExcepciones.ERR363);
         }
         // Crear el fecha avaluo
         LoggerNewvi.getLogNewvi(this.getClass()).debug("Creando fecha avaluo...", sesion);
@@ -696,7 +696,7 @@ public class CatastroServicioImpl implements CatastroServicio {
         // Validar que los datos no sean incorrectos
         LoggerNewvi.getLogNewvi(this.getClass()).debug("Validando fecha avaluo...", sesion);
         if (!nuevoAvaluo.esAvaluoValido()) {
-            throw new NewviExcepcion(EnumNewviExcepciones.ERR343);
+            throw new NewviExcepcion(EnumNewviExcepciones.ERR362);
         }
         // Crear el avaluo
         LoggerNewvi.getLogNewvi(this.getClass()).debug("Creando fecha avaluo...", sesion);

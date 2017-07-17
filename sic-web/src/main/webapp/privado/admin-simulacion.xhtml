@@ -19,13 +19,28 @@
                         </h2>
                     </p>
                     <p>#{avaluoBB.descripcionPantalla.textoEtiqueta}</p>
+
+                    <p:wizard flowListener="#{avaluoBB.onFlowProcess}">
+                        <p:tab id="personal" title="Personal">
+                            <p:messages />
+                            <p:panel header="Personal Details">
+                                <p:commandButton actionListener="#{avaluoBB.generarSimulacion()}"
+                                                 icon="fa fa-angle-double-right"
+                                                 id="generarSimulacion">
+                                </p:commandButton>
+                            </p:panel>
+
+                        </p:tab>
+                        <p:tab id="other" title="Other">
+                            <p:messages />
+                            <p:panel header="Other Details">
+                                <p>hola</p>
+                            </p:panel>
+                        </p:tab>
+                    </p:wizard>
                 </h:form>  
 
             </p:panel>
-
-
-
-
         </h:panelGroup>
     </ui:define>
 </ui:composition>

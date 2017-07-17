@@ -168,6 +168,6 @@ public class FechaAvaluo implements Serializable {
     }
     
     public Boolean esFechaAvaluoValido() {
-        return (!ComunUtil.esNulo(this.fecavId));
+        return (!ComunUtil.esNulo(this.fecavEstado));
     }
 }

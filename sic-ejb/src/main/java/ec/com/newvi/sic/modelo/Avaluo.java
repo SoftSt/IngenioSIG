@@ -347,7 +347,7 @@ public class Avaluo implements Serializable {
     }
     
     public Boolean esAvaluoValido() {
-        return (!ComunUtil.esNulo(this.avalId));
+        return (!ComunUtil.esNulo(this.avalEstado));
     }
     
 }

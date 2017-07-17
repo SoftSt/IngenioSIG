@@ -115,7 +115,10 @@ public enum EnumEtiquetas {
     PROPIETARIO_NUEVO_DESCRIPCION("Creación de nuevo Propietario."),
     PROPIETARIO_EDITAR_TITULO("Editar Propietario"),
     PROPIETARIO_EDITAR_ICONO("fa fa-edit"),
-    PROPIETARIO_EDITAR_DESCRIPCION("Edición de Propietario seleccionado.");
+    PROPIETARIO_EDITAR_DESCRIPCION("Edición de Propietario seleccionado."),
+    SIMULACION_LISTA_TITULO("Simulación"),
+    SIMULACION_LISTA_ICONO("fa fa-laptop"),
+    SIMULACION_LISTA_DESCRIPCION("Gestión de simulacion");
     
     private final String textoEtiqueta;
 
