@@ -17,6 +17,7 @@ import ec.com.newvi.sic.modelo.Predios;
 import ec.com.newvi.sic.modelo.Terreno;
 import ec.com.newvi.sic.util.excepciones.NewviExcepcion;
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 import javax.annotation.security.PermitAll;
 import javax.ejb.Local;
@@ -303,6 +304,12 @@ public interface CatastroServicio {
      */
     public FechaAvaluo generarNuevaFechaAvaluo(FechaAvaluo nuevoFechaAvaluo, SesionDto sesion) throws NewviExcepcion;
     
+    /**
+     * Lista las fechas de los avaluos
+     * @return listado de fechas de avaluos
+     */
+    public List<FechaAvaluo> consultarFechaAvaluos();
+    
         /*------------------------------------------------------------Avaluo------------------------------------------------------------*/
     /**
      * Genera un nuevo Avaluo
@@ -312,4 +319,11 @@ public interface CatastroServicio {
      * @throws NewviExcepcion 
      */
     public Integer generarNuevoAvaluo(Avaluo nuevoAvaluo, SesionDto sesion) throws NewviExcepcion;
+    
+    /**
+     *Lista los avaluos por determinada fecha 
+     * @param fecavFechaavaluo fecha por la que se filtraráa
+     * @return lista de avaluos
+     */
+    public List<Avaluo> consultarAvaluos(Date fecavFechaavaluo);
 }

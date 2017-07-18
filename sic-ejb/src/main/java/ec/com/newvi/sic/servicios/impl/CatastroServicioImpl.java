@@ -641,8 +641,6 @@ public class CatastroServicioImpl implements CatastroServicio {
         }
     }
 
-    
-
     private BigDecimal obtenerValoracionFondoRelativo(BigDecimal area, BigDecimal frente) {
 
         BigDecimal v1, v2;
@@ -711,6 +709,15 @@ public class CatastroServicioImpl implements CatastroServicio {
 
         // Si todo marcha bien enviar id de avaluo
         return nuevoAvaluo.getAvalId();
+    }
+
+    @Override
+    public List<Avaluo> consultarAvaluos(Date fecavFechaavaluo) {
+        return avaluoFacade.buscarAvaluos(fecavFechaavaluo);
+    }
+    @Override
+    public List<FechaAvaluo> consultarFechaAvaluos(){
+        return fechaAvaluoFacade.buscarFechaAvaluos();
     }
 
 }

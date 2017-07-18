@@ -35,7 +35,25 @@ public class AvaluoBB extends AdminAvaluo {
 
     private EnumPantallaMantenimiento pantallaActual;
     private Boolean skip;
+    private List<Avaluo> listaAvaluos;
+    private List<FechaAvaluo> listaFechaAvaluos;
 
+    public List<FechaAvaluo> getListaFechaAvaluos() {
+        return listaFechaAvaluos;
+    }
+
+    public void setListaFechaAvaluos(List<FechaAvaluo> listaFechaAvaluos) {
+        this.listaFechaAvaluos = listaFechaAvaluos;
+    }
+
+    public List<Avaluo> getListaAvaluos() {
+        return listaAvaluos;
+    }
+
+    public void setListaAvaluos(List<Avaluo> listaAvaluos) {
+        this.listaAvaluos = listaAvaluos;
+    }
+    
     public Boolean getSkip() {
         return skip;
     }
@@ -51,6 +69,7 @@ public class AvaluoBB extends AdminAvaluo {
                 EnumEtiquetas.SIMULACION_LISTA_ICONO,
                 EnumEtiquetas.SIMULACION_LISTA_DESCRIPCION);
         this.skip = false;
+        actualizarListadoFechaAvaluos();
     }
 
     public void generarSimulacion() throws NewviExcepcion {
@@ -118,5 +137,12 @@ public class AvaluoBB extends AdminAvaluo {
         } else {
             return event.getNewStep();
         }
+    }
+    
+    /*public void actualizarListadoAvaluo(Date fecavFechaavaluo){
+        listaAvaluos = catastroServicio.consultarAvaluos(fecavFechaavaluo);
+    }*/
+    public void actualizarListadoFechaAvaluos(){
+        listaFechaAvaluos = catastroServicio.consultarFechaAvaluos();
     }
 }

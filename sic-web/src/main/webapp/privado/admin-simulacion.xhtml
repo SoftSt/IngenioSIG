@@ -37,6 +37,16 @@
                                 <p>hola</p>
                             </p:panel>
                         </p:tab>
+                        <p:tab id="listado" title="Listado">
+                            <p:messages />
+                            <p:panel>
+                                <p:selectOneMenu id="fechaAvaluo" style="width:125px" >
+                                    <f:selectItem itemLabel="Seleccione tipo fecha..." itemValue="null" />
+                                    <f:selectItems value="#{avaluoBB.listaFechaAvaluos}" var="fechaAvaluo" itemValue="#{fechaAvaluo}"/>
+                                    <p:ajax event="change" update="@this" />
+                                </p:selectOneMenu>
+                            </p:panel>
+                        </p:tab>
                     </p:wizard>
                 </h:form>  
 

@@ -24,11 +24,12 @@ public class FechaAvaluoFacade extends AbstractFacade<FechaAvaluo, Integer>{
         super(FechaAvaluo.class, Integer.class);
     }
     
-    public List<FechaAvaluo> obtenerFechaAvaluo(){
+    public List<FechaAvaluo> buscarFechaAvaluos(){
     // Busca un listado de FechasAvaluo
-        Query q = this.getEntityManager().createQuery("SELECT fechaAvaluo FROM FechaAvaluo fechaAvaluo where fechaAvaluo.fecavEstado =:ESTADO");
-        q.setParameter("ESTADO", EnumEstadoRegistro.A);
-        //@return listado de fechaAvaluo
+        Query q = this.getEntityManager().createQuery("SELECT distinct fecha.fecavFechaavaluo FROM FechaAvaluo fecha");
+        //q.setParameter("ESTADO", EnumEstadoRegistro.A);
+//where fecha.fecavEstado =:ESTADO        
+//@return listado de fechaAvaluo
         return q.getResultList();   
     }
     
