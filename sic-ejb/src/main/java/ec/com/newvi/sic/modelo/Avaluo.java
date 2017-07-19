@@ -13,6 +13,8 @@ import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -76,9 +78,12 @@ public class Avaluo implements Serializable {
     private BigDecimal valAmbientales;
     @Column(name = "val_imppredial")
     private BigDecimal valImppredial;
+    @Column(name = "val_impuesto")
+    private BigDecimal valImpuesto;
     @Size(max = 50)
     @Column(name = "cat_casosespeciales")
     private String catCasosespeciales;
+    @Enumerated(EnumType.STRING)
     @Column(name = "aval_estado")
     private EnumEstadoRegistro avalEstado;
     @Size(max = 50)
@@ -199,6 +204,14 @@ public class Avaluo implements Serializable {
 
     public void setValCem(BigDecimal valCem) {
         this.valCem = valCem;
+    }
+
+    public BigDecimal getValImpuesto() {
+        return valImpuesto;
+    }
+
+    public void setValImpuesto(BigDecimal valImpuesto) {
+        this.valImpuesto = valImpuesto;
     }
 
     public BigDecimal getValBasura() {

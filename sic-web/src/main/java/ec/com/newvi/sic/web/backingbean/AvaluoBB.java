@@ -6,9 +6,11 @@
 package ec.com.newvi.sic.web.backingbean;
 
 import ec.com.newvi.sic.dto.AvaluoDto;
+import ec.com.newvi.sic.dto.FichaCatastralDto;
 import ec.com.newvi.sic.enums.EnumEstadoRegistro;
 import ec.com.newvi.sic.modelo.Avaluo;
 import ec.com.newvi.sic.modelo.Bloques;
+import ec.com.newvi.sic.modelo.Contribuyentes;
 import ec.com.newvi.sic.modelo.FechaAvaluo;
 import ec.com.newvi.sic.modelo.Predios;
 import ec.com.newvi.sic.util.excepciones.NewviExcepcion;
@@ -85,12 +87,18 @@ public class AvaluoBB extends AdminAvaluo {
         FechaAvaluo fecavId = catastroServicio.generarNuevaFechaAvaluo(fechaAvaluo, sesionBean.obtenerSesionDto());
 
         listaPredios = catastroServicio.consultarPredios();
-
-        for (Predios predio : listaPredios) {
+        List<FichaCatastralDto> listaFichas = new ArrayList<>();
+        
+        for (Predios elementoPredio : listaPredios) {
+            listaFichas.add(new FichaCatastralDto(elementoPredio));
+        }
+        
+        for (FichaCatastralDto fichaDto : listaFichas) {
+            Predios predio = fichaDto.getPredio();
+            Contribuyentes contribuyente = fichaDto.getContribuyentePropiedad();
             List<AvaluoDto> calculoAvaluo = catastroServicio.obtenerAvaluoPredio(predio, sesionBean.obtenerSesionDto());
             avaluo = new Avaluo();
             if (!(calculoAvaluo == null)) {
-                avaluo.setCodCatastral(predio);
                 avaluo.setValTerreno(predio.getValTerreno());
                 avaluo.setValPredio(predio.getValPredio());
                 avaluo.setValImppredial(predio.getValImppredial());
@@ -104,7 +112,11 @@ public class AvaluoBB extends AdminAvaluo {
                 avaluo.setValAmbientales(predio.getValAmbientales());
                 avaluo.setTxtDireccion(predio.getTxtDireccion());
                 avaluo.setStsBarrio(predio.getStsBarrio());
+                avaluo.setCodCedularuc(contribuyente.getCodCedularuc());
+                avaluo.setNomnomape(contribuyente.getNomNombres()+" "+contribuyente.getNomApellidos());
+                avaluo.setValImpuesto(predio.getValImpuesto());
             }
+            avaluo.setCodCatastral(predio);
             avaluo.setFecavId(fecavId);
             avaluo.setAvalEstado(EnumEstadoRegistro.A);
             catastroServicio.generarNuevoAvaluo(avaluo, sesionBean.obtenerSesionDto());
