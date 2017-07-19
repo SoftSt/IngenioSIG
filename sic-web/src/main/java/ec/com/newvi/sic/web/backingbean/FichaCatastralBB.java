@@ -10,6 +10,7 @@ import ec.com.newvi.componente.reporte.ReporteGenerador;
 import ec.com.newvi.sic.dto.AvaluoDto;
 import ec.com.newvi.sic.dto.DominioDto;
 import ec.com.newvi.sic.dto.FichaCatastralDto;
+import ec.com.newvi.sic.dto.ImpresionDto;
 import ec.com.newvi.sic.dto.SesionDto;
 import ec.com.newvi.sic.enums.EnumEstadoPisoDetalle;
 import ec.com.newvi.sic.enums.EnumEstadoRegistro;
@@ -41,7 +42,6 @@ import ec.com.newvi.sic.web.utils.WebUtils;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -784,8 +784,36 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
     protected DefaultStreamedContent generarReportes() {
         try {
             DefaultStreamedContent dscXlsPa;
-            List<Avaluo>av=catastroServicio.consultarAvaluos(null);
-            
+            List<Avaluo>listaAvaluos=generarListaAvaluo();
+            List<ImpresionDto>datosImpresion= new ArrayList<>();
+            ImpresionDto datosAvaluo;
+            for (Avaluo avaluo : listaAvaluos) {
+                datosAvaluo=new ImpresionDto();
+                if (avaluo.getCodCatastral()!=null) {
+                datosAvaluo.setCodigoCatastral(avaluo.getCodCatastral().getCodCatastral().toString());
+                datosAvaluo.setPropietario(avaluo.getNomnomape());
+                datosAvaluo.setBarrio(avaluo.getStsBarrio());
+                datosAvaluo.setDireccion(avaluo.getTxtDireccion());
+                //datosAvaluo.setAvaluoTerreno(avaluo.get());
+                datosAvaluo.setAreaTerreno(avaluo.getValTerreno());
+                datosAvaluo.setAreaEdificacion(avaluo.getValAreaconstruccion());
+                datosAvaluo.setAvaluoEdificacion(avaluo.getValEdifica());
+                datosAvaluo.setAvaluoPredio(avaluo.getValPredio());
+                datosAvaluo.setImpuestoPredial(avaluo.getValImppredial());
+                datosAvaluo.setContribucionEspecialMejoras(avaluo.getValCem());
+                datosAvaluo.setTasaRecoleccionBasura(avaluo.getValBasura());
+                datosAvaluo.setCostoEmision(avaluo.getValEmision());
+                datosAvaluo.setTasaBomberos(avaluo.getValBomberos());
+                datosAvaluo.setServiciosAmbientales(avaluo.getValAmbientales());
+                datosAvaluo.setTotalAPagar(avaluo.getValImppredial()
+                                           .add(avaluo.getValCem()
+                                           .add(avaluo.getValBasura()
+                                           .add(avaluo.getValEmision()
+                                           .add(avaluo.getValBomberos())
+                                           .add(avaluo.getValAmbientales())))));
+                datosImpresion.add(datosAvaluo);
+                }
+            }
             List<Predios> predioImprimir = new ArrayList<>();
             int i = 0;
             for (FichaCatastralDto ficha : this.listaFichas) {
@@ -821,6 +849,9 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
             return null;
         }
         return null;
+    }
+    public List<Avaluo> generarListaAvaluo(){
+         return catastroServicio.consultarAvaluos(null);
     }
 
 }

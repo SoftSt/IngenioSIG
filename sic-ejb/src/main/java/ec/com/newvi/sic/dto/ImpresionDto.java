@@ -23,6 +23,7 @@ public class ImpresionDto {
     private BigDecimal avaluoEdificacion; 
     private BigDecimal areaEdificacion; 
     private BigDecimal avaluoPredio; 
+    private BigDecimal areaPredio; 
     private BigDecimal impuestoPredial; 
     private BigDecimal contribucionEspecialMejoras; 
     private BigDecimal tasaRecoleccionBasura; 
@@ -111,7 +112,16 @@ public class ImpresionDto {
     public void setAvaluoPredio(BigDecimal avaluoPredio) {
         this.avaluoPredio = avaluoPredio;
     }
+    
+    
+    public BigDecimal getAreaPredio() {
+        return areaPredio;
+    }
 
+    public void setAreaPredio(BigDecimal areaPredio) {
+        this.areaPredio = areaPredio;
+    }
+    
     public BigDecimal getImpuestoPredial() {
         return impuestoPredial;
     }
