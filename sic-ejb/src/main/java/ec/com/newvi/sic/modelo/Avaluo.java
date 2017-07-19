@@ -43,7 +43,7 @@ public class Avaluo implements Serializable {
     @GeneratedValue(generator = "AVALUO_CODIGO_GENERATOR")
     @Column(name = "aval_id")
     private Integer avalId;
-    @Size(max = 100)
+    @Size(max = 150)
     @Column(name = "nomnomape")
     private String nomnomape;
     @Size(max = 15)

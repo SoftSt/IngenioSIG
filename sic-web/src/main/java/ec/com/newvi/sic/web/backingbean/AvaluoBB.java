@@ -113,7 +113,7 @@ public class AvaluoBB extends AdminAvaluo {
                 avaluo.setTxtDireccion(predio.getTxtDireccion());
                 avaluo.setStsBarrio(predio.getStsBarrio());
                 avaluo.setCodCedularuc(contribuyente.getCodCedularuc());
-                avaluo.setNomnomape(contribuyente.getNomNombres()+" "+contribuyente.getNomApellidos());
+                avaluo.setNomnomape(contribuyente.getNomNombres().trim()+" "+contribuyente.getNomApellidos().trim());
                 avaluo.setValImpuesto(predio.getValImpuesto());
             }
             avaluo.setCodCatastral(predio);
