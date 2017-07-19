@@ -26,12 +26,17 @@ public class AvaluoFacade extends AbstractFacade<Avaluo, Integer> implements Ser
     }
     
     public List<Avaluo> buscarAvaluos(Date fecavFechaavaluo){
+        Query q = this.getEntityManager().createQuery("SELECT avaluos FROM Avaluo avaluos");
+        if (fecavFechaavaluo!=null) {
         // Busca un listado de bloques
-        Query q = this.getEntityManager().createQuery("SELECT avaluos FROM Avaluo avaluos where avaluos.fecavId.fecavFechaavaluo =:FECHA");
-        q.setParameter("ESTADO", EnumEstadoRegistro.A);
+        q = this.getEntityManager().createQuery("SELECT avaluos FROM Avaluo avaluos where avaluos.fecavId.fecavFechaavaluo =:FECHA");
         q.setParameter("FECHA", fecavFechaavaluo);
+        q.setParameter("ESTADO", EnumEstadoRegistro.A);
+        }
+        
         //@return listado de bloques
         return q.getResultList();        
     } 
+    
     
 }

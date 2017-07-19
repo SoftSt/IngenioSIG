@@ -19,6 +19,7 @@ import ec.com.newvi.sic.enums.EnumSiNo;
 import ec.com.newvi.sic.enums.EnumSitActual;
 import ec.com.newvi.sic.enums.EnumTenencia;
 import ec.com.newvi.sic.enums.EnumTraslacion;
+import ec.com.newvi.sic.modelo.Avaluo;
 import ec.com.newvi.sic.modelo.Bloques;
 import ec.com.newvi.sic.modelo.ConstantesImpuestos;
 import ec.com.newvi.sic.modelo.Dominios;
@@ -783,7 +784,7 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
     protected DefaultStreamedContent generarReportes() {
         try {
             DefaultStreamedContent dscXlsPa;
-            
+            List<Avaluo>av=catastroServicio.consultarAvaluos(null);
             
             List<Predios> predioImprimir = new ArrayList<>();
             int i = 0;

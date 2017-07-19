@@ -76,7 +76,7 @@ public class AvaluoBB extends AdminAvaluo {
         List<Predios> listaPredios = new ArrayList<>();
         FechaAvaluo fechaAvaluo = new FechaAvaluo();
         Avaluo avaluo;
-        int cont = 0;
+            int cont = 0;
 
         Date fecha = Calendar.getInstance().getTime();
         fechaAvaluo.setFecavFechaavaluo(fecha);
@@ -108,7 +108,7 @@ public class AvaluoBB extends AdminAvaluo {
             avaluo.setFecavId(fecavId);
             avaluo.setAvalEstado(EnumEstadoRegistro.A);
             catastroServicio.generarNuevoAvaluo(avaluo, sesionBean.obtenerSesionDto());
-
+            
             //LoggerNewvi.getLogNewvi(this.getClass()).debug(cont++, sesionBean.obtenerSesionDto());
             LoggerNewvi.getLogNewvi(this.getClass()).info(cont++, sesionBean.obtenerSesionDto());
 
@@ -144,5 +144,9 @@ public class AvaluoBB extends AdminAvaluo {
     }*/
     public void actualizarListadoFechaAvaluos(){
         listaFechaAvaluos = catastroServicio.consultarFechaAvaluos();
+    }
+    
+    public void generarListaAvaluo(){
+        List<Avaluo>avalos=catastroServicio.consultarAvaluos(null);
     }
 }
