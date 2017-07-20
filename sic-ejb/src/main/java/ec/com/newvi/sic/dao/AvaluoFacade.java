@@ -33,10 +33,28 @@ public class AvaluoFacade extends AbstractFacade<Avaluo, Integer> implements Ser
         q.setParameter("FECHA", fecavFechaavaluo);
         //q.setParameter("ESTADO", EnumEstadoRegistro.A);
         }
-        
         //@return listado de bloques
         return q.getResultList();        
-    } 
+    }
+    
+    public List<Avaluo> consultarAvaluos(Integer fecavId){
+        // Busca un listado de avaluos
+        Query q = this.getEntityManager().createQuery("SELECT avaluos FROM Avaluo avaluos where avaluos.fecavId.fecavId =:FECHAID and avaluos.avalEstado =:ESTADO");
+        q.setParameter("FECHAID", fecavId);
+        q.setParameter("ESTADO", EnumEstadoRegistro.A);
+        //@return listado de avaluos
+        return q.getResultList();
+    }
+    public Avaluo consultarAvaluoActual(){
+        // Busca un listado de avaluos
+        Query q = this.getEntityManager().createQuery("SELECT avaluos FROM Avaluo avaluos where avaluos.avalEstado =:ESTADO ORDER BY avaluos.avalId ASC");
+        q.setParameter("ESTADO", EnumEstadoRegistro.A);
+        //@return listado de avaluos
+        return (Avaluo)q.setMaxResults(1).getSingleResult();
+    }
+    
+    
+    
     
     
 }

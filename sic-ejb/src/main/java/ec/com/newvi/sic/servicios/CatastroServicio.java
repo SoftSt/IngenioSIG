@@ -326,4 +326,16 @@ public interface CatastroServicio {
      * @return lista de avaluos
      */
     public List<Avaluo> consultarAvaluos(Date fecavFechaavaluo);
+    /**
+     * Consulta el ultimo avaluo registrado
+     * @return Avaluo actual
+     */
+    //public Avaluo consultarAvaluoActual();
+    
+    
+    /**
+     * Lista los avaluos actuales
+     * @return lista de avaluos
+     */
+    public List<Avaluo> consultarListaAvaluosActuales();
 }

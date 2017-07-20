@@ -55,7 +55,7 @@ public class AvaluoBB extends AdminAvaluo {
     public void setListaAvaluos(List<Avaluo> listaAvaluos) {
         this.listaAvaluos = listaAvaluos;
     }
-    
+
     public Boolean getSkip() {
         return skip;
     }
@@ -72,13 +72,14 @@ public class AvaluoBB extends AdminAvaluo {
                 EnumEtiquetas.SIMULACION_LISTA_DESCRIPCION);
         this.skip = false;
         actualizarListadoFechaAvaluos();
+        actualizarListadoAvaluos();
     }
 
     public void generarSimulacion() throws NewviExcepcion {
         List<Predios> listaPredios = new ArrayList<>();
         FechaAvaluo fechaAvaluo = new FechaAvaluo();
         Avaluo avaluo;
-            int cont = 0;
+        int cont = 0;
 
         Date fecha = Calendar.getInstance().getTime();
         fechaAvaluo.setFecavFechaavaluo(fecha);
@@ -88,18 +89,17 @@ public class AvaluoBB extends AdminAvaluo {
 
         listaPredios = catastroServicio.consultarPredios();
         List<FichaCatastralDto> listaFichas = new ArrayList<>();
-        
+
         for (Predios elementoPredio : listaPredios) {
             listaFichas.add(new FichaCatastralDto(elementoPredio));
         }
-        
+
         for (FichaCatastralDto fichaDto : listaFichas) {
             Predios predio = fichaDto.getPredio();
             Contribuyentes contribuyente = fichaDto.getContribuyentePropiedad();
             List<AvaluoDto> calculoAvaluo = catastroServicio.obtenerAvaluoPredio(predio, sesionBean.obtenerSesionDto());
             avaluo = new Avaluo();
             if (!(calculoAvaluo == null)) {
-                avaluo.setNomCodigocatastral(predio.getNomCodigocatastral());
                 avaluo.setValTerreno(predio.getValTerreno());
                 avaluo.setValPredio(predio.getValPredio());
                 avaluo.setValImppredial(predio.getValImppredial());
@@ -111,17 +111,18 @@ public class AvaluoBB extends AdminAvaluo {
                 avaluo.setValAreapredio(predio.getValAreaPredio());
                 avaluo.setValAreaconstruccion(predio.getValAreaConstruccion());
                 avaluo.setValAmbientales(predio.getValAmbientales());
-                avaluo.setTxtDireccion(predio.getTxtDireccion());
-                avaluo.setStsBarrio(predio.getStsBarrio());
-                avaluo.setCodCedularuc(contribuyente.getCodCedularuc());
-                avaluo.setNomnomape(contribuyente.getNomNombres().trim()+" "+contribuyente.getNomApellidos().trim());
                 avaluo.setValImpuesto(predio.getValImpuesto());
             }
             avaluo.setCodCatastral(predio);
+            avaluo.setNomCodigocatastral(predio.getNomCodigocatastral());
+            avaluo.setTxtDireccion(predio.getTxtDireccion());
+            avaluo.setStsBarrio(predio.getStsBarrio());
+            avaluo.setCodCedularuc(contribuyente.getCodCedularuc());
+            avaluo.setNomnomape(contribuyente.getNomNombres().trim() + " " + contribuyente.getNomApellidos().trim());
             avaluo.setFecavId(fecavId);
             avaluo.setAvalEstado(EnumEstadoRegistro.A);
             catastroServicio.generarNuevoAvaluo(avaluo, sesionBean.obtenerSesionDto());
-            
+
             //LoggerNewvi.getLogNewvi(this.getClass()).debug(cont++, sesionBean.obtenerSesionDto());
             LoggerNewvi.getLogNewvi(this.getClass()).info(cont++, sesionBean.obtenerSesionDto());
 
@@ -151,13 +152,19 @@ public class AvaluoBB extends AdminAvaluo {
             return event.getNewStep();
         }
     }
-    
+
     /*public void actualizarListadoAvaluo(Date fecavFechaavaluo){
         listaAvaluos = catastroServicio.consultarAvaluos(fecavFechaavaluo);
     }*/
-    public void actualizarListadoFechaAvaluos(){
+    public void actualizarListadoFechaAvaluos() {
         listaFechaAvaluos = catastroServicio.consultarFechaAvaluos();
+        
+        //FechaAvaluo fechaAvaluo = new FechaAvaluo();
+        //fechaAvaluo.set
     }
     
+    public void actualizarListadoAvaluos(){
+        listaAvaluos = catastroServicio.consultarListaAvaluosActuales();
+    }
 
 }
