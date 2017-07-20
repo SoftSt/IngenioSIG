@@ -99,6 +99,7 @@ public class AvaluoBB extends AdminAvaluo {
             List<AvaluoDto> calculoAvaluo = catastroServicio.obtenerAvaluoPredio(predio, sesionBean.obtenerSesionDto());
             avaluo = new Avaluo();
             if (!(calculoAvaluo == null)) {
+                avaluo.setNomCodigocatastral(predio.getNomCodigocatastral());
                 avaluo.setValTerreno(predio.getValTerreno());
                 avaluo.setValPredio(predio.getValPredio());
                 avaluo.setValImppredial(predio.getValImppredial());

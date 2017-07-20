@@ -43,12 +43,15 @@ public class Avaluo implements Serializable {
     @GeneratedValue(generator = "AVALUO_CODIGO_GENERATOR")
     @Column(name = "aval_id")
     private Integer avalId;
-    @Size(max = 150)
+    @Size(max = 100)
     @Column(name = "nomnomape")
     private String nomnomape;
     @Size(max = 15)
     @Column(name = "cod_cedularuc")
     private String codCedularuc;
+    @Size(max = 25)
+    @Column(name = "nom_codigocatastral")
+    private String nomCodigocatastral;
     @Size(max = 150)
     @Column(name = "sts_barrio")
     private String stsBarrio;
@@ -188,6 +191,14 @@ public class Avaluo implements Serializable {
 
     public void setValEdifica(BigDecimal valEdifica) {
         this.valEdifica = valEdifica;
+    }
+
+    public String getNomCodigocatastral() {
+        return nomCodigocatastral;
+    }
+
+    public void setNomCodigocatastral(String nomCodigocatastral) {
+        this.nomCodigocatastral = nomCodigocatastral;
     }
 
     public BigDecimal getValPredio() {

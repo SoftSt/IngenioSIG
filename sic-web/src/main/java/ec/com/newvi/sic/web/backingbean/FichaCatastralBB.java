@@ -799,18 +799,19 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
                 datosAvaluo.setAreaEdificacion(avaluo.getValAreaconstruccion());
                 datosAvaluo.setAvaluoEdificacion(avaluo.getValEdifica());
                 datosAvaluo.setAvaluoPredio(avaluo.getValPredio());
-                datosAvaluo.setImpuestoPredial(avaluo.getValImppredial());
+                datosAvaluo.setImpuestoPredial(avaluo.getValImpuesto());
                 datosAvaluo.setContribucionEspecialMejoras(avaluo.getValCem());
                 datosAvaluo.setTasaRecoleccionBasura(avaluo.getValBasura());
                 datosAvaluo.setCostoEmision(avaluo.getValEmision());
                 datosAvaluo.setTasaBomberos(avaluo.getValBomberos());
                 datosAvaluo.setServiciosAmbientales(avaluo.getValAmbientales());
-                datosAvaluo.setTotalAPagar(avaluo.getValImppredial()
+                datosAvaluo.setTotalAPagar(avaluo.getValImppredial());
+                /*datosAvaluo.setTotalAPagar(avaluo.getValImppredial()
                                            .add(avaluo.getValCem()
                                            .add(avaluo.getValBasura()
                                            .add(avaluo.getValEmision()
                                            .add(avaluo.getValBomberos())
-                                           .add(avaluo.getValAmbientales())))));
+                                           .add(avaluo.getValAmbientales())))));*/
                 datosImpresion.add(datosAvaluo);
                 }
             }
