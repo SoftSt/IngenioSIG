@@ -10,7 +10,7 @@ import ec.com.newvi.componente.reporte.ReporteGenerador;
 import ec.com.newvi.sic.dto.AvaluoDto;
 import ec.com.newvi.sic.dto.DominioDto;
 import ec.com.newvi.sic.dto.FichaCatastralDto;
-import ec.com.newvi.sic.dto.ImpresionDto;
+import ec.com.newvi.sic.dto.TablaCatastralDto;
 import ec.com.newvi.sic.dto.SesionDto;
 import ec.com.newvi.sic.enums.EnumEstadoPisoDetalle;
 import ec.com.newvi.sic.enums.EnumEstadoRegistro;
@@ -785,10 +785,10 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
         try {
             DefaultStreamedContent dscXlsPa;
             List<Avaluo>listaAvaluos=generarListaAvaluo();
-            List<ImpresionDto>datosImpresion= new ArrayList<>();
-            ImpresionDto datosAvaluo;
+            List<TablaCatastralDto>datosImpresion= new ArrayList<>();
+            TablaCatastralDto datosAvaluo;
             for (Avaluo avaluo : listaAvaluos) {
-                datosAvaluo=new ImpresionDto();
+                datosAvaluo=new TablaCatastralDto();
                 if (avaluo.getCodCatastral()!=null) {
                 datosAvaluo.setCodigoCatastral(avaluo.getCodCatastral().getCodCatastral().toString());
                 datosAvaluo.setPropietario(avaluo.getNomnomape());
@@ -825,10 +825,15 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
                 
             }
             
+          /*  
             Map<String, Class> paramRepA = new HashMap<String, Class>();
             paramRepA.put("predios", Predios.class);
             paramRepA.put("reportepredios", List.class);
-            
+          
+            */
+            Map<String, Class> paramRepA = new HashMap<String, Class>();
+            paramRepA.put("predios", Predios.class);
+            paramRepA.put("reportepredios", List.class);
             Map<String, Object> parametrosReporte = new HashMap<>();
             parametrosReporte.put("TITULO_REPORTE", "REPORTECITO");
             

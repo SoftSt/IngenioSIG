@@ -31,7 +31,7 @@ public class AvaluoFacade extends AbstractFacade<Avaluo, Integer> implements Ser
         // Busca un listado de bloques
         q = this.getEntityManager().createQuery("SELECT avaluos FROM Avaluo avaluos where avaluos.fecavId.fecavFechaavaluo =:FECHA");
         q.setParameter("FECHA", fecavFechaavaluo);
-        q.setParameter("ESTADO", EnumEstadoRegistro.A);
+        //q.setParameter("ESTADO", EnumEstadoRegistro.A);
         }
         
         //@return listado de bloques

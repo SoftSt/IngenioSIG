@@ -11,7 +11,7 @@ import java.math.BigDecimal;
  *
  * @author Theo Herreria
  */
-public class ImpresionDto {
+public class TablaCatastralDto {
     
     private String codigoCatastral; 
     private String propietario; 
@@ -186,7 +186,7 @@ public class ImpresionDto {
         this.observaciones = observaciones;
     }
 
-    public ImpresionDto() {
+    public TablaCatastralDto() {
     }
     
 }

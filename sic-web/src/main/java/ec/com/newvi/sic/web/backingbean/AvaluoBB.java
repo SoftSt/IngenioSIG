@@ -158,7 +158,5 @@ public class AvaluoBB extends AdminAvaluo {
         listaFechaAvaluos = catastroServicio.consultarFechaAvaluos();
     }
     
-    public void generarListaAvaluo(){
-        List<Avaluo>avalos=catastroServicio.consultarAvaluos(null);
-    }
+
 }
