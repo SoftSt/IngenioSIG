@@ -72,7 +72,7 @@ public class AvaluoBB extends AdminAvaluo {
                 EnumEtiquetas.SIMULACION_LISTA_DESCRIPCION);
         this.skip = false;
         actualizarListadoFechaAvaluos();
-        actualizarListadoAvaluos();
+        //actualizarListadoAvaluos();
     }
 
     public void generarSimulacion() throws NewviExcepcion {
