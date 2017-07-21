@@ -326,11 +326,14 @@ public interface CatastroServicio {
      * @return lista de avaluos
      */
     public List<Avaluo> consultarAvaluos(Date fecavFechaavaluo);
+    
     /**
-     * Consulta el ultimo avaluo registrado
-     * @return Avaluo actual
+     * Devuelve el avaluo dado por un id
+     * @param avalId id del avaluo
+     * @return avaluo
+     * @throws NewviExcepcion 
      */
-    //public Avaluo consultarAvaluoActual();
+    public Avaluo seleccionarAvaluo(Integer avalId) throws NewviExcepcion;
     
     
     /**
@@ -338,4 +341,11 @@ public interface CatastroServicio {
      * @return lista de avaluos
      */
     public List<Avaluo> consultarListaAvaluosActuales();
+    
+    /**
+     * Lista los avaluos por una fecha
+     * @param fechaAvaluo fecha por la que se filtrará
+     * @return lista de avaluos
+     */
+    public List<Avaluo> consultarListaAvaluosPorFecha(Date fechaAvaluo);
 }

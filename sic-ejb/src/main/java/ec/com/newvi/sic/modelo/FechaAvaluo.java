@@ -44,6 +44,9 @@ public class FechaAvaluo implements Serializable {
     @Enumerated(EnumType.STRING)
     @Column(name = "fecav_estado")
     private EnumEstadoRegistro fecavEstado;
+    @Size(max = 15)
+    @Column(name = "feav_descripcion")
+    private String fechaDescripcion;
     @Size(max = 50)
     @Column(name = "aud_ing_usu")
     private String audIngUsu;
@@ -94,6 +97,14 @@ public class FechaAvaluo implements Serializable {
         this.fecavEstado = fecavEstado;
     }
 
+    public String getFechaDescripcion() {
+        return fechaDescripcion;
+    }
+
+    public void setFechaDescripcion(String fechaDescripcion) {
+        this.fechaDescripcion = fechaDescripcion;
+    }
+    
     public String getAudIngUsu() {
         return audIngUsu;
     }

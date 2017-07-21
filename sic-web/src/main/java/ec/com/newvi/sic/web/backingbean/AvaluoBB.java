@@ -8,6 +8,7 @@ package ec.com.newvi.sic.web.backingbean;
 import ec.com.newvi.sic.dto.AvaluoDto;
 import ec.com.newvi.sic.dto.FichaCatastralDto;
 import ec.com.newvi.sic.enums.EnumEstadoRegistro;
+import ec.com.newvi.sic.enums.EnumNewviExcepciones;
 import ec.com.newvi.sic.modelo.Avaluo;
 import ec.com.newvi.sic.modelo.Bloques;
 import ec.com.newvi.sic.modelo.Contribuyentes;
@@ -18,10 +19,15 @@ import ec.com.newvi.sic.util.logs.LoggerNewvi;
 import ec.com.newvi.sic.web.MensajesFaces;
 import ec.com.newvi.sic.web.enums.EnumEtiquetas;
 import ec.com.newvi.sic.web.enums.EnumPantallaMantenimiento;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
@@ -38,7 +44,10 @@ public class AvaluoBB extends AdminAvaluo {
     private EnumPantallaMantenimiento pantallaActual;
     private Boolean skip;
     private List<Avaluo> listaAvaluos;
+    private List<Avaluo> listaAvaluosFiltrados;
     private List<FechaAvaluo> listaFechaAvaluos;
+    //private Avaluo avaluo;
+    private FechaAvaluo fechaAvaluoActual;
 
     public List<FechaAvaluo> getListaFechaAvaluos() {
         return listaFechaAvaluos;
@@ -56,6 +65,22 @@ public class AvaluoBB extends AdminAvaluo {
         this.listaAvaluos = listaAvaluos;
     }
 
+    public FechaAvaluo getFechaAvaluoActual() {
+        return fechaAvaluoActual;
+    }
+
+    public void setFechaAvaluoActual(FechaAvaluo fechaAvaluoActual) {
+        this.fechaAvaluoActual = fechaAvaluoActual;
+    }
+
+    public List<Avaluo> getListaAvaluosFiltrados() {
+        return listaAvaluosFiltrados;
+    }
+
+    public void setListaAvaluosFiltrados(List<Avaluo> listaAvaluosFiltrados) {
+        this.listaAvaluosFiltrados = listaAvaluosFiltrados;
+    }
+
     public Boolean getSkip() {
         return skip;
     }
@@ -66,6 +91,9 @@ public class AvaluoBB extends AdminAvaluo {
 
     @PostConstruct
     public void init() {
+        fechaAvaluoActual = new FechaAvaluo();
+        listaAvaluos = new ArrayList<>();
+        listaFechaAvaluos = new ArrayList<>();
         conmutarPantalla(EnumPantallaMantenimiento.PANTALLA_LISTADO);
         establecerTitulo(EnumEtiquetas.SIMULACION_LISTA_TITULO,
                 EnumEtiquetas.SIMULACION_LISTA_ICONO,
@@ -76,14 +104,25 @@ public class AvaluoBB extends AdminAvaluo {
     }
 
     public void generarSimulacion() throws NewviExcepcion {
-        List<Predios> listaPredios = new ArrayList<>();
+        List<Predios> listaPredios;
+        //List<Predios> listaPredios = new ArrayList<>();
         FechaAvaluo fechaAvaluo = new FechaAvaluo();
+        DateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
         Avaluo avaluo;
         int cont = 0;
 
         Date fecha = Calendar.getInstance().getTime();
-        fechaAvaluo.setFecavFechaavaluo(fecha);
+        try {
+            //fechaAvaluo.setFecavFechaavaluo(fecha);
+            fechaAvaluo.setFecavFechaavaluo(formato.parse("2017-07-23"));
+        } catch (ParseException ex) {
+            Logger.getLogger(AvaluoBB.class.getName()).log(Level.SEVERE, null, ex);
+        }
         fechaAvaluo.setFecavEstado(EnumEstadoRegistro.A);
+        
+        
+        //fechaAvaluo.setFechaDescripcion(formato.format(fecha));
+        fechaAvaluo.setFechaDescripcion("2017-07-23");
 
         FechaAvaluo fecavId = catastroServicio.generarNuevaFechaAvaluo(fechaAvaluo, sesionBean.obtenerSesionDto());
 
@@ -127,7 +166,7 @@ public class AvaluoBB extends AdminAvaluo {
             LoggerNewvi.getLogNewvi(this.getClass()).info(cont++, sesionBean.obtenerSesionDto());
 
         }
-
+        
     }
 
     private void conmutarPantalla(EnumPantallaMantenimiento nuevaPantalla) {
@@ -158,13 +197,26 @@ public class AvaluoBB extends AdminAvaluo {
     }*/
     public void actualizarListadoFechaAvaluos() {
         listaFechaAvaluos = catastroServicio.consultarFechaAvaluos();
-        
+
         //FechaAvaluo fechaAvaluo = new FechaAvaluo();
         //fechaAvaluo.set
     }
-    
-    public void actualizarListadoAvaluos(){
+
+    public void actualizarListadoAvaluos() {
         listaAvaluos = catastroServicio.consultarListaAvaluosActuales();
+    }
+
+    public void actualizarListaAvaluosPorFecha(String fechaDescripcion) {
+        //listaAvaluos = catastroServicio.consultarAvaluos(fechaAvaluo);
+        DateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            listaAvaluos = catastroServicio.consultarAvaluos(formato.parse(fechaDescripcion));
+        } catch (ParseException e) {
+            //Logger.getLogger(AvaluoBB.class.getName()).log(Level.SEVERE, null, e);
+            LoggerNewvi.getLogNewvi(this.getClass()).error(EnumNewviExcepciones.ERR001.presentarMensajeCodigo(), e, sesionBean.obtenerSesionDto());
+            MensajesFaces.mensajeError(e.getMessage());
+        }
+        
     }
 
 }

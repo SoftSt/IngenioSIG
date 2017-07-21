@@ -25,7 +25,8 @@
                             <p:messages />
                             <p:panel header="Personal Details">
                                 <p:commandButton actionListener="#{avaluoBB.generarSimulacion()}"
-                                                 icon="fa fa-angle-double-right"
+                                                 icon="fa fa-check"
+                                                 value="Calcular"
                                                  id="generarSimulacion">
                                 </p:commandButton>
                             </p:panel>
@@ -39,13 +40,57 @@
                         </p:tab>
                         <p:tab id="listado" title="Listado">
                             <p:messages />
-                            <p:panel>
-                                <p:selectOneMenu id="fechaAvaluo" style="width:125px" >
-                                    <f:selectItem itemLabel="Seleccione tipo fecha..." itemValue="null" />
-                                    <f:selectItems value="#{avaluoBB.listaFechaAvaluos}" var="fechaAvaluo" itemValue="#{fechaAvaluo}"/>
-                                    <p:ajax event="change" update="@this" />
-                                </p:selectOneMenu>
-                            </p:panel>
+                            <!--<p:outputPanel id="opDetalleAvaluo">
+                                <h:panelGrid columns="1">-->
+                            <p:selectOneMenu id="fechaAvaluo" value="#{avaluoBB.fechaAvaluoActual.fechaDescripcion}" style="width:125px" >
+                                <f:selectItem itemLabel="Seleccione tipo fecha..."/>
+                                <f:selectItems value="#{avaluoBB.listaFechaAvaluos}" var="fechas" itemValue="#{fechas}" itemLabel="#{fechas.fechaDescripcion}"/>
+                                <!--<p:ajax listener="#{avaluoBB.actualizarListaAvaluosPorFecha()}"/>-->
+                            </p:selectOneMenu>
+
+                            <p:commandButton actionListener="#{avaluoBB.actualizarListaAvaluosPorFecha(fechas.fecavFechaavaluo)}"
+                                             icon="fa fa-check"
+                                             value="Consultar"
+                                             id="consultarAvaluos">
+                            </p:commandButton>
+
+                            <!--</h:panelGrid>-->
+
+                            <p:dataTable id="listaAvaluos" var="avaluo" widgetVar="listaAvaluoTabla"
+                                         value="#{avaluoBB.listaAvaluos}" rowKey="#{avaluo.avalId}" filteredValue="#{avaluoBB.listaAvaluosFiltrados}"
+                                         paginator="true" rows="5" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" 
+                                         rowsPerPageTemplate="5,10,15" 
+                                         emptyMessage="No se han encontrado resultados" 
+                                         paginatorPosition="bottom">
+
+
+                                <p:column headerText="Codigo" sortBy="#{avaluo.nomCodigocatastral}">
+                                    <h:outputText value="#{avaluo.nomCodigocatastral}" />
+                                </p:column>
+
+                                <p:column headerText="Propietario" sortBy="#{avaluo.nomnomape}" >
+                                    <h:outputText value="#{avaluo.nomnomape}" />
+                                </p:column>
+
+                                <p:column headerText="Cedula/Ruc" sortBy="#{avaluo.codCedularuc}">
+                                    <h:outputText value="#{avaluo.codCedularuc}" />
+                                </p:column>
+
+                                <p:column headerText="Dirección" sortBy="#{avaluo.txtDireccion}">
+                                    <h:outputText value="#{avaluo.txtDireccion}" />
+                                </p:column>
+
+                                <p:column headerText="A pagar" sortBy="#{avaluo.valImppredial}">
+                                    <h:outputText value="#{avaluo.valImppredial}" />
+                                </p:column>
+
+                            </p:dataTable>
+
+
+
+                            <!--</p:outputPanel>-->
+
+
                         </p:tab>
                     </p:wizard>
                 </h:form>  

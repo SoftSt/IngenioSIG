@@ -710,6 +710,15 @@ public class CatastroServicioImpl implements CatastroServicio {
         // Si todo marcha bien enviar id de avaluo
         return nuevoAvaluo.getAvalId();
     }
+    
+    @Override
+    public Avaluo seleccionarAvaluo(Integer avalId) throws NewviExcepcion {
+        if (ComunUtil.esNumeroPositivo(avalId)) {
+            return avaluoFacade.find(avalId);
+        } else {
+            throw new NewviExcepcion(EnumNewviExcepciones.ERR011);
+        }
+    }
 
     @Override
     public List<Avaluo> consultarAvaluos(Date fecavFechaavaluo) {
@@ -723,7 +732,11 @@ public class CatastroServicioImpl implements CatastroServicio {
     @Override
     public List<Avaluo> consultarListaAvaluosActuales(){
         Avaluo avaluoActual = avaluoFacade.consultarAvaluoActual();
-        return avaluoFacade.consultarAvaluos(avaluoActual.getFecavId().getFecavId());
+        return avaluoFacade.consultarAvaluos(avaluoActual.getFecavId().getFecavFechaavaluo());
+    }
+    @Override
+    public List<Avaluo> consultarListaAvaluosPorFecha(Date fechaAvaluo){
+        return avaluoFacade.consultarAvaluos(fechaAvaluo);
     }
 
 }
