@@ -171,7 +171,7 @@ public class Reporte {
         String rutaReporte = "/opt/";
         this.params.put("ARCHIVO_REPORTE", rutaReporte);
         this.params.put("DATASOURCE_EXPRESSION", this.xpath);
-        Locale locale = new Locale("es", "US");
+        Locale locale = new Locale("en", "US");
         this.params.put("LOCALE", locale);
         TimeZone timeZone = TimeZone.getTimeZone("America/Guayaquil");
         this.params.put("REPORT_TIME_ZONE", timeZone);
@@ -187,10 +187,10 @@ public class Reporte {
     private void procesarImpresion() throws NewviExcepcion {
         try {
             if (!this.xml.startsWith("<?xml")) {
-                String xmlHeader = "<?xml version=\"1.0\" encoding=\"" + "ISO-8859-1" + "\" ?>\n";
+                String xmlHeader = "<?xml version=\"1.0\" encoding=\"" + "UTF-8" + "\" ?>\n";
                 this.xml = xmlHeader + this.xml;
             }
-            this.datos = ReporteGenerador.generarReporte(new FileInputStream(this.archivoJasperNombreRuta), Reporte.doc2bytes(DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new InputSource(new StringReader(this.xml)))), ReporteGenerador.FormatoReporte.PDF, this.params);
+            this.datos = ReporteGenerador.generarReporte(new FileInputStream(this.archivoJasperNombreRuta), Reporte.doc2bytes(DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new InputSource(new StringReader(this.xml)))), ReporteGenerador.FormatoReporte.XLSX, this.params);
         } catch (Exception e) {
             throw new NewviExcepcion(EnumNewviExcepciones.ERR000);
         }

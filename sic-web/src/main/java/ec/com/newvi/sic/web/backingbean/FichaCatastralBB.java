@@ -788,24 +788,29 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
             List<TablaCatastralDto>datosImpresion= new ArrayList<>();
             TablaCatastralDto datosAvaluo;
             for (Avaluo avaluo : listaAvaluos) {
+                if (avaluo.getValAreapredio()!=null) {
+                    
+                
                 datosAvaluo=new TablaCatastralDto();
-                if (avaluo.getCodCatastral()!=null) {
                 datosAvaluo.setCodigoCatastral(avaluo.getCodCatastral().getCodCatastral().toString());
+                datosAvaluo.setNombreCodigoCatastral(avaluo.getNomCodigocatastral());
                 datosAvaluo.setPropietario(avaluo.getNomnomape());
+                datosAvaluo.setCiRuc(avaluo.getCodCedularuc());
                 datosAvaluo.setBarrio(avaluo.getStsBarrio());
                 datosAvaluo.setDireccion(avaluo.getTxtDireccion());
-                //datosAvaluo.setAvaluoTerreno(avaluo.get());
-                datosAvaluo.setAreaTerreno(avaluo.getValTerreno());
-                datosAvaluo.setAreaEdificacion(avaluo.getValAreaconstruccion());
-                datosAvaluo.setAvaluoEdificacion(avaluo.getValEdifica());
-                datosAvaluo.setAvaluoPredio(avaluo.getValPredio());
-                datosAvaluo.setImpuestoPredial(avaluo.getValImpuesto());
-                datosAvaluo.setContribucionEspecialMejoras(avaluo.getValCem());
-                datosAvaluo.setTasaRecoleccionBasura(avaluo.getValBasura());
-                datosAvaluo.setCostoEmision(avaluo.getValEmision());
-                datosAvaluo.setTasaBomberos(avaluo.getValBomberos());
-                datosAvaluo.setServiciosAmbientales(avaluo.getValAmbientales());
-                datosAvaluo.setTotalAPagar(avaluo.getValImppredial());
+                datosAvaluo.setAvaluoTerreno(avaluo.getValTerreno().setScale(2, RoundingMode.HALF_UP));
+                datosAvaluo.setAreaTerreno(avaluo.getValTerreno().setScale(2, RoundingMode.HALF_UP));
+                datosAvaluo.setAreaEdificacion(avaluo.getValAreaconstruccion().setScale(2, RoundingMode.HALF_UP));
+                datosAvaluo.setAvaluoEdificacion(avaluo.getValEdifica().setScale(2, RoundingMode.HALF_UP));
+                datosAvaluo.setAvaluoPredio(avaluo.getValPredio().setScale(2, RoundingMode.HALF_UP));
+                datosAvaluo.setAreaPredio(avaluo.getValAreapredio().setScale(2, RoundingMode.HALF_UP));
+                datosAvaluo.setImpuestoPredial(avaluo.getValImpuesto().setScale(2, RoundingMode.HALF_UP));
+                datosAvaluo.setContribucionEspecialMejoras(avaluo.getValCem().setScale(2, RoundingMode.HALF_UP));
+                datosAvaluo.setTasaRecoleccionBasura(avaluo.getValBasura().setScale(2, RoundingMode.HALF_UP));
+                datosAvaluo.setCostoEmision(avaluo.getValEmision().setScale(2, RoundingMode.HALF_UP));
+                datosAvaluo.setTasaBomberos(avaluo.getValBomberos().setScale(2, RoundingMode.HALF_UP));
+                datosAvaluo.setServiciosAmbientales(avaluo.getValAmbientales().setScale(2, RoundingMode.HALF_UP));
+                datosAvaluo.setTotalAPagar(avaluo.getValImppredial().setScale(2, RoundingMode.HALF_UP));
                 /*datosAvaluo.setTotalAPagar(avaluo.getValImppredial()
                                            .add(avaluo.getValCem()
                                            .add(avaluo.getValBasura()
@@ -813,7 +818,7 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
                                            .add(avaluo.getValBomberos())
                                            .add(avaluo.getValAmbientales())))));*/
                 datosImpresion.add(datosAvaluo);
-                }
+            }
             }
             List<Predios> predioImprimir = new ArrayList<>();
             int i = 0;
@@ -833,12 +838,16 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
           
             */
             Map<String, Class> paramRepA = new HashMap<String, Class>();
-            paramRepA.put("predios", Predios.class);
-            paramRepA.put("reportepredios", List.class);
+            paramRepA.put("tablaCatastral", TablaCatastralDto.class);
+            paramRepA.put("reporTablaCatastral", List.class);
             Map<String, Object> parametrosReporte = new HashMap<>();
             parametrosReporte.put("TITULO_REPORTE", "REPORTECITO");
-            
+            /*
             Reporte reporte = new Reporte(ReporteGenerador.FormatoReporte.PDF, predioImprimir, paramRepA, "/opt/newReport.jasper", "/reportepredios//predios", parametrosReporte);
+            if (ComunUtil.esNulo(reporte)) {
+                return null;
+            }*/
+            Reporte reporte = new Reporte(ReporteGenerador.FormatoReporte.XLSX, datosImpresion, paramRepA, "/opt/newReport.jasper", "/reporTablaCatastral//tablaCatastral", parametrosReporte);
             if (ComunUtil.esNulo(reporte)) {
                 return null;
             }
@@ -857,7 +866,7 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
         return null;
     }
     public List<Avaluo> generarListaAvaluo(){
-         return catastroServicio.consultarAvaluos(null);
+         return catastroServicio.consultarListaAvaluosActuales();
     }
 
 }

@@ -14,6 +14,7 @@ import java.math.BigDecimal;
 public class TablaCatastralDto {
     
     private String codigoCatastral; 
+    private String nombreCodigoCatastral; 
     private String propietario; 
     private String ciRuc; 
     private String barrio; 
@@ -41,6 +42,14 @@ public class TablaCatastralDto {
         this.codigoCatastral = codigoCatastral;
     }
 
+    public String getNombreCodigoCatastral() {
+        return nombreCodigoCatastral;
+    }
+
+    public void setNombreCodigoCatastral(String nombreCodigoCatastral) {
+        this.nombreCodigoCatastral = nombreCodigoCatastral;
+    }
+    
     public String getPropietario() {
         return propietario;
     }
