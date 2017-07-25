@@ -19,50 +19,28 @@
                         </h2>
                     </p>
                     <p>#{avaluoBB.descripcionPantalla.textoEtiqueta}</p>
-
-                    <p:wizard flowListener="#{avaluoBB.onFlowProcess}">
-                        <p:tab id="personal" title="Personal">
-                            <p:messages />
-                            <p:panel header="Personal Details">
-                                <p:commandButton actionListener="#{avaluoBB.generarSimulacion()}"
-                                                 icon="fa fa-check"
-                                                 value="Calcular"
-                                                 id="generarSimulacion">
-                                </p:commandButton>
-                            </p:panel>
-
-                        </p:tab>
-                        <p:tab id="other" title="Other">
-                            <p:messages />
-                            <p:panel header="Other Details">
-                                <p>hola</p>
-                            </p:panel>
-                        </p:tab>
-                        <p:tab id="listado" title="Listado">
-                            <p:messages />
-                            <!--<p:outputPanel id="opDetalleAvaluo">
-                                <h:panelGrid columns="1">-->
+                    <p:tooltip />
+                    <p:outputPanel id="opDetalleContribuyentes">
+                        <h:panelGrid columns="2">
                             <p:selectOneMenu id="fechaAvaluo" value="#{avaluoBB.fechaAvaluoActual.fechaDescripcion}" style="width:125px" >
-                                <f:selectItem itemLabel="Seleccione tipo fecha..."/>
-                                <f:selectItems value="#{avaluoBB.listaFechaAvaluos}" var="fechas" itemValue="#{fechas}" itemLabel="#{fechas.fechaDescripcion}"/>
-                                <!--<p:ajax listener="#{avaluoBB.actualizarListaAvaluosPorFecha()}"/>-->
+                                <f:selectItem itemLabel="Seleccione tipo fecha..." itemValue="null"/>
+                                <f:selectItems value="#{avaluoBB.listaFechaAvaluos}" var="fechas" itemValue="#{fechas.fechaDescripcion}" itemLabel="#{fechas.fechaDescripcion}"/>
                             </p:selectOneMenu>
 
-                            <p:commandButton actionListener="#{avaluoBB.actualizarListaAvaluosPorFecha(fechas.fecavFechaavaluo)}"
+                            <p:commandButton actionListener="#{avaluoBB.actualizarListaAvaluosPorFecha(avaluoBB.fechaAvaluoActual.fechaDescripcion)}"
                                              icon="fa fa-check"
                                              value="Consultar"
+                                             update="grupoAvaluos"
                                              id="consultarAvaluos">
                             </p:commandButton>
-
-                            <!--</h:panelGrid>-->
-
+                        </h:panelGrid>
+                        <h:panelGrid>
                             <p:dataTable id="listaAvaluos" var="avaluo" widgetVar="listaAvaluoTabla"
                                          value="#{avaluoBB.listaAvaluos}" rowKey="#{avaluo.avalId}" filteredValue="#{avaluoBB.listaAvaluosFiltrados}"
                                          paginator="true" rows="5" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" 
                                          rowsPerPageTemplate="5,10,15" 
                                          emptyMessage="No se han encontrado resultados" 
                                          paginatorPosition="bottom">
-
 
                                 <p:column headerText="Codigo" sortBy="#{avaluo.nomCodigocatastral}">
                                     <h:outputText value="#{avaluo.nomCodigocatastral}" />
@@ -85,16 +63,37 @@
                                 </p:column>
 
                             </p:dataTable>
+                            <h:panelGrid columns="2">
+                                <p:commandButton actionListener="#{avaluoBB.generarSimulacion()}"
+                                             icon="fa fa-calculator"
+                                             value="Calcular"
+                                             update="grupoAvaluos"
+                                             widgetVar="calcularSimulacion"
+                                             id="generarSimulacion">
+                            </p:commandButton>
+                            
+                            <p:commandButton icon="fa fa-print" 
+                                             value="Imprimir" 
+                                             id="imprimir"
+                                             update="grupoFichaCatastral"
+                                             process="@this"
+                                             ajax="false"  
+                                             onclick="PrimeFaces.monitorDownload(start, stop);">
+                                <p:fileDownload value="#{fichaCatastralBB.imprimir()}" />
+                                <p:ajax update="toolTipImprimir" process="@this" /> 
+                            </p:commandButton>
+                            <p:tooltip id="toolTipImprimir" for="imprimir" value="Imprimir" showEffect="fade" hideEffect="fade" position="top"/>
+                            </h:panelGrid>
+                            
+                        </h:panelGrid>
 
 
+                    </p:outputPanel>
+                </h:form>
 
-                            <!--</p:outputPanel>-->
-
-
-                        </p:tab>
-                    </p:wizard>
-                </h:form>  
-
+                <p:dialog header="Generación de la sumlación" widgetVar="dlgSimulacion" modal="true" showEffect="fade" hideEffect="fade" resizable="false" closable="true" width="550" height="400">
+                    
+                </p:dialog>
             </p:panel>
         </h:panelGroup>
     </ui:define>

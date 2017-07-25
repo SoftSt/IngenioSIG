@@ -655,8 +655,9 @@
                                              ajax="false"  
                                              onclick="PrimeFaces.monitorDownload(start, stop);">
                                 <p:fileDownload value="#{fichaCatastralBB.imprimir()}" />
+                                <p:ajax update="toolTipSave" process="@this" /> 
                             </p:commandButton>
-                            <p:tooltip id="toolTipImprimir" for="cancelar" value="Imprimir" showEffect="fade" hideEffect="fade" position="top"/>
+                            <p:tooltip id="toolTipImprimir" for="imprimir" value="Imprimir" showEffect="fade" hideEffect="fade" position="top"/>
 
                         </h:panelGrid>
                         <br/>

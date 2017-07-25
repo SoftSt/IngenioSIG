@@ -39,12 +39,12 @@ public class FechaAvaluo implements Serializable {
     @Column(name = "fecav_id")
     private Integer fecavId;
     @Column(name = "fecav_fechaavaluo")
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.TIMESTAMP)
     private Date fecavFechaavaluo;
     @Enumerated(EnumType.STRING)
     @Column(name = "fecav_estado")
     private EnumEstadoRegistro fecavEstado;
-    @Size(max = 15)
+    @Size(max = 100)
     @Column(name = "feav_descripcion")
     private String fechaDescripcion;
     @Size(max = 50)
