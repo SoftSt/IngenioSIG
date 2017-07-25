@@ -777,16 +777,17 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
         generarArbolAvaluo();
     }
 
-    public DefaultStreamedContent imprimir() {
-        return generarReportes();
+    public DefaultStreamedContent imprimir(int tipoReporte) {
+        return generarReportes(tipoReporte);
     }
 
-    protected DefaultStreamedContent generarReportes() {
+    protected DefaultStreamedContent generarReportes(int tipoReporte) {
         try {
             DefaultStreamedContent dscXlsPa;
             List<Avaluo>listaAvaluos=generarListaAvaluo();
             List<TablaCatastralDto>datosImpresion= new ArrayList<>();
             TablaCatastralDto datosAvaluo;
+            String formatoTabla="/opt/tablaCatastralUrbana.jasper";
             for (Avaluo avaluo : listaAvaluos) {
                 datosAvaluo=new TablaCatastralDto();
                 datosAvaluo.setCodigoCatastral(avaluo.getCodCatastral().getCodCatastral().toString());
@@ -811,34 +812,14 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
                 datosAvaluo.setObservaciones(avaluo.getCatCasosespeciales()); 
                 datosImpresion.add(datosAvaluo);
             }
-            List<Predios> predioImprimir = new ArrayList<>();
-            int i = 0;
-            for (FichaCatastralDto ficha : this.listaFichas) {
-                i++;
-                predioImprimir.add(ficha.getPredio());
-                if (i >= 500) {
-                    break;
-                }
-                
-            }
-            
-          /*  
-            Map<String, Class> paramRepA = new HashMap<String, Class>();
-            paramRepA.put("predios", Predios.class);
-            paramRepA.put("reportepredios", List.class);
-          
-            */
+            if (tipoReporte!=1)
+                formatoTabla="/opt/newReport.jasper";
             Map<String, Class> paramRepA = new HashMap<String, Class>();
             paramRepA.put("tablaCatastral", TablaCatastralDto.class);
             paramRepA.put("reporTablaCatastral", List.class);
             Map<String, Object> parametrosReporte = new HashMap<>();
             parametrosReporte.put("TITULO_REPORTE", "REPORTECITO");
-            /*
-            Reporte reporte = new Reporte(ReporteGenerador.FormatoReporte.PDF, predioImprimir, paramRepA, "/opt/newReport.jasper", "/reportepredios//predios", parametrosReporte);
-            if (ComunUtil.esNulo(reporte)) {
-                return null;
-            }*/
-            Reporte reporte = new Reporte(ReporteGenerador.FormatoReporte.XLSX, datosImpresion, paramRepA, "/opt/tablaCatastralUrbana.jasper", "/reporTablaCatastral//tablaCatastral", parametrosReporte);
+            Reporte reporte = new Reporte(ReporteGenerador.FormatoReporte.XLSX, datosImpresion, paramRepA, formatoTabla, "/reporTablaCatastral//tablaCatastral", parametrosReporte);
             if (ComunUtil.esNulo(reporte)) {
                 return null;
             }

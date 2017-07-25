@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="240fd7c8-daae-4d60-869c-ac6eb700ef02">
-	<property name="ireport.zoom" value="0.9090909090909113"/>
+	<property name="ireport.zoom" value="0.75"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="29"/>
+	<property name="ireport.y" value="0"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -26,178 +26,202 @@
 	<subDataset name="Table Dataset 1" uuid="78264a72-459a-4634-a5d1-012cc223f63e"/>
 	<parameter name="TITULO_REPORTE" class="java.lang.String"/>
 	<parameter name="VAL_SERVICIOS" class="java.math.BigDecimal"/>
-	<field name="valAreaFrente" class="java.math.BigDecimal"/>
-	<field name="codCatastral" class="java.lang.Integer"/>
-	<field name="codcat" class="java.math.BigDecimal"/>
-	<field name="valCem" class="java.math.BigDecimal"/>
-	<field name="valTerreno" class="java.math.BigDecimal"/>
-	<field name="valEdifica" class="java.math.BigDecimal"/>
-	<field name="valPredio" class="java.math.BigDecimal"/>
-	<variable name="SUMA_TOTAL" class="java.math.BigDecimal" calculation="Sum">
-		<variableExpression><![CDATA[$F{valAreaFrente}]]></variableExpression>
+	<parameter name="RUTA_IMAGENES" class="java.lang.String"/>
+	<field name="nombreCodigoCatastral" class="java.lang.String"/>
+	<field name="propietario" class="java.lang.String"/>
+	<field name="ciRuc" class="java.lang.String"/>
+	<field name="avaluoTerreno" class="java.lang.String">
+		<fieldDescription><![CDATA[avaluoTerreno]]></fieldDescription>
+	</field>
+	<field name="avaluoEdificacion" class="java.lang.String">
+		<fieldDescription><![CDATA[avaluoEdificacion]]></fieldDescription>
+	</field>
+	<field name="avaluoPredio" class="java.lang.String"/>
+	<field name="impuestoPredial" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="contribucionEspecialMejoras" class="java.lang.String"/>
+	<field name="tasaRecoleccionBasura" class="java.lang.String"/>
+	<field name="costoEmision" class="java.lang.String"/>
+	<field name="tasaBomberos" class="java.lang.String"/>
+	<field name="serviciosAmbientales" class="java.lang.String"/>
+	<field name="totalAPagar" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<variable name="AVALUO_TERRENO" class="java.lang.Double">
+		<variableExpression><![CDATA[new Double($F{avaluoTerreno})]]></variableExpression>
 	</variable>
-	<variable name="codcat_1" class="java.lang.Integer" resetType="Page" calculation="Count">
-		<variableExpression><![CDATA[$F{codcat}]]></variableExpression>
+	<variable name="AVALUO_EDIFICACION" class="java.lang.Double">
+		<variableExpression><![CDATA[new Double($F{avaluoEdificacion})]]></variableExpression>
 	</variable>
-	<variable name="codcat_2" class="java.lang.Integer" resetType="Column" calculation="Count">
-		<variableExpression><![CDATA[$F{codcat}]]></variableExpression>
+	<variable name="AVALUO_PREDIO" class="java.lang.Double">
+		<variableExpression><![CDATA[new Double($F{avaluoPredio})]]></variableExpression>
+	</variable>
+	<variable name="IMPUESTO_PREDIAL" class="java.lang.Double">
+		<variableExpression><![CDATA[new Double($F{impuestoPredial})]]></variableExpression>
+	</variable>
+	<variable name="CEM" class="java.lang.Double">
+		<variableExpression><![CDATA[new Double($F{contribucionEspecialMejoras})]]></variableExpression>
+	</variable>
+	<variable name="SERVICIOS" class="java.lang.Double">
+		<variableExpression><![CDATA[new Double($F{tasaRecoleccionBasura})+new Double($F{costoEmision})+ new Double($F{tasaBomberos})+ new Double($F{serviciosAmbientales})]]></variableExpression>
+		<initialValueExpression><![CDATA[]]></initialValueExpression>
+	</variable>
+	<variable name="TOTAL" class="java.lang.Double">
+		<variableExpression><![CDATA[new Double($F{totalAPagar})]]></variableExpression>
+	</variable>
+	<variable name="SUMA_TOTAL" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[new Double(($F{totalAPagar}))]]></variableExpression>
 	</variable>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
-	<title>
-		<band height="29" splitType="Stretch"/>
-	</title>
 	<pageHeader>
 		<band height="89" splitType="Stretch">
-			<image>
-				<reportElement x="0" y="0" width="98" height="50" uuid="c0b3f813-ad9c-4b01-a458-60ca4d5a3352"/>
+			<image scaleImage="FillFrame" onErrorType="Blank">
+				<reportElement x="0" y="0" width="64" height="89" uuid="c0b3f813-ad9c-4b01-a458-60ca4d5a3352"/>
+				<imageExpression><![CDATA[$P{RUTA_IMAGENES}+"logo.png"]]></imageExpression>
 			</image>
 			<staticText>
-				<reportElement x="491" y="0" width="311" height="50" uuid="06dee506-c71f-490b-bb1d-510961e253e3"/>
+				<reportElement x="426" y="0" width="376" height="50" uuid="06dee506-c71f-490b-bb1d-510961e253e3"/>
 				<textElement>
 					<font size="18" isBold="true"/>
 				</textElement>
 				<text><![CDATA[SISTEMA DE INFORMACIÓN GEOGRÁFICO CATASTRAL - SIGC]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="50" width="802" height="20" uuid="a03c982b-432e-4c94-9a5a-12386ce34d36"/>
+				<reportElement x="160" y="50" width="510" height="19" uuid="a03c982b-432e-4c94-9a5a-12386ce34d36"/>
 				<textElement textAlignment="Center">
 					<font size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[TABLA CATASTRAL URBANA]]></text>
 			</staticText>
 			<textField pattern="dd/MM/yy">
-				<reportElement x="391" y="69" width="169" height="20" uuid="b710b06c-7ca6-4f48-bf3b-b591acb0174f"/>
+				<reportElement x="375" y="69" width="169" height="20" uuid="b710b06c-7ca6-4f48-bf3b-b591acb0174f"/>
 				<textElement verticalAlignment="Top">
 					<font size="12" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="0" y="69" width="391" height="20" uuid="afe8d2da-ed70-4cb7-a51e-7f64b3f0f430"/>
+				<reportElement x="160" y="69" width="215" height="20" uuid="afe8d2da-ed70-4cb7-a51e-7f64b3f0f430"/>
 				<textElement textAlignment="Right">
 					<font size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[AL ]]></text>
 			</staticText>
-			<textField isBlankWhenNull="true">
-				<reportElement x="320" y="19" width="171" height="20" uuid="379f6479-e86e-4e98-be36-1b88f214ba50"/>
-				<textElement textAlignment="Center"/>
-				<textFieldExpression><![CDATA[$P{TITULO_REPORTE}]]></textFieldExpression>
-			</textField>
 		</band>
 	</pageHeader>
 	<columnHeader>
 		<band height="35" splitType="Stretch">
 			<staticText>
-				<reportElement x="0" y="0" width="80" height="35" uuid="fad23bb0-9f4b-46b6-a996-4ffe49a59f7f"/>
+				<reportElement x="0" y="0" width="90" height="35" uuid="fad23bb0-9f4b-46b6-a996-4ffe49a59f7f"/>
 				<box>
 					<topPen lineWidth="1.0"/>
-					<leftPen lineWidth="1.0"/>
 					<bottomPen lineWidth="1.0"/>
-					<rightPen lineWidth="1.0"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
 				<text><![CDATA[CODIGO CATASTRAL]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="80" y="0" width="80" height="35" uuid="db124b75-981f-4d94-9feb-2710068aec13"/>
+				<reportElement x="90" y="0" width="142" height="35" uuid="db124b75-981f-4d94-9feb-2710068aec13"/>
 				<box>
 					<topPen lineWidth="1.0"/>
-					<leftPen lineWidth="1.0"/>
 					<bottomPen lineWidth="1.0"/>
-					<rightPen lineWidth="1.0"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
 				<text><![CDATA[PROPIETARIO]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="160" y="0" width="80" height="35" uuid="6cff0b0d-d455-44e2-b140-7bdb2ca1e40e"/>
+				<reportElement x="232" y="0" width="80" height="35" uuid="6cff0b0d-d455-44e2-b140-7bdb2ca1e40e"/>
 				<box>
 					<topPen lineWidth="1.0"/>
-					<leftPen lineWidth="1.0"/>
 					<bottomPen lineWidth="1.0"/>
-					<rightPen lineWidth="1.0"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<text><![CDATA[CI/RUC FRENTE]]></text>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[CI/RUC]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="240" y="0" width="80" height="35" uuid="a255ade3-b1a5-4169-b0b0-773a565585a2"/>
+				<reportElement x="312" y="0" width="70" height="35" uuid="a255ade3-b1a5-4169-b0b0-773a565585a2"/>
 				<box>
 					<topPen lineWidth="1.0"/>
-					<leftPen lineWidth="1.0"/>
 					<bottomPen lineWidth="1.0"/>
-					<rightPen lineWidth="1.0"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
 				<text><![CDATA[AVALUO TERRENO]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="320" y="0" width="80" height="35" uuid="00101e3c-cf1e-4459-abc6-6d8eb885a31b"/>
+				<reportElement x="382" y="0" width="70" height="35" uuid="00101e3c-cf1e-4459-abc6-6d8eb885a31b"/>
 				<box>
 					<topPen lineWidth="1.0"/>
-					<leftPen lineWidth="1.0"/>
 					<bottomPen lineWidth="1.0"/>
-					<rightPen lineWidth="1.0"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
 				<text><![CDATA[AVALUO EDIFICACION]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="400" y="0" width="80" height="35" uuid="ca03bced-d00f-47a9-b20a-50a7a9a15155"/>
+				<reportElement x="452" y="0" width="70" height="35" uuid="ca03bced-d00f-47a9-b20a-50a7a9a15155"/>
 				<box>
 					<topPen lineWidth="1.0"/>
-					<leftPen lineWidth="1.0"/>
 					<bottomPen lineWidth="1.0"/>
-					<rightPen lineWidth="1.0"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
 				<text><![CDATA[AVALUO PREDIO]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="480" y="0" width="80" height="35" uuid="fa90af63-4389-4829-bb6b-193d90210361"/>
+				<reportElement x="522" y="0" width="70" height="35" uuid="fa90af63-4389-4829-bb6b-193d90210361"/>
 				<box>
 					<topPen lineWidth="1.0"/>
-					<leftPen lineWidth="1.0"/>
 					<bottomPen lineWidth="1.0"/>
-					<rightPen lineWidth="1.0"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
 				<text><![CDATA[IMPUESTO PREDIO]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="560" y="0" width="80" height="35" uuid="a4bf5083-c8fe-4d21-8892-9618b2dc17cb"/>
+				<reportElement x="592" y="0" width="70" height="35" uuid="a4bf5083-c8fe-4d21-8892-9618b2dc17cb"/>
 				<box>
 					<topPen lineWidth="1.0"/>
-					<leftPen lineWidth="1.0"/>
 					<bottomPen lineWidth="1.0"/>
-					<rightPen lineWidth="1.0"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
 				<text><![CDATA[CEM]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="640" y="0" width="80" height="35" uuid="6ded8f5f-c147-419b-935f-e8131c3acb9f"/>
+				<reportElement x="662" y="0" width="70" height="35" uuid="6ded8f5f-c147-419b-935f-e8131c3acb9f"/>
 				<box>
 					<topPen lineWidth="1.0"/>
-					<leftPen lineWidth="1.0"/>
 					<bottomPen lineWidth="1.0"/>
-					<rightPen lineWidth="1.0"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
 				<text><![CDATA[SERVICIOS]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="720" y="0" width="82" height="35" uuid="a754e4d1-6eef-4f01-899c-4141c022c239"/>
+				<reportElement x="732" y="0" width="70" height="35" uuid="a754e4d1-6eef-4f01-899c-4141c022c239"/>
 				<box>
 					<topPen lineWidth="1.0"/>
-					<leftPen lineWidth="1.0"/>
 					<bottomPen lineWidth="1.0"/>
-					<rightPen lineWidth="1.0"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
 				<text><![CDATA[TOTAL]]></text>
 			</staticText>
 		</band>
@@ -205,122 +229,119 @@
 	<detail>
 		<band height="24" splitType="Stretch">
 			<textField isBlankWhenNull="true">
-				<reportElement x="0" y="0" width="80" height="24" uuid="1fd43ff4-6c68-4655-821e-dc8963bbcc2e"/>
+				<reportElement x="0" y="0" width="90" height="24" uuid="1fd43ff4-6c68-4655-821e-dc8963bbcc2e"/>
 				<box>
 					<topPen lineWidth="1.0"/>
-					<leftPen lineWidth="1.0"/>
 					<bottomPen lineWidth="1.0"/>
-					<rightPen lineWidth="1.0"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{codCatastral}]]></textFieldExpression>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nombreCodigoCatastral}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="80" y="0" width="80" height="24" uuid="eae3b73d-f2bb-470c-98e2-6d6401babbb1"/>
+				<reportElement x="90" y="0" width="142" height="24" uuid="eae3b73d-f2bb-470c-98e2-6d6401babbb1"/>
 				<box>
 					<topPen lineWidth="1.0"/>
-					<leftPen lineWidth="1.0"/>
 					<bottomPen lineWidth="1.0"/>
-					<rightPen lineWidth="1.0"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{codcat}]]></textFieldExpression>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{propietario}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="160" y="0" width="80" height="24" uuid="f531a60f-13c5-4d35-a92c-dde9f2eb5bb3"/>
+				<reportElement x="232" y="0" width="80" height="24" uuid="f531a60f-13c5-4d35-a92c-dde9f2eb5bb3"/>
 				<box>
 					<topPen lineWidth="1.0"/>
-					<leftPen lineWidth="1.0"/>
 					<bottomPen lineWidth="1.0"/>
-					<rightPen lineWidth="1.0"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{codcat}]]></textFieldExpression>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ciRuc}]]></textFieldExpression>
 			</textField>
-			<textField isBlankWhenNull="true">
-				<reportElement x="240" y="0" width="80" height="24" uuid="150eb316-aa43-4de6-a27a-c881cf6db6a5"/>
+			<textField pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
+				<reportElement x="312" y="0" width="70" height="24" uuid="150eb316-aa43-4de6-a27a-c881cf6db6a5"/>
 				<box>
 					<topPen lineWidth="1.0"/>
-					<leftPen lineWidth="1.0"/>
 					<bottomPen lineWidth="1.0"/>
-					<rightPen lineWidth="1.0"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{valAreaFrente}]]></textFieldExpression>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{AVALUO_TERRENO}]]></textFieldExpression>
 			</textField>
-			<textField isBlankWhenNull="true">
-				<reportElement x="320" y="0" width="80" height="24" uuid="a262ffb4-01e0-40e8-9bce-21e81adbb491"/>
+			<textField pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
+				<reportElement x="382" y="0" width="70" height="24" uuid="a262ffb4-01e0-40e8-9bce-21e81adbb491"/>
 				<box>
 					<topPen lineWidth="1.0"/>
-					<leftPen lineWidth="1.0"/>
 					<bottomPen lineWidth="1.0"/>
-					<rightPen lineWidth="1.0"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{valEdifica}]]></textFieldExpression>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{AVALUO_EDIFICACION}]]></textFieldExpression>
 			</textField>
-			<textField isBlankWhenNull="true">
-				<reportElement x="400" y="0" width="80" height="24" uuid="bd818e66-ab72-443c-91b7-fc2689a4ce4e"/>
+			<textField pattern="#,##0.00;-#,##0.00" isBlankWhenNull="true">
+				<reportElement x="452" y="0" width="70" height="24" uuid="bd818e66-ab72-443c-91b7-fc2689a4ce4e"/>
 				<box>
 					<topPen lineWidth="1.0"/>
-					<leftPen lineWidth="1.0"/>
 					<bottomPen lineWidth="1.0"/>
-					<rightPen lineWidth="1.0"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{valPredio}]]></textFieldExpression>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{AVALUO_PREDIO}]]></textFieldExpression>
 			</textField>
-			<textField isBlankWhenNull="true">
-				<reportElement x="480" y="0" width="80" height="24" uuid="3b646e13-39a7-4d81-bf42-b1d1efa36889"/>
+			<textField pattern="$ #,##0.00;-#,##0.00" isBlankWhenNull="true">
+				<reportElement x="522" y="0" width="70" height="24" uuid="3b646e13-39a7-4d81-bf42-b1d1efa36889"/>
 				<box>
 					<topPen lineWidth="1.0"/>
-					<leftPen lineWidth="1.0"/>
 					<bottomPen lineWidth="1.0"/>
-					<rightPen lineWidth="1.0"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{codcat}]]></textFieldExpression>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{IMPUESTO_PREDIAL}]]></textFieldExpression>
 			</textField>
-			<textField isBlankWhenNull="true">
-				<reportElement x="560" y="0" width="80" height="24" uuid="cc435806-2525-4b5f-9ed4-18e22e473de7"/>
+			<textField pattern="$ #,##0.00;-#,##0.00" isBlankWhenNull="true">
+				<reportElement x="592" y="0" width="70" height="24" uuid="cc435806-2525-4b5f-9ed4-18e22e473de7"/>
 				<box>
 					<topPen lineWidth="1.0"/>
-					<leftPen lineWidth="1.0"/>
 					<bottomPen lineWidth="1.0"/>
-					<rightPen lineWidth="1.0"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{valCem}]]></textFieldExpression>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{CEM}]]></textFieldExpression>
 			</textField>
-			<textField isBlankWhenNull="true">
-				<reportElement x="640" y="0" width="80" height="24" uuid="66cca8de-a0f2-4607-9f07-657177046fc1"/>
+			<textField pattern="$ #,##0.00;-#,##0.00" isBlankWhenNull="true">
+				<reportElement x="662" y="0" width="70" height="24" uuid="66cca8de-a0f2-4607-9f07-657177046fc1"/>
 				<box>
 					<topPen lineWidth="1.0"/>
-					<leftPen lineWidth="1.0"/>
 					<bottomPen lineWidth="1.0"/>
-					<rightPen lineWidth="1.0"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$P{VAL_SERVICIOS}]]></textFieldExpression>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{SERVICIOS}]]></textFieldExpression>
 			</textField>
-			<textField isBlankWhenNull="true">
-				<reportElement x="720" y="0" width="82" height="24" uuid="a3b02fc6-8da4-4e8c-98cd-47428dcfcba6"/>
+			<textField pattern="$ #,##0.00;-#,##0.00" isBlankWhenNull="true">
+				<reportElement x="732" y="0" width="70" height="24" uuid="a3b02fc6-8da4-4e8c-98cd-47428dcfcba6"/>
 				<box>
 					<topPen lineWidth="1.0"/>
-					<leftPen lineWidth="1.0"/>
 					<bottomPen lineWidth="1.0"/>
-					<rightPen lineWidth="1.0"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{codcat}]]></textFieldExpression>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{TOTAL}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
-	<columnFooter>
-		<band height="45" splitType="Stretch"/>
-	</columnFooter>
 	<pageFooter>
-		<band height="54" splitType="Stretch">
+		<band height="21" splitType="Stretch">
 			<textField>
 				<reportElement x="0" y="0" width="401" height="20" uuid="8547f0d9-696c-4a96-88de-6372618f381b"/>
 				<textElement textAlignment="Right"/>
@@ -335,27 +356,23 @@
 	<summary>
 		<band height="42" splitType="Stretch">
 			<staticText>
-				<reportElement x="0" y="0" width="720" height="42" uuid="0a481c34-84b6-4b9d-b139-b3299bd97f7c"/>
+				<reportElement x="0" y="0" width="732" height="42" uuid="0a481c34-84b6-4b9d-b139-b3299bd97f7c"/>
 				<box leftPadding="15">
 					<topPen lineWidth="1.0"/>
-					<leftPen lineWidth="1.0"/>
 					<bottomPen lineWidth="1.0"/>
-					<rightPen lineWidth="1.0"/>
 				</box>
 				<textElement verticalAlignment="Middle">
 					<font isBold="true"/>
 				</textElement>
 				<text><![CDATA[TOTAL]]></text>
 			</staticText>
-			<textField isBlankWhenNull="true">
-				<reportElement x="720" y="0" width="82" height="42" uuid="7b5a827f-e833-4db6-afa0-6dfc27d78712"/>
+			<textField pattern="$ #,##0.00;-#,##0.00" isBlankWhenNull="true">
+				<reportElement x="732" y="0" width="70" height="42" uuid="7b5a827f-e833-4db6-afa0-6dfc27d78712"/>
 				<box>
 					<topPen lineWidth="1.0"/>
-					<leftPen lineWidth="1.0"/>
 					<bottomPen lineWidth="1.0"/>
-					<rightPen lineWidth="1.0"/>
 				</box>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
+				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{SUMA_TOTAL}]]></textFieldExpression>

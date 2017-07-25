@@ -65,35 +65,52 @@
                             </p:dataTable>
                             <h:panelGrid columns="2">
                                 <p:commandButton actionListener="#{avaluoBB.generarSimulacion()}"
-                                             icon="fa fa-calculator"
-                                             value="Calcular"
-                                             update="grupoAvaluos"
-                                             widgetVar="calcularSimulacion"
-                                             id="generarSimulacion">
-                            </p:commandButton>
-                            
-                            <p:commandButton icon="fa fa-print" 
-                                             value="Imprimir" 
-                                             id="imprimir"
-                                             update="grupoFichaCatastral"
-                                             process="@this"
-                                             ajax="false"  
-                                             onclick="PrimeFaces.monitorDownload(start, stop);">
-                                <p:fileDownload value="#{fichaCatastralBB.imprimir()}" />
-                                <p:ajax update="toolTipImprimir" process="@this" /> 
-                            </p:commandButton>
-                            <p:tooltip id="toolTipImprimir" for="imprimir" value="Imprimir" showEffect="fade" hideEffect="fade" position="top"/>
+                                                 icon="fa fa-calculator"
+                                                 value="Calcular"
+                                                 update="grupoAvaluos"
+                                                 widgetVar="calcularSimulacion"
+                                                 id="generarSimulacion">
+                                </p:commandButton>
+
+                                <p:commandButton icon="fa fa-print" 
+                                                 value="Imprimir" 
+                                                 id="imprimir"  
+                                                 oncomplete="PF('wgSeleccionImpresion').show()">
+                                </p:commandButton>
+                                <p:tooltip id="toolTipImprimir" for="imprimir" value="Imprimir" showEffect="fade" hideEffect="fade" position="top"/>
                             </h:panelGrid>
-                            
+
                         </h:panelGrid>
 
 
                     </p:outputPanel>
+                    <p:dialog header="Seleccionar Impresión" widgetVar="wgSeleccionImpresion" 
+                              modal="true" height="100">
+                        <p><h:outputText value="Seleccione el tipo de impresión que necesita" /></p>
+                        <h:panelGrid columns="2">
+                            <p:commandButton icon="fa fa-print" 
+                                             value="Condensado" 
+                                             id="imprimirCondensado"
+                                             update="grupoAvaluos"
+                                             onclick="PrimeFaces.monitorDownload(start, stop);">
+                                <p:fileDownload value="#{fichaCatastralBB.imprimir(0)}" />
+                            </p:commandButton>
+                            <p:commandButton icon="fa fa-print" 
+                                             value="Completo" 
+                                             id="imprimirCompleto"
+                                             update="grupoAvaluos"
+                                             onclick="PrimeFaces.monitorDownload(start, stop);">
+                                <p:fileDownload value="#{fichaCatastralBB.imprimir(1)}" />
+                            </p:commandButton>
+                        </h:panelGrid>
+                    </p:dialog>   
                 </h:form>
 
                 <p:dialog header="Generación de la sumlación" widgetVar="dlgSimulacion" modal="true" showEffect="fade" hideEffect="fade" resizable="false" closable="true" width="550" height="400">
-                    
+
                 </p:dialog>
+
+
             </p:panel>
         </h:panelGroup>
     </ui:define>
