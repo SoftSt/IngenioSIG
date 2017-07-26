@@ -33,7 +33,7 @@ public class ConstantesImpuestosFacade extends AbstractFacade<ConstantesImpuesto
     }
     
     public List<ConstantesImpuestos> buscarConstantesImpuestos() {
-        Query q = this.getEntityManager().createQuery("SELECT constantes FROM ConstantesImpuestos constantes where constantes.conImpuesto =:ESTADO");
+        Query q = this.getEntityManager().createQuery("SELECT constantes FROM ConstantesImpuestos constantes where constantes.conImpuestoEstado =:ESTADO");
         q.setParameter("ESTADO", EnumEstadoRegistro.A);
         return q.getResultList();
         

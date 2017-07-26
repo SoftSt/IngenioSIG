@@ -118,7 +118,16 @@ public enum EnumEtiquetas {
     PROPIETARIO_EDITAR_DESCRIPCION("Edición de Propietario seleccionado."),
     SIMULACION_LISTA_TITULO("Simulación"),
     SIMULACION_LISTA_ICONO("fa fa-laptop"),
-    SIMULACION_LISTA_DESCRIPCION("Gestión de simulacion");
+    SIMULACION_LISTA_DESCRIPCION("Gestión de simulacion"),
+    PARAMETROS_LISTA_TITULO("Parametros para calculo"),
+    PARAMETROS_LISTA_ICONO("fa fa-calculator"),
+    PARAMETROS_LISTA_DESCRIPCION("Gestión de parametros."),
+    PARAMETROS_NUEVO_TITULO("Nuevo Parametro"),
+    PARAMETROS_NUEVO_ICONO("fa fa-plus"),
+    PARAMETROS_NUEVO_DESCRIPCION("Creación de nuevo Parametro."),
+    PARAMETROS_EDITAR_TITULO("Editar Parametro"),
+    PARAMETROS_EDITAR_ICONO("fa fa-edit"),
+    PARAMETROS_EDITAR_DESCRIPCION("Edición de Parametros seleccionado.");
     
     private final String textoEtiqueta;
 

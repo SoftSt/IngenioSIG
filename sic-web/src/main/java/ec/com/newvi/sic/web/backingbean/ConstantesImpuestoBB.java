@@ -69,29 +69,29 @@ public class ConstantesImpuestoBB extends AdminParametrosBB{
         this.constantesImpuestos = new ConstantesImpuestos();
         actualizarListadoConstanteImpuestos();
         conmutarPantalla(EnumPantallaMantenimiento.PANTALLA_LISTADO);
-        establecerTitulo(EnumEtiquetas.BLOQUES_LISTA_TITULO,
-                EnumEtiquetas.BLOQUES_LISTA_ICONO,
-                EnumEtiquetas.BLOQUES_LISTA_DESCRIPCION);
+        establecerTitulo(EnumEtiquetas.PARAMETROS_LISTA_TITULO,
+                EnumEtiquetas.PARAMETROS_LISTA_ICONO,
+                EnumEtiquetas.PARAMETROS_LISTA_DESCRIPCION);
     }
     
     private void actualizarListadoConstanteImpuestos() {
         listaConstantes = parametrosServicio.consultarConstantesImpuestos();
     }
     
-    public void crearNuevoConstanteImpuesto() {
+    public void crearNuevaConstanteImpuesto() {
         this.constantesImpuestos = new ConstantesImpuestos();
         this.constantesImpuestos.setconImpuestoEstado(EnumEstadoRegistro.A);
         conmutarPantalla(EnumPantallaMantenimiento.PANTALLA_EDICION);
-        establecerTitulo(EnumEtiquetas.BLOQUES_NUEVO_TITULO,
-                EnumEtiquetas.BLOQUES_NUEVO_ICONO,
-                EnumEtiquetas.BLOQUES_NUEVO_DESCRIPCION);
+        establecerTitulo(EnumEtiquetas.PARAMETROS_NUEVO_TITULO,
+                EnumEtiquetas.PARAMETROS_NUEVO_ICONO,
+                EnumEtiquetas.PARAMETROS_NUEVO_DESCRIPCION);
     }
 
     public void insertarConstanteImpuesto() {
         try {
             parametrosServicio.generaNuevoConstanteImpuesto(constantesImpuestos, sesionBean.obtenerSesionDto());
             actualizarListadoConstanteImpuestos();
-            MensajesFaces.mensajeInformacion(EnumNewviExcepciones.INF340.presentarMensaje());
+            MensajesFaces.mensajeInformacion(EnumNewviExcepciones.INF365.presentarMensaje());
         } catch (NewviExcepcion e) {
             LoggerNewvi.getLogNewvi(this.getClass()).error(e, sesionBean.obtenerSesionDto());
             MensajesFaces.mensajeError(e.getMessage());
@@ -108,7 +108,7 @@ public class ConstantesImpuestoBB extends AdminParametrosBB{
             try {
                 parametrosServicio.actualizarConstanteImpuesto(constantesImpuestos, sesionBean.obtenerSesionDto());
                 actualizarListadoConstanteImpuestos();
-                MensajesFaces.mensajeInformacion(EnumNewviExcepciones.INF341.presentarMensaje());
+                MensajesFaces.mensajeInformacion(EnumNewviExcepciones.INF366.presentarMensaje());
             } catch (NewviExcepcion e) {
                 LoggerNewvi.getLogNewvi(this.getClass()).error(e, sesionBean.obtenerSesionDto());
                 MensajesFaces.mensajeError(e.getMessage());
@@ -118,9 +118,9 @@ public class ConstantesImpuestoBB extends AdminParametrosBB{
             }
         }
         conmutarPantalla(EnumPantallaMantenimiento.PANTALLA_LISTADO);
-        establecerTitulo(EnumEtiquetas.BLOQUES_LISTA_TITULO,
-                EnumEtiquetas.BLOQUES_LISTA_ICONO,
-                EnumEtiquetas.BLOQUES_LISTA_DESCRIPCION);
+        establecerTitulo(EnumEtiquetas.PARAMETROS_LISTA_TITULO,
+                EnumEtiquetas.PARAMETROS_LISTA_ICONO,
+                EnumEtiquetas.PARAMETROS_LISTA_DESCRIPCION);
     }
 
     public void eliminarConstanteImpuesto(Integer idConstanteImpuesto) {
@@ -128,7 +128,7 @@ public class ConstantesImpuestoBB extends AdminParametrosBB{
             this.seleccionarConstanteImpuestoPorCodigo(idConstanteImpuesto);
             if (!ComunUtil.esNulo(idConstanteImpuesto)) {
                 parametrosServicio.eliminarConstanteImpuesto(constantesImpuestos, sesionBean.obtenerSesionDto());
-                MensajesFaces.mensajeInformacion(EnumNewviExcepciones.INF342.presentarMensaje());
+                MensajesFaces.mensajeInformacion(EnumNewviExcepciones.INF367.presentarMensaje());
                 actualizarListadoConstanteImpuestos();
 
             } else {
@@ -155,9 +155,9 @@ public class ConstantesImpuestoBB extends AdminParametrosBB{
             MensajesFaces.mensajeError(EnumNewviExcepciones.ERR000.presentarMensajeCodigo());
         }
         conmutarPantalla(EnumPantallaMantenimiento.PANTALLA_EDICION);
-        establecerTitulo(EnumEtiquetas.BLOQUES_EDITAR_TITULO,
-                EnumEtiquetas.BLOQUES_EDITAR_ICONO,
-                EnumEtiquetas.BLOQUES_EDITAR_DESCRIPCION);
+        establecerTitulo(EnumEtiquetas.PARAMETROS_EDITAR_TITULO,
+                EnumEtiquetas.PARAMETROS_EDITAR_ICONO,
+                EnumEtiquetas.PARAMETROS_EDITAR_DESCRIPCION);
     }
 
     private void seleccionarConstanteImpuestoPorCodigo(Integer idConstanteImpuesto) throws NewviExcepcion {
@@ -165,11 +165,11 @@ public class ConstantesImpuestoBB extends AdminParametrosBB{
     }
 
     public void cancelarEdicion() {
-        WebUtils.obtenerContextoPeticion().reset("formularioConstanteImpuesto:opDetalleConstanteImpuesto");
+        WebUtils.obtenerContextoPeticion().reset("formularioConstanteImpuestos:opDetalleConstantesImpuestos");
         conmutarPantalla(EnumPantallaMantenimiento.PANTALLA_LISTADO);
-        establecerTitulo(EnumEtiquetas.BLOQUES_LISTA_TITULO,
-                EnumEtiquetas.BLOQUES_LISTA_ICONO,
-                EnumEtiquetas.BLOQUES_LISTA_DESCRIPCION);
+        establecerTitulo(EnumEtiquetas.PARAMETROS_LISTA_TITULO,
+                EnumEtiquetas.PARAMETROS_LISTA_ICONO,
+                EnumEtiquetas.PARAMETROS_LISTA_DESCRIPCION);
     }
 
     private void conmutarPantalla(EnumPantallaMantenimiento nuevaPantalla) {
