@@ -159,4 +159,42 @@ public interface ParametrosServicio {
      */
     public List<ConstantesImpuestos> obtenerConstantesImpuestosPorTipo(String stsTipo);
     
+    /**
+     * Genera una nueva constante de impuesto
+     * @param nuevaConstantesImpuestos nueva constante
+     * @param sesion Sesion que realiza la operación
+     * @return El codigo de la constante
+     * @throws NewviExcepcion 
+     */
+    public String generaNuevoConstanteImpuesto(ConstantesImpuestos nuevaConstantesImpuestos, SesionDto sesion) throws NewviExcepcion;
+    
+    /***
+     * Actualiza la constante de impuesto
+     * @param constantesImpuestos constante a actualizar
+     * @param sesion Sesion que realiza la operación
+     * @return el codigo de la constante actualizada
+     * @throws NewviExcepcion 
+     */
+    
+    public String actualizarConstanteImpuesto (ConstantesImpuestos constantesImpuestos, SesionDto sesion) throws NewviExcepcion;
+    /**
+     * Selecciona una constante de impuesto
+     * @param codConstantesimpuestos codigo de la constante de impuesto
+     * @return la constante seleccionada
+     * @throws NewviExcepcion 
+     */
+    public ConstantesImpuestos seleccionarConstanteImpuestos (Integer codConstantesimpuestos) throws NewviExcepcion;
+    /**
+     * Devuelve el listado de constante
+     * @return Lista constantes
+     */
+    public List<ConstantesImpuestos> consultarConstantesImpuestos();
+    /**
+     * Elimina la constante de impuesto
+     * @param constantesImpuestos la constante a ser eliminada
+     * @param sesion Sesion que realiza la operación
+     * @return el nombre de la constante eliminada
+     * @throws NewviExcepcion 
+     */
+    public String eliminarConstanteImpuesto (ConstantesImpuestos constantesImpuestos , SesionDto sesion) throws NewviExcepcion;
 }

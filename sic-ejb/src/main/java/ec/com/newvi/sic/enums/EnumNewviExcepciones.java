@@ -92,7 +92,8 @@ public enum EnumNewviExcepciones {
     INF360("INF360", "Descripción  de terreno agregado.", "La descripcion de terreno se ha agregado correctamente."),
     INF361("INF361", "Servicio actualizada.", "El servicio se ha actualizado correctamente."),
     ERR362("ERR362", "Avaluo no válido.", "El avaluo ingresado no es válido. Por favor verifique que los datos ingresados son correctos."),
-    ERR363("ERR363", "Fecha Avaluo no válida.", "la fecha avaluo ingresada no es válida. Por favor verifique que los datos ingresados son correctos.");
+    ERR363("ERR363", "Fecha Avaluo no válida.", "la fecha avaluo ingresada no es válida. Por favor verifique que los datos ingresados son correctos."),
+    ERR364("ERR364", "Constante impuestos no válida.", "La Constante impuestos ingresada no es válida. Por favor verifique que los datos ingresados son correctos.");
     
     private final String codigoExcepcion;
     private final String nombreExcepcion;

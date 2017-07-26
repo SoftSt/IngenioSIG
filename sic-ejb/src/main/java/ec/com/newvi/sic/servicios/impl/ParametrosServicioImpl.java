@@ -194,7 +194,7 @@ public class ParametrosServicioImpl implements ParametrosServicio {
         BigDecimal totalCoeficiente = BigDecimal.ZERO;
         for (Dominios dominio : dominiosFacade.buscarDominiosPorCodigo(domiCodigo)) {
             totalCoeficiente = totalCoeficiente.add(BigDecimal.valueOf(dominio.getDomiCoefic()));
-        }        
+        }
         return totalCoeficiente;
     }
 
@@ -206,5 +206,66 @@ public class ParametrosServicioImpl implements ParametrosServicio {
     @Override
     public Boolean tieneBasura(Integer codCatastral) {
         return dominiosFacade.tieneBasura(codCatastral);
+    }
+
+    @Override
+    public String generaNuevoConstanteImpuesto(ConstantesImpuestos nuevaConstantesImpuestos, SesionDto sesion) throws NewviExcepcion {
+        // Validar que los datos no sean incorrectos
+        LoggerNewvi.getLogNewvi(this.getClass()).debug("Validando constante impuesto...", sesion);
+        if (!nuevaConstantesImpuestos.esConstanteImpuestosValido()) {
+            throw new NewviExcepcion(EnumNewviExcepciones.ERR364);
+        }
+        // Crear el dominio
+        LoggerNewvi.getLogNewvi(this.getClass()).debug("Creando constante impuesto...", sesion);
+
+        //Registramos la auditoria de ingreso
+        nuevaConstantesImpuestos.setAudIngIp("");
+        nuevaConstantesImpuestos.setAudIngUsu(sesion.getUsuarioRegistrado().getUsuPalabraclave().trim());
+        Date fechaIngreso = Calendar.getInstance().getTime();
+        nuevaConstantesImpuestos.setAudIngFec(fechaIngreso);
+
+        constantesFacade.create(nuevaConstantesImpuestos);
+        // Si todo marcha bien enviar codigo del constante
+        return nuevaConstantesImpuestos.getCodConstantesimpuestos() + "";
+    }
+
+    @Override
+    public String actualizarConstanteImpuesto(ConstantesImpuestos constantesImpuestos, SesionDto sesion) throws NewviExcepcion {
+        // Validar que los datos no sean incorrectos
+        LoggerNewvi.getLogNewvi(this.getClass()).debug("Validando constante impuesto...", sesion);
+        if (!constantesImpuestos.esConstanteImpuestosValido()) {
+            throw new NewviExcepcion(EnumNewviExcepciones.ERR364);
+        }
+        // Acturlizar el constante impuesto
+        LoggerNewvi.getLogNewvi(this.getClass()).debug("Editando constante impuesto...", sesion);
+
+        //Registramos la auditoria de modificacion
+        constantesImpuestos.setAudModIp("");
+        constantesImpuestos.setAudModUsu(sesion.getUsuarioRegistrado().getUsuPalabraclave().trim());
+        Date fechaModificacion = Calendar.getInstance().getTime();
+        constantesImpuestos.setAudModFec(fechaModificacion);
+
+        constantesFacade.edit(constantesImpuestos);
+        // Si todo marcha bien enviar codigo de la constante impuesto
+        return constantesImpuestos.getCodConstantesimpuestos() + "";
+    }
+
+    @Override
+    public ConstantesImpuestos seleccionarConstanteImpuestos(Integer codConstantesimpuestos) throws NewviExcepcion {
+        if (ComunUtil.esNumeroPositivo(codConstantesimpuestos)) {
+            return constantesFacade.find(codConstantesimpuestos);
+        } else {
+            throw new NewviExcepcion(EnumNewviExcepciones.ERR011);
+        }
+    }
+
+    @Override
+    public List<ConstantesImpuestos> consultarConstantesImpuestos() {
+        return constantesFacade.buscarConstantesImpuestos();
+    }
+    @Override
+    public String eliminarConstanteImpuesto (ConstantesImpuestos constantesImpuestos , SesionDto sesion) throws NewviExcepcion{
+        constantesImpuestos.setconImpuestoEstado(EnumEstadoRegistro.E);
+        return actualizarConstanteImpuesto(constantesImpuestos, sesion);
     }
 }

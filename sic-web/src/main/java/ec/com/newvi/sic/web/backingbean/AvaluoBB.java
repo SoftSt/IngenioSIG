@@ -149,14 +149,19 @@ public class AvaluoBB extends AdminAvaluo {
     public List<FichaCatastralDto> generarListaFichaCatastral() {
         List<Predios> listaPredios;
         List<FichaCatastralDto> listaFichas = new ArrayList<>();
-        
+
         listaPredios = catastroServicio.consultarPredios();
 
         for (Predios elementoPredio : listaPredios) {
             listaFichas.add(new FichaCatastralDto(elementoPredio));
         }
-        
+
         return listaFichas;
+    }
+
+    public void abrirModalEspera() throws NewviExcepcion {
+        WebUtils.obtenerContextoPeticion().execute("PF('dlgSimulacion').show()");
+        //generarSimulacion();
     }
 
     public void generarSimulacion() throws NewviExcepcion {
@@ -259,9 +264,7 @@ public class AvaluoBB extends AdminAvaluo {
     public void onComplete() {
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Progress Completed"));
     }
-    
-    
-    
+
     public DefaultStreamedContent imprimir() {
         return generarReportes();
     }
@@ -270,30 +273,30 @@ public class AvaluoBB extends AdminAvaluo {
         try {
             DefaultStreamedContent dscXlsPa;
             //List<Avaluo>listaAvaluos=generarListaAvaluo();
-            List<TablaCatastralDto>datosImpresion= new ArrayList<>();
+            List<TablaCatastralDto> datosImpresion = new ArrayList<>();
             TablaCatastralDto datosAvaluo;
             for (Avaluo avaluo : listaAvaluos) {
-                datosAvaluo=new TablaCatastralDto();
+                datosAvaluo = new TablaCatastralDto();
                 datosAvaluo.setCodigoCatastral(avaluo.getCodCatastral().getCodCatastral().toString());
                 datosAvaluo.setNombreCodigoCatastral(avaluo.getNomCodigocatastral());
                 datosAvaluo.setPropietario(avaluo.getNomnomape());
                 datosAvaluo.setCiRuc(avaluo.getCodCedularuc());
                 datosAvaluo.setBarrio(avaluo.getStsBarrio());
                 datosAvaluo.setDireccion(avaluo.getTxtDireccion());
-                datosAvaluo.setAvaluoTerreno(avaluo.getValTerreno()); 
-                datosAvaluo.setAreaTerreno(avaluo.getValTerreno()); 
-                datosAvaluo.setAreaEdificacion(avaluo.getValAreaconstruccion()); 
-                datosAvaluo.setAvaluoEdificacion(avaluo.getValEdifica()); 
-                datosAvaluo.setAvaluoPredio(avaluo.getValPredio()); 
-                datosAvaluo.setAreaPredio(avaluo.getValAreapredio()); 
-                datosAvaluo.setImpuestoPredial(avaluo.getValImpuesto()); 
-                datosAvaluo.setContribucionEspecialMejoras(avaluo.getValCem()); 
-                datosAvaluo.setTasaRecoleccionBasura(avaluo.getValBasura()); 
-                datosAvaluo.setCostoEmision(avaluo.getValEmision()); 
-                datosAvaluo.setTasaBomberos(avaluo.getValBomberos()); 
-                datosAvaluo.setServiciosAmbientales(avaluo.getValAmbientales()); 
-                datosAvaluo.setTotalAPagar(avaluo.getValImppredial()); 
-                datosAvaluo.setObservaciones(avaluo.getCatCasosespeciales()); 
+                datosAvaluo.setAvaluoTerreno(avaluo.getValTerreno());
+                datosAvaluo.setAreaTerreno(avaluo.getValTerreno());
+                datosAvaluo.setAreaEdificacion(avaluo.getValAreaconstruccion());
+                datosAvaluo.setAvaluoEdificacion(avaluo.getValEdifica());
+                datosAvaluo.setAvaluoPredio(avaluo.getValPredio());
+                datosAvaluo.setAreaPredio(avaluo.getValAreapredio());
+                datosAvaluo.setImpuestoPredial(avaluo.getValImpuesto());
+                datosAvaluo.setContribucionEspecialMejoras(avaluo.getValCem());
+                datosAvaluo.setTasaRecoleccionBasura(avaluo.getValBasura());
+                datosAvaluo.setCostoEmision(avaluo.getValEmision());
+                datosAvaluo.setTasaBomberos(avaluo.getValBomberos());
+                datosAvaluo.setServiciosAmbientales(avaluo.getValAmbientales());
+                datosAvaluo.setTotalAPagar(avaluo.getValImppredial());
+                datosAvaluo.setObservaciones(avaluo.getCatCasosespeciales());
                 datosImpresion.add(datosAvaluo);
             }
             List<Predios> predioImprimir = new ArrayList<>();
@@ -306,13 +309,13 @@ public class AvaluoBB extends AdminAvaluo {
                 }
                 
             }*/
-            
-          /*  
+
+ /*  
             Map<String, Class> paramRepA = new HashMap<String, Class>();
             paramRepA.put("predios", Predios.class);
             paramRepA.put("reportepredios", List.class);
           
-            */
+             */
             Map<String, Class> paramRepA = new HashMap<String, Class>();
             paramRepA.put("tablaCatastral", TablaCatastralDto.class);
             paramRepA.put("reporTablaCatastral", List.class);
@@ -341,8 +344,9 @@ public class AvaluoBB extends AdminAvaluo {
         }
         return null;
     }
-    public List<Avaluo> generarListaAvaluo(){
-         return catastroServicio.consultarListaAvaluosActuales();
+
+    public List<Avaluo> generarListaAvaluo() {
+        return catastroServicio.consultarListaAvaluosActuales();
     }
 
 }

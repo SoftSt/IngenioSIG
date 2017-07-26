@@ -5,12 +5,16 @@
  */
 package ec.com.newvi.sic.modelo;
 
+import ec.com.newvi.sic.enums.EnumEstadoRegistro;
 import ec.com.newvi.sic.util.ComunUtil;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -18,6 +22,8 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.Size;
 
 /**
@@ -76,6 +82,27 @@ public class ConstantesImpuestos implements Serializable {
     private BigDecimal valSeguridad;
     @Column(name = "val_rebajag")
     private BigDecimal valRebajag;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "conimp_estado")
+    private EnumEstadoRegistro conImpuestoEstado;
+    @Size(max = 50)
+    @Column(name = "aud_ing_usu")
+    private String audIngUsu;
+    @Column(name = "aud_ing_fec")
+    @Temporal(TemporalType.DATE)
+    private Date audIngFec;
+    @Size(max = 30)
+    @Column(name = "aud_ing_ip")
+    private String audIngIp;
+    @Size(max = 50)
+    @Column(name = "aud_mod_usu")
+    private String audModUsu;
+    @Column(name = "aud_mod_fec")
+    @Temporal(TemporalType.DATE)
+    private Date audModFec;
+    @Size(max = 30)
+    @Column(name = "aud_mod_ip")
+    private String audModIp;
 
     public ConstantesImpuestos() {
     }
@@ -83,6 +110,64 @@ public class ConstantesImpuestos implements Serializable {
     public ConstantesImpuestos(Integer codConstantesimpuestos) {
         this.codConstantesimpuestos = codConstantesimpuestos;
     }
+
+    public EnumEstadoRegistro getconImpuestoEstado() {
+        return conImpuestoEstado;
+    }
+
+    public void setconImpuestoEstado(EnumEstadoRegistro conImpuestoEstado) {
+        this.conImpuestoEstado = conImpuestoEstado;
+    }
+
+    public String getAudIngUsu() {
+        return audIngUsu;
+    }
+
+    public void setAudIngUsu(String audIngUsu) {
+        this.audIngUsu = audIngUsu;
+    }
+
+    public Date getAudIngFec() {
+        return audIngFec;
+    }
+
+    public void setAudIngFec(Date audIngFec) {
+        this.audIngFec = audIngFec;
+    }
+
+    public String getAudIngIp() {
+        return audIngIp;
+    }
+
+    public void setAudIngIp(String audIngIp) {
+        this.audIngIp = audIngIp;
+    }
+
+    public String getAudModUsu() {
+        return audModUsu;
+    }
+
+    public void setAudModUsu(String audModUsu) {
+        this.audModUsu = audModUsu;
+    }
+
+    public Date getAudModFec() {
+        return audModFec;
+    }
+
+    public void setAudModFec(Date audModFec) {
+        this.audModFec = audModFec;
+    }
+
+    public String getAudModIp() {
+        return audModIp;
+    }
+
+    public void setAudModIp(String audModIp) {
+        this.audModIp = audModIp;
+    }
+    
+    
 
     public Integer getCodConstantesimpuestos() {
         return codConstantesimpuestos;
@@ -270,7 +355,7 @@ public class ConstantesImpuestos implements Serializable {
     }
     
     public Boolean esConstanteImpuestosValido(){
-        return (!ComunUtil.esNulo(this.codConstantesimpuestos));
+        return (!ComunUtil.esNulo(this.conImpuestoEstado));
     }
     
 }
