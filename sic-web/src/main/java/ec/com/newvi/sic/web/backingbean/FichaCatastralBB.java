@@ -785,34 +785,9 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
         try {
             DefaultStreamedContent dscXlsPa;
             List<Avaluo>listaAvaluos=generarListaAvaluo();
-            List<TablaCatastralDto>datosImpresion= new ArrayList<>();
-            TablaCatastralDto datosAvaluo;
+            List<TablaCatastralDto>datosImpresion= obtenerListadoAvaluos(listaAvaluos);
             String formatoTabla="/opt/tablaCatastralUrbana.jasper";
-            for (Avaluo avaluo : listaAvaluos) {
-                datosAvaluo=new TablaCatastralDto();
-                datosAvaluo.setCodigoCatastral(avaluo.getCodCatastral().getCodCatastral().toString());
-                datosAvaluo.setNombreCodigoCatastral(avaluo.getNomCodigocatastral());
-                datosAvaluo.setPropietario(avaluo.getNomnomape());
-                datosAvaluo.setCiRuc(avaluo.getCodCedularuc());
-                datosAvaluo.setBarrio(avaluo.getStsBarrio());
-                datosAvaluo.setDireccion(avaluo.getTxtDireccion());
-                datosAvaluo.setAvaluoTerreno(avaluo.getValTerreno()); 
-                datosAvaluo.setAreaTerreno(avaluo.getValTerreno()); 
-                datosAvaluo.setAreaEdificacion(avaluo.getValAreaconstruccion()); 
-                datosAvaluo.setAvaluoEdificacion(avaluo.getValEdifica()); 
-                datosAvaluo.setAvaluoPredio(avaluo.getValPredio()); 
-                datosAvaluo.setAreaPredio(avaluo.getValAreapredio()); 
-                datosAvaluo.setImpuestoPredial(avaluo.getValImpuesto()); 
-                datosAvaluo.setContribucionEspecialMejoras(avaluo.getValCem()); 
-                datosAvaluo.setTasaRecoleccionBasura(avaluo.getValBasura()); 
-                datosAvaluo.setCostoEmision(avaluo.getValEmision()); 
-                datosAvaluo.setTasaBomberos(avaluo.getValBomberos()); 
-                datosAvaluo.setServiciosAmbientales(avaluo.getValAmbientales()); 
-                datosAvaluo.setTotalAPagar(avaluo.getValImppredial()); 
-                datosAvaluo.setObservaciones(avaluo.getCatCasosespeciales()); 
-                datosImpresion.add(datosAvaluo);
-            }
-            if (tipoReporte!=1)
+            if (tipoReporte==0)
                 formatoTabla="/opt/newReport.jasper";
             Map<String, Class> paramRepA = new HashMap<String, Class>();
             paramRepA.put("tablaCatastral", TablaCatastralDto.class);
@@ -839,6 +814,36 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
     }
     public List<Avaluo> generarListaAvaluo(){
          return catastroServicio.consultarListaAvaluosActuales();
+    }
+    
+    public List<TablaCatastralDto> obtenerListadoAvaluos(List<Avaluo>listaAvaluos ){
+    List<TablaCatastralDto>datosImpresion= new ArrayList<>();
+            TablaCatastralDto datosAvaluo;
+            for (Avaluo avaluo : listaAvaluos) {
+                datosAvaluo=new TablaCatastralDto();
+                datosAvaluo.setCodigoCatastral(avaluo.getCodCatastral().getCodCatastral().toString());
+                datosAvaluo.setNombreCodigoCatastral(avaluo.getNomCodigocatastral());
+                datosAvaluo.setPropietario(avaluo.getNomnomape());
+                datosAvaluo.setCiRuc(avaluo.getCodCedularuc());
+                datosAvaluo.setBarrio(avaluo.getStsBarrio());
+                datosAvaluo.setDireccion(avaluo.getTxtDireccion());
+                datosAvaluo.setAvaluoTerreno(avaluo.getValTerreno()); 
+                datosAvaluo.setAreaTerreno(avaluo.getValTerreno()); 
+                datosAvaluo.setAreaEdificacion(avaluo.getValAreaconstruccion()); 
+                datosAvaluo.setAvaluoEdificacion(avaluo.getValEdifica()); 
+                datosAvaluo.setAvaluoPredio(avaluo.getValPredio()); 
+                datosAvaluo.setAreaPredio(avaluo.getValAreapredio()); 
+                datosAvaluo.setImpuestoPredial(avaluo.getValImpuesto()); 
+                datosAvaluo.setContribucionEspecialMejoras(avaluo.getValCem()); 
+                datosAvaluo.setTasaRecoleccionBasura(avaluo.getValBasura()); 
+                datosAvaluo.setCostoEmision(avaluo.getValEmision()); 
+                datosAvaluo.setTasaBomberos(avaluo.getValBomberos()); 
+                datosAvaluo.setServiciosAmbientales(avaluo.getValAmbientales()); 
+                datosAvaluo.setTotalAPagar(avaluo.getValImppredial()); 
+                datosAvaluo.setObservaciones(avaluo.getCatCasosespeciales()); 
+                datosImpresion.add(datosAvaluo);
+            }
+     return datosImpresion;
     }
 
 }
