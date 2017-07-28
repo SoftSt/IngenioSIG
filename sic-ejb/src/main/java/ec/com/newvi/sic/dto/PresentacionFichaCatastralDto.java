@@ -7,7 +7,9 @@ package ec.com.newvi.sic.dto;
 
 import ec.com.newvi.sic.modelo.Contribuyentes;
 import ec.com.newvi.sic.modelo.Predios;
+import ec.com.newvi.sic.modelo.Terreno;
 import java.math.BigDecimal;
+import java.util.List;
 
 /**
  *
@@ -56,6 +58,8 @@ public class PresentacionFichaCatastralDto {
     private String codCedularuc;
     private String nomApellidos;
     private String nomNombres;
+    
+    private List<Terreno> listaDescripcionTerreno;
 
     public String getNomNombres() {
         return nomNombres;
@@ -373,6 +377,7 @@ public class PresentacionFichaCatastralDto {
         FichaCatastralDto fichaCatastralDto = new FichaCatastralDto(predio);
         setearDatosPredio(fichaCatastralDto.getPredio());
         setearDatosContribuyente(fichaCatastralDto.getContribuyentePropiedad());
+        this.listaDescripcionTerreno = (List<Terreno>)fichaCatastralDto.getPredio().getCaracteristicasTerreno();
 
     }
 
