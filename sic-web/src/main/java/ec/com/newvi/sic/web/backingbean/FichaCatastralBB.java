@@ -10,6 +10,7 @@ import ec.com.newvi.componente.reporte.ReporteGenerador;
 import ec.com.newvi.sic.dto.AvaluoDto;
 import ec.com.newvi.sic.dto.DominioDto;
 import ec.com.newvi.sic.dto.FichaCatastralDto;
+import ec.com.newvi.sic.dto.PresentacionFichaCatastral;
 import ec.com.newvi.sic.dto.TablaCatastralDto;
 import ec.com.newvi.sic.dto.SesionDto;
 import ec.com.newvi.sic.enums.EnumEstadoPisoDetalle;
@@ -390,6 +391,7 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
         try {
             this.seleccionarPredioPorCodigo(idPredio);
             calcularAvaluo();
+            PresentacionFichaCatastral cat = new PresentacionFichaCatastral(this.predio);
         } catch (NewviExcepcion e) {
             MensajesFaces.mensajeError(e.getMessage());
         } catch (Exception e) {
