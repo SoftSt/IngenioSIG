@@ -791,12 +791,17 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
             String formatoTabla="/opt/tablaCatastralUrbana.jasper";
             if (tipoReporte==0)
                 formatoTabla="/opt/newReport.jasper";
+            if (tipoReporte==3)
+                formatoTabla="/opt/fichaRelevamientoPredialUrbano.jasper";
+            List<Predios>tablita= new ArrayList<>();
+            tablita.add(this.predio);
+
             Map<String, Class> paramRepA = new HashMap<String, Class>();
-            paramRepA.put("tablaCatastral", TablaCatastralDto.class);
+            paramRepA.put("tablaCatastral", Predios.class);
             paramRepA.put("reporTablaCatastral", List.class);
             Map<String, Object> parametrosReporte = new HashMap<>();
             parametrosReporte.put("TITULO_REPORTE", "REPORTECITO");
-            Reporte reporte = new Reporte(ReporteGenerador.FormatoReporte.XLSX, datosImpresion, paramRepA, formatoTabla, "/reporTablaCatastral//tablaCatastral", parametrosReporte);
+            Reporte reporte = new Reporte(ReporteGenerador.FormatoReporte.XLSX, tablita, paramRepA, formatoTabla, "/reporTablaCatastral//tablaCatastral", parametrosReporte);
             if (ComunUtil.esNulo(reporte)) {
                 return null;
             }
