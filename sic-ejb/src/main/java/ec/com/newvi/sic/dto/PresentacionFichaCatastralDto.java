@@ -373,6 +373,15 @@ public class PresentacionFichaCatastralDto {
         this.stsEstado = stsEstado;
     }
 
+    public List<Terreno> getListaDescripcionTerreno() {
+        return listaDescripcionTerreno;
+    }
+
+    public void setListaDescripcionTerreno(List<Terreno> listaDescripcionTerreno) {
+        this.listaDescripcionTerreno = listaDescripcionTerreno;
+    }
+
+    
     public PresentacionFichaCatastralDto(Predios predio) {
         FichaCatastralDto fichaCatastralDto = new FichaCatastralDto(predio);
         setearDatosPredio(fichaCatastralDto.getPredio());

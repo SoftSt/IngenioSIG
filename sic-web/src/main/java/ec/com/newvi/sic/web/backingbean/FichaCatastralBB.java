@@ -802,6 +802,7 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
             paramRepA.put("reporTablaCatastral", List.class);
             Map<String, Object> parametrosReporte = new HashMap<>();
             parametrosReporte.put("TITULO_REPORTE", "REPORTECITO");
+            parametrosReporte.put("DESCRIPCION_TERRENO", tablita.get(0).getListaDescripcionTerreno());
             Reporte reporte = new Reporte(ReporteGenerador.FormatoReporte.XLSX, tablita, paramRepA, formatoTabla, "/reporTablaCatastral//tablaCatastral", parametrosReporte);
             if (ComunUtil.esNulo(reporte)) {
                 return null;

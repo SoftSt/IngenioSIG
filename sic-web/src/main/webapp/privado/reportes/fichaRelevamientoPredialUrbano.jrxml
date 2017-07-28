@@ -2,10 +2,12 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="1312ccb7-b94d-4126-982d-4fbcc8dc4521">
 	<property name="ireport.zoom" value="1.3310000000000004"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="423"/>
+	<property name="ireport.y" value="766"/>
+	<subDataset name="dataset1" uuid="fd08ab00-3a10-4ecc-8735-2751b5c7fce5"/>
 	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
 		<defaultValueExpression><![CDATA["D:\\documents\\NetBeansProjects\\sigc\\sic-web\\src\\main\\webapp\\privado\\reportes\\"]]></defaultValueExpression>
 	</parameter>
+	<parameter name="DESCRIPCION_TERRENO" class="java.util.Collection"/>
 	<field name="nomCodigocatastral" class="java.lang.String"/>
 	<field name="codDpa" class="java.lang.String"/>
 	<field name="codZona" class="java.lang.String"/>
@@ -23,7 +25,10 @@
 	<field name="nomCiudadDomicilio" class="java.lang.String"/>
 	<field name="txtTelefono" class="java.lang.String"/>
 	<field name="txtCiudad" class="java.lang.String"/>
-	<field name="field5" class="java.lang.String"/>
+	<field name="stsCodigo" class="java.lang.String"/>
+	<field name="stsSubgrupo" class="java.lang.String"/>
+	<field name="stsDescripcion" class="java.lang.String"/>
+	<field name="listaDescripcionTerreno" class="java.util.List"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -564,30 +569,6 @@
 				</textElement>
 				<textFieldExpression><![CDATA[]]></textFieldExpression>
 			</textField>
-			<textField isBlankWhenNull="true">
-				<reportElement x="295" y="94" width="94" height="15" uuid="4cb96196-2415-49d3-b818-a58ac2349573"/>
-				<box>
-					<topPen lineWidth="1.0"/>
-					<leftPen lineWidth="1.0"/>
-					<bottomPen lineWidth="1.0"/>
-					<rightPen lineWidth="1.0"/>
-				</box>
-				<textElement>
-					<font fontName="Arial" size="6"/>
-				</textElement>
-			</textField>
-			<textField isBlankWhenNull="true">
-				<reportElement x="200" y="94" width="95" height="15" uuid="bea823ef-358c-4310-9922-2294e3c00052"/>
-				<box>
-					<topPen lineWidth="1.0"/>
-					<leftPen lineWidth="1.0"/>
-					<bottomPen lineWidth="1.0"/>
-					<rightPen lineWidth="1.0"/>
-				</box>
-				<textElement>
-					<font fontName="Arial" size="6"/>
-				</textElement>
-			</textField>
 			<staticText>
 				<reportElement x="221" y="30" width="24" height="15" uuid="31327ba8-9e90-4e72-a46d-a6cb2869379e"/>
 				<textElement>
@@ -626,7 +607,7 @@ DE REFERENCIA:
 				<text><![CDATA[FOTO AEREA:]]></text>
 			</staticText>
 			<line>
-				<reportElement x="389" y="0" width="1" height="109" uuid="2b692e0c-ac68-450c-abfc-d9d0d8816d00"/>
+				<reportElement x="389" y="0" width="1" height="124" uuid="2b692e0c-ac68-450c-abfc-d9d0d8816d00"/>
 			</line>
 			<staticText>
 				<reportElement x="221" y="45" width="24" height="15" uuid="b22ea60c-4e2a-4973-aec7-47e040a39f04"/>
@@ -649,45 +630,6 @@ DE REFERENCIA:
 				</textElement>
 				<text><![CDATA[7. EMPLAZAMIENTO DEL PREDIO]]></text>
 			</staticText>
-			<staticText>
-				<reportElement x="295" y="77" width="94" height="17" uuid="563459ba-31fb-40b0-b563-74863605e331"/>
-				<box>
-					<topPen lineWidth="1.0"/>
-					<leftPen lineWidth="1.0"/>
-					<bottomPen lineWidth="1.0"/>
-					<rightPen lineWidth="1.0"/>
-				</box>
-				<textElement textAlignment="Center">
-					<font fontName="Arial" size="6" isBold="false"/>
-				</textElement>
-				<text><![CDATA[INFORMACION DE BLOQUES]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="200" y="62" width="189" height="15" uuid="4a67f39b-fd63-49de-a67a-4c19bc730382"/>
-				<box>
-					<topPen lineWidth="1.0"/>
-					<leftPen lineWidth="1.0"/>
-					<bottomPen lineWidth="1.0"/>
-					<rightPen lineWidth="1.0"/>
-				</box>
-				<textElement textAlignment="Center">
-					<font fontName="Arial" size="6" isBold="false"/>
-				</textElement>
-				<text><![CDATA[INFORMACION DE BLOQUES]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="200" y="77" width="95" height="17" uuid="e72a48ef-5b0d-45ab-940a-c5f56c2df67f"/>
-				<box>
-					<topPen lineWidth="1.0"/>
-					<leftPen lineWidth="1.0"/>
-					<bottomPen lineWidth="1.0"/>
-					<rightPen lineWidth="1.0"/>
-				</box>
-				<textElement textAlignment="Center">
-					<font fontName="Arial" size="6" isBold="false"/>
-				</textElement>
-				<text><![CDATA[INFORMACION DE BLOQUES]]></text>
-			</staticText>
 			<line>
 				<reportElement x="1" y="61" width="388" height="1" uuid="5b0b024f-ad5a-40b5-a817-53683bfaf930"/>
 			</line>
@@ -705,35 +647,35 @@ DE REFERENCIA:
 				<text><![CDATA[ PREDIAL]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement x="135" y="109" width="65" height="15" uuid="64a79c9d-6a68-4b75-9d94-d3fd186267e4"/>
+				<reportElement x="180" y="109" width="123" height="15" uuid="64a79c9d-6a68-4b75-9d94-d3fd186267e4"/>
 				<textElement>
 					<font fontName="Verdana" size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="21" y="79" width="114" height="15" uuid="696856d5-d8fd-41f6-9ea6-a0be67f61804"/>
+				<reportElement x="21" y="79" width="159" height="15" uuid="696856d5-d8fd-41f6-9ea6-a0be67f61804"/>
 				<textElement>
 					<font fontName="Verdana" size="6" isBold="true"/>
 				</textElement>
 				<text><![CDATA[AREA TOTAL TERRENO:]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement x="135" y="94" width="65" height="15" uuid="94a888e9-201b-46ff-9ec0-cc2cbb8f3b89"/>
+				<reportElement x="180" y="94" width="123" height="15" uuid="94a888e9-201b-46ff-9ec0-cc2cbb8f3b89"/>
 				<textElement>
 					<font fontName="Verdana" size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="21" y="94" width="114" height="15" uuid="3495aaf6-7e39-4247-a9ee-d7f3ead81e28"/>
+				<reportElement x="21" y="94" width="159" height="15" uuid="3495aaf6-7e39-4247-a9ee-d7f3ead81e28"/>
 				<textElement>
 					<font fontName="Verdana" size="6" isBold="true"/>
 				</textElement>
 				<text><![CDATA[FRENTE PRINCIPAL:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="21" y="109" width="114" height="15" uuid="bcdff6cd-c723-416a-bc9f-c38d9973bb18"/>
+				<reportElement x="21" y="109" width="159" height="15" uuid="bcdff6cd-c723-416a-bc9f-c38d9973bb18"/>
 				<textElement>
 					<font fontName="Verdana" size="6" isBold="true"/>
 				</textElement>
@@ -747,7 +689,7 @@ DE REFERENCIA:
 				<text><![CDATA[6. SUPERFICIES DEL PREDIO]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement x="135" y="79" width="65" height="15" uuid="88a35ea1-e278-4cb7-883b-55e572001fad"/>
+				<reportElement x="180" y="79" width="123" height="15" uuid="88a35ea1-e278-4cb7-883b-55e572001fad"/>
 				<textElement>
 					<font fontName="Verdana" size="8"/>
 				</textElement>
@@ -762,7 +704,7 @@ DE REFERENCIA:
 				<reportElement x="555" y="0" width="1" height="157" uuid="9c96ce9d-2c88-4560-b969-ca310c070490"/>
 			</line>
 			<staticText>
-				<reportElement x="21" y="0" width="229" height="15" uuid="c47a6011-b01d-4515-80ca-72b187ccfd5d"/>
+				<reportElement x="21" y="0" width="368" height="15" uuid="c47a6011-b01d-4515-80ca-72b187ccfd5d"/>
 				<textElement>
 					<font fontName="Verdana" size="7" isBold="true"/>
 				</textElement>
@@ -850,11 +792,72 @@ DE REFERENCIA:
 				<reportElement x="555" y="0" width="1" height="50" uuid="8f71ca86-2f55-44ec-b650-361643aaa81c"/>
 			</line>
 			<line>
-				<reportElement x="0" y="0" width="1" height="50" uuid="51069092-3e08-45d3-b1ab-a21e29af91d8"/>
+				<reportElement x="0" y="0" width="1" height="105" uuid="51069092-3e08-45d3-b1ab-a21e29af91d8"/>
 			</line>
 			<line>
 				<reportElement x="1" y="0" width="554" height="1" uuid="0b7a0425-d594-4553-b333-5eb6989602b4"/>
 			</line>
+			<staticText>
+				<reportElement x="21" y="1" width="229" height="15" uuid="a60a85de-f3c4-48d3-b1f2-c8bf16d97b7a"/>
+				<textElement>
+					<font fontName="Verdana" size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Descripción del terreno]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="140" y="16" width="81" height="15" uuid="8ee5c888-1271-4ab1-a801-b8ff3d9ea117"/>
+				<textElement>
+					<font fontName="Verdana" size="6" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Carateristicas]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="21" y="16" width="45" height="15" uuid="550a2738-4a2f-4ba0-9c89-dcc99c27af39"/>
+				<textElement>
+					<font fontName="Verdana" size="6" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Codigo]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="21" y="31" width="114" height="15" uuid="8abc6ee9-7377-4b0d-b60e-12ab4d13c624"/>
+				<textElement>
+					<font fontName="Verdana" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{stsCodigo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="140" y="31" width="137" height="15" uuid="b6a4d8b1-45c2-4ecb-8d6f-4c9dd190631f"/>
+				<textElement>
+					<font fontName="Verdana" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{codZona}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="285" y="16" width="81" height="15" uuid="0b824f20-6190-41ac-b1e1-8fdb06866589"/>
+				<textElement>
+					<font fontName="Verdana" size="6" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Detalles]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="285" y="31" width="145" height="15" uuid="0e8ea268-2ab5-466e-b0f5-5b2e03580008"/>
+				<textElement>
+					<font fontName="Verdana" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{stsDescripcion}]]></textFieldExpression>
+			</textField>
+			<componentElement>
+				<reportElement x="23" y="50" width="370" height="38" uuid="ba14626f-2691-4111-88da-4442ec086ef6"/>
+				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+					<datasetRun subDataset="dataset1" uuid="b0bafa51-36b8-4dd9-a655-4f362687fde0">
+						<datasetParameter name="REPORT_CONTEXT">
+							<datasetParameterExpression><![CDATA[$F{stsCodigo}]]></datasetParameterExpression>
+						</datasetParameter>
+						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource(($P{DESCRIPCION_TERRENO}))]]></dataSourceExpression>
+					</datasetRun>
+					<jr:listContents height="38" width="370"/>
+				</jr:list>
+			</componentElement>
 		</band>
 		<band height="50"/>
 	</detail>
