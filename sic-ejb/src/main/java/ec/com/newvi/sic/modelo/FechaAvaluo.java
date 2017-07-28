@@ -38,7 +38,7 @@ public class FechaAvaluo implements Serializable {
     @GeneratedValue(generator = "FECHAAVALUO_CODIGO_GENERATOR")
     @Column(name = "fecav_id")
     private Integer fecavId;
-    @Column(name = "fe")
+    @Column(name = "fecav_fechaavaluo")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fecavFechaavaluo;
     @Enumerated(EnumType.STRING)

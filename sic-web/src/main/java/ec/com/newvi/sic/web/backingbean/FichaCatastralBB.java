@@ -11,6 +11,7 @@ import ec.com.newvi.sic.dto.AvaluoDto;
 import ec.com.newvi.sic.dto.DominioDto;
 import ec.com.newvi.sic.dto.FichaCatastralDto;
 import ec.com.newvi.sic.dto.PresentacionFichaCatastral;
+import ec.com.newvi.sic.dto.PresentacionFichaCatastralDto;
 import ec.com.newvi.sic.dto.TablaCatastralDto;
 import ec.com.newvi.sic.dto.SesionDto;
 import ec.com.newvi.sic.enums.EnumEstadoPisoDetalle;
@@ -793,11 +794,11 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
                 formatoTabla="/opt/newReport.jasper";
             if (tipoReporte==3)
                 formatoTabla="/opt/fichaRelevamientoPredialUrbano.jasper";
-            List<Predios>tablita= new ArrayList<>();
-            tablita.add(this.predio);
+            List<PresentacionFichaCatastralDto>tablita= new ArrayList<>();
+            tablita.add(new PresentacionFichaCatastralDto(this.predio));
 
             Map<String, Class> paramRepA = new HashMap<String, Class>();
-            paramRepA.put("tablaCatastral", Predios.class);
+            paramRepA.put("tablaCatastral", PresentacionFichaCatastralDto.class);
             paramRepA.put("reporTablaCatastral", List.class);
             Map<String, Object> parametrosReporte = new HashMap<>();
             parametrosReporte.put("TITULO_REPORTE", "REPORTECITO");
