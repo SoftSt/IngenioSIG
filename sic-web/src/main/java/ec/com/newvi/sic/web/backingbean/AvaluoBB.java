@@ -264,7 +264,7 @@ public class AvaluoBB extends AdminAvaluo {
     public void onComplete() {
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Progress Completed"));
     }
-
+/*
     public DefaultStreamedContent imprimir() {
         return generarReportes();
     }
@@ -316,7 +316,7 @@ public class AvaluoBB extends AdminAvaluo {
             paramRepA.put("reportepredios", List.class);
           
              */
-            Map<String, Class> paramRepA = new HashMap<String, Class>();
+   /*         Map<String, Class> paramRepA = new HashMap<String, Class>();
             paramRepA.put("tablaCatastral", TablaCatastralDto.class);
             paramRepA.put("reporTablaCatastral", List.class);
             Map<String, Object> parametrosReporte = new HashMap<>();
@@ -326,7 +326,7 @@ public class AvaluoBB extends AdminAvaluo {
             if (ComunUtil.esNulo(reporte)) {
                 return null;
             }*/
-            Reporte reporte = new Reporte(ReporteGenerador.FormatoReporte.XLSX, datosImpresion, paramRepA, "/opt/tablaCatastralUrbana.jasper", "/reporTablaCatastral//tablaCatastral", parametrosReporte);
+    /*        Reporte reporte = new Reporte(ReporteGenerador.FormatoReporte.XLSX, datosImpresion, paramRepA, "/opt/tablaCatastralUrbana.jasper", "/reporTablaCatastral//tablaCatastral", parametrosReporte);
             if (ComunUtil.esNulo(reporte)) {
                 return null;
             }
@@ -344,7 +344,7 @@ public class AvaluoBB extends AdminAvaluo {
         }
         return null;
     }
-
+*/
     public List<Avaluo> generarListaAvaluo() {
         return catastroServicio.consultarListaAvaluosActuales();
     }

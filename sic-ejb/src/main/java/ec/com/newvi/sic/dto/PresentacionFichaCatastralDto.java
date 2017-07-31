@@ -66,7 +66,6 @@ public class PresentacionFichaCatastralDto {
     private List<Bloques> listaBloques;
     
     private List<Servicios> listaServicios;
-    private String stsCodigo;
 
     public List<Bloques> getListaBloques() {
         return listaBloques;
@@ -82,14 +81,6 @@ public class PresentacionFichaCatastralDto {
 
     public void setListaServicios(List<Servicios> listaServicios) {
         this.listaServicios = listaServicios;
-    }
-
-    public String getStsCodigo() {
-        return stsCodigo;
-    }
-
-    public void setStsCodigo(String stsCodigo) {
-        this.stsCodigo = stsCodigo;
     }
     
     public String getNomNombres() {
