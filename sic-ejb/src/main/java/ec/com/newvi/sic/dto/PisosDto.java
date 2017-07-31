@@ -9,6 +9,7 @@ import ec.com.newvi.sic.modelo.Bloques;
 import ec.com.newvi.sic.modelo.PisoDetalle;
 import ec.com.newvi.sic.modelo.Pisos;
 import ec.com.newvi.sic.modelo.Predios;
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -17,30 +18,62 @@ import java.util.List;
  */
 public class PisosDto {
 
-    private DetallesPisoDto detallesPisoDto;
+    private String nomBloque;
+    private String nomPiso;
+    private String valNropisos;
+    private BigDecimal valAreapiso;
+    private Integer valAnioconstruccion;
+    private Integer valAnioreparacion;
 
-    public DetallesPisoDto getDetallesPisoDto() {
-        return detallesPisoDto;
+    public String getNomBloque() {
+        return nomBloque;
     }
 
-    public void setDetallesPisoDto(DetallesPisoDto detallesPisoDto) {
-        this.detallesPisoDto = detallesPisoDto;
+    public void setNomBloque(String nomBloque) {
+        this.nomBloque = nomBloque;
     }
 
-    public PisosDto(Predios predio) {
+    public String getNomPiso() {
+        return nomPiso;
+    }
 
-        List<Bloques> listaBloques = (List<Bloques>) predio.getBloques();
-        for (Bloques bloque : listaBloques) {
-            List<Pisos> listaPisos = (List<Pisos>) bloque.getPisosCollection();
-            for (Pisos piso : listaPisos) {
-                List<PisoDetalle> detallesPiso = (List<PisoDetalle>) piso.getDetalles();
-                for (PisoDetalle detalle : detallesPiso) {
-                    
-                }
-            }
-        }
+    public void setNomPiso(String nomPiso) {
+        this.nomPiso = nomPiso;
+    }
 
-        //this.detallesPisoDto = new DetallesPisoDto(bloque.getPisosCollection());
+    public String getValNropisos() {
+        return valNropisos;
+    }
+
+    public void setValNropisos(String valNropisos) {
+        this.valNropisos = valNropisos;
+    }
+
+    public BigDecimal getValAreapiso() {
+        return valAreapiso;
+    }
+
+    public void setValAreapiso(BigDecimal valAreapiso) {
+        this.valAreapiso = valAreapiso;
+    }
+
+    public Integer getValAnioconstruccion() {
+        return valAnioconstruccion;
+    }
+
+    public void setValAnioconstruccion(Integer valAnioconstruccion) {
+        this.valAnioconstruccion = valAnioconstruccion;
+    }
+
+    public Integer getValAnioreparacion() {
+        return valAnioreparacion;
+    }
+
+    public void setValAnioreparacion(Integer valAnioreparacion) {
+        this.valAnioreparacion = valAnioreparacion;
+    }
+    
+    public PisosDto() {
     }
 
 }
