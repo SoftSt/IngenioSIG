@@ -5,8 +5,10 @@
  */
 package ec.com.newvi.sic.dto;
 
+import ec.com.newvi.sic.modelo.Bloques;
 import ec.com.newvi.sic.modelo.Contribuyentes;
 import ec.com.newvi.sic.modelo.Predios;
+import ec.com.newvi.sic.modelo.Servicios;
 import ec.com.newvi.sic.modelo.Terreno;
 import java.math.BigDecimal;
 import java.util.List;
@@ -60,8 +62,36 @@ public class PresentacionFichaCatastralDto {
     private String nomNombres;
     
     private List<Terreno> listaDescripcionTerreno;
+    
+    private List<Bloques> listaBloques;
+    
+    private List<Servicios> listaServicios;
     private String stsCodigo;
 
+    public List<Bloques> getListaBloques() {
+        return listaBloques;
+    }
+
+    public void setListaBloques(List<Bloques> listaBloques) {
+        this.listaBloques = listaBloques;
+    }
+
+    public List<Servicios> getListaServicios() {
+        return listaServicios;
+    }
+
+    public void setListaServicios(List<Servicios> listaServicios) {
+        this.listaServicios = listaServicios;
+    }
+
+    public String getStsCodigo() {
+        return stsCodigo;
+    }
+
+    public void setStsCodigo(String stsCodigo) {
+        this.stsCodigo = stsCodigo;
+    }
+    
     public String getNomNombres() {
         return nomNombres;
     }
@@ -388,6 +418,8 @@ public class PresentacionFichaCatastralDto {
         setearDatosPredio(fichaCatastralDto.getPredio());
         setearDatosContribuyente(fichaCatastralDto.getContribuyentePropiedad());
         this.listaDescripcionTerreno = (List<Terreno>)fichaCatastralDto.getPredio().getCaracteristicasTerreno();
+        this.listaBloques = (List<Bloques>)fichaCatastralDto.getPredio().getBloques();
+        this.listaServicios = (List<Servicios>)fichaCatastralDto.getPredio().getServicios();
 
     }
 
