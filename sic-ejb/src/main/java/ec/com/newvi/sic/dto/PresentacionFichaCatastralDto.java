@@ -60,6 +60,7 @@ public class PresentacionFichaCatastralDto {
     private String nomNombres;
     
     private List<Terreno> listaDescripcionTerreno;
+    private String stsCodigo;
 
     public String getNomNombres() {
         return nomNombres;

@@ -787,23 +787,29 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
     protected DefaultStreamedContent generarReportes(int tipoReporte) {
         try {
             DefaultStreamedContent dscXlsPa;
-            List<Avaluo>listaAvaluos=generarListaAvaluo();
-            List<TablaCatastralDto>datosImpresion= obtenerListadoAvaluos(listaAvaluos);
-            String formatoTabla="/opt/tablaCatastralUrbana.jasper";
-            if (tipoReporte==0)
-                formatoTabla="/opt/newReport.jasper";
-            if (tipoReporte==3)
-                formatoTabla="/opt/fichaRelevamientoPredialUrbano.jasper";
-            List<PresentacionFichaCatastralDto>tablita= new ArrayList<>();
-            tablita.add(new PresentacionFichaCatastralDto(this.predio));
-
-            Map<String, Class> paramRepA = new HashMap<String, Class>();
-            paramRepA.put("tablaCatastral", PresentacionFichaCatastralDto.class);
-            paramRepA.put("reporTablaCatastral", List.class);
+            List datosImpresion;
+            Class claseImpresion=TablaCatastralDto.class;
             Map<String, Object> parametrosReporte = new HashMap<>();
-            parametrosReporte.put("TITULO_REPORTE", "REPORTECITO");
-            parametrosReporte.put("DESCRIPCION_TERRENO", tablita.get(0).getListaDescripcionTerreno());
-            Reporte reporte = new Reporte(ReporteGenerador.FormatoReporte.XLSX, tablita, paramRepA, formatoTabla, "/reporTablaCatastral//tablaCatastral", parametrosReporte);
+            List<Avaluo>listaAvaluos=generarListaAvaluo();
+            datosImpresion= obtenerListadoAvaluos(listaAvaluos);
+            String formatoTabla="/opt/tablaCatastralUrbana.jasper";
+            if (tipoReporte==0){
+                formatoTabla="/opt/newReport.jasper";
+                parametrosReporte.put("TITULO_REPORTE", "REPORTECITO");
+            }
+            if (tipoReporte==3)
+            {   
+                formatoTabla="/opt/fichaRelevamientoPredialUrbano.jasper";
+                List<PresentacionFichaCatastralDto>tablita= new ArrayList<>();
+                tablita.add(new PresentacionFichaCatastralDto(this.predio));
+                datosImpresion=tablita;
+                claseImpresion=PresentacionFichaCatastralDto.class;
+                parametrosReporte.put("DESCRIPCION_TERRENO", tablita.get(0).getListaDescripcionTerreno());
+            }
+            Map<String, Class> paramRepA = new HashMap<String, Class>();
+            paramRepA.put("tablaCatastral", claseImpresion);
+            paramRepA.put("reporTablaCatastral", List.class);
+            Reporte reporte = new Reporte(ReporteGenerador.FormatoReporte.XLSX, datosImpresion, paramRepA, formatoTabla, "/reporTablaCatastral//tablaCatastral", parametrosReporte);
             if (ComunUtil.esNulo(reporte)) {
                 return null;
             }
