@@ -8,6 +8,8 @@ package ec.com.newvi.sic.dto;
 import ec.com.newvi.sic.modelo.Bloques;
 import ec.com.newvi.sic.modelo.Pisos;
 import ec.com.newvi.sic.modelo.Predios;
+import java.util.AbstractList;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -27,6 +29,7 @@ public class BloqueDto {
     }
 
     public BloqueDto(Predios predio) {
+        listaPisosDto = new ArrayList<>();
         List<Bloques> listaBloques = (List<Bloques>) predio.getBloques();
         for (Bloques bloque : listaBloques) {
             List<Pisos> listaPisos = (List<Pisos>) bloque.getPisosCollection();
