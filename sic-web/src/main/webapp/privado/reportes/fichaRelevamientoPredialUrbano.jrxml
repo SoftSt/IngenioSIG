@@ -1,8 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="1312ccb7-b94d-4126-982d-4fbcc8dc4521">
-	<property name="ireport.zoom" value="1.5"/>
-	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="978"/>
+	<property name="ireport.zoom" value="1.4641000000000006"/>
+	<property name="ireport.x" value="47"/>
+	<property name="ireport.y" value="747"/>
+	<style name="table">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
 	<subDataset name="dataset1" uuid="e2070edc-a9a6-406a-9f14-5b83eba20046">
 		<field name="stsCodigo" class="java.lang.String"/>
 		<field name="stsSubgrupo" class="java.lang.String"/>
@@ -21,8 +41,17 @@
 		<field name="valNropisos" class="java.lang.String"/>
 	</subDataset>
 	<subDataset name="dataset4" uuid="b669ec50-2310-4e82-8157-c9ff15bde5d5">
+		<parameter name="ARCHIVO_REPORTE" class="java.lang.String">
+			<defaultValueExpression><![CDATA[$P{ARCHIVO_REPORTE}]]></defaultValueExpression>
+		</parameter>
+		<field name="nomBloque" class="java.lang.String"/>
 		<field name="nomPiso" class="java.lang.String"/>
-		<field name="field1" class="java.lang.String"/>
+		<field name="valAreapiso" class="java.math.BigDecimal"/>
+		<field name="valAnioconstruccion" class="java.lang.Integer"/>
+		<field name="valAnioreparacion" class="java.lang.Integer"/>
+		<field name="subgrupo" class="java.lang.String"/>
+		<field name="descripcion" class="java.lang.String"/>
+		<field name="estadoDetalle" class="java.lang.String"/>
 	</subDataset>
 	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
 		<defaultValueExpression><![CDATA["D:\\documents\\NetBeansProjects\\sigc\\sic-web\\src\\main\\webapp\\privado\\reportes\\"]]></defaultValueExpression>
@@ -31,6 +60,8 @@
 	<parameter name="INFRAESTRUCTURA_SERVICIOS" class="java.util.Collection"/>
 	<parameter name="CARACTERISTICAS_EDIFICACION" class="java.util.Collection"/>
 	<parameter name="PISO" class="java.util.Collection"/>
+	<parameter name="COLECCION_DETALLE" class="java.util.Collection"/>
+	<parameter name="ARCHIVO_REPORTE" class="java.lang.String"/>
 	<field name="nomCodigocatastral" class="java.lang.String"/>
 	<field name="codDpa" class="java.lang.String"/>
 	<field name="codZona" class="java.lang.String"/>
@@ -749,7 +780,7 @@ DE REFERENCIA:
 				</textElement>
 				<text><![CDATA[SUR:]]></text>
 			</staticText>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="348" y="126" width="184" height="15" uuid="4c2251fc-16d4-4f7b-b8cd-acf5e148ba81"/>
 				<textElement>
 					<font fontName="Verdana" size="8"/>
@@ -763,7 +794,7 @@ DE REFERENCIA:
 				</textElement>
 				<text><![CDATA[9. COLINDANTES]]></text>
 			</staticText>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="66" y="141" width="184" height="15" uuid="3cc3ce46-a792-4925-96c7-6d82f045c47a"/>
 				<textElement>
 					<font fontName="Verdana" size="8"/>
@@ -777,7 +808,7 @@ DE REFERENCIA:
 				</textElement>
 				<text><![CDATA[OESTE:]]></text>
 			</staticText>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="66" y="126" width="184" height="15" uuid="51c00268-e44e-4557-8849-5e88d1fc7cf9"/>
 				<textElement>
 					<font fontName="Verdana" size="8"/>
@@ -798,7 +829,7 @@ DE REFERENCIA:
 				</textElement>
 				<text><![CDATA[ESTE:]]></text>
 			</staticText>
-			<textField>
+			<textField isBlankWhenNull="true">
 				<reportElement x="348" y="141" width="184" height="15" uuid="14b2b085-3e7d-43e6-9c5d-221a6d101543"/>
 				<textElement>
 					<font fontName="Verdana" size="8"/>
@@ -806,7 +837,7 @@ DE REFERENCIA:
 				<textFieldExpression><![CDATA[]]></textFieldExpression>
 			</textField>
 		</band>
-		<band height="41">
+		<band height="36">
 			<line>
 				<reportElement x="1" y="0" width="554" height="1" uuid="0b7a0425-d594-4553-b333-5eb6989602b4"/>
 			</line>
@@ -815,31 +846,31 @@ DE REFERENCIA:
 				<textElement>
 					<font fontName="Verdana" size="7" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Infraestructura y Servicios]]></text>
+				<text><![CDATA[Descripción del terreno]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="140" y="16" width="81" height="15" uuid="8ee5c888-1271-4ab1-a801-b8ff3d9ea117"/>
+				<reportElement x="140" y="16" width="81" height="10" uuid="8ee5c888-1271-4ab1-a801-b8ff3d9ea117"/>
 				<textElement>
 					<font fontName="Verdana" size="6" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Carateristicas]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="21" y="16" width="45" height="15" uuid="550a2738-4a2f-4ba0-9c89-dcc99c27af39"/>
+				<reportElement x="21" y="16" width="45" height="10" uuid="550a2738-4a2f-4ba0-9c89-dcc99c27af39"/>
 				<textElement>
 					<font fontName="Verdana" size="6" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Codigo]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="285" y="16" width="81" height="15" uuid="0b824f20-6190-41ac-b1e1-8fdb06866589"/>
+				<reportElement x="285" y="16" width="81" height="10" uuid="0b824f20-6190-41ac-b1e1-8fdb06866589"/>
 				<textElement>
 					<font fontName="Verdana" size="6" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Detalles]]></text>
 			</staticText>
 			<componentElement>
-				<reportElement x="21" y="31" width="511" height="10" uuid="12a2c499-0c2a-4875-8428-90114e63d974"/>
+				<reportElement x="21" y="26" width="511" height="10" uuid="12a2c499-0c2a-4875-8428-90114e63d974"/>
 				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
 					<datasetRun subDataset="dataset1" uuid="abb961a4-0ecc-426b-8a24-067345bb6ea2">
 						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($P{DESCRIPCION_TERRENO})]]></dataSourceExpression>
@@ -983,7 +1014,7 @@ DE REFERENCIA:
 				<text><![CDATA[# Medidores]]></text>
 			</staticText>
 		</band>
-		<band height="91">
+		<band height="45">
 			<staticText>
 				<reportElement x="21" y="0" width="229" height="15" uuid="523bd1e9-ec93-4ae9-addd-f445de86dc5c"/>
 				<textElement>
@@ -1013,12 +1044,12 @@ DE REFERENCIA:
 				<text><![CDATA[No. Pisos]]></text>
 			</staticText>
 			<componentElement>
-				<reportElement x="21" y="35" width="214" height="11" uuid="83adf112-fb97-47a8-8c1e-b1dff04487eb"/>
+				<reportElement x="21" y="35" width="325" height="10" uuid="83adf112-fb97-47a8-8c1e-b1dff04487eb"/>
 				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
-					<datasetRun subDataset="dataset3" uuid="1e9937d2-f800-4703-b6d9-8e7fe08f87d4">
+					<datasetRun subDataset="dataset3" uuid="437a4239-ad31-4c7b-9391-ed947c5af333">
 						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($P{CARACTERISTICAS_EDIFICACION})]]></dataSourceExpression>
 					</datasetRun>
-					<jr:listContents height="11" width="214">
+					<jr:listContents height="10" width="325">
 						<textField isBlankWhenNull="true">
 							<reportElement x="0" y="0" width="49" height="10" uuid="f9cf3b23-c958-486d-a660-18e71dcf0bf3"/>
 							<textElement>
@@ -1036,6 +1067,144 @@ DE REFERENCIA:
 					</jr:listContents>
 				</jr:list>
 			</componentElement>
+		</band>
+		<band height="41">
+			<staticText>
+				<reportElement x="66" y="0" width="49" height="20" uuid="c3e29204-9742-4e4c-97b3-7bcc65795b30"/>
+				<textElement>
+					<font fontName="Verdana" size="6" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Piso]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="115" y="0" width="49" height="20" uuid="88d23a54-a2ee-478f-a59d-5cc1b40d40ce"/>
+				<textElement>
+					<font fontName="Verdana" size="6" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Área (m2)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="164" y="0" width="57" height="20" uuid="d55e4253-6b24-45a6-9483-d5365d209f1b"/>
+				<textElement>
+					<font fontName="Verdana" size="6" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Año construcción]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="221" y="0" width="49" height="20" uuid="aea0fe06-60ba-4fd4-ab33-a12e631680d9"/>
+				<textElement>
+					<font fontName="Verdana" size="6" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Año reparación]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="389" y="0" width="67" height="20" uuid="84fe7185-4f06-4291-8d2b-0accce871ee4"/>
+				<textElement>
+					<font fontName="Verdana" size="6" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Material de construcción]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="21" y="0" width="45" height="20" uuid="571a3a48-fd99-48d5-a832-f54ca3b98483"/>
+				<textElement>
+					<font fontName="Verdana" size="6" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Bloque]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="270" y="0" width="46" height="20" uuid="935c1456-eaf1-40fd-8b48-5cb05298f5fd"/>
+				<textElement>
+					<font fontName="Verdana" size="6" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Código]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="316" y="0" width="73" height="20" uuid="3f9fe00b-4ffc-4f12-a646-5a36459c9d08"/>
+				<textElement>
+					<font fontName="Verdana" size="6" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Subgrupo]]></text>
+			</staticText>
+			<componentElement>
+				<reportElement x="21" y="20" width="511" height="21" uuid="14e3f6d6-1062-4b5a-ab3f-ea661cbc0a7d"/>
+				<jr:list xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" printOrder="Vertical">
+					<datasetRun subDataset="dataset4" uuid="b917aaa9-0822-4972-8430-9f861b6299c0">
+						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($P{PISO})]]></dataSourceExpression>
+					</datasetRun>
+					<jr:listContents height="21" width="511">
+						<textField isBlankWhenNull="true">
+							<reportElement x="295" y="1" width="74" height="20" uuid="dc90c4b3-edee-45cc-80cd-99e0aa5f9230"/>
+							<textElement>
+								<font fontName="Verdana" size="6"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{subgrupo}]]></textFieldExpression>
+						</textField>
+						<textField isBlankWhenNull="true">
+							<reportElement x="368" y="0" width="67" height="20" uuid="73d6cc78-c2ac-429b-9a9f-49642b08c8d3"/>
+							<textElement>
+								<font fontName="Verdana" size="6"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{descripcion}]]></textFieldExpression>
+						</textField>
+						<textField isBlankWhenNull="true">
+							<reportElement x="435" y="0" width="75" height="20" uuid="c0fdbd3c-7039-44f5-9c46-17a5f71e1a92"/>
+							<textElement>
+								<font fontName="Verdana" size="6"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{estadoDetalle}]]></textFieldExpression>
+						</textField>
+						<textField isBlankWhenNull="true">
+							<reportElement x="249" y="0" width="46" height="20" uuid="71c0efa7-477c-4eb8-9faa-d2ae265dcda3"/>
+							<textElement>
+								<font fontName="Verdana" size="6"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{subgrupo}]]></textFieldExpression>
+						</textField>
+						<textField isBlankWhenNull="true">
+							<reportElement x="44" y="0" width="49" height="20" uuid="1dffec41-ffd3-4950-b5a9-609131309468"/>
+							<textElement>
+								<font fontName="Verdana" size="6"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{nomPiso}]]></textFieldExpression>
+						</textField>
+						<textField isBlankWhenNull="true">
+							<reportElement x="93" y="0" width="50" height="20" uuid="1f3e7c56-555d-4fc8-ae7e-686975209611"/>
+							<textElement>
+								<font fontName="Verdana" size="6"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{valAreapiso}]]></textFieldExpression>
+						</textField>
+						<textField isBlankWhenNull="true">
+							<reportElement x="143" y="0" width="56" height="20" uuid="7570ae19-e01b-4130-80f6-04d2db5a69bd"/>
+							<textElement>
+								<font fontName="Verdana" size="6"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{valAnioconstruccion}]]></textFieldExpression>
+						</textField>
+						<textField isBlankWhenNull="true">
+							<reportElement x="199" y="0" width="49" height="20" uuid="5885e3da-a85b-4ccb-bc7c-95e5fd9af3b2"/>
+							<textElement>
+								<font fontName="Verdana" size="6"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{valAnioreparacion}]]></textFieldExpression>
+						</textField>
+						<textField isBlankWhenNull="true">
+							<reportElement x="0" y="0" width="44" height="20" uuid="bad8e033-9117-4d7d-bcb1-8313c84ae56a"/>
+							<textElement>
+								<font fontName="Verdana" size="6"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$F{nomBloque}]]></textFieldExpression>
+						</textField>
+					</jr:listContents>
+				</jr:list>
+			</componentElement>
+			<staticText>
+				<reportElement x="456" y="0" width="75" height="20" uuid="5c0b4080-cd08-4943-b9e9-7d0ca7cd903e"/>
+				<textElement>
+					<font fontName="Verdana" size="6" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Estado]]></text>
+			</staticText>
 		</band>
 	</detail>
 </jasperReport>

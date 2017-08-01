@@ -8,12 +8,15 @@ package ec.com.newvi.sic.web.backingbean;
 import ec.com.newvi.componente.reporte.Reporte;
 import ec.com.newvi.componente.reporte.ReporteGenerador;
 import ec.com.newvi.sic.dto.AvaluoDto;
+import ec.com.newvi.sic.dto.BloqueDto;
+import ec.com.newvi.sic.dto.CaracteristicasTerrenoDto;
 import ec.com.newvi.sic.dto.DominioDto;
 import ec.com.newvi.sic.dto.FichaCatastralDto;
 import ec.com.newvi.sic.dto.PresentacionFichaCatastral;
 import ec.com.newvi.sic.dto.PresentacionFichaCatastralDto;
 import ec.com.newvi.sic.dto.TablaCatastralDto;
 import ec.com.newvi.sic.dto.SesionDto;
+import ec.com.newvi.sic.dto.caracteristicasEdificacionDto;
 import ec.com.newvi.sic.enums.EnumEstadoPisoDetalle;
 import ec.com.newvi.sic.enums.EnumEstadoRegistro;
 import ec.com.newvi.sic.enums.EnumNewviExcepciones;
@@ -789,6 +792,8 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
             DefaultStreamedContent dscXlsPa;
             List datosImpresion;
             Class claseImpresion=TablaCatastralDto.class;
+            //BloqueDto bloques;
+            caracteristicasEdificacionDto bloques;
             Map<String, Object> parametrosReporte = new HashMap<>();
             List<Avaluo>listaAvaluos=generarListaAvaluo();
             datosImpresion= obtenerListadoAvaluos(listaAvaluos);
@@ -802,12 +807,18 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
                 formatoTabla="/opt/fichaRelevamientoPredialUrbano.jasper";
                 List<PresentacionFichaCatastralDto>tablita= new ArrayList<>();
                 tablita.add(new PresentacionFichaCatastralDto(this.predio));
+             //   bloques= new BloqueDto(this.predio);
+                bloques= new caracteristicasEdificacionDto(this.predio);
                 datosImpresion=tablita;
                 claseImpresion=PresentacionFichaCatastralDto.class;
                 parametrosReporte.put("DESCRIPCION_TERRENO", tablita.get(0).getListaDescripcionTerreno());
                 parametrosReporte.put("INFRAESTRUCTURA_SERVICIOS", tablita.get(0).getListaServicios());
                 parametrosReporte.put("CARACTERISTICAS_EDIFICACION", tablita.get(0).getListaBloques());
-                parametrosReporte.put("PISO", tablita.get(0).getListaBloques().get(0).getPisosCollection());
+                parametrosReporte.put("PISO", bloques.getListadetallesPisoDtoD());
+                /*for (int i = 0; i < tablita.get(0).getListaBloques().size(); i++) {
+                    parametrosReporte.put("PISO", tablita.get(0).getListaBloques().get(i).getPisosCollection());
+                
+                }*/
             }
             Map<String, Class> paramRepA = new HashMap<String, Class>();
             paramRepA.put("tablaCatastral", claseImpresion);
