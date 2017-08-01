@@ -6,6 +6,7 @@
 package ec.com.newvi.sic.dto;
 
 import ec.com.newvi.sic.modelo.Bloques;
+import ec.com.newvi.sic.modelo.PisoDetalle;
 import ec.com.newvi.sic.modelo.Pisos;
 import ec.com.newvi.sic.modelo.Predios;
 import java.util.AbstractList;
@@ -36,11 +37,12 @@ public class BloqueDto {
             for (Pisos piso : listaPisos) {
                 PisosDto pisoDto = new PisosDto();
                 pisoDto.setNomBloque(bloque.getNomBloque());
+                pisoDto.setValNropisos(bloque.getValNropisos());
                 pisoDto.setNomPiso(piso.getNomPiso());
                 pisoDto.setValAnioconstruccion(piso.getValAnioconstruccion());
                 pisoDto.setValAnioreparacion(piso.getValAnioreparacion());
                 pisoDto.setValAreapiso(piso.getValAreapiso());
-                pisoDto.setValNropisos(bloque.getValNropisos());
+                pisoDto.setListaDetallesPisos((List<PisoDetalle>)piso.getDetalles());
                 
                 listaPisosDto.add(pisoDto);
             }

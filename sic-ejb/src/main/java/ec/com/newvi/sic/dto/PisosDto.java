@@ -24,7 +24,16 @@ public class PisosDto {
     private BigDecimal valAreapiso;
     private Integer valAnioconstruccion;
     private Integer valAnioreparacion;
+    private List<PisoDetalle> listaDetallesPisos;
 
+    public List<PisoDetalle> getListaDetallesPisos() {
+        return listaDetallesPisos;
+    }
+
+    public void setListaDetallesPisos(List<PisoDetalle> listaDetallesPisos) {
+        this.listaDetallesPisos = listaDetallesPisos;
+    }
+    
     public String getNomBloque() {
         return nomBloque;
     }
