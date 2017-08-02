@@ -16,8 +16,7 @@ import java.util.List;
  *
  * @author Andrés
  */
-public class CaracteristicasEdificacionDto {
-    
+public class CaracteristicasEdificacionesDto {
     List<DetallesPisoDto> listadetallesPisoDtoD;
 
     public List<DetallesPisoDto> getListadetallesPisoDtoD() {
@@ -28,8 +27,7 @@ public class CaracteristicasEdificacionDto {
         this.listadetallesPisoDtoD = listadetallesPisoDtoD;
     }
 
-    public CaracteristicasEdificacionDto(Predios predio) {
-        
+    public CaracteristicasEdificacionesDto(Predios predio) {
         listadetallesPisoDtoD = new ArrayList<>();
         List<Bloques> listaBloques = (List<Bloques>) predio.getBloques();
         for (Bloques bloque : listaBloques) {
@@ -49,6 +47,8 @@ public class CaracteristicasEdificacionDto {
                     detallesPisoDto.setSubgrupo(pisoDetalle.getSubgrupo());
                     detallesPisoDto.setDescripcion(pisoDetalle.getDescripcion());
                     detallesPisoDto.setEstadoDetalle(pisoDetalle.getEstadoDetalle());
+                    detallesPisoDto.setCodigo(pisoDetalle.getCodigo());
+                    detallesPisoDto.setGrupo(pisoDetalle.getGrupo());
 
                     listadetallesPisoDtoD.add(detallesPisoDto);
                 }
@@ -57,6 +57,5 @@ public class CaracteristicasEdificacionDto {
             }
         }
     }
-    
     
 }

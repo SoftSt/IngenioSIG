@@ -23,6 +23,9 @@ public class DetallesPisoDto {
     private String descripcion;
     private String estadoDetalle;
     
+    private String codigo;
+    private String grupo;
+    
     
     private String nomBloque;
     private String nomPiso;
@@ -30,6 +33,22 @@ public class DetallesPisoDto {
     private BigDecimal valAreapiso;
     private Integer valAnioconstruccion;
     private Integer valAnioreparacion;
+
+    public String getCodigo() {
+        return codigo;
+    }
+
+    public void setCodigo(String codigo) {
+        this.codigo = codigo;
+    }
+
+    public String getGrupo() {
+        return grupo;
+    }
+
+    public void setGrupo(String grupo) {
+        this.grupo = grupo;
+    }
 
     public String getSubgrupo() {
         return subgrupo;
