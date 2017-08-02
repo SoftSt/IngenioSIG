@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="1312ccb7-b94d-4126-982d-4fbcc8dc4521">
 	<property name="ireport.zoom" value="1.0980750000000004"/>
-	<property name="ireport.x" value="13"/>
-	<property name="ireport.y" value="518"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="671"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -46,6 +46,29 @@
 			<bottomPen lineWidth="0.5" lineColor="#000000"/>
 		</box>
 	</style>
+	<style name="table 2">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 2_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 2_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table 2_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
 	<subDataset name="dataset1" uuid="e2070edc-a9a6-406a-9f14-5b83eba20046">
 		<field name="stsCodigo" class="java.lang.String"/>
 		<field name="stsSubgrupo" class="java.lang.String"/>
@@ -75,6 +98,9 @@
 		<field name="subgrupo" class="java.lang.String"/>
 		<field name="descripcion" class="java.lang.String"/>
 		<field name="estadoDetalle" class="java.lang.String"/>
+		<field name="codigo" class="java.lang.String"/>
+		<field name="grupo" class="java.lang.String"/>
+		<field name="valNropisos" class="java.lang.String"/>
 	</subDataset>
 	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
 		<defaultValueExpression><![CDATA["D:\\documents\\NetBeansProjects\\sigc\\sic-web\\src\\main\\webapp\\privado\\reportes\\"]]></defaultValueExpression>
@@ -1236,7 +1262,7 @@ DE REFERENCIA:
 							<textElement>
 								<font fontName="Verdana" size="6"/>
 							</textElement>
-							<textFieldExpression><![CDATA[$F{subgrupo}]]></textFieldExpression>
+							<textFieldExpression><![CDATA[$F{codigo}]]></textFieldExpression>
 						</textField>
 						<textField isBlankWhenNull="true">
 							<reportElement x="44" y="0" width="49" height="20" uuid="1dffec41-ffd3-4950-b5a9-609131309468"/>
@@ -1301,135 +1327,260 @@ DE REFERENCIA:
 		</band>
 		<band height="50">
 			<componentElement>
-				<reportElement key="table 1" style="table 1" x="21" y="0" width="510" height="50" uuid="08515b36-ce4a-4171-b0f8-53b4f55be100"/>
+				<reportElement key="table 2" style="table 2" x="23" y="0" width="508" height="50" uuid="99fb6b82-a758-4992-a3e3-0514c460fe65"/>
 				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
-					<datasetRun subDataset="dataset4" uuid="44c3836d-ce16-4c8a-a128-6254ee231864">
-						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					<datasetRun subDataset="dataset4" uuid="2e0f8fb7-7f68-4d78-bc84-4cfbf0ccf960">
+						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($P{PISO})]]></dataSourceExpression>
 					</datasetRun>
-					<jr:column width="90" uuid="a2354edd-5618-49be-8b20-a53e9910d9d2">
-						<jr:tableHeader style="table 1_TH" height="30"/>
-						<jr:columnHeader style="table 1_CH" height="30">
+					<jr:column width="50" uuid="18639c03-3dbd-48ac-88f3-7e6b1b9135ee">
+						<jr:tableHeader style="table 2_TH" height="30" rowSpan="1"/>
+						<jr:tableFooter style="table 2_TH" height="30" rowSpan="1"/>
+						<jr:columnHeader style="table 2_CH" height="30" rowSpan="1">
 							<staticText>
-								<reportElement x="0" y="0" width="90" height="30" uuid="695b9822-c6bf-40b8-a1b4-4ee73555f868"/>
+								<reportElement x="0" y="0" width="50" height="20" uuid="816342fb-a8bd-4438-9f6f-e4cd9c3c4c8c"/>
+								<textElement>
+									<font fontName="Verdana" size="6"/>
+								</textElement>
 								<text><![CDATA[nomBloque]]></text>
 							</staticText>
 						</jr:columnHeader>
-						<jr:columnFooter style="table 1_CH" height="30"/>
-						<jr:detailCell style="table 1_TD" height="20">
+						<jr:columnFooter style="table 2_CH" height="30" rowSpan="1"/>
+						<jr:detailCell style="table 2_TD" height="20" rowSpan="1">
 							<textField>
-								<reportElement x="0" y="0" width="90" height="20" uuid="bcfaeeac-861f-4436-8bf7-cbc316395515"/>
+								<reportElement x="0" y="0" width="50" height="20" uuid="1aaaa057-9b62-438d-bbaa-f68c086a7003"/>
+								<textElement>
+									<font fontName="Verdana" size="6"/>
+								</textElement>
 								<textFieldExpression><![CDATA[$F{nomBloque}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column width="90" uuid="864727bb-f7ef-4164-a8f4-16acef5faceb">
-						<jr:tableHeader style="table 1_TH" height="30"/>
-						<jr:columnHeader style="table 1_CH" height="30">
+					<jr:column width="50" uuid="72e761a5-256c-414f-b233-db02138964b4">
+						<jr:tableHeader style="table 2_TH" height="30" rowSpan="1"/>
+						<jr:tableFooter style="table 2_TH" height="30" rowSpan="1"/>
+						<jr:columnHeader style="table 2_CH" height="30" rowSpan="1">
 							<staticText>
-								<reportElement x="0" y="0" width="90" height="30" uuid="44da8e79-eb47-4493-86d8-23938488af65"/>
+								<reportElement x="0" y="0" width="50" height="20" uuid="4b79a304-87f2-4fba-b83c-e599b43d1c5b"/>
+								<textElement>
+									<font fontName="Verdana" size="6"/>
+								</textElement>
+								<text><![CDATA[valNropisos]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:columnFooter style="table 2_CH" height="30" rowSpan="1"/>
+						<jr:detailCell style="table 2_TD" height="20" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="0" width="50" height="20" uuid="6caf2730-3d14-494d-94c4-51fc4b6f012d"/>
+								<textElement>
+									<font fontName="Verdana" size="6"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{valNropisos}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="50" uuid="1f88e89a-d33b-4476-a5de-f5e95281b249">
+						<jr:tableHeader style="table 2_TH" height="30" rowSpan="1"/>
+						<jr:tableFooter style="table 2_TH" height="30" rowSpan="1"/>
+						<jr:columnHeader style="table 2_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="50" height="20" uuid="138e6a18-799e-4a44-a70f-527c30de503f"/>
+								<textElement>
+									<font fontName="Verdana" size="6"/>
+								</textElement>
 								<text><![CDATA[nomPiso]]></text>
 							</staticText>
 						</jr:columnHeader>
-						<jr:columnFooter style="table 1_CH" height="30"/>
-						<jr:detailCell style="table 1_TD" height="20">
+						<jr:columnFooter style="table 2_CH" height="30" rowSpan="1"/>
+						<jr:detailCell style="table 2_TD" height="20" rowSpan="1">
 							<textField>
-								<reportElement x="0" y="0" width="90" height="20" uuid="3404b31a-c6cb-4e85-a9e8-0a8179e88ae9"/>
+								<reportElement x="0" y="0" width="50" height="20" uuid="8a4bf546-247f-4a59-beda-ea2bee02ab7f"/>
+								<textElement>
+									<font fontName="Verdana" size="6"/>
+								</textElement>
 								<textFieldExpression><![CDATA[$F{nomPiso}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column width="90" uuid="680469d9-a4be-488f-b908-ec3ee21d8028">
-						<jr:tableHeader style="table 1_TH" height="30"/>
-						<jr:columnHeader style="table 1_CH" height="30">
+					<jr:column width="50" uuid="8e6ae1b5-73d7-43e9-9f82-6b0d5259d220">
+						<jr:tableHeader style="table 2_TH" height="30" rowSpan="1"/>
+						<jr:tableFooter style="table 2_TH" height="30" rowSpan="1"/>
+						<jr:columnHeader style="table 2_CH" height="30" rowSpan="1">
 							<staticText>
-								<reportElement x="0" y="0" width="90" height="30" uuid="128f816f-68f4-4e6a-82bc-6fe578c83cf6"/>
+								<reportElement x="0" y="0" width="50" height="20" uuid="874d9a67-647d-40e1-9502-b49f8af090c1"/>
+								<textElement>
+									<font fontName="Verdana" size="6"/>
+								</textElement>
 								<text><![CDATA[valAreapiso]]></text>
 							</staticText>
 						</jr:columnHeader>
-						<jr:columnFooter style="table 1_CH" height="30"/>
-						<jr:detailCell style="table 1_TD" height="20">
+						<jr:columnFooter style="table 2_CH" height="30" rowSpan="1"/>
+						<jr:detailCell style="table 2_TD" height="20" rowSpan="1">
 							<textField>
-								<reportElement x="0" y="0" width="90" height="20" uuid="5932efc0-818b-47ba-84f4-72b0c387f65c"/>
+								<reportElement x="0" y="0" width="50" height="20" uuid="b324c735-1073-4417-b972-3b692a480f2e"/>
+								<textElement>
+									<font fontName="Verdana" size="6"/>
+								</textElement>
 								<textFieldExpression><![CDATA[$F{valAreapiso}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column width="90" uuid="bf7a2742-c0f7-4921-b211-93f20669f943">
-						<jr:tableHeader style="table 1_TH" height="30"/>
-						<jr:columnHeader style="table 1_CH" height="30">
+					<jr:column width="50" uuid="200d0de7-7c5c-4f50-972a-39c555378a75">
+						<jr:tableHeader style="table 2_TH" height="30" rowSpan="1"/>
+						<jr:tableFooter style="table 2_TH" height="30" rowSpan="1"/>
+						<jr:columnHeader style="table 2_CH" height="30" rowSpan="1">
 							<staticText>
-								<reportElement x="0" y="0" width="90" height="30" uuid="1eb521c6-a879-4348-b2bb-c2d57f8b96e1"/>
+								<reportElement x="0" y="0" width="50" height="20" uuid="1e5b821f-58b7-49ba-8585-ccbf0f5b0afc"/>
+								<textElement>
+									<font fontName="Verdana" size="6"/>
+								</textElement>
 								<text><![CDATA[valAnioconstruccion]]></text>
 							</staticText>
 						</jr:columnHeader>
-						<jr:columnFooter style="table 1_CH" height="30"/>
-						<jr:detailCell style="table 1_TD" height="20">
+						<jr:columnFooter style="table 2_CH" height="30" rowSpan="1"/>
+						<jr:detailCell style="table 2_TD" height="20" rowSpan="1">
 							<textField>
-								<reportElement x="0" y="0" width="90" height="20" uuid="5cc74ccf-6bbf-412e-9552-fc315f052c00"/>
+								<reportElement x="0" y="0" width="50" height="20" uuid="950dd28c-65a5-4929-b896-f255bddf4f78"/>
+								<textElement>
+									<font fontName="Verdana" size="6"/>
+								</textElement>
 								<textFieldExpression><![CDATA[$F{valAnioconstruccion}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column width="90" uuid="2c79e740-288d-4ba2-8f55-1d71075f1182">
-						<jr:tableHeader style="table 1_TH" height="30"/>
-						<jr:columnHeader style="table 1_CH" height="30">
+					<jr:column width="50" uuid="08730fd1-c1ae-47fc-b9b9-66f0cef4b393">
+						<jr:tableHeader style="table 2_TH" height="30" rowSpan="1"/>
+						<jr:tableFooter style="table 2_TH" height="30" rowSpan="1"/>
+						<jr:columnHeader style="table 2_CH" height="30" rowSpan="1">
 							<staticText>
-								<reportElement x="0" y="0" width="90" height="30" uuid="2f74a410-2774-4666-98ed-1e017ee15927"/>
+								<reportElement x="0" y="0" width="50" height="20" uuid="fe36333f-91c7-4578-ae23-e934cba01d36"/>
+								<textElement>
+									<font fontName="Verdana" size="6"/>
+								</textElement>
 								<text><![CDATA[valAnioreparacion]]></text>
 							</staticText>
 						</jr:columnHeader>
-						<jr:columnFooter style="table 1_CH" height="30"/>
-						<jr:detailCell style="table 1_TD" height="20">
+						<jr:columnFooter style="table 2_CH" height="30" rowSpan="1"/>
+						<jr:detailCell style="table 2_TD" height="20" rowSpan="1">
 							<textField>
-								<reportElement x="0" y="0" width="90" height="20" uuid="f490b371-ba0a-4fd7-84cc-ff6ca7d706c5"/>
+								<reportElement x="0" y="0" width="50" height="20" uuid="7e44b3dd-040a-4af8-bcab-039d2fb7ddc0"/>
+								<textElement>
+									<font fontName="Verdana" size="6"/>
+								</textElement>
 								<textFieldExpression><![CDATA[$F{valAnioreparacion}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column width="90" uuid="ad5f8937-4745-4708-8e7f-7dc187c3f397">
-						<jr:tableHeader style="table 1_TH" height="30"/>
-						<jr:columnHeader style="table 1_CH" height="30">
+					<jr:column width="50" uuid="4b80b771-6912-4a57-8d34-de9973d2a6ea">
+						<jr:tableHeader style="table 2_TH" height="30" rowSpan="1"/>
+						<jr:tableFooter style="table 2_TH" height="30" rowSpan="1"/>
+						<jr:columnHeader style="table 2_CH" height="30" rowSpan="1">
 							<staticText>
-								<reportElement x="0" y="0" width="90" height="30" uuid="a0e15937-3110-43d8-bc99-32458113589f"/>
+								<reportElement x="0" y="0" width="50" height="20" uuid="636b28f2-17b5-4a57-a362-42760109ce62"/>
+								<textElement>
+									<font fontName="Verdana" size="6"/>
+								</textElement>
+								<text><![CDATA[codigo]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:columnFooter style="table 2_CH" height="30" rowSpan="1"/>
+						<jr:detailCell style="table 2_TD" height="20" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="0" width="50" height="20" uuid="dd05f7ea-1793-4a08-9416-49e4b0c3b8ca"/>
+								<textElement>
+									<font fontName="Verdana" size="6"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{codigo}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="70" uuid="27c3ec9e-133d-4233-a298-4b56528e99ef">
+						<jr:tableHeader style="table 2_TH" height="30" rowSpan="1"/>
+						<jr:tableFooter style="table 2_TH" height="30" rowSpan="1"/>
+						<jr:columnHeader style="table 2_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="70" height="20" uuid="a5b2f542-8cd5-429d-b85e-8185218e62d0"/>
+								<textElement>
+									<font fontName="Verdana" size="6"/>
+								</textElement>
+								<text><![CDATA[grupo]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:columnFooter style="table 2_CH" height="30" rowSpan="1"/>
+						<jr:detailCell style="table 2_TD" height="20" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="0" width="70" height="20" uuid="eea4f54f-aed6-44b7-b34d-67f870a88b6a"/>
+								<textElement>
+									<font fontName="Verdana" size="6"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{grupo}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="70" uuid="d10a6cb6-caea-4862-be7b-7f35d1ff370a">
+						<jr:tableHeader style="table 2_TH" height="30" rowSpan="1"/>
+						<jr:tableFooter style="table 2_TH" height="30" rowSpan="1"/>
+						<jr:columnHeader style="table 2_CH" height="30" rowSpan="1">
+							<staticText>
+								<reportElement x="0" y="0" width="70" height="20" uuid="cfe59184-3f9c-4e3d-a49b-95bdac66c567"/>
+								<textElement>
+									<font fontName="Verdana" size="6"/>
+								</textElement>
 								<text><![CDATA[subgrupo]]></text>
 							</staticText>
 						</jr:columnHeader>
-						<jr:columnFooter style="table 1_CH" height="30"/>
-						<jr:detailCell style="table 1_TD" height="20">
+						<jr:columnFooter style="table 2_CH" height="30" rowSpan="1"/>
+						<jr:detailCell style="table 2_TD" height="20" rowSpan="1">
 							<textField>
-								<reportElement x="0" y="0" width="90" height="20" uuid="e9031a2f-6957-4e55-8e53-aa9c08ab5d08"/>
+								<reportElement x="0" y="0" width="70" height="20" uuid="414f6421-67ed-4c39-a008-697bfd39d4d6"/>
+								<textElement>
+									<font fontName="Verdana" size="6"/>
+								</textElement>
 								<textFieldExpression><![CDATA[$F{subgrupo}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column width="90" uuid="2a239285-0e0b-4da4-8dd0-e0f2a0d2b938">
-						<jr:tableHeader style="table 1_TH" height="30"/>
-						<jr:columnHeader style="table 1_CH" height="30">
+					<jr:column width="70" uuid="719bcd83-af42-458d-9d08-3579b06103cb">
+						<jr:tableHeader style="table 2_TH" height="30" rowSpan="1"/>
+						<jr:tableFooter style="table 2_TH" height="30" rowSpan="1"/>
+						<jr:columnHeader style="table 2_CH" height="30" rowSpan="1">
 							<staticText>
-								<reportElement x="0" y="0" width="90" height="30" uuid="1cd120b8-3116-4fd3-b813-03cbcb9ab8fe"/>
+								<reportElement x="0" y="0" width="70" height="20" uuid="fe517a83-d426-4acb-aa9f-abbf95de1cba"/>
+								<textElement>
+									<font fontName="Verdana" size="6"/>
+								</textElement>
 								<text><![CDATA[descripcion]]></text>
 							</staticText>
 						</jr:columnHeader>
-						<jr:columnFooter style="table 1_CH" height="30"/>
-						<jr:detailCell style="table 1_TD" height="20">
+						<jr:columnFooter style="table 2_CH" height="30" rowSpan="1"/>
+						<jr:detailCell style="table 2_TD" height="20" rowSpan="1">
 							<textField>
-								<reportElement x="0" y="0" width="90" height="20" uuid="1114e3e8-b762-43a4-bc42-dce72cbfefea"/>
+								<reportElement x="0" y="0" width="70" height="20" uuid="919f9372-3648-44f3-8996-4b98265783b2"/>
+								<textElement>
+									<font fontName="Verdana" size="6"/>
+								</textElement>
 								<textFieldExpression><![CDATA[$F{descripcion}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column width="90" uuid="289be689-278e-4b60-afc4-8aecf893775b">
-						<jr:tableHeader style="table 1_TH" height="30"/>
-						<jr:columnHeader style="table 1_CH" height="30">
+					<jr:column width="50" uuid="5aae21a7-a078-4fa2-8b34-98490c7446c9">
+						<jr:tableHeader style="table 2_TH" height="30" rowSpan="1"/>
+						<jr:tableFooter style="table 2_TH" height="30" rowSpan="1"/>
+						<jr:columnHeader style="table 2_CH" height="30" rowSpan="1">
 							<staticText>
-								<reportElement x="0" y="0" width="90" height="30" uuid="1f21d80b-b631-474a-93bd-5107bb3c8331"/>
+								<reportElement x="0" y="0" width="50" height="20" uuid="eb947dfd-6afa-457d-b6e5-7819d94a0fc5"/>
+								<textElement>
+									<font fontName="Verdana" size="6"/>
+								</textElement>
 								<text><![CDATA[estadoDetalle]]></text>
 							</staticText>
 						</jr:columnHeader>
-						<jr:columnFooter style="table 1_CH" height="30"/>
-						<jr:detailCell style="table 1_TD" height="20">
+						<jr:columnFooter style="table 2_CH" height="30" rowSpan="1"/>
+						<jr:detailCell style="table 2_TD" height="20" rowSpan="1">
 							<textField>
-								<reportElement x="0" y="0" width="90" height="20" uuid="a2fd682d-e888-4577-8fcc-9f661116f5b0"/>
+								<reportElement x="0" y="0" width="50" height="20" uuid="5cf85597-afb2-4ec1-ae98-29db8018c4b0"/>
+								<textElement>
+									<font fontName="Verdana" size="6"/>
+								</textElement>
 								<textFieldExpression><![CDATA[$F{estadoDetalle}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
