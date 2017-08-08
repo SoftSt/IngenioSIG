@@ -807,7 +807,6 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
                 formatoTabla="/opt/fichaRelevamientoPredialUrbano.jasper";
                 List<PresentacionFichaCatastralDto>tablita= new ArrayList<>();
                 tablita.add(new PresentacionFichaCatastralDto(this.predio));
-             //   bloques= new BloqueDto(this.predio);
                 bloques= new CaracteristicasEdificacionesDto(this.predio);
                 datosImpresion=tablita;
                 claseImpresion=PresentacionFichaCatastralDto.class;
@@ -815,10 +814,6 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
                 parametrosReporte.put("INFRAESTRUCTURA_SERVICIOS", tablita.get(0).getListaServicios());
                 parametrosReporte.put("CARACTERISTICAS_EDIFICACION", tablita.get(0).getListaBloques());
                 parametrosReporte.put("PISO", bloques.getListadetallesPisoDtoD());
-                /*for (int i = 0; i < tablita.get(0).getListaBloques().size(); i++) {
-                    parametrosReporte.put("PISO", tablita.get(0).getListaBloques().get(i).getPisosCollection());
-                
-                }*/
             }
             Map<String, Class> paramRepA = new HashMap<String, Class>();
             paramRepA.put("tablaCatastral", claseImpresion);
