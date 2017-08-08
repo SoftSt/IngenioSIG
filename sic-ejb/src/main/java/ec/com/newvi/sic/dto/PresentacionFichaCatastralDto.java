@@ -8,6 +8,7 @@ package ec.com.newvi.sic.dto;
 import ec.com.newvi.sic.modelo.Bloques;
 import ec.com.newvi.sic.modelo.Contribuyentes;
 import ec.com.newvi.sic.modelo.Predios;
+import ec.com.newvi.sic.modelo.Propiedad;
 import ec.com.newvi.sic.modelo.Servicios;
 import ec.com.newvi.sic.modelo.Terreno;
 import java.math.BigDecimal;
@@ -31,10 +32,13 @@ public class PresentacionFichaCatastralDto {
     private String codHorizontal;
     private String stsBarrio;
     private String txtDireccion;
+    private String nomNumero;
     private BigDecimal valAreaPredio;
     private BigDecimal valAreaFrente;
     private BigDecimal valAreaFondo;
     private BigDecimal valAreaConstruccion;
+    private BigDecimal valCoordenadaEste;
+    private BigDecimal valCoordenadaNorte;
     private String txtNorte;
     private String txtSur;
     private String txtEste;
@@ -60,11 +64,11 @@ public class PresentacionFichaCatastralDto {
     private String codCedularuc;
     private String nomApellidos;
     private String nomNombres;
-    
+
     private List<Terreno> listaDescripcionTerreno;
-    
+
     private List<Bloques> listaBloques;
-    
+
     private List<Servicios> listaServicios;
 
     public List<Bloques> getListaBloques() {
@@ -82,6 +86,14 @@ public class PresentacionFichaCatastralDto {
     public void setListaServicios(List<Servicios> listaServicios) {
         this.listaServicios = listaServicios;
     }
+
+    public BigDecimal getValCoordenadaEste() {
+        return valCoordenadaEste;
+    }
+
+    public void setValCoordenadaEste(BigDecimal valCoordenadaEste) {
+        this.valCoordenadaEste = valCoordenadaEste;
+    }
     
     public String getNomNombres() {
         return nomNombres;
@@ -90,7 +102,7 @@ public class PresentacionFichaCatastralDto {
     public void setNomNombres(String nomNombres) {
         this.nomNombres = nomNombres;
     }
-    
+
     public String getCodCedularuc() {
         return codCedularuc;
     }
@@ -115,6 +127,14 @@ public class PresentacionFichaCatastralDto {
         this.stsTipo = stsTipo;
     }
 
+    public BigDecimal getValCoordenadaNorte() {
+        return valCoordenadaNorte;
+    }
+
+    public void setValCoordenadaNorte(BigDecimal valCoordenadaNorte) {
+        this.valCoordenadaNorte = valCoordenadaNorte;
+    }
+    
     public String getNomCodigocatastral() {
         return nomCodigocatastral;
     }
@@ -403,14 +423,22 @@ public class PresentacionFichaCatastralDto {
         this.listaDescripcionTerreno = listaDescripcionTerreno;
     }
 
-    
+    public String getNomNumero() {
+        return nomNumero;
+    }
+
+    public void setNomNumero(String nomNumero) {
+        this.nomNumero = nomNumero;
+    }
+
     public PresentacionFichaCatastralDto(Predios predio) {
         FichaCatastralDto fichaCatastralDto = new FichaCatastralDto(predio);
         setearDatosPredio(fichaCatastralDto.getPredio());
         setearDatosContribuyente(fichaCatastralDto.getContribuyentePropiedad());
-        this.listaDescripcionTerreno = (List<Terreno>)fichaCatastralDto.getPredio().getCaracteristicasTerreno();
-        this.listaBloques = (List<Bloques>)fichaCatastralDto.getPredio().getBloques();
-        this.listaServicios = (List<Servicios>)fichaCatastralDto.getPredio().getServicios();
+        this.listaDescripcionTerreno = (List<Terreno>) fichaCatastralDto.getPredio().getCaracteristicasTerreno();
+        this.listaBloques = (List<Bloques>) fichaCatastralDto.getPredio().getBloques();
+        this.listaServicios = (List<Servicios>) fichaCatastralDto.getPredio().getServicios();
+        setearDatosPropiedad(fichaCatastralDto.getPropiedad());
 
     }
 
@@ -431,12 +459,25 @@ public class PresentacionFichaCatastralDto {
         this.txtNorte = predio.getTxtNorte();
         this.txtOeste = predio.getTxtOeste();
         this.txtSur = predio.getTxtSur();
+        this.valAreaPredio = predio.getValAreaPredio();
+        this.valAreaFrente = predio.getValAreaFrente();
+        this.valAreaFondo = predio.getValAreaFondo();
+        this.valAreaConstruccion = predio.getValAreaConstruccion();
+        this.nomNumero = predio.getNomNumero();
+        this.valCoordenadaEste = predio.getValCoordenadaEste();
+        this.valCoordenadaNorte = predio.getValCoordenadaNorte();
     }
 
     private void setearDatosContribuyente(Contribuyentes contribuyentePropiedad) {
         this.codCedularuc = contribuyentePropiedad.getCodCedularuc();
         this.nomApellidos = contribuyentePropiedad.getNomApellidos();
         this.nomNombres = contribuyentePropiedad.getNomNombres();
+    }
+
+    private void setearDatosPropiedad(Propiedad propiedad) {
+        this.stsTenencia = propiedad.getStsTenencia().getStsTenencia();
+        this.stsTenenciaotro = propiedad.getStsTenenciaotro();
+        this.stsTransferenciadominio = propiedad.getStsTransferenciadominio().getStsTransferenciadominio();
     }
 
 }
