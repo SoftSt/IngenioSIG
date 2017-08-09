@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="1190" pageHeight="842" orientation="Landscape" columnWidth="1150" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isIgnorePagination="true" uuid="240fd7c8-daae-4d60-869c-ac6eb700ef02">
 	<property name="ireport.zoom" value="1.0980750000000004"/>
-	<property name="ireport.x" value="767"/>
+	<property name="ireport.x" value="748"/>
 	<property name="ireport.y" value="0"/>
 	<style name="table">
 		<box>
@@ -152,7 +152,7 @@
 	<columnHeader>
 		<band height="35" splitType="Stretch">
 			<frame>
-				<reportElement x="1" y="0" width="1150" height="35" uuid="3b108213-5c4d-47f2-bad0-50a080fe9881"/>
+				<reportElement x="0" y="0" width="1150" height="35" uuid="3b108213-5c4d-47f2-bad0-50a080fe9881"/>
 				<box>
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
@@ -363,7 +363,7 @@
 	<detail>
 		<band height="30" splitType="Stretch">
 			<frame>
-				<reportElement x="1" y="0" width="1150" height="30" uuid="d1804ee7-2fc9-453c-b375-723f66910371"/>
+				<reportElement x="0" y="0" width="1150" height="30" uuid="d1804ee7-2fc9-453c-b375-723f66910371"/>
 				<box>
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
@@ -592,7 +592,7 @@
 	<summary>
 		<band height="30" splitType="Stretch">
 			<frame>
-				<reportElement x="1" y="0" width="1150" height="30" uuid="e92880ae-fca0-40d3-80db-8ed147174e04"/>
+				<reportElement x="0" y="0" width="1150" height="30" uuid="e92880ae-fca0-40d3-80db-8ed147174e04"/>
 				<box>
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
