@@ -24,6 +24,9 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
+import org.primefaces.event.NodeSelectEvent;
+import org.primefaces.event.SelectEvent;
+import org.primefaces.event.UnselectEvent;
 
 /**
  *
@@ -31,16 +34,43 @@ import javax.faces.context.FacesContext;
  */
 @ManagedBean
 @ViewScoped
-public class ContribucionMejorasBB extends AdminContribucionMejorasBB{
-    
+public class ContribucionMejorasBB extends AdminContribucionMejorasBB {
+
     private ContribucionMejoras contribucionMejoras;
+    private ObrasDetalle obrasDetalle;
     private List<ContribucionMejoras> listaContribucionMejoras;
     private List<ContribucionMejoras> listaContribucionMejorasFiltrado;
     private List<ObrasDetalle> listaObrasDetalleFiltrado;
     private List<ObrasDetalle> listaObrasDetalle;
     private List<Predios> listaPredios;
     private List<Predios> listaPrediosFiltrado;
+    private List<Predios> listaPrediosSeleccionados;
+    private Predios predioSeleccionado;
     private EnumPantallaMantenimiento pantallaActual;
+
+    public ObrasDetalle getObrasDetalle() {
+        return obrasDetalle;
+    }
+
+    public void setObrasDetalle(ObrasDetalle obrasDetalle) {
+        this.obrasDetalle = obrasDetalle;
+    }
+
+    public Predios getPredioSeleccionado() {
+        return predioSeleccionado;
+    }
+
+    public void setPredioSeleccionado(Predios predioSeleccionado) {
+        this.predioSeleccionado = predioSeleccionado;
+    }
+
+    public List<Predios> getListaPrediosSeleccionados() {
+        return listaPrediosSeleccionados;
+    }
+
+    public void setListaPrediosSeleccionados(List<Predios> listaPrediosSeleccionados) {
+        this.listaPrediosSeleccionados = listaPrediosSeleccionados;
+    }
 
     public ContribucionMejoras getContribucionMejoras() {
         return contribucionMejoras;
@@ -105,11 +135,7 @@ public class ContribucionMejorasBB extends AdminContribucionMejorasBB{
     public void setListaPrediosFiltrado(List<Predios> listaPrediosFiltrado) {
         this.listaPrediosFiltrado = listaPrediosFiltrado;
     }
-    
-    
-    
-    
-    
+
     @PostConstruct
     public void init() {
         this.contribucionMejoras = new ContribucionMejoras();
@@ -125,9 +151,11 @@ public class ContribucionMejorasBB extends AdminContribucionMejorasBB{
     private void actualizarListadoContribucionMejoras() {
         listaContribucionMejoras = contribucionMejorasServicio.consultarContribucionMejoras();
     }
+
     private void actualizarListadoObrasDetalle(Integer codObra) throws NewviExcepcion {
         listaObrasDetalle = contribucionMejorasServicio.consultarObrasDetalle(codObra);
     }
+
     private void actualizarListadoPredios() {
         listaPredios = catastroServicio.consultarPredios();
     }
@@ -220,6 +248,9 @@ public class ContribucionMejorasBB extends AdminContribucionMejorasBB{
     private void seleccionarContribucionMejorasPorCodigo(Integer idContribucionMejoras) throws NewviExcepcion {
         this.contribucionMejoras = contribucionMejorasServicio.seleccionarContribucionMejoras(idContribucionMejoras);
     }
+    private void seleccionarDetalleObraPorCodigo(Integer codObrasdetalle) throws NewviExcepcion {
+        this.obrasDetalle = contribucionMejorasServicio.seleccionarObrasDetalle(codObrasdetalle);
+    }
 
     public void cancelarEdicion() {
         WebUtils.obtenerContextoPeticion().reset("formularioContribucionMejoras:opDetalleContribucionMejoras");
@@ -249,5 +280,68 @@ public class ContribucionMejorasBB extends AdminContribucionMejorasBB{
             throw ValidacionUtils.lanzarExcepcionValidacion(EnumNewviExcepciones.ERR251);
         }
     }
+
+    public void abrirDialogPredios(int codObras) throws NewviExcepcion {
+        contribucionMejoras = contribucionMejorasServicio.seleccionarContribucionMejoras(codObras);
+        WebUtils.obtenerContextoPeticion().execute("PF('dlgPredios').show()");
+    }
+
+    public void onRowSelect(SelectEvent event) {
+        Predios predioEvento = (Predios) event.getObject();
+
+        ObrasDetalle nuevaObraDetalle = new ObrasDetalle();
+        nuevaObraDetalle.setCodObras(contribucionMejoras);
+        nuevaObraDetalle.setCodCatastral(predioEvento);
+        //nuevaObraDetalle.setCodPredio(predio.getCodPredio());
+        nuevaObraDetalle.setNomCodigocatastral(predioEvento);
+        nuevaObraDetalle.setObrValor(contribucionMejoras.getValValor());
+        nuevaObraDetalle.setValAreafrente(predioEvento.getValAreaFrente());
+        nuevaObraDetalle.setValPredio(predioEvento.getValPredio());
+        nuevaObraDetalle.setValPredio(predioEvento.getValPredio());
+        nuevaObraDetalle.setObdEstado(EnumEstadoRegistro.A);
+
+        generarNuevoDetalleObra(nuevaObraDetalle);
+    }
+
+    public void generarNuevoDetalleObra(ObrasDetalle obraDetalle) {
+        try {
+            contribucionMejorasServicio.generarNuevaObrasDetalle(obraDetalle, sesionBean.obtenerSesionDto());
+            LoggerNewvi.getLogNewvi(this.getClass()).info(EnumNewviExcepciones.INF368.presentarMensaje(), sesionBean.obtenerSesionDto());
+            MensajesFaces.mensajeInformacion(EnumNewviExcepciones.INF368.presentarMensaje());
+            actualizarListadoContribucionMejoras();
+        } catch (NewviExcepcion e) {
+            LoggerNewvi.getLogNewvi(this.getClass()).error(e, sesionBean.obtenerSesionDto());
+            MensajesFaces.mensajeError(e.getMessage());
+        } catch (Exception e) {
+            LoggerNewvi.getLogNewvi(this.getClass()).error(EnumNewviExcepciones.ERR000.presentarMensajeCodigo(), e, sesionBean.obtenerSesionDto());
+            MensajesFaces.mensajeError(e.getMessage());
+        }
+    }
+
+    public void onRowUnselect(UnselectEvent event) {
+        //Predios dd = (Predios) event.getObject();
+    }
     
+    public void eliminarDetalleObra(Integer codObrasdetalle) {
+        try {
+            this.seleccionarDetalleObraPorCodigo(codObrasdetalle);
+            if (!ComunUtil.esNulo(obrasDetalle)) {
+                contribucionMejorasServicio.eliminarObrasDetalle(obrasDetalle, sesionBean.obtenerSesionDto());
+                MensajesFaces.mensajeInformacion(EnumNewviExcepciones.INF369.presentarMensaje());
+                actualizarListadoContribucionMejoras();
+
+            } else {
+                LoggerNewvi.getLogNewvi(this.getClass()).error(EnumNewviExcepciones.ERR010.presentarMensajeCodigo(), sesionBean.obtenerSesionDto());
+                MensajesFaces.mensajeError(EnumNewviExcepciones.ERR010.presentarMensajeCodigo());
+            }
+        } catch (NewviExcepcion e) {
+            LoggerNewvi.getLogNewvi(this.getClass()).error(e, sesionBean.obtenerSesionDto());
+            MensajesFaces.mensajeError(e.getMessage());
+        } catch (Exception e) {
+            LoggerNewvi.getLogNewvi(this.getClass()).error(EnumNewviExcepciones.ERR000.presentarMensajeCodigo(), e, sesionBean.obtenerSesionDto());
+            MensajesFaces.mensajeError(e.getMessage());
+        }
+
+    }
+
 }

@@ -64,7 +64,7 @@ public enum EnumNewviExcepciones {
     INF332("INF332", "Contribuyente eliminado.", "El contribuyente se ha eliminado correctamente."),
     INF333("INF333", "Contribucion Mejora ingresada.", "La contribución se ha registrado correctamente."),
     INF334("INF334", "Contribucion Mejora ingresada.", "La contribución se ha editado correctamente."),
-    INF335("INF335", "Contribucion Mejora ingresada.", "La contribución se ha eliminado correctamente."),
+    INF335("INF335", "Contribucion Mejora eliminada.", "La contribución se ha eliminado correctamente."),
     ERR336("ERR336", "Contribucion Mejora no válido.", "La contribución ingresada no es válida. Por favor verifique que los datos ingresados son correctos."),
     ERR337("ERR337", "Detalle de obra no válido.", "El Detalle de obra ingresada no es válida. Por favor verifique que los datos ingresados son correctos."),
     ERR338("ERR338", "Predio no válido.", "El predio ingresado no es válido. Por favor verifique que los datos ingresados son correctos."),
@@ -96,7 +96,9 @@ public enum EnumNewviExcepciones {
     ERR364("ERR364", "Constante impuestos no válida.", "La Constante impuestos ingresada no es válida. Por favor verifique que los datos ingresados son correctos."),
     INF365("INF365", "Parametro ingresado.", "El parametro se ha registrado correctamente."),
     INF366("INF366", "Parametro editado.", "El parametro se ha editado correctamente."),
-    INF367("INF367", "Parametro eliminado.", "El parametro se ha eliminado correctamente.");
+    INF367("INF367", "Parametro eliminado.", "El parametro se ha eliminado correctamente."),
+    INF368("INF368", "Predio registrado.", "El predio se ha registrado correctamente en la contribución."),
+    INF369("INF369", "PRedio eliminado.", "El predio se ha eliminado correctamente de la contribución.");
     
     private final String codigoExcepcion;
     private final String nombreExcepcion;
