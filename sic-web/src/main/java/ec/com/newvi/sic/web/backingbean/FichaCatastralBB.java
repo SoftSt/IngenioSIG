@@ -789,6 +789,7 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
 
     protected DefaultStreamedContent generarReportes(int tipoReporte) {
         try {
+            String archivo="Tabla Catastral Urbana.";
             DefaultStreamedContent dscXlsPa;
             List datosImpresion;
             Class claseImpresion=TablaCatastralDto.class;
@@ -799,11 +800,13 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
             datosImpresion= obtenerListadoAvaluos(listaAvaluos);
             String formatoTabla="/opt/tablaCatastralUrbana.jasper";
             if (tipoReporte==0){
+                archivo="Tabla Catastral Urbana Condensada.";
                 formatoTabla="/opt/newReport.jasper";
                 parametrosReporte.put("TITULO_REPORTE", "REPORTECITO");
             }
             if (tipoReporte==3)
             {   
+                archivo="Ficha Relevamiento Predial Urbano.";
                 formatoTabla="/opt/fichaRelevamientoPredialUrbano.jasper";
                 List<PresentacionFichaCatastralDto>tablita= new ArrayList<>();
                 tablita.add(new PresentacionFichaCatastralDto(this.predio));
@@ -823,7 +826,7 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
                 return null;
             }
             InputStream streamPa = new ByteArrayInputStream((byte[]) reporte.getDatos());
-            dscXlsPa = new DefaultStreamedContent(streamPa, reporte.getMimeType().name(), "ejemplo." + reporte.getArchivoExtension());
+            dscXlsPa = new DefaultStreamedContent(streamPa, reporte.getMimeType().name(), archivo + reporte.getArchivoExtension());
             streamPa.reset();
             streamPa.close();
             return dscXlsPa;
