@@ -33,6 +33,9 @@ public class PresentacionFichaCatastralDto {
     private String stsBarrio;
     private String txtDireccion;
     private String nomNumero;
+    private String nomCartografia;
+    private String nomFotoAerea;
+    private String nomcCartografiaOtros;
     private BigDecimal valAreaPredio;
     private BigDecimal valAreaFrente;
     private BigDecimal valAreaFondo;
@@ -64,7 +67,14 @@ public class PresentacionFichaCatastralDto {
     private String codCedularuc;
     private String nomApellidos;
     private String nomNombres;
-
+    private String txtTelefono;
+    private String txtEmail;
+    private String nomCiudadDomicilio;
+    private String nombreRepresentante;
+    private String cedulaRepresentante;
+    private String direccionRepresentante;
+    
+    
     private List<Terreno> listaDescripcionTerreno;
 
     private List<Bloques> listaBloques;
@@ -103,6 +113,55 @@ public class PresentacionFichaCatastralDto {
         this.nomNombres = nomNombres;
     }
 
+    public String getTxtTelefono() {
+        return txtTelefono;
+    }
+
+    public void setTxtTelefono(String txtTelefono) {
+        this.txtTelefono = txtTelefono;
+    }
+
+    public String getTxtEmail() {
+        return txtEmail;
+    }
+
+    public void setTxtEmail(String txtEmail) {
+        this.txtEmail = txtEmail;
+    }
+
+    public String getNomCiudadDomicilio() {
+        return nomCiudadDomicilio;
+    }
+
+    public void setNomCiudadDomicilio(String nomCiudadDomicilio) {
+        this.nomCiudadDomicilio = nomCiudadDomicilio;
+    }
+
+    public String getNombreRepresentante() {
+        return nombreRepresentante;
+    }
+
+    public void setNombreRepresentante(String nombreRepresentante) {
+        this.nombreRepresentante = nombreRepresentante;
+    }
+
+    public String getCedulaRepresentante() {
+        return cedulaRepresentante;
+    }
+
+    public void setCedulaRepresentante(String cedulaRepresentante) {
+        this.cedulaRepresentante = cedulaRepresentante;
+    }
+
+    public String getDireccionRepresentante() {
+        return direccionRepresentante;
+    }
+
+    public void setDireccionRepresentante(String direccionRepresentante) {
+        this.direccionRepresentante = direccionRepresentante;
+    }
+
+    
     public String getCodCedularuc() {
         return codCedularuc;
     }
@@ -431,6 +490,30 @@ public class PresentacionFichaCatastralDto {
         this.nomNumero = nomNumero;
     }
 
+    public String getNomCartografia() {
+        return nomCartografia;
+    }
+
+    public void setNomCartografia(String nomCartografia) {
+        this.nomCartografia = nomCartografia;
+    }
+
+    public String getNomFotoAerea() {
+        return nomFotoAerea;
+    }
+
+    public void setNomFotoAerea(String nomFotoAerea) {
+        this.nomFotoAerea = nomFotoAerea;
+    }
+
+    public String getNomcCartografiaOtros() {
+        return nomcCartografiaOtros;
+    }
+
+    public void setNomcCartografiaOtros(String nomcCartografiaOtros) {
+        this.nomcCartografiaOtros = nomcCartografiaOtros;
+    }
+    
     public PresentacionFichaCatastralDto(Predios predio) {
         FichaCatastralDto fichaCatastralDto = new FichaCatastralDto(predio);
         setearDatosPredio(fichaCatastralDto.getPredio());
@@ -464,6 +547,9 @@ public class PresentacionFichaCatastralDto {
         this.valAreaFondo = predio.getValAreaFondo();
         this.valAreaConstruccion = predio.getValAreaConstruccion();
         this.nomNumero = predio.getNomNumero();
+        this.nomCartografia = predio.getNomCartografia();
+        this.nomFotoAerea = predio.getNomFotoAerea();
+        this.nomcCartografiaOtros = predio.getNomcCartografiaOtros();
         this.valCoordenadaEste = predio.getValCoordenadaEste();
         this.valCoordenadaNorte = predio.getValCoordenadaNorte();
     }
@@ -472,6 +558,12 @@ public class PresentacionFichaCatastralDto {
         this.codCedularuc = contribuyentePropiedad.getCodCedularuc();
         this.nomApellidos = contribuyentePropiedad.getNomApellidos();
         this.nomNombres = contribuyentePropiedad.getNomNombres();
+        this.txtTelefono = contribuyentePropiedad.getTxtTelefono();
+        this.txtEmail = contribuyentePropiedad.getTxtEmail();
+        this.nomCiudadDomicilio = contribuyentePropiedad.getNomCiudadDomicilio();
+        this.nombreRepresentante = contribuyentePropiedad.getNombreRepresentante();
+        this.cedulaRepresentante = contribuyentePropiedad.getCedulaRepresentante();
+        this.direccionRepresentante = contribuyentePropiedad.getDireccionRepresentante();
     }
 
     private void setearDatosPropiedad(Propiedad propiedad) {

@@ -272,7 +272,7 @@ public class Contribuyentes implements Serializable {
     public void setNomCiudadDomicilio(String nomCiudadDomicilio) {
         this.nomCiudadDomicilio = nomCiudadDomicilio;
     }
-
+    
     public String getTxtCiudad() {
         return txtCiudad;
     }

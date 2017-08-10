@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isIgnorePagination="true" uuid="1312ccb7-b94d-4126-982d-4fbcc8dc4521">
 	<property name="ireport.zoom" value="1.0"/>
-	<property name="ireport.x" value="50"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="48"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -113,6 +113,7 @@
 	<parameter name="ARCHIVO_REPORTE" class="java.lang.String"/>
 	<parameter name="RUTA_IMAGENES" class="java.lang.String"/>
 	<field name="nomCodigocatastral" class="java.lang.String"/>
+	<field name="nomCodigocatastralanterior" class="java.lang.String"/>
 	<field name="codDpa" class="java.lang.String"/>
 	<field name="codZona" class="java.lang.String"/>
 	<field name="codSector" class="java.lang.String"/>
@@ -129,6 +130,10 @@
 	<field name="nomCiudadDomicilio" class="java.lang.String"/>
 	<field name="txtTelefono" class="java.lang.String"/>
 	<field name="txtCiudad" class="java.lang.String"/>
+	<field name="txtEmail" class="java.lang.String"/>
+	<field name="nombreRepresentante" class="java.lang.String"/>
+	<field name="cedulaRepresentante" class="java.lang.String"/>
+	<field name="direccionRepresentante" class="java.lang.String"/>
 	<field name="stsCodigo" class="java.lang.String"/>
 	<field name="valAreaPredio" class="java.lang.String"/>
 	<field name="valAreaFrente" class="java.lang.String"/>
@@ -676,6 +681,7 @@ DE REFERENCIA:
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="7"/>
 				</textElement>
+				<textFieldExpression><![CDATA[$F{nomCodigocatastralanterior}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="249" y="102" width="181" height="15" uuid="da70108d-6f37-4a1c-97a5-7243ba66f4f5"/>
@@ -738,28 +744,28 @@ DE REFERENCIA:
 				<textElement>
 					<font fontName="Verdana" size="7"/>
 				</textElement>
-				<textFieldExpression><![CDATA[]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{txtEmail}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="325" y="247" width="216" height="15" uuid="14e4910a-aba8-4358-ab54-6711af42b4bf"/>
 				<textElement>
 					<font fontName="Verdana" size="7"/>
 				</textElement>
-				<textFieldExpression><![CDATA[]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{direccionRepresentante}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="139" y="232" width="186" height="15" uuid="f05359ee-4561-4a11-8f20-36f1f89df3d0"/>
 				<textElement>
 					<font fontName="Verdana" size="7"/>
 				</textElement>
-				<textFieldExpression><![CDATA[]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{nombreRepresentante}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="139" y="247" width="122" height="15" uuid="95d78329-a0bd-4018-a09d-a33fa56d25a2"/>
 				<textElement>
 					<font fontName="Verdana" size="7"/>
 				</textElement>
-				<textFieldExpression><![CDATA[]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{cedulaRepresentante}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="139" y="282" width="186" height="15" uuid="8ae4d568-bf7e-48b2-853e-d0645aa22ac7"/>
