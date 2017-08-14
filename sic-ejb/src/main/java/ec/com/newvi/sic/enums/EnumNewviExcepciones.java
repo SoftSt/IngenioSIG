@@ -98,7 +98,8 @@ public enum EnumNewviExcepciones {
     INF366("INF366", "Parametro editado.", "El parametro se ha editado correctamente."),
     INF367("INF367", "Parametro eliminado.", "El parametro se ha eliminado correctamente."),
     INF368("INF368", "Predio registrado.", "El predio se ha registrado correctamente en la contribución."),
-    INF369("INF369", "PRedio eliminado.", "El predio se ha eliminado correctamente de la contribución.");
+    INF369("INF369", "Predio eliminado.", "El predio se ha eliminado correctamente de la contribución."),
+    INF370("INF370", "Predios eliminados.", "Los predios se ha eliminado correctamente de la contribución.");
     
     private final String codigoExcepcion;
     private final String nombreExcepcion;

@@ -113,7 +113,7 @@ public class ContribucionMejoras implements Serializable {
     }
 
     public void setNomObras(String nomObras) {
-        this.nomObras = nomObras;
+        this.nomObras = nomObras.trim();
     }
 
     public Integer getValAnioaplicacion() {
@@ -145,7 +145,7 @@ public class ContribucionMejoras implements Serializable {
     }
 
     public void setTxtDetalle(String txtDetalle) {
-        this.txtDetalle = txtDetalle;
+        this.txtDetalle = txtDetalle.trim();
     }
 
     public BigDecimal getValPorcentaje() {

@@ -12,6 +12,7 @@ import ec.com.newvi.sic.enums.EnumEstadoRegistro;
 import ec.com.newvi.sic.enums.EnumNewviExcepciones;
 import ec.com.newvi.sic.modelo.ContribucionMejoras;
 import ec.com.newvi.sic.modelo.ObrasDetalle;
+import ec.com.newvi.sic.modelo.Predios;
 import ec.com.newvi.sic.servicios.ContribucionMejorasServicio;
 import ec.com.newvi.sic.util.ComunUtil;
 import ec.com.newvi.sic.util.excepciones.NewviExcepcion;
@@ -102,7 +103,6 @@ public class ContribucionMejorasServicioImpl implements ContribucionMejorasServi
     }
 
     /*------------------------------------------------------------ObrasDetalle------------------------------------------------------------*/
-
     @Override
     public String generarNuevaObrasDetalle(ObrasDetalle nuevaObrasDetalle, SesionDto sesion) throws NewviExcepcion {
 
@@ -148,10 +148,10 @@ public class ContribucionMejorasServicioImpl implements ContribucionMejorasServi
     }
 
     @Override
-    public List<ObrasDetalle> consultarObrasDetalle(Integer codObra) throws NewviExcepcion {
+    public List<ObrasDetalle> consultarObrasDetallePorObra(Integer codObra) throws NewviExcepcion {
         if (ComunUtil.esNumeroPositivo(codObra)) {
-            return obrasDetalleFacade.buscarObrasDetalle(codObra);
-        } else{
+            return obrasDetalleFacade.buscarObrasDetallePorObra(codObra);
+        } else {
             throw new NewviExcepcion(EnumNewviExcepciones.ERR011);
         }
     }
@@ -169,6 +169,15 @@ public class ContribucionMejorasServicioImpl implements ContribucionMejorasServi
     public String eliminarObrasDetalle(ObrasDetalle obrasDetalle, SesionDto sesion) throws NewviExcepcion {
         obrasDetalle.setObdEstado(EnumEstadoRegistro.E);
         return actualizarObrasDetalle(obrasDetalle, sesion);
+    }
+
+    @Override
+    public List<ObrasDetalle> buscarObrasDetallePorCodigoObraCodigoCatastra(ContribucionMejoras codObra, Predios codCatastral) throws NewviExcepcion {
+        if (ComunUtil.esNumeroPositivo(codObra.getCodObras())) {
+            return obrasDetalleFacade.buscarObrasDetallePorCodigoObraCodigoCatastra(codObra, codCatastral);
+        } else {
+            throw new NewviExcepcion(EnumNewviExcepciones.ERR011);
+        }
     }
 
 }

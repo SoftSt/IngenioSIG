@@ -8,6 +8,7 @@ package ec.com.newvi.sic.servicios;
 import ec.com.newvi.sic.dto.SesionDto;
 import ec.com.newvi.sic.modelo.ContribucionMejoras;
 import ec.com.newvi.sic.modelo.ObrasDetalle;
+import ec.com.newvi.sic.modelo.Predios;
 import ec.com.newvi.sic.util.excepciones.NewviExcepcion;
 import java.util.List;
 import javax.annotation.security.PermitAll;
@@ -98,11 +99,11 @@ public interface ContribucionMejorasServicio {
     public ObrasDetalle seleccionarObrasDetalle(Integer idObrasDetalle) throws NewviExcepcion;
 
     /**
-     * Devuelve un listado de ObrasDetalle.
-     * @param codObra
-     * @return Listado de ObrasDetalle 
+     * Devuelve un listado de ObrasDetalle por Obra.
+     * @param codObra cpdiog de la obra para buscar
+     * @return Listado de ObrasDetalle de una obra
      */
-    public List<ObrasDetalle> consultarObrasDetalle(Integer codObra) throws NewviExcepcion;
+    public List<ObrasDetalle> consultarObrasDetallePorObra(Integer codObra) throws NewviExcepcion;
     
     /**
      * Elimina un contribucionMejoras dado
@@ -113,4 +114,12 @@ public interface ContribucionMejorasServicio {
      * @throws NewviExcepcion
      */
     public String eliminarObrasDetalle(ObrasDetalle contribucionMejoras, SesionDto sesion) throws NewviExcepcion;
+    
+    /**
+     * Devuelve listado detalles de obra iguales
+     * @param codObrasdetalle codigo obra
+     * @return Listado de ObrasDetalle
+     * @throws NewviExcepcion 
+     */
+    public List<ObrasDetalle> buscarObrasDetallePorCodigoObraCodigoCatastra(ContribucionMejoras codObra, Predios codCatastral) throws NewviExcepcion;
 }
