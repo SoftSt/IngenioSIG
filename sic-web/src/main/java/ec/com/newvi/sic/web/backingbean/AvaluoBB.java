@@ -165,7 +165,7 @@ public class AvaluoBB extends AdminAvaluo {
     }
 
     public void generarSimulacion() throws NewviExcepcion {
-        WebUtils.obtenerContextoPeticion().execute("PF('dlgSimulacion').show()");
+        //WebUtils.obtenerContextoPeticion().execute("PF('dlgSimulacion').show()");
         //PF('pbAjax').start();PF('calcularSimulacion').disable();
 
         Avaluo avaluo;
@@ -215,7 +215,7 @@ public class AvaluoBB extends AdminAvaluo {
 
         }
 
-        actualizarListadoAvaluos();
+        //actualizarListadoAvaluos();
 
     }
 

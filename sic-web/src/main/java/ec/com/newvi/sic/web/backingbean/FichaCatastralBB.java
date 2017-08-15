@@ -32,6 +32,7 @@ import ec.com.newvi.sic.modelo.Dominios;
 import ec.com.newvi.sic.modelo.Fotos;
 import ec.com.newvi.sic.modelo.PisoDetalle;
 import ec.com.newvi.sic.modelo.Pisos;
+import ec.com.newvi.sic.modelo.PredioLazy;
 import ec.com.newvi.sic.modelo.Predios;
 import ec.com.newvi.sic.modelo.Propiedad;
 import ec.com.newvi.sic.modelo.Servicios;
@@ -62,6 +63,7 @@ import javax.websocket.OnOpen;
 import org.primefaces.event.NodeSelectEvent;
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.DefaultTreeNode;
+import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.TreeNode;
 
 /**
@@ -101,7 +103,16 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
     private EnumTraslacion[] listaTraslacion;
     private EnumSitActual[] listaSituacionActual;
     private EnumSiNo[] listaEstadoEscritura;
+    private LazyDataModel<FichaCatastralDto> listaFichasLazy;
 
+    public LazyDataModel<FichaCatastralDto> getListaFichasLazy() {
+        return listaFichasLazy;
+    }
+
+    public void setListaFichasLazy(LazyDataModel<FichaCatastralDto> listaFichasLazy) {
+        this.listaFichasLazy = listaFichasLazy;
+    }
+    
     public Predios getPredio() {
         return predio;
     }
@@ -320,6 +331,7 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
         listaPredios.forEach((elementoPredio) -> {
             listaFichas.add(new FichaCatastralDto(elementoPredio));
         });
+        listaFichasLazy = new PredioLazy(listaFichas);
     }
 
     public void crearNuevoPredio() {
