@@ -127,7 +127,10 @@ public enum EnumEtiquetas {
     PARAMETROS_NUEVO_DESCRIPCION("Creación de nuevo Parametro."),
     PARAMETROS_EDITAR_TITULO("Editar Parametro"),
     PARAMETROS_EDITAR_ICONO("fa fa-edit"),
-    PARAMETROS_EDITAR_DESCRIPCION("Edición de Parametros seleccionado.");
+    PARAMETROS_EDITAR_DESCRIPCION("Edición de Parametros seleccionado."),
+    FORMULARIO_ECONOMICO_LISTA_TITULO("Formulario Económico"),
+    FORMULARIO_ECONOMICO_LISTA_ICONO("fa fa-money"),
+    FORMULARIO_ECONOMICO_LISTA_DESCRIPCION("Gestión de formularios económicos."),;
     
     private final String textoEtiqueta;
 

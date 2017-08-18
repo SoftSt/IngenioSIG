@@ -5,6 +5,7 @@
 	<property name="ireport.y" value="0"/>
 	<parameter name="RUTA_IMAGENES" class="java.lang.String"/>
 	<field name="field1" class="java.lang.String"/>
+	<field name="nomCodigocatastral" class="java.lang.String"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -120,7 +121,7 @@
 				<textElement>
 					<font fontName="Arial" size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{field1}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{nomCodigocatastral}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="130" y="25" width="158" height="15" uuid="4daacc80-97d7-433b-b9bb-94569c9b4823"/>

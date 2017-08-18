@@ -216,9 +216,9 @@
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="209" splitType="Stretch">
+		<band height="224" splitType="Stretch">
 			<staticText>
-				<reportElement x="290" y="10" width="140" height="15" uuid="579bedb7-b2bd-4f69-8b12-f8f05f91d8e2"/>
+				<reportElement x="288" y="10" width="140" height="15" uuid="579bedb7-b2bd-4f69-8b12-f8f05f91d8e2"/>
 				<box>
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
@@ -231,7 +231,7 @@
 				<text><![CDATA[Valor (USD)]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="150" y="10" width="140" height="15" uuid="b475fdda-1232-4008-8585-8b8cb9ec73d9"/>
+				<reportElement x="148" y="10" width="140" height="15" uuid="b475fdda-1232-4008-8585-8b8cb9ec73d9"/>
 				<box>
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
@@ -244,7 +244,7 @@
 				<text><![CDATA[Rubro]]></text>
 			</staticText>
 			<frame>
-				<reportElement x="150" y="25" width="140" height="144" uuid="6718b679-6fa4-4a2a-b3e1-2a1da174cf0a"/>
+				<reportElement x="148" y="25" width="140" height="144" uuid="6718b679-6fa4-4a2a-b3e1-2a1da174cf0a"/>
 				<box>
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
@@ -316,7 +316,7 @@
 				</staticText>
 			</frame>
 			<frame>
-				<reportElement x="290" y="25" width="140" height="144" uuid="004d6e2c-1536-4a1c-9b0d-04007f0ae683"/>
+				<reportElement x="288" y="25" width="140" height="144" uuid="004d6e2c-1536-4a1c-9b0d-04007f0ae683"/>
 				<box>
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
@@ -388,7 +388,7 @@
 				</textField>
 			</frame>
 			<textField isBlankWhenNull="true">
-				<reportElement x="74" y="169" width="176" height="25" uuid="3353f52d-4c82-4575-881a-c35f4a1fba23"/>
+				<reportElement x="0" y="169" width="176" height="40" uuid="3353f52d-4c82-4575-881a-c35f4a1fba23"/>
 				<box>
 					<bottomPen lineWidth="1.0"/>
 				</box>
@@ -398,14 +398,14 @@
 				<textFieldExpression><![CDATA[$F{field1}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="74" y="194" width="176" height="15" uuid="f01931e8-06cd-4b75-b1d0-32525c4183bd"/>
+				<reportElement x="0" y="209" width="176" height="15" uuid="f01931e8-06cd-4b75-b1d0-32525c4183bd"/>
 				<textElement textAlignment="Center">
 					<font fontName="Arial" size="9" isBold="true"/>
 				</textElement>
 				<text><![CDATA[JEFE DE RENTAS]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement x="332" y="169" width="176" height="25" uuid="0cee8663-e6a6-4ee3-af46-4aab8d99f2f4"/>
+				<reportElement x="379" y="169" width="176" height="40" uuid="0cee8663-e6a6-4ee3-af46-4aab8d99f2f4"/>
 				<box>
 					<bottomPen lineWidth="1.0"/>
 				</box>
@@ -415,7 +415,7 @@
 				<textFieldExpression><![CDATA[$F{field1}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="332" y="194" width="176" height="15" uuid="afb9b11c-3afc-4f43-8f46-ecceba42f630"/>
+				<reportElement x="379" y="209" width="176" height="15" uuid="afb9b11c-3afc-4f43-8f46-ecceba42f630"/>
 				<textElement textAlignment="Center">
 					<font fontName="Arial" size="9" isBold="true"/>
 				</textElement>

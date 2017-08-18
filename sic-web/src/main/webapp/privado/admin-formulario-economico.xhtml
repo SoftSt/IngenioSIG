@@ -7,7 +7,7 @@
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:newvi="http://ec.com.newvi.faces/ui">
     <ui:define name="content">
-        <h:panelGroup id="grupoFichaCatastral">
+        <h:panelGroup id="grupoFormularioEconomico">
             <p:panel id="panelListaFichaCatastral" rendered="#{formularioEconomicoBB.esPantallaActual('PANTALLA_LISTADO')}">
                 <h:form id="formularioListaFichaCatastral">  
 
@@ -41,10 +41,10 @@
                         </p:column>
                         <p:column width="80">
                             <p:commandButton process="listaFichaCatastral" 
-                                             
+                                             oncomplete="PF('wgSeleccionFormulario').show()"
                                              icon="fa fa-edit"
                                              id="generarFormulario"
-                                             update="grupoFichaCatastral">
+                                             update="grupoFormularioEconomico">
                                 <p:ajax update="toolTipAdd" process="@this" /> 
                             </p:commandButton>
                             <p:tooltip id="toolTipAdd" for="generarFormulario" value="Generar Reportes" showEffect="fade" hideEffect="fade" position="bottom"/>
@@ -52,7 +52,33 @@
 
 
                     </p:dataTable>
-
+                    <p:dialog header="Seleccionar Formulario Económico" widgetVar="wgSeleccionFormulario" 
+                              modal="true" height="100">
+                        <p><h:outputText value="Seleccione el tipo de formulario económico que necesita" /></p>
+                        <h:panelGrid columns="3">
+                            <p:commandButton icon="fa fa-print" 
+                                             value="NotificacionAvaluo" 
+                                             id="imprimirNotificacionAvaluo"
+                                             update="grupoFormularioEconomico"
+                                             onclick="PrimeFaces.monitorDownload(start, stop);">
+                                <p:fileDownload value="#{formularioEconomicoBB.imprimir(0)}" />
+                            </p:commandButton>
+                            <p:commandButton icon="fa fa-print" 
+                                             value="CerfiticacionAvaluo" 
+                                             id="imprimirCerfiticacionAvaluo"
+                                             update="grupoFormularioEconomico"
+                                             onclick="PrimeFaces.monitorDownload(start, stop);">
+                                <p:fileDownload value="#{formularioEconomicoBB.imprimir(1)}" />
+                            </p:commandButton>
+                            <p:commandButton icon="fa fa-print" 
+                                             value="TituloCredito" 
+                                             id="imprimirTituloCredito"
+                                             update="grupoFormularioEconomico"
+                                             onclick="PrimeFaces.monitorDownload(start, stop);">
+                                <p:fileDownload value="#{formularioEconomicoBB.imprimir(2)}" />
+                            </p:commandButton>
+                        </h:panelGrid>
+                    </p:dialog>                   
                 </h:form>
             </p:panel>
         </h:panelGroup>
