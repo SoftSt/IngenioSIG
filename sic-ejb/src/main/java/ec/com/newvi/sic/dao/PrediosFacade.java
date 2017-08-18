@@ -28,7 +28,7 @@ public class PrediosFacade extends AbstractFacade<Predios, Integer>  implements 
     public List<Predios> buscarPredio(){
     // Busca un listado de Predios
         //Query q = this.getEntityManager().createQuery("SELECT predio FROM Predios predio where predio.catEstado = :ESTADO");
-        Query q = this.getEntityManager().createQuery("FROM Predios predio where predio.catEstado =:ESTADO");
+        Query q = this.getEntityManager().createQuery("SELECT predio FROM Predios predio where PREDIO.catEstado =:ESTADO ORDER BY predio.codCatastral DESC");
         q.setParameter("ESTADO", EnumEstadoRegistro.A);
         //@return listado de Predios
         return q.getResultList();
