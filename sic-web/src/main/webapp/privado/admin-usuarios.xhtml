@@ -90,7 +90,11 @@
                     <p:messages id="mensajeFormulario" showDetail="true" autoUpdate="true" closable="true" />
                     <p:tooltip />
                     <p:outputPanel id="opDetalleUsuarios">
-                        <h:panelGrid columns="1">
+                        <h:panelGrid>
+                            <br/>
+                            <div style="font-size:1.2em;font-weight:bold;">Datos del usuario</div>
+                            <p:separator />
+                            
                             <h:outputLabel for="usuEmail" value="Correo electrónico" style="font-weight: bold;"/>
                             <p:inputText id="usuEmail" value="#{usuariosBB.usuario.usuEmai}" label="Correo electrónico" 
                                          validator="#{usuariosBB.validarEmail}" required="true" size="50"/>
@@ -108,7 +112,7 @@
                             <h:outputLabel for="usuPasswordRepetir" value="Repita la Contraseña" style="font-weight: bold;"/>
                             <p:password id="usuPasswordRepetir" required="true" value="#{usuariosBB.usuario.usuPassword}" label="Contraseña (Repetición)" size="50"/>
                             <p:message for="usuPasswordRepetir" display="tooltip"/>
-                            
+
                             <h:outputLabel for="grupoPermiso" value="Permiso asignado" style="font-weight: bold;"/>
                             <p:selectOneMenu value="#{usuariosBB.usuario.perId}" converter="permisosConverter" 
                                              id="grupoPermiso" label="Permiso asignado" required="true">
