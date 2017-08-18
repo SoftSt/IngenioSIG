@@ -19,6 +19,7 @@ import ec.com.newvi.sic.util.logs.LoggerNewvi;
 import ec.com.newvi.sic.web.MensajesFaces;
 import ec.com.newvi.sic.web.enums.EnumEtiquetas;
 import ec.com.newvi.sic.web.enums.EnumPantallaMantenimiento;
+import ec.com.newvi.sic.web.utils.WebUtils;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -96,6 +97,11 @@ public class FormularioEconomicoBB extends AdminFichaCatastralBB {
         listaPredios.forEach((elementoPredio) -> {
             listaFichas.add(new FichaCatastralDto(elementoPredio));
         });
+    }
+    
+    public void abrirDialogImpresionFormulario(Integer codCatastral) throws NewviExcepcion {
+        this.predio = catastroServicio.seleccionarPredio(codCatastral);
+        WebUtils.obtenerContextoPeticion().execute("PF('wgSeleccionFormulario').show()");
     }
 
     private void conmutarPantalla(EnumPantallaMantenimiento nuevaPantalla) {
