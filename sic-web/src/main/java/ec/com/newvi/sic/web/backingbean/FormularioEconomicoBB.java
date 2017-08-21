@@ -45,6 +45,7 @@ public class FormularioEconomicoBB extends AdminFichaCatastralBB {
     private List<FichaCatastralDto> listaFichasFiltradas;
     private Predios predio;
     private EnumPantallaMantenimiento pantallaActual;
+    private ReporteGenerador.FormatoReporte mimeType;
 
     public EnumPantallaMantenimiento getPantallaActual() {
         return pantallaActual;
@@ -150,7 +151,7 @@ public class FormularioEconomicoBB extends AdminFichaCatastralBB {
             Map<String, Class> paramRepA = new HashMap<String, Class>();
             paramRepA.put("tablaCatastral", claseImpresion);
             paramRepA.put("reporTablaCatastral", List.class);
-            Reporte reporte = new Reporte(ReporteGenerador.FormatoReporte.XLSX, datosImpresion, paramRepA, formatoTabla, "/reporTablaCatastral//tablaCatastral", parametrosReporte);
+            Reporte reporte = new Reporte(ReporteGenerador.FormatoReporte.PDF   , datosImpresion, paramRepA, formatoTabla, "/reporTablaCatastral//tablaCatastral", parametrosReporte);
             if (ComunUtil.esNulo(reporte)) {
                 return null;
             }

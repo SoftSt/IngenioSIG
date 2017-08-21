@@ -190,7 +190,7 @@ public class Reporte {
                 String xmlHeader = "<?xml version=\"1.0\" encoding=\"" + "UTF-8" + "\" ?>\n";
                 this.xml = xmlHeader + this.xml;
             }
-            this.datos = ReporteGenerador.generarReporte(new FileInputStream(this.archivoJasperNombreRuta), Reporte.doc2bytes(DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new InputSource(new StringReader(this.xml)))), ReporteGenerador.FormatoReporte.XLSX, this.params);
+            this.datos = ReporteGenerador.generarReporte(new FileInputStream(this.archivoJasperNombreRuta), Reporte.doc2bytes(DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new InputSource(new StringReader(this.xml)))), this.mimeType, this.params);
         } catch (Exception e) {
             throw new NewviExcepcion(EnumNewviExcepciones.ERR000);
         }

@@ -47,7 +47,7 @@
 				<text><![CDATA[PREDIAL RURAL]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="210" y="60" width="186" height="20" uuid="22ba0b13-5a0a-461a-854d-d496791469e3"/>
+				<reportElement x="210" y="61" width="186" height="20" uuid="22ba0b13-5a0a-461a-854d-d496791469e3"/>
 				<textElement>
 					<font fontName="Arial" size="9" isBold="true"/>
 				</textElement>
@@ -237,7 +237,7 @@
 					<bottomPen lineWidth="1.0"/>
 					<rightPen lineWidth="1.0"/>
 				</box>
-				<textElement>
+				<textElement textAlignment="Center">
 					<font fontName="Arial" size="9"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{valAreaPredio}]]></textFieldExpression>
@@ -250,14 +250,14 @@
 					<bottomPen lineWidth="1.0"/>
 					<rightPen lineWidth="1.0"/>
 				</box>
-				<textElement>
+				<textElement textAlignment="Center">
 					<font fontName="Arial" size="9"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{valPredio}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="150" y="30" width="345" height="40" uuid="10c6a839-3f67-44fa-9952-157126494dff"/>
-				<textElement>
+				<textElement textAlignment="Justified">
 					<font fontName="Arial" size="9"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{txtObservacion}]]></textFieldExpression>
@@ -280,7 +280,7 @@
 					<bottomPen lineWidth="1.0"/>
 					<rightPen lineWidth="1.0"/>
 				</box>
-				<textElement verticalAlignment="Top">
+				<textElement textAlignment="Center" verticalAlignment="Top">
 					<font fontName="Arial" size="9" isBold="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>

@@ -57,21 +57,21 @@
                         <p><h:outputText value="Seleccione el tipo de formulario económico que necesita" /></p>
                         <h:panelGrid columns="3">
                             <p:commandButton icon="fa fa-print" 
-                                             value="NotificacionAvaluo" 
+                                             value="Notificación Avalúo" 
                                              id="imprimirNotificacionAvaluo"
                                              update="grupoFormularioEconomico"
                                              onclick="PrimeFaces.monitorDownload(start, stop);">
                                 <p:fileDownload value="#{formularioEconomicoBB.imprimir(0)}" />
                             </p:commandButton>
                             <p:commandButton icon="fa fa-print" 
-                                             value="CerfiticacionAvaluo" 
+                                             value="Cerfiticación Avalúo" 
                                              id="imprimirCerfiticacionAvaluo"
                                              update="grupoFormularioEconomico"
                                              onclick="PrimeFaces.monitorDownload(start, stop);">
                                 <p:fileDownload value="#{formularioEconomicoBB.imprimir(1)}" />
                             </p:commandButton>
                             <p:commandButton icon="fa fa-print" 
-                                             value="TituloCredito" 
+                                             value="Título Credito" 
                                              id="imprimirTituloCredito"
                                              update="grupoFormularioEconomico"
                                              onclick="PrimeFaces.monitorDownload(start, stop);">
