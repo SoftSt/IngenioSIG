@@ -98,7 +98,7 @@ public class FormularioEconomicoBB extends AdminFichaCatastralBB {
             listaFichas.add(new FichaCatastralDto(elementoPredio));
         });
     }
-    
+
     public void abrirDialogImpresionFormulario(Integer codCatastral) throws NewviExcepcion {
         this.predio = catastroServicio.seleccionarPredio(codCatastral);
         WebUtils.obtenerContextoPeticion().execute("PF('wgSeleccionFormulario').show()");
@@ -107,7 +107,7 @@ public class FormularioEconomicoBB extends AdminFichaCatastralBB {
     private void conmutarPantalla(EnumPantallaMantenimiento nuevaPantalla) {
         this.pantallaActual = nuevaPantalla;
     }
-    
+
     public Boolean esPantallaActual(String pantallaEsperada) {
         try {
             return this.pantallaActual.equals(EnumPantallaMantenimiento.obtenerPantallaPorNombre(pantallaEsperada));
@@ -117,51 +117,35 @@ public class FormularioEconomicoBB extends AdminFichaCatastralBB {
             return false;
         }
     }
-    
+
     public DefaultStreamedContent imprimir(int tipoReporte) {
         return generarReportes(tipoReporte);
     }
 
     protected DefaultStreamedContent generarReportes(int tipoReporte) {
         try {
-            String archivo="Tabla Catastral Urbana.";
+            String archivo = "Tabla Catastral Urbana.";
             DefaultStreamedContent dscXlsPa;
-            List<PresentacionFichaCatastralDto>tablita= new ArrayList<>();
+            List<PresentacionFichaCatastralDto> tablita = new ArrayList<>();
             List datosImpresion;
-            //CaracteristicasEdificacionesDto bloques;
-            Class claseImpresion=TablaCatastralDto.class;
+            Class claseImpresion = TablaCatastralDto.class;
             tablita.add(new PresentacionFichaCatastralDto(this.predio));
-              //  bloques= new CaracteristicasEdificacionesDto(this.predio);
-            datosImpresion=tablita;
-            //BloqueDto bloques;
-            
+            datosImpresion = tablita;
             Map<String, Object> parametrosReporte = new HashMap<>();
-            String formatoTabla="/opt/tablaCatastralUrbana.jasper";
-            if (tipoReporte==0){
-                archivo="Tabla Catastral Urbana Condensada.";
-                formatoTabla="/opt/newReport.jasper";
-                parametrosReporte.put("TITULO_REPORTE", "REPORTECITO");
+            String formatoTabla = "";
+            claseImpresion = PresentacionFichaCatastralDto.class;
+            if (tipoReporte == 0) {
+                archivo = "Notificacion Avalúo.";
+                formatoTabla = "/opt/notificacionAvaluo.jasper";
             }
-            tipoReporte=1;
-            if (tipoReporte==1){
-                archivo="Certificación Avalúo.";
-                formatoTabla="/opt/certificacionAvaluo.jasper";
-                
-                
-                claseImpresion=PresentacionFichaCatastralDto.class;
+            if (tipoReporte == 1) {
+                archivo = "Certificación Avalúo.";
+                formatoTabla = "/opt/certificacionAvaluo.jasper";
+
             }
-            if (tipoReporte==3)
-            {   
-                archivo="Ficha Relevamiento Predial Urbano.";
-                formatoTabla="/opt/fichaRelevamientoPredialUrbano.jasper";
-                tablita.add(new PresentacionFichaCatastralDto(this.predio));
-                //bloques= new CaracteristicasEdificacionesDto(this.predio);
-                datosImpresion=tablita;
-                claseImpresion=PresentacionFichaCatastralDto.class;
-                parametrosReporte.put("DESCRIPCION_TERRENO", tablita.get(0).getListaDescripcionTerreno());
-                parametrosReporte.put("INFRAESTRUCTURA_SERVICIOS", tablita.get(0).getListaServicios());
-                parametrosReporte.put("CARACTERISTICAS_EDIFICACION", tablita.get(0).getListaBloques());
-                //parametrosReporte.put("PISO", bloques.getListadetallesPisoDtoD());
+            if (tipoReporte == 2) {
+                archivo = "Titulo Crédito.";
+                formatoTabla = "/opt/tituloCredito.jasper";
             }
             Map<String, Class> paramRepA = new HashMap<String, Class>();
             paramRepA.put("tablaCatastral", claseImpresion);

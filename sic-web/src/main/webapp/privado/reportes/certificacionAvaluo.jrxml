@@ -4,8 +4,15 @@
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="RUTA_IMAGENES" class="java.lang.String"/>
-	<field name="field1" class="java.lang.String"/>
 	<field name="nomCodigocatastral" class="java.lang.String"/>
+	<field name="nomApellidos" class="java.lang.String"/>
+	<field name="nomNombres" class="java.lang.String"/>
+	<field name="codCedularuc" class="java.lang.String"/>
+	<field name="nombreRepresentante" class="java.lang.String"/>
+	<field name="cedulaRepresentante" class="java.lang.String"/>
+	<field name="valAreaPredio" class="java.lang.String"/>
+	<field name="valPredio" class="java.lang.String"/>
+	<field name="txtObservacion" class="java.lang.String"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -40,7 +47,7 @@
 				<text><![CDATA[PREDIAL RURAL]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="176" y="61" width="145" height="20" uuid="22ba0b13-5a0a-461a-854d-d496791469e3"/>
+				<reportElement x="210" y="60" width="186" height="20" uuid="22ba0b13-5a0a-461a-854d-d496791469e3"/>
 				<textElement>
 					<font fontName="Arial" size="9" isBold="true"/>
 				</textElement>
@@ -54,28 +61,28 @@
 	<columnHeader>
 		<band height="70" splitType="Stretch">
 			<staticText>
-				<reportElement x="10" y="10" width="120" height="15" uuid="b292f633-66d8-47ac-937a-8fad203bb845"/>
+				<reportElement x="0" y="10" width="110" height="15" uuid="b292f633-66d8-47ac-937a-8fad203bb845"/>
 				<textElement textAlignment="Right">
 					<font fontName="Arial" size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Código Catastral:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="10" y="25" width="120" height="15" uuid="83eb28a2-e9ff-4b65-b4b7-c298f030d662"/>
+				<reportElement x="0" y="25" width="110" height="15" uuid="83eb28a2-e9ff-4b65-b4b7-c298f030d662"/>
 				<textElement textAlignment="Right">
 					<font fontName="Arial" size="9" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Nombre del Predio:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="10" y="40" width="120" height="15" uuid="2b4aa9b9-a633-4fb0-9d47-9477c999a618"/>
+				<reportElement x="0" y="40" width="110" height="15" uuid="2b4aa9b9-a633-4fb0-9d47-9477c999a618"/>
 				<textElement textAlignment="Right">
 					<font fontName="Arial" size="9" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Apellidos y Nombres:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="10" y="55" width="120" height="15" uuid="0b9ca8aa-9c25-4c53-b9b0-71ca29797e32"/>
+				<reportElement x="0" y="55" width="110" height="15" uuid="0b9ca8aa-9c25-4c53-b9b0-71ca29797e32"/>
 				<textElement textAlignment="Right">
 					<font fontName="Arial" size="9" isBold="true"/>
 				</textElement>
@@ -117,53 +124,53 @@
 				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="130" y="10" width="158" height="15" uuid="2393d7a3-eda5-4478-9811-9f9fe37fc290"/>
+				<reportElement x="110" y="10" width="158" height="15" uuid="2393d7a3-eda5-4478-9811-9f9fe37fc290"/>
 				<textElement>
 					<font fontName="Arial" size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{nomCodigocatastral}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="130" y="25" width="158" height="15" uuid="4daacc80-97d7-433b-b9bb-94569c9b4823"/>
+				<reportElement x="110" y="25" width="178" height="15" uuid="4daacc80-97d7-433b-b9bb-94569c9b4823"/>
 				<textElement>
 					<font fontName="Arial" size="9"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{field1}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{nomCodigocatastral}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="130" y="40" width="158" height="15" uuid="09ee708e-2a9c-4fd0-be47-696d9a971ad5"/>
+				<reportElement x="110" y="40" width="178" height="15" uuid="09ee708e-2a9c-4fd0-be47-696d9a971ad5"/>
 				<textElement>
 					<font fontName="Arial" size="9"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{field1}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{nomApellidos}.trim()+" "+$F{nomNombres}.trim()]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="130" y="55" width="158" height="15" uuid="306ebed7-07e4-4c73-b4f0-11cb80acf266"/>
+				<reportElement x="110" y="55" width="178" height="15" uuid="306ebed7-07e4-4c73-b4f0-11cb80acf266"/>
 				<textElement>
 					<font fontName="Arial" size="9"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{field1}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{codCedularuc}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="396" y="25" width="149" height="15" uuid="9c5d8edd-d25e-436f-8f03-115ca3190325"/>
 				<textElement>
 					<font fontName="Arial" size="9"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{field1}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="396" y="40" width="149" height="15" uuid="4775f335-acab-498a-a64a-5a5cff46d780"/>
 				<textElement>
 					<font fontName="Arial" size="9"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{field1}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{cedulaRepresentante}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="396" y="55" width="149" height="15" uuid="cd92b19b-54ab-4184-836a-260f85c928bc"/>
 				<textElement>
 					<font fontName="Arial" size="9"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{field1}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{nombreRepresentante}]]></textFieldExpression>
 			</textField>
 		</band>
 	</columnHeader>
@@ -209,8 +216,8 @@
 				<text><![CDATA[Fecha de Emisión]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="75" y="30" width="75" height="40" uuid="758521dd-bb4e-4656-9614-3c81c1917768"/>
-				<textElement>
+				<reportElement x="59" y="30" width="91" height="40" uuid="758521dd-bb4e-4656-9614-3c81c1917768"/>
+				<textElement textAlignment="Right">
 					<font fontName="Arial" size="9" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Observaciones:]]></text>
@@ -233,7 +240,7 @@
 				<textElement>
 					<font fontName="Arial" size="9"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{field1}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{valAreaPredio}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="215" y="15" width="140" height="15" uuid="0543496b-2e03-40e3-a54a-f33d5bfd0a0f"/>
@@ -246,14 +253,14 @@
 				<textElement>
 					<font fontName="Arial" size="9"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{field1}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{valPredio}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="150" y="30" width="345" height="40" uuid="10c6a839-3f67-44fa-9952-157126494dff"/>
 				<textElement>
 					<font fontName="Arial" size="9"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{field1}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{txtObservacion}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="176" y="70" width="220" height="25" uuid="5752fd11-1db6-43ba-ba11-ebef5e69bd0c"/>
@@ -263,7 +270,7 @@
 				<textElement textAlignment="Center">
 					<font fontName="Arial" size="9"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{field1}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[]]></textFieldExpression>
 			</textField>
 			<textField pattern="dd/MM/yy">
 				<reportElement x="355" y="15" width="140" height="15" uuid="f907843a-2737-47ae-9849-38823347dd4a"/>

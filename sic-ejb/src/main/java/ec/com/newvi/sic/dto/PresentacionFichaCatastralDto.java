@@ -32,6 +32,7 @@ public class PresentacionFichaCatastralDto {
     private String codHorizontal;
     private String stsBarrio;
     private String txtDireccion;
+    private String txtObservacion;
     private String nomNumero;
     private String nomCartografia;
     private String nomFotoAerea;
@@ -42,6 +43,16 @@ public class PresentacionFichaCatastralDto {
     private BigDecimal valAreaConstruccion;
     private BigDecimal valCoordenadaEste;
     private BigDecimal valCoordenadaNorte;
+    private BigDecimal valTerreno;
+    private BigDecimal valEdifica;
+    private BigDecimal valPredio;
+    private BigDecimal valCem;
+    private BigDecimal valBomberos;
+    private BigDecimal valEmision;
+    private BigDecimal valBasura;
+    private BigDecimal valAmbientales;
+    private BigDecimal valImpuesto;
+    private BigDecimal valImppredial;
     private String txtNorte;
     private String txtSur;
     private String txtEste;
@@ -193,6 +204,86 @@ public class PresentacionFichaCatastralDto {
     public void setValCoordenadaNorte(BigDecimal valCoordenadaNorte) {
         this.valCoordenadaNorte = valCoordenadaNorte;
     }
+
+    public BigDecimal getValTerreno() {
+        return valTerreno;
+    }
+
+    public void setValTerreno(BigDecimal valTerreno) {
+        this.valTerreno = valTerreno;
+    }
+
+    public BigDecimal getValEdifica() {
+        return valEdifica;
+    }
+
+    public void setValEdifica(BigDecimal valEdifica) {
+        this.valEdifica = valEdifica;
+    }
+
+    public BigDecimal getValPredio() {
+        return valPredio;
+    }
+
+    public void setValPredio(BigDecimal valPredio) {
+        this.valPredio = valPredio;
+    }
+
+    public BigDecimal getValCem() {
+        return valCem;
+    }
+
+    public void setValCem(BigDecimal valCem) {
+        this.valCem = valCem;
+    }
+
+    public BigDecimal getValBomberos() {
+        return valBomberos;
+    }
+
+    public void setValBomberos(BigDecimal valBomberos) {
+        this.valBomberos = valBomberos;
+    }
+
+    public BigDecimal getValEmision() {
+        return valEmision;
+    }
+
+    public void setValEmision(BigDecimal valEmision) {
+        this.valEmision = valEmision;
+    }
+
+    public BigDecimal getValBasura() {
+        return valBasura;
+    }
+
+    public void setValBasura(BigDecimal valBasura) {
+        this.valBasura = valBasura;
+    }
+
+    public BigDecimal getValAmbientales() {
+        return valAmbientales;
+    }
+
+    public void setValAmbientales(BigDecimal valAmbientales) {
+        this.valAmbientales = valAmbientales;
+    }
+
+    public BigDecimal getValImpuesto() {
+        return valImpuesto;
+    }
+
+    public void setValImpuesto(BigDecimal valImpuesto) {
+        this.valImpuesto = valImpuesto;
+    }
+
+    public BigDecimal getValImppredial() {
+        return valImppredial;
+    }
+
+    public void setValImppredial(BigDecimal valImppredial) {
+        this.valImppredial = valImppredial;
+    }
     
     public String getNomCodigocatastral() {
         return nomCodigocatastral;
@@ -282,6 +373,14 @@ public class PresentacionFichaCatastralDto {
         this.txtDireccion = txtDireccion;
     }
 
+    public String getTxtObservacion() {
+        return txtObservacion;
+    }
+
+    public void setTxtObservacion(String txtObservacion) {
+        this.txtObservacion = txtObservacion;
+    }
+    
     public BigDecimal getValAreaPredio() {
         return valAreaPredio;
     }
@@ -538,6 +637,7 @@ public class PresentacionFichaCatastralDto {
         this.stsBarrio = predio.getStsBarrio();
         this.stsTipo = predio.getStsTipo();
         this.txtDireccion = predio.getTxtDireccion();
+        this.txtObservacion = predio.getTxtObservacion();
         this.txtEste = predio.getTxtEste();
         this.txtNorte = predio.getTxtNorte();
         this.txtOeste = predio.getTxtOeste();
@@ -552,6 +652,16 @@ public class PresentacionFichaCatastralDto {
         this.nomcCartografiaOtros = predio.getNomcCartografiaOtros();
         this.valCoordenadaEste = predio.getValCoordenadaEste();
         this.valCoordenadaNorte = predio.getValCoordenadaNorte();
+        this.valTerreno = predio.getValTerreno();
+        this.valEdifica = predio.getValEdifica();
+        this.valPredio = predio.getValPredio();
+        this.valCem = predio.getValCem();
+        this.valBomberos = predio.getValBomberos();
+        this.valEmision = predio.getValEmision();
+        this.valBasura = predio.getValBasura();
+        this.valAmbientales = predio.getValAmbientales();
+        this.valImpuesto = predio.getValImpuesto();
+        this.valImppredial = predio.getValImppredial();
     }
 
     private void setearDatosContribuyente(Contribuyentes contribuyentePropiedad) {
