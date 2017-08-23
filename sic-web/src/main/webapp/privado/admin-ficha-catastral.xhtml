@@ -31,7 +31,7 @@
 
                     </p>
                     <p:dataTable id="listaFichaCatastral" var="fichaCatastral" widgetVar="listaFichaCatastralTabla"
-                                 value="#{fichaCatastralBB.listaFichas}" rowKey="#{fichaCatastral.predio.codCatastral}" 
+                                 value="#{fichaCatastralBB.listaFichasLazy}" rowKey="#{fichaCatastral.predio.codCatastral}" 
                                  paginator="true" rows="10" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" 
                                  rowsPerPageTemplate="10,15,20" 
                                  emptyMessage="No se han encontrado resultados" 
@@ -49,7 +49,7 @@
                             <h:outputText value="#{fichaCatastral.contribuyentePropiedad.nomApellidos} #{fichaCatastral.contribuyentePropiedad.nomNombres}"/>
                         </p:column>
 
-                        <p:column width="80">
+                        <p:column headerText="Eliminar" width="80" rendered="#{fichaCatastralBB.esPantallaEliminacion}">
                             <p:commandButton actionListener="#{fichaCatastralBB.eliminarPredio(fichaCatastral.predio.codCatastral)}" 
                                              icon="fa fa-trash"
                                              id="eliminarFichaCatastral"
@@ -58,7 +58,8 @@
                                 <p:ajax update="toolTipDelete" process="@this" /> 
                             </p:commandButton>
                             <p:tooltip id="toolTipDelete" for="eliminarFichaCatastral" value="Eliminar FichaCatastral" showEffect="fade" hideEffect="fade" position="bottom"/>
-
+                        </p:column>
+                        <p:column headerText="Editar" width="80" rendered="#{fichaCatastralBB.esPantallaEdicion}">
                             <p:commandButton process="listaFichaCatastral" 
                                              actionListener="#{fichaCatastralBB.seleccionarPredio(fichaCatastral.predio.codCatastral)}"
                                              icon="fa fa-edit"
@@ -67,8 +68,45 @@
                                 <p:ajax update="toolTipEdit" process="@this" /> 
                             </p:commandButton>
                             <p:tooltip id="toolTipEdit" for="editarFichaCatastral" value="Editar FichaCatastral" showEffect="fade" hideEffect="fade" position="bottom"/>
-                        </p:column>            
+                        </p:column>
+                        <p:column headerText="Generar" width="80" rendered="#{fichaCatastralBB.esPantallaFormularios}">
+                            <p:commandButton process="listaFichaCatastral" 
+                                             actionListener="#{fichaCatastralBB.abrirDialogImpresionFormulario(fichaCatastral.predio.codCatastral)}"
+                                             icon="fa fa-angle-double-right"
+                                             id="generarFormulario"
+                                             update="grupoFichaCatastral">
+                                <p:ajax update="toolTipAdd" process="@this" /> 
+                            </p:commandButton>
+                            <p:tooltip id="toolTipAdd" for="generarFormulario" value="Generar Reportes" showEffect="fade" hideEffect="fade" position="bottom"/>
+                        </p:column>
                     </p:dataTable>
+                    <p:dialog header="Seleccionar Formulario Económico" widgetVar="wgSeleccionFormulario" 
+                              modal="true" height="100">
+                        <p><h:outputText value="Seleccione el tipo de formulario económico que necesita" /></p>
+                        <h:panelGrid columns="3">
+                            <p:commandButton icon="fa fa-print" 
+                                             value="Notificación Avalúo" 
+                                             id="imprimirNotificacionAvaluo"
+                                             update="grupoFichaCatastral"
+                                             onclick="PrimeFaces.monitorDownload(start, stop);">
+                                <p:fileDownload value="#{fichaCatastralBB.imprimir(2)}" />
+                            </p:commandButton>
+                            <p:commandButton icon="fa fa-print" 
+                                             value="Cerfiticación Avalúo" 
+                                             id="imprimirCerfiticacionAvaluo"
+                                             update="grupoFichaCatastral"
+                                             onclick="PrimeFaces.monitorDownload(start, stop);">
+                                <p:fileDownload value="#{fichaCatastralBB.imprimir(3)}" />
+                            </p:commandButton>
+                            <p:commandButton icon="fa fa-print" 
+                                             value="Título Credito" 
+                                             id="imprimirTituloCredito"
+                                             update="grupoFichaCatastral"
+                                             onclick="PrimeFaces.monitorDownload(start, stop);">
+                                <p:fileDownload value="#{fichaCatastralBB.imprimir(4)}" />
+                            </p:commandButton>
+                        </h:panelGrid>
+                    </p:dialog>
                     <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
                         <p:commandButton value="Si" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
                         <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
@@ -653,7 +691,7 @@
                                              process="@this"
                                              ajax="false"  
                                              onclick="PrimeFaces.monitorDownload(start, stop);">
-                                <p:fileDownload value="#{fichaCatastralBB.imprimir(3)}" />
+                                <p:fileDownload value="#{fichaCatastralBB.imprimir(1)}" />
                                 <p:ajax update="toolTipSave" process="@this" /> 
                             </p:commandButton>
                             <p:tooltip id="toolTipImprimir" for="imprimir" value="Imprimir" showEffect="fade" hideEffect="fade" position="top"/>
