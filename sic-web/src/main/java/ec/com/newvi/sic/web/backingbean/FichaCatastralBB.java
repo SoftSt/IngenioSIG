@@ -108,6 +108,33 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
     private Boolean esPantallaEdicion;
     private Boolean esPantallaEliminacion;
     private Boolean esPantallaFormularios;
+    private Boolean esPantallaNuevo;
+    private Boolean esPantallaLista;
+    private Boolean esPantallaEditable;
+
+    public Boolean getEsPantallaLista() {
+        return esPantallaLista;
+    }
+
+    public void setEsPantallaLista(Boolean esPantallaLista) {
+        this.esPantallaLista = esPantallaLista;
+    }
+
+    public Boolean getEsPantallaEditable() {
+        return esPantallaEditable;
+    }
+
+    public void setEsPantallaEditable(Boolean esPantallaEditable) {
+        this.esPantallaEditable = esPantallaEditable;
+    }
+
+    public Boolean getEsPantallaNuevo() {
+        return esPantallaNuevo;
+    }
+
+    public void setEsPantallaNuevo(Boolean esPantallaNuevo) {
+        this.esPantallaNuevo = esPantallaNuevo;
+    }
 
     public Boolean getEsPantallaFormularios() {
         return esPantallaFormularios;
@@ -339,6 +366,10 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
         this.esPantallaEdicion = false;
         this.esPantallaEliminacion = false;
         this.esPantallaFormularios = false;
+        this.esPantallaNuevo = false;
+        this.esPantallaNuevo = false;
+        this.esPantallaLista = false;
+        this.esPantallaEditable = false;
         listaEstadosPisoDetalle = EnumEstadoPisoDetalle.values();
         actualizarListadoPredios();
         actualizarListadoServicios();
@@ -349,11 +380,11 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
         listaTraslacion = EnumTraslacion.values();
         listaSituacionActual = EnumSitActual.values();
         listaEstadoEscritura = EnumSiNo.values();
-        regitrarVariablesDesdeUrl();
         conmutarPantalla(EnumPantallaMantenimiento.PANTALLA_LISTADO);
         establecerTitulo(EnumEtiquetas.FICHA_CATASTRAL_LISTA_TITULO,
                 EnumEtiquetas.FICHA_CATASTRAL_LISTA_ICONO,
                 EnumEtiquetas.FICHA_CATASTRAL_LISTA_DESCRIPCION);
+        regitrarVariablesDesdeUrl();
 
     }
 
@@ -367,6 +398,8 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
     }
 
     public void crearNuevoPredio() {
+        this.esPantallaEditable = false;
+        this.esPantallaNuevo = true;
         this.predio = new Predios();
         this.predio.setCatEstado(EnumEstadoRegistro.A);
         conmutarPantalla(EnumPantallaMantenimiento.PANTALLA_EDICION);
@@ -824,7 +857,10 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
 
     public void calcularAvaluo() throws NewviExcepcion {
         this.nodo = catastroServicio.obtenerAvaluoPredio(this.predio, sesionBean.obtenerSesionDto());
-        generarArbolAvaluo();
+        if (this.nodo != null) {
+            generarArbolAvaluo();
+        }
+
     }
 
     public DefaultStreamedContent imprimir(int tipoReporte) {
@@ -941,6 +977,8 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
 
     public void regitrarVariablesDesdeUrl() {
         String cadenaAccion = "";
+        
+
         FacesContext facesContext = FacesContext.getCurrentInstance();
         if (!facesContext.getExternalContext().getRequestParameterMap().isEmpty()) {
             cadenaAccion = (String) facesContext.getExternalContext().getRequestParameterMap().get("accion");
@@ -951,13 +989,41 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
 
     private void ejecutarAccion(String cadenaAccion) {
         if (cadenaAccion.equals(EnumTipoPantalla.edicionFicha.getTipoPantalla())) {
+            this.esPantallaLista = true;
             this.esPantallaEdicion = true;
+            //conmutarPantalla(EnumPantallaMantenimiento.PANTALLA_EDICION);
+            establecerTitulo(EnumEtiquetas.FICHA_CATASTRAL_LISTA_EDITAR_TITULO,
+                    EnumEtiquetas.FICHA_CATASTRAL_LISTA_EDITAR_ICONO,
+                    EnumEtiquetas.FICHA_CATASTRAL_LISTA_EDITAR_DESCRIPCION);
         } else if (cadenaAccion.equals(EnumTipoPantalla.eliminacionFicha.getTipoPantalla())) {
             this.esPantallaEliminacion = true;
+            this.esPantallaLista = true;
+            establecerTitulo(EnumEtiquetas.FICHA_CATASTRAL_LISTA_ELIMINAR_TITULO,
+                    EnumEtiquetas.FICHA_CATASTRAL_LISTA_ELIMINAR_ICONO,
+                    EnumEtiquetas.FICHA_CATASTRAL_LISTA_ELIMINAR_DESCRIPCION);
         } else if (cadenaAccion.equals(EnumTipoPantalla.formulariosEconomicos.getTipoPantalla())) {
             this.esPantallaFormularios = true;
+            this.esPantallaLista = true;
+            establecerTitulo(EnumEtiquetas.FORMULARIO_ECONOMICO_LISTA_TITULO,
+                EnumEtiquetas.FORMULARIO_ECONOMICO_LISTA_ICONO,
+                EnumEtiquetas.FORMULARIO_ECONOMICO_LISTA_DESCRIPCION);
+            
+            
+            
+        } else if (cadenaAccion.equals(EnumTipoPantalla.nuevaFicha.getTipoPantalla())) {
+            //this.esPantallaEditable = true;
+            this.esPantallaNuevo = true;
+            /*this.predio = new Predios();
+            this.predio.setCatEstado(EnumEstadoRegistro.A);
+            //conmutarPantalla(EnumPantallaMantenimiento.PANTALLA_EDICION);
+            /*establecerTitulo(EnumEtiquetas.FICHA_CATASTRAL_NUEVO_TITULO,
+                    EnumEtiquetas.FICHA_CATASTRAL_NUEVO_ICONO,
+                    EnumEtiquetas.FICHA_CATASTRAL_NUEVO_DESCRIPCION);*/
+            crearNuevoPredio();
+
         }
     }
+
     public void abrirDialogImpresionFormulario(Integer codCatastral) throws NewviExcepcion {
         this.predio = catastroServicio.seleccionarPredio(codCatastral);
         WebUtils.obtenerContextoPeticion().execute("PF('wgSeleccionFormulario').show()");

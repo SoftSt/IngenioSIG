@@ -8,6 +8,7 @@
                 xmlns:newvi="http://ec.com.newvi.faces/ui">
     <ui:define name="content">
         <h:panelGroup id="grupoFichaCatastral">
+
             <p:panel id="panelListaFichaCatastral" rendered="#{fichaCatastralBB.esPantallaActual('PANTALLA_LISTADO')}">
                 <h:form id="formularioListaFichaCatastral">  
 
@@ -112,6 +113,8 @@
                     </p:confirmDialog>
                 </h:form>
             </p:panel>
+
+
             <p:panel id="panelFichaCatastral" rendered="#{fichaCatastralBB.esPantallaActual('PANTALLA_EDICION')}">
                 <h:form id="formularioFichaCatastral">
                     <p>
@@ -683,7 +686,7 @@
                             </p:commandButton>
                             <p:tooltip id="toolTipCancel" for="cancelar" value="Regresar sin guardar cambios" showEffect="fade" hideEffect="fade" position="top"/>
 
-                            <p:commandButton icon="fa fa-close" 
+                            <p:commandButton icon="fa fa-print" 
                                              value="Imprimir" 
                                              id="imprimir"
                                              update="grupoFichaCatastral"
