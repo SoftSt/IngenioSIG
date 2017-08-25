@@ -52,6 +52,11 @@
             <artifactId>sic-ejb</artifactId>
             <type>ejb</type>
         </dependency>
+        <dependency>
+            <groupId>ec.com.newvi</groupId>
+            <artifactId>sic-geo</artifactId>
+            <type>ejb</type>
+        </dependency>
     </dependencies>
 
     <build>
