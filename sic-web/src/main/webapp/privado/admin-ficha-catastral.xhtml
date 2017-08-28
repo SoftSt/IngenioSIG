@@ -850,6 +850,19 @@
                     </p:treeTable>
                 </p:dialog>
             </p:panel>
+
+            <p:panel id="panelFichaCatastralAsignacion" rendered="#{fichaCatastralBB.esPantallaActual('PANTALLA_ASIGNACION')}">
+                <h:form id="formularioFichaCatastralAsignacion">
+                    <p>
+                        <h2>
+                            <h:outputText styleClass="#{fichaCatastralBB.iconoPantalla.textoEtiqueta}"/>
+                            <h:outputText value=" #{fichaCatastralBB.tituloPantalla.textoEtiqueta}"/>
+                        </h2>
+                    </p>
+                    <p>#{fichaCatastralBB.descripcionPantalla.textoEtiqueta}</p>
+                </h:form>
+            </p:panel>
+
         </h:panelGroup>
 
 
