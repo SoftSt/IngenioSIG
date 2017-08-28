@@ -31,6 +31,7 @@ import ec.com.newvi.sic.modelo.Bloques;
 import ec.com.newvi.sic.modelo.ConstantesImpuestos;
 import ec.com.newvi.sic.modelo.Dominios;
 import ec.com.newvi.sic.modelo.Fotos;
+import ec.com.newvi.sic.modelo.ModeloPredioLazy;
 import ec.com.newvi.sic.modelo.PisoDetalle;
 import ec.com.newvi.sic.modelo.Pisos;
 import ec.com.newvi.sic.modelo.PredioLazy;
@@ -364,7 +365,7 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
         listaPredios.forEach((elementoPredio) -> {
             listaFichas.add(new FichaCatastralDto(elementoPredio));
         });
-        listaFichasLazy = new PredioLazy(listaFichas);
+        listaFichasLazy = new ModeloPredioLazy(listaFichas);
     }
 
     public void crearNuevoPredio() {

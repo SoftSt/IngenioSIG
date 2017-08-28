@@ -44,7 +44,7 @@ public class DominiosFacade extends AbstractFacade<Dominios, Integer> implements
 
     public List<Dominios> buscarDominiosGrupos() {
         // Busca un listado de dominios
-        Query q = this.getEntityManager().createQuery("SELECT distinct dominio.domiGrupos FROM Dominios dominio");
+        Query q = this.getEntityManager().createQuery("SELECT distinct dominio.domiGrupos FROM Dominios dominio where dominio.domiGrupos IS NOT NULL");
         //@return listado de dominios
         return q.getResultList();
     }

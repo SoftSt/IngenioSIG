@@ -82,11 +82,7 @@
 
                         </h:panelGrid>
 
-                        <p:commandButton value="Start" type="button" onclick="PF('pbAjax').start();PF('startButton2').disable();" widgetVar="startButton2" />
-                        <br /><br />
-                        <p:progressBar widgetVar="pbAjax" ajax="true" value="#{avaluoBB.progreso}" labelTemplate="{value}%" styleClass="animated" global="false">
-                            <p:ajax event="complete" update="growl" oncomplete="PF('startButton2').enable()"/>
-                        </p:progressBar>
+                        
 
                     </p:outputPanel>
                     <p:dialog header="Seleccionar Impresión" widgetVar="wgSeleccionImpresion" 
