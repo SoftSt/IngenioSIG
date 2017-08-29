@@ -82,9 +82,9 @@ public class CatastroServicioImpl implements CatastroServicio {
         LoggerNewvi.getLogNewvi(this.getClass()).debug("Creando predio...", sesion);
 
         //Registramos la auditoria de ingreso
+        Date fechaIngreso = Calendar.getInstance().getTime();
         nuevoPredio.setAudIngIp(sesion.getDireccionIP());
         nuevoPredio.setAudIngUsu(sesion.getUsuarioRegistrado().getUsuPalabraclave().trim());
-        Date fechaIngreso = Calendar.getInstance().getTime();
         nuevoPredio.setAudIngFec(fechaIngreso);
 
         prediosFacade.create(nuevoPredio);
@@ -104,9 +104,9 @@ public class CatastroServicioImpl implements CatastroServicio {
         LoggerNewvi.getLogNewvi(this.getClass()).debug("Editando predio...", sesion);
 
         //Registramos la auditoria de modificacion
+        Date fechaModificacion = Calendar.getInstance().getTime();
         predio.setAudModIp(sesion.getDireccionIP());
         predio.setAudModUsu(sesion.getUsuarioRegistrado().getUsuPalabraclave().trim());
-        Date fechaModificacion = Calendar.getInstance().getTime();
         predio.setAudModFec(fechaModificacion);
 
         predio.setCodManzana(predio.getCodManzana().trim());
@@ -149,9 +149,9 @@ public class CatastroServicioImpl implements CatastroServicio {
         LoggerNewvi.getLogNewvi(this.getClass()).debug("Creando bloque...", sesion);
 
         //Registramos la auditoria de ingreso
+        Date fechaIngreso = Calendar.getInstance().getTime();
         nuevoBloque.setAudIngIp(sesion.getDireccionIP());
         nuevoBloque.setAudIngUsu(sesion.getUsuarioRegistrado().getUsuPalabraclave().trim());
-        Date fechaIngreso = Calendar.getInstance().getTime();
         nuevoBloque.setAudIngFec(fechaIngreso);
 
         bloquesFacade.create(nuevoBloque);
@@ -171,9 +171,9 @@ public class CatastroServicioImpl implements CatastroServicio {
         LoggerNewvi.getLogNewvi(this.getClass()).debug("Editando bloque...", sesion);
 
         //Registramos la auditoria de modificacion
+        Date fechaModificacion = Calendar.getInstance().getTime();
         bloque.setAudModIp(sesion.getDireccionIP());
         bloque.setAudModUsu(sesion.getUsuarioRegistrado().getUsuPalabraclave().trim());
-        Date fechaModificacion = Calendar.getInstance().getTime();
         bloque.setAudModFec(fechaModificacion);
 
         bloquesFacade.edit(bloque);
@@ -262,9 +262,9 @@ public class CatastroServicioImpl implements CatastroServicio {
         LoggerNewvi.getLogNewvi(this.getClass()).debug("Creando piso...", sesion);
 
         //Registramos la auditoria de ingreso
+        Date fechaIngreso = Calendar.getInstance().getTime();
         nuevoPiso.setAudIngIp(sesion.getDireccionIP());
         nuevoPiso.setAudIngUsu(sesion.getUsuarioRegistrado().getUsuPalabraclave().trim());
-        Date fechaIngreso = Calendar.getInstance().getTime();
         nuevoPiso.setAudIngFec(fechaIngreso);
 
         pisosFacade.create(nuevoPiso);
@@ -284,9 +284,9 @@ public class CatastroServicioImpl implements CatastroServicio {
         LoggerNewvi.getLogNewvi(this.getClass()).debug("Editando piso...", sesion);
 
         //Registramos la auditoria de modificacion
+        Date fechaModificacion = Calendar.getInstance().getTime();
         piso.setAudModIp(sesion.getDireccionIP());
         piso.setAudModUsu(sesion.getUsuarioRegistrado().getUsuPalabraclave().trim());
-        Date fechaModificacion = Calendar.getInstance().getTime();
         piso.setAudModFec(fechaModificacion);
 
         pisosFacade.edit(piso);
@@ -336,9 +336,9 @@ public class CatastroServicioImpl implements CatastroServicio {
         LoggerNewvi.getLogNewvi(this.getClass()).debug("Editando detalle piso...", sesion);
 
         //Registramos la auditoria de modificacion
+        Date fechaModificacion = Calendar.getInstance().getTime();
         pisoDetalle.setAudModIp(sesion.getDireccionIP());
         pisoDetalle.setAudModUsu(sesion.getUsuarioRegistrado().getUsuPalabraclave().trim());
-        Date fechaModificacion = Calendar.getInstance().getTime();
         pisoDetalle.setAudModFec(fechaModificacion);
 
         pisosDetalleFacade.edit(pisoDetalle);
@@ -365,6 +365,14 @@ public class CatastroServicioImpl implements CatastroServicio {
         BigDecimal sumaFactores = areaPiso.multiply((coeficienteEstructura.multiply(v1)).add(coeficienteAcabado.multiply(v2)).add(coeficienteExtras.multiply(v3)));
         BigDecimal depreciacion = sumaFactores.multiply(valorDepreciacion);
         costoPiso = sumaFactores.subtract(depreciacion);
+
+        piso.setValFactordepreciacion(valorDepreciacion);
+        piso.setValSumafactores(coeficienteEstructura.add(coeficienteAcabado).add(coeficienteExtras));
+        piso.setValConstante(promedioFactores);
+        piso.setValMetro2(((coeficienteEstructura.multiply(v1)).add(coeficienteAcabado.multiply(v2)).add(coeficienteExtras.multiply(v3))).multiply(valorDepreciacion));
+        piso.setValPiso(costoPiso);
+        //piso = seleccionarPiso(codigo_piso);
+        actualizarPiso(piso, sesion);
         //Detalle de construccion Estructura
         listaDetallesConstruccion.add(generarElementoArbolAvaluo("Estructura", null, null, listaDetallesEstructura));
         //Destalle de construccion Acabados
@@ -372,13 +380,6 @@ public class CatastroServicioImpl implements CatastroServicio {
         //Detalle de construccion Extras
         listaDetallesConstruccion.add(generarElementoArbolAvaluo("Extras", null, null, listaDetallesExtras));
         // Ubica valor de calculos en la tabla de pisos
-        //piso = seleccionarPiso(codigo_piso);
-        piso.setValFactordepreciacion(valorDepreciacion);
-        piso.setValSumafactores(coeficienteEstructura.add(coeficienteAcabado).add(coeficienteExtras));
-        piso.setValConstante(promedioFactores);
-        piso.setValMetro2(((coeficienteEstructura.multiply(v1)).add(coeficienteAcabado.multiply(v2)).add(coeficienteExtras.multiply(v3))).multiply(valorDepreciacion));
-        piso.setValPiso(costoPiso);
-        actualizarPiso(piso, sesion);
 
         return listaDetallesConstruccion;
     }
@@ -415,9 +416,9 @@ public class CatastroServicioImpl implements CatastroServicio {
         LoggerNewvi.getLogNewvi(this.getClass()).debug("Creando terreno...", sesion);
 
         //Registramos la auditoria de ingreso
+        Date fechaIngreso = Calendar.getInstance().getTime();
         nuevoTerreno.setAudIngIp(sesion.getDireccionIP());
         nuevoTerreno.setAudIngUsu(sesion.getUsuarioRegistrado().getUsuPalabraclave().trim());
-        Date fechaIngreso = Calendar.getInstance().getTime();
         nuevoTerreno.setAudIngFec(fechaIngreso);
 
         terrenoFacade.create(nuevoTerreno);
@@ -437,9 +438,9 @@ public class CatastroServicioImpl implements CatastroServicio {
         LoggerNewvi.getLogNewvi(this.getClass()).debug("Editando terreno...", sesion);
 
         //Registramos la auditoria de modificacion
+        Date fechaModificacion = Calendar.getInstance().getTime();
         terreno.setAudModIp(sesion.getDireccionIP());
         terreno.setAudModUsu(sesion.getUsuarioRegistrado().getUsuPalabraclave().trim());
-        Date fechaModificacion = Calendar.getInstance().getTime();
         terreno.setAudModFec(fechaModificacion);
 
         terrenoFacade.edit(terreno);
@@ -475,13 +476,15 @@ public class CatastroServicioImpl implements CatastroServicio {
 
     @Override
     public List<AvaluoDto> obtenerAvaluoPredio(Predios predio, SesionDto sesion) throws NewviExcepcion {
-        BigDecimal coff, cot, cofo, cubi, cero, promedioFactores, vterreno, valor_terreno, valPredio, basura;
+        List<AvaluoDto> nodo = new ArrayList<>();
+        List<AvaluoDto> listaOtrosRubros = new ArrayList<>();
         Integer codigo = predio.getCodCatastral();;
         String zona = predio.getCodZona();
         String sector = predio.getCodSector();
         String consulta;
         Boolean ba;
-        promedioFactores = BigDecimal.ZERO;
+        BigDecimal coff, vterreno, valor_terreno, valPredio, basura;
+        BigDecimal promedioFactores = BigDecimal.ZERO;
         BigDecimal div = new BigDecimal(5);
         BigDecimal frente = predio.getValAreaFrente();
         BigDecimal area = predio.getValAreaPredio();
@@ -494,8 +497,15 @@ public class CatastroServicioImpl implements CatastroServicio {
         BigDecimal c5 = BigDecimal.ZERO;
         BigDecimal c6 = BigDecimal.ZERO;
         BigDecimal aPagar = BigDecimal.ZERO;
-        List<AvaluoDto> nodo = new ArrayList<>();
-        List<AvaluoDto> listaOtrosRubros = new ArrayList<>();
+        // Coeficiente de Topografía COT
+        BigDecimal cot = parametrosServicio.obtenerCoeficienteTerreno(predio, "TOPOGRAFIA");
+        // Coeficinte de Erosion
+        BigDecimal cero = parametrosServicio.obtenerCoeficienteTerreno(predio, "LOCALIZACION");
+        // Coeficinte de forma COFO
+        BigDecimal cofo = parametrosServicio.obtenerCoeficienteTerreno(predio, "FORMA");
+        // Coeficinte de Ubicacion
+        BigDecimal cubi = parametrosServicio.obtenerCoeficienteTerreno(predio, "OCUPACION");
+
         //if (frente.signum()==0) {
         /*if (frente.compareTo(BigDecimal.ZERO) == 0) {
             LoggerNewvi.getLogNewvi(this.getClass()).debug("Existen valores negativos no se realizó el calculo del avaluo...", sesion);
@@ -507,22 +517,15 @@ public class CatastroServicioImpl implements CatastroServicio {
         } else {
             coff = obtenerValoracionFondoRelativo(area, frente);
         }
-        // Coeficiente de Topografía COT
-        cot = parametrosServicio.obtenerCoeficienteTerreno(predio, "TOPOGRAFIA");
-        // Coeficinte de Erosion
-        cero = parametrosServicio.obtenerCoeficienteTerreno(predio, "LOCALIZACION");
-        // Coeficinte de forma COFO
-        cofo = parametrosServicio.obtenerCoeficienteTerreno(predio, "FORMA");
-        // Coeficinte de Ubicacion
-        cubi = parametrosServicio.obtenerCoeficienteTerreno(predio, "OCUPACION");
         promedioFactores = (promedioFactores.add(coff).add(cot).add(cofo).add(cero).add(cubi)).divide(div, 4, RoundingMode.CEILING);
+
         // CALCULO DEL PRECIO BASE PARA EL TERRENO
         // SE TOMA EN CUENTA UNA VALORACION POR LAS ZONAS y SECTORES DEL MUNICIPIO.
         consulta = "20" + zona + sector;
         vterreno = parametrosServicio.obtenerValorPorCodigoCalculo(consulta, "ZONAS VALORADAS M2");
         valor_terreno = (promedioFactores.multiply(area)).multiply(vterreno);
         predio.setValTerreno(valor_terreno);
-        actualizarPredio(predio, sesion);
+        //actualizarPredio(predio, sesion);
         for (Bloques bloque : predio.getBloques()) {
             valorEdificacion = valorEdificacion.add(bloque.getValBloque());
             areaConstruccion = areaConstruccion.add(bloque.getValAreabloque());
@@ -530,11 +533,11 @@ public class CatastroServicioImpl implements CatastroServicio {
             nodo.add(generarElementoArbolAvaluo("Costo Total bloque", bloque.getValBloque().setScale(2, BigDecimal.ROUND_UP).toString(), null, null));
         }
         //Actualiza Valoración de Terreno y Contrucción
+        valPredio = valor_terreno.add(valorEdificacion);
         predio.setValEdifica(valorEdificacion);
         predio.setValAreaConstruccion(areaConstruccion);
-        valPredio = valor_terreno.add(valorEdificacion);
         predio.setValPredio(valPredio);
-        actualizarPredio(predio, sesion);
+        //actualizarPredio(predio, sesion);
         // Constantes catastro urbano
         List<ConstantesImpuestos> constantesImpuestos = parametrosServicio.obtenerConstantesImpuestosPorTipo("URBANO");
         for (ConstantesImpuestos constantesImpuesto : constantesImpuestos) {
@@ -625,9 +628,10 @@ public class CatastroServicioImpl implements CatastroServicio {
         LoggerNewvi.getLogNewvi(this.getClass()).debug("Creando fecha avaluo...", sesion);
 
         //Registramos la auditoria de ingreso
+        Date fechaIngreso = Calendar.getInstance().getTime();
         nuevoFechaAvaluo.setAudIngIp(sesion.getDireccionIP());
         nuevoFechaAvaluo.setAudIngUsu(sesion.getUsuarioRegistrado().getUsuPalabraclave().trim());
-        Date fechaIngreso = Calendar.getInstance().getTime();
+
         nuevoFechaAvaluo.setAudIngFec(fechaIngreso);
 
         fechaAvaluoFacade.create(nuevoFechaAvaluo);
@@ -647,9 +651,10 @@ public class CatastroServicioImpl implements CatastroServicio {
         LoggerNewvi.getLogNewvi(this.getClass()).debug("Creando fecha avaluo...", sesion);
 
         //Registramos la auditoria de ingreso
+        Date fechaIngreso = Calendar.getInstance().getTime();
         nuevoAvaluo.setAudIngIp(sesion.getDireccionIP());
         nuevoAvaluo.setAudIngUsu(sesion.getUsuarioRegistrado().getUsuPalabraclave().trim());
-        Date fechaIngreso = Calendar.getInstance().getTime();
+
         nuevoAvaluo.setAudIngFec(fechaIngreso);
 
         avaluoFacade.create(nuevoAvaluo);
