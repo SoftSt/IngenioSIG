@@ -215,7 +215,7 @@ public class AvaluoBB extends AdminAvaluo {
 
         }
 
-        //actualizarListadoAvaluos();
+        actualizarListadoAvaluos();
 
     }
 

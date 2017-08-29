@@ -64,7 +64,7 @@
 
                             </p:dataTable>
                             <h:panelGrid columns="2">
-                                <p:commandButton actionListener="#{avaluoBB.generarSimulacion()}"
+                                <p:commandButton oncomplete="PF('dlgSimulacion').show()"
                                                  icon="fa fa-calculator"
                                                  value="Calcular"
                                                  update="grupoAvaluos"
@@ -82,7 +82,7 @@
 
                         </h:panelGrid>
 
-                        
+
 
                     </p:outputPanel>
                     <p:dialog header="Seleccionar Impresión" widgetVar="wgSeleccionImpresion" 
@@ -107,8 +107,24 @@
                     </p:dialog>   
                 </h:form>
 
-                <p:dialog header="Generación de la sumulación" widgetVar="dlgSimulacion">
-
+                <p:dialog header="Generación de la sumulación" widgetVar="dlgSimulacion" modal="true" height="100">
+                    <p><h:outputText value="Se realizará el avaluo" /></p>
+                    <h:panelGrid>
+                        <p:commandButton actionListener="#{avaluoBB.generarSimulacion()}"
+                                         icon="fa fa-calculator"
+                                         value="Iniciar"
+                                         update="grupoAvaluos"
+                                         widgetVar="calcularSimulacion"
+                                         id="generarSimulacion">
+                        </p:commandButton>
+                        
+                        
+                        <p:commandButton value="Start" type="button" onclick="PF('pbAjax').start();PF('startButton2').disable();" widgetVar="startButton2" />
+                        <br /><br />
+                        <p:progressBar widgetVar="pbAjax" ajax="true" value="#{avaluoBB.progreso}" labelTemplate="{value}%" styleClass="animated" global="false">
+                            <p:ajax event="complete" oncomplete="PF('startButton2').enable()"/>
+                        </p:progressBar>
+                    </h:panelGrid>
                 </p:dialog>
 
 
