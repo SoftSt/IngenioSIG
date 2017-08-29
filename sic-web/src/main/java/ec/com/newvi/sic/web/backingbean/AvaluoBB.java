@@ -251,10 +251,11 @@ public class AvaluoBB extends AdminAvaluo {
     }
 
     public void actualizarListaAvaluosPorFecha(String fechaDescripcion) {
-        DateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
+        //DateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
         try {
-            listaAvaluos = catastroServicio.consultarListaAvaluosPorFecha(formato.parse(fechaDescripcion));
-        } catch (ParseException e) {
+            //listaAvaluos = catastroServicio.consultarListaAvaluosPorFecha(formato.parse(fechaDescripcion));
+            listaAvaluos = catastroServicio.consultarListaAvaluosPorFecha(fechaDescripcion);
+        } catch (Exception e) {
             LoggerNewvi.getLogNewvi(this.getClass()).error(EnumNewviExcepciones.ERR001.presentarMensajeCodigo(), e, sesionBean.obtenerSesionDto());
             MensajesFaces.mensajeError(e.getMessage());
         }

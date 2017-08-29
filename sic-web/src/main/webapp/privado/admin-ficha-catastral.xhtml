@@ -860,6 +860,404 @@
                         </h2>
                     </p>
                     <p>#{fichaCatastralBB.descripcionPantalla.textoEtiqueta}</p>
+                    <p:messages id="mensajeFormularioNuevos" showDetail="true" autoUpdate="true" closable="true" />
+                    <p:tooltip style="height:1px" />
+                    <p:outputPanel id="opDetalleFichaCatastralNueva">
+                        <p:tabView dynamic="true" >
+                            <p:tab title="Información del predio">
+                                <h:panelGrid>
+                                    <br/>
+                                    <div style="font-size:1.2em;font-weight:bold;">Identificación Catastral del predio</div>
+                                    <p:separator />
+                                    <h:outputLabel for="codCatastral" value="Clave Catastral" style="font-weight: bold;"/>
+                                    <h:outputLabel id="codCatastral" value="#{fichaCatastralBB.predio.nomCodigocatastral}" />
+                                    <p:message for="codCatastral" display="tooltip"/>
+
+                                    <h:panelGrid columns="7">
+                                        <p:inputMask id="codDPA" value="#{fichaCatastralBB.predio.codDpa}" mask="999999" size="8"><p:ajax event="keyup" listener="#{fichaCatastralBB.actualizarCodigoCatastral()}" update="codCatastral" /></p:inputMask>
+                                        <p:inputMask id="codZona" value="#{fichaCatastralBB.predio.codZona}" mask="99" size="4"><p:ajax event="keyup" listener="#{fichaCatastralBB.actualizarCodigoCatastral()}" update="codCatastral" /></p:inputMask>
+                                        <p:inputMask id="codSector" value="#{fichaCatastralBB.predio.codSector}" mask="99" size="4"><p:ajax event="keyup" listener="#{fichaCatastralBB.actualizarCodigoCatastral()}" update="codCatastral" /></p:inputMask>
+                                        <p:inputMask id="codManzana" value="#{fichaCatastralBB.predio.codManzana}" mask="99" size="4"><p:ajax event="keyup" listener="#{fichaCatastralBB.actualizarCodigoCatastral()}" update="codCatastral" /></p:inputMask>
+                                        <p:inputMask id="codPredio" value="#{fichaCatastralBB.predio.codPredio}" mask="9999" size="6"><p:ajax event="keyup" listener="#{fichaCatastralBB.actualizarCodigoCatastral()}" update="codCatastral" /></p:inputMask>
+                                        <p:inputMask id="codRegTenencia" value="#{fichaCatastralBB.predio.codRegimentenencia}" mask="99" size="6"><p:ajax event="keyup" listener="#{fichaCatastralBB.actualizarCodigoCatastral()}" update="codCatastral" /></p:inputMask>
+                                        <p:inputMask id="codHorizontal" value="#{fichaCatastralBB.predio.codHorizontal}" mask="99" size="6"><p:ajax event="keyup" listener="#{fichaCatastralBB.actualizarCodigoCatastral()}" update="codCatastral" /></p:inputMask>
+
+                                        <h:outputLabel for="codDPA" value="Código nacional" style="font-size:0.7em;" />
+                                        <h:outputLabel for="codZona" value="Zona" style="font-size:0.7em;" />
+                                        <h:outputLabel for="codSector" value="Sector" style="font-size:0.7em;"/>
+                                        <h:outputLabel for="codManzana" value="Manzana" style="font-size:0.7em;"/>
+                                        <h:outputLabel for="codPredio" value="Predio" style="font-size:0.7em;"/>
+                                        <h:outputLabel for="codRegTenencia" value="R. Tenencia" style="font-size:0.7em;"/>
+                                        <h:outputLabel for="codHorizontal" value="P. Horizontal" style="font-size:0.7em;"/>
+
+                                        <p:message for="codDPA" display="tooltip"/>
+                                        <p:message for="codZona" display="tooltip"/>
+                                        <p:message for="codSector" display="tooltip"/>
+                                        <p:message for="codManzana" display="tooltip"/>
+                                        <p:message for="codPredio" display="tooltip"/>
+                                        <p:message for="codRegTenencia" display="tooltip"/>
+                                        <p:message for="codHorizontal" display="tooltip"/>
+                                    </h:panelGrid>
+
+                                    <h:outputLabel for="nomCodigocatastralanterior" value="Clave Catastral anterior" style="font-weight: bold;"/>
+                                    <p:inputNumber id="nomCodigocatastralanterior" value="#{fichaCatastralBB.predio.nomCodigocatastralanterior}" maxValue="9999999999999999999999999" minValue="0" label="Codigo Catastral Anterior" size="50" thousandSeparator="" decimalSeparator=""/>
+                                    <p:message for="nomCodigocatastralanterior" display="tooltip"/>
+
+                                    <br/>
+                                    <div style="font-size:1.2em;font-weight:bold;">Dirección del predio</div>
+                                    <p:separator />
+
+                                    <h:panelGrid columns="2">
+                                        <h:outputLabel for="txtDireccion" value="Calle principal" style="font-weight: bold;" />
+                                        <h:outputLabel for="nomNumero" value="Número" style="font-weight: bold;"/>
+
+                                        <p:inputText id="txtDireccion" value="#{fichaCatastralBB.predio.txtDireccion}" label="Calle" size="50" maxlength="100"/>
+                                        <p:inputText id="nomNumero" value="#{fichaCatastralBB.predio.nomNumero}" label="Número" size="10" maxlength="20"/>
+
+                                        <p:message for="txtDireccion" display="tooltip"/>
+                                        <p:message for="nomNumero" display="tooltip"/>
+                                    </h:panelGrid>
+
+                                    <h:outputLabel for="stsBarrio" value="Barrio/Sitio" style="font-weight: bold;"/>
+                                    <p:inputText id="stsBarrio" value="#{fichaCatastralBB.predio.stsBarrio}" label="Barrio/Sitio" size="50" maxlength="150"/>
+                                    <p:message for="stsBarrio" display="tooltip"/>
+
+                                    <br/>
+                                    <div style="font-size:1.2em;font-weight:bold;">Referencias geográficas</div>
+                                    <p:separator />
+                                    <h:outputLabel for="nomCartografia" value="C. Topográfica" style="font-weight: bold;"/>
+                                    <p:inputText id="nomCartografia" value="#{fichaCatastralBB.predio.nomCartografia}" label="C. Topográfica" size="50"/>
+                                    <p:message for="nomCartografia" display="tooltip"/>
+                                    <h:outputLabel for="nomFotoAerea" value="Foto Aérea" style="font-weight: bold;"/>
+                                    <p:inputText id="nomFotoAerea" value="#{fichaCatastralBB.predio.nomFotoAerea}" label="Foto Aérea" size="50"/>
+                                    <p:message for="nomFotoAerea" display="tooltip"/>
+                                    <p style="font-weight:bold;">Coordenadas planas de referencia</p>
+                                    <h:panelGrid columns="2">
+                                        <h:outputLabel for="valCoordenadaEste" value="Coordenada Este" style="font-weight: bold;"/>
+                                        <h:outputLabel for="valCoordenadaNorte" value="Coordenada Norte" style="font-weight: bold;"/>
+
+                                        <p:inputText id="valCoordenadaEste" value="#{fichaCatastralBB.predio.valCoordenadaEste}" label="Coordenada Este"/>
+                                        <p:inputText id="valCoordenadaNorte" value="#{fichaCatastralBB.predio.valCoordenadaNorte}" label="Coordenada Norte"/>
+
+                                        <p:message for="valCoordenadaEste" display="tooltip"/>
+                                        <p:message for="valCoordenadaNorte" display="tooltip"/>
+                                    </h:panelGrid>
+
+                                    <br/>
+                                    <div style="font-size:1.2em;font-weight:bold;">Superficies del predio</div>
+                                    <p:separator />
+                                    <h:outputLabel for="valAreaPredio" value="Área total del terreno" style="font-weight: bold;"/>
+                                    <p:inputNumber id="valAreaPredio" value="#{fichaCatastralBB.predio.valAreaPredio}" label="Area Total" size="50"/>
+                                    <p:message for="valAreaPredio" display="tooltip"/>
+                                    <h:outputLabel for="valAreaFrente" value="Frente principal" style="font-weight: bold;"/>
+                                    <p:inputNumber id="valAreaFrente" value="#{fichaCatastralBB.predio.valAreaFrente}" label="Frente principal" size="50"/>
+                                    <p:message for="valAreaFrente" display="tooltip"/>
+                                    <h:outputLabel for="valAreaConstruccion" value="Área de construcción" style="font-weight: bold;"/>
+                                    <p:inputNumber id="valAreaConstruccion" value="#{fichaCatastralBB.predio.valAreaConstruccion}" label="Fondo Relativo" size="50"/>
+                                    <p:message for="valAreaConstruccion" display="tooltip"/>
+
+                                    <br/>
+                                    <div style="font-size:1.2em;font-weight:bold;">Croquis del predio</div>
+                                    <p:separator />
+                                    <iframe id="iframeCenter" src="http://192.168.100.120/catvisor/?predio=#{fichaCatastralBB.predio.nomCodigocatastral}" width="800px"  
+                                            height="500px" frameborder="0">  
+                                    </iframe> 
+
+                                    <br/>
+                                    <div style="font-size:1.2em;font-weight:bold;">Fotografías</div>
+                                    <p:separator />
+
+                                    <p:galleria value="#{fichaCatastralBB.listaFotosJpg}" var="image" panelWidth="500" panelHeight="313" showCaption="true">
+                                        <p:graphicImage value="../privado/imagenes/#{image}" title="#{image}" width="500" height="313"/>
+                                    </p:galleria>
+
+                                    <br/>
+                                    <div style="font-size:1.2em;font-weight:bold;">Colindantes</div>
+                                    <p:separator />
+                                    <h:outputLabel for="txtNorte" value="Norte" style="font-weight: bold;"/>
+                                    <p:inputText id="txtNorte" value="#{fichaCatastralBB.predio.txtNorte}" label="Norte" size="50" maxlength="150"/>
+                                    <p:message for="txtNorte" display="tooltip"/>
+                                    <h:outputLabel for="txtSur" value="Sur" style="font-weight: bold;"/>
+                                    <p:inputText id="txtSur" value="#{fichaCatastralBB.predio.txtSur}" label="Sur" size="50" maxlength="150"/>
+                                    <p:message for="txtSur" display="tooltip"/>
+                                    <h:outputLabel for="txtEste" value="Este" style="font-weight: bold;"/>
+                                    <p:inputText id="txtEste" value="#{fichaCatastralBB.predio.txtEste}" label="Este" size="50" maxlength="150"/>
+                                    <p:message for="txtEste" display="tooltip"/>
+                                    <h:outputLabel for="txtOeste" value="Oeste" style="font-weight: bold;"/>
+                                    <p:inputText id="txtOeste" value="#{fichaCatastralBB.predio.txtOeste}" label="Oeste" size="50" maxlength="150"/>
+                                    <p:message for="txtOeste" display="tooltip"/>
+
+                                </h:panelGrid>
+                            </p:tab>
+                            
+                            <p:tab title="Terreno, Construcción y Servicios">
+                                <h:panelGrid >
+                                    <br/>
+                                    <div style="font-size:1.2em;font-weight:bold;">Descripción del terreno</div>
+                                    <br/>
+
+                                    <p:commandButton value="Agregar Descripcion del terreno"
+                                                     actionListener="#{fichaCatastralBB.abrirDialogDescripcionTerreno()}"
+                                                     id="nuevaDescripcionTerreno"
+                                                     update="listaDescripcionTerreno">
+                                        <p:ajax update="toolTipInsertDescripcion" process="@this" />
+                                    </p:commandButton>
+
+
+                                    <p:tooltip id="toolTipInsertDescripcion" for="nuevaDescripcionTerreno" value="Agregar nuevo descripcion de terreno" showEffect="fade" hideEffect="fade" position="bottom"/>
+
+                                    <p:dataTable id="listaDescripcionTerreno" var="descripcionTerreno" widgetVar="listaDescripcionTerrenoTabla"
+                                                 value="#{fichaCatastralBB.predio.caracteristicasTerreno}" rowKey="#{descripcionTerreno.codTerrenodetalle}" 
+                                                 paginator="true" rows="10" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" 
+                                                 rowsPerPageTemplate="10,15,20" 
+                                                 emptyMessage="No se han encontrado resultados" 
+                                                 paginatorPosition="bottom">
+
+                                        <p:column headerText="Código" sortBy="#{descripcionTerreno.stsCodigo}" width="60">
+                                            <h:outputText value="#{descripcionTerreno.stsCodigo}" />
+                                        </p:column>
+
+                                        <p:column headerText="Característica" sortBy="#{descripcionTerreno.stsSubgrupo}">
+                                            <h:outputText value="#{descripcionTerreno.stsSubgrupo}" />
+                                        </p:column>
+
+                                        <p:column headerText="Detalle" sortBy="#{descripcionTerreno.stsDescripcion}">
+                                            <h:outputText value="#{descripcionTerreno.stsDescripcion}" />
+                                        </p:column>
+
+                                    </p:dataTable>
+
+                                    <br/>
+                                    <div style="font-size:1.2em;font-weight:bold;">Infraestructura y Servicios</div>
+                                    <br/>
+
+                                    <p:commandButton value="Agregar Servicio"
+                                                     actionListener="#{fichaCatastralBB.abrirDialogServicios()}"
+                                                     id="nuevoServicio"
+                                                     update="listaServiciosBasicos">
+                                        <p:ajax update="toolTipInsertServicio" process="@this" />
+                                    </p:commandButton>
+
+                                    <p:tooltip id="toolTipInsertServicio" for="nuevoServicio" value="Agregar nuevo servicio" showEffect="fade" hideEffect="fade" position="bottom"/>
+
+
+                                    <p:dataTable id="listaServiciosBasicos" var="servicios" editable="true" widgetVar="listaSeviciosBasicosTabla"
+                                                 value="#{fichaCatastralBB.predio.servicios}" rowKey="#{servicios.codServicios}" filteredValue=""
+                                                 paginator="true" rows="10" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" 
+                                                 rowsPerPageTemplate="10,15,20" 
+                                                 emptyMessage="No se han encontrado resultados" 
+                                                 paginatorPosition="bottom">
+
+                                        <p:ajax event="rowEdit" listener="#{fichaCatastralBB.actualizarServicioIngresado}" update="listaServiciosBasicos"/>
+
+                                        <p:column headerText="Código" sortBy="#{servicios.codServicios}" width="20">
+                                            <h:outputText value="#{servicios.codServicios}" />
+                                        </p:column>
+
+                                        <p:column headerText="Grupo" sortBy="#{servicios.stsGrupo}" width="40">
+                                            <h:outputText value="#{servicios.stsGrupo}" />
+                                        </p:column>
+
+                                        <p:column headerText="Servicios" sortBy="#{servicios.stsSubGrupo}" width="40">
+                                            <h:outputText value="#{servicios.stsSubGrupo}" />
+                                        </p:column>
+
+                                        <p:column headerText="Descripción" sortBy="#{servicios.stsDescripcion}" width="40">
+                                            <h:outputText value="#{servicios.stsDescripcion}" />
+                                        </p:column>
+
+                                        <!--<p:column headerText="Medidor" sortBy="#{servicios.nomMedidor}">
+                                            <h:outputText value="#{servicios.nomMedidor}" />
+                                        </p:column>-->
+
+                                        <!--<p:column headerText="Estado" sortBy="#{servicios.stsEstado}">
+                                            <h:outputText value="#{servicios.stsEstado}" />
+                                        </p:column>-->
+
+                                        <!--<p:column headerText="# Medidores" sortBy="#{servicios.numMedidores}">
+                                            <h:outputText value="#{servicios.numMedidores}" />
+                                        </p:column>-->
+
+
+                                        <p:column headerText="Medidor" class="column-title-left" sortBy="#{servicios.nomMedidor}" width="35">
+                                            <p:cellEditor>
+                                                <f:facet name="output"><h:outputText value="#{servicios.nomMedidor}" /></f:facet>
+                                                <f:facet name="input"><p:inputText value="#{servicios.nomMedidor}"/></f:facet>
+                                            </p:cellEditor>
+                                        </p:column>
+
+                                        <p:column headerText="Estado" class="column-title-left" sortBy="#{servicios.stsEstado}" width="35">
+                                            <p:cellEditor>
+                                                <f:facet name="output"><h:outputText value="#{servicios.stsEstado}" /></f:facet>
+                                                <f:facet name="input"><p:inputText value="#{servicios.stsEstado}"/></f:facet>
+                                            </p:cellEditor>
+                                        </p:column>
+
+                                        <p:column headerText="# Medidores" class="column-title-left" sortBy="#{servicios.numMedidores}" width="35">
+                                            <p:cellEditor>
+                                                <f:facet name="output"><h:outputText value="#{servicios.numMedidores}" /></f:facet>
+                                                <f:facet name="input"><p:inputText value="#{servicios.numMedidores}"/></f:facet>
+                                            </p:cellEditor>
+                                        </p:column>
+
+                                        <p:column headerText="Opciones" width="18">
+                                            <p:rowEditor/>
+                                        </p:column>
+
+
+
+                                    </p:dataTable>
+
+                                    <br/>
+                                    <div style="font-size:1.2em;font-weight:bold;">Características de la edificación</div>
+
+                                    <p style="font-weight:bold;">Información de Bloques</p>
+                                    <br/>
+
+                                    <p:commandButton value="Nuevo bloque"
+                                                     actionListener="#{fichaCatastralBB.agregarNuevoBloque()}"
+                                                     id="nuevoBloque"
+                                                     update="grupoFichaCatastral">
+                                        <p:ajax update="toolTipInsert" process="@this" /> 
+                                    </p:commandButton>
+                                    <p:tooltip id="toolTipInsert" for="nuevoBloque" value="Agregar nuevo bloque" showEffect="fade" hideEffect="fade" position="bottom"/>
+
+
+                                    <p:dataTable id="listaInformacionBloques" var="bloque" editable="true" widgetVar="listaInformacionBloquesTabla"
+                                                 value="#{fichaCatastralBB.predio.bloques}" rowKey="#{bloque.codBloques}"
+                                                 emptyMessage="No se han encontrado resultados">
+                                        <p:ajax event="rowEdit" listener="#{fichaCatastralBB.actualizarBloqueIngresado}" update="listaInformacionBloques"/>
+
+                                        <p:column style="width:16px">
+                                            <p:rowToggler />
+                                        </p:column>
+                                        <p:column headerText="Bloque" class="column-title-left" width="60">
+                                            <p:cellEditor>
+                                                <f:facet name="output"><h:outputText value="#{bloque.nomBloque}" /></f:facet>
+                                                <f:facet name="input"><p:inputText value="#{bloque.nomBloque}"/></f:facet>
+                                            </p:cellEditor>
+                                        </p:column>
+
+                                        <p:column headerText="No. Pisos" class="column-title-left" width="220">
+                                            <h:outputText value="#{bloque.valNropisos}" />
+                                        </p:column>
+                                        <p:column headerText="Opciones" width="60">
+                                            <p:rowEditor/>
+                                        </p:column>
+                                        <p:rowExpansion>
+                                            <p style="font-weight:bold;">Información de Pisos</p>
+
+                                            <p:commandButton value="Nuevo piso"
+                                                             actionListener="#{fichaCatastralBB.agregarNuevoPiso(bloque.codBloques)}"
+                                                             id="nuevoPiso"
+                                                             update="grupoFichaCatastral">
+                                                <p:ajax update="toolTipInsertPiso" process="@this" />
+                                            </p:commandButton>
+                                            <p:tooltip id="toolTipInsertPiso" for="nuevoPiso" value="Agregar nuevo piso" showEffect="fade" hideEffect="fade" position="bottom"/>
+
+                                            <p:dataTable id="listaInformacionPisos" var="piso" editable="true" widgetVar="listaInformacionPisosTabla"
+                                                         value="#{bloque.pisosCollection}" rowKey="#{piso.codPisos}"
+                                                         emptyMessage="No se han encontrado resultados">
+
+                                                <p:ajax event="rowEdit" listener="#{fichaCatastralBB.actualizarPisoIngresado(piso)}" update="listaInformacionPisos"/>
+
+                                                <p:column style="width:16px">
+                                                    <p:rowToggler />
+                                                </p:column>
+                                                <p:column headerText="Piso" class="column-title-left" sortBy="#{piso.nomPiso}" width="80">
+                                                    <p:cellEditor>
+                                                        <f:facet name="output"><h:outputText value="#{piso.nomPiso}" /></f:facet>
+                                                        <f:facet name="input"><p:inputText value="#{piso.nomPiso}"/></f:facet>
+                                                    </p:cellEditor>
+                                                </p:column>
+
+                                                <p:column headerText="Área (m2)" class="column-title-left" sortBy="#{piso.valAreapiso}" width="80">
+                                                    <p:cellEditor>
+                                                        <f:facet name="output"><h:outputText value="#{piso.valAreapiso}" /></f:facet>
+                                                        <f:facet name="input"><p:inputText value="#{piso.valAreapiso}"/></f:facet>
+                                                    </p:cellEditor>
+                                                </p:column>
+
+                                                <p:column headerText="Año construcción" class="column-title-left" sortBy="#{piso.valAnioconstruccion}" width="80">
+                                                    <p:cellEditor>
+                                                        <f:facet name="output"><h:outputText value="#{piso.valAnioconstruccion}" /></f:facet>
+                                                        <f:facet name="input"><p:inputText value="#{piso.valAnioconstruccion}"/></f:facet>
+                                                    </p:cellEditor>
+                                                </p:column>
+
+                                                <p:column headerText="Año reparación" class="column-title-left" sortBy="#{piso.valAnioreparacion}" width="80">
+                                                    <p:cellEditor>
+                                                        <f:facet name="output"><h:outputText value="#{piso.valAnioreparacion}" /></f:facet>
+                                                        <f:facet name="input"><p:inputText value="#{piso.valAnioreparacion}"/></f:facet>
+                                                    </p:cellEditor>
+                                                </p:column>
+
+                                                <p:column headerText="Opciones" width="80">
+                                                    <p:rowEditor/>
+                                                </p:column>
+                                                <p:rowExpansion>
+
+                                                    <p style="font-weight:bold;">Detalle de construcción</p>
+                                                    <br/>
+                                                    <p:commandButton value="Agregar detalles"
+                                                                     actionListener="#{fichaCatastralBB.obtenerPisoSeleccionado(piso.codPisos)}"
+                                                                     id="nuevoDetalle"
+                                                                     update="grupoFichaCatastral">
+                                                        <p:ajax update="toolTipInsertDetalle" process="@this" />
+                                                    </p:commandButton>
+
+                                                    <p:tooltip id="toolTipInsertDetalle" for="nuevoDetalle" value="Agregar nuevo detalle" showEffect="fade" hideEffect="fade" position="bottom"/>
+
+                                                    <p:dataTable id="listaElementosConstruccion" editable="true" var="elementosConstruccion" scrollable="true" scrollHeight="250" widgetVar="listaElementosConstruccionTabla"
+                                                                 value="#{piso.detalles}" rowKey="#{elementosConstruccion.codPisoDetalle}" filteredValue=""
+                                                                 emptyMessage="No se han encontrado resultados">
+
+                                                        <p:ajax event="rowEdit" listener="#{fichaCatastralBB.actualizarDetallePisoIngresado(elementosConstruccion)}" update="listaElementosConstruccion"/>
+
+                                                        <p:column headerText="Código" class="column-title-left" sortBy="#{elementosConstruccion.codigo}" width="60">
+                                                            <h:outputText value="#{elementosConstruccion.codigo}" />
+                                                        </p:column>
+
+                                                        <p:column headerText="Grupo" class="column-title-left" sortBy="#{elementosConstruccion.grupo}" width="60">
+                                                            <h:outputText value="#{elementosConstruccion.grupo}" />
+                                                        </p:column>
+
+                                                        <p:column headerText="Subgrupo" class="column-title-left" sortBy="#{elementosConstruccion.subgrupo}" width="60" >
+                                                            <h:outputText value="#{elementosConstruccion.subgrupo}" />
+                                                        </p:column>
+
+                                                        <p:column headerText="Material de construcción" class="column-title-left" sortBy="#{elementosConstruccion.descripcion}" width="60">
+                                                            <h:outputText value="#{elementosConstruccion.descripcion}" />
+                                                        </p:column>
+
+                                                        <p:column headerText="Estado" class="column-title-left" width="60">
+                                                            <p:cellEditor>
+                                                                <f:facet name="output"><h:outputText value="#{elementosConstruccion.estadoDetalle}" /></f:facet>
+                                                                <f:facet name="input">
+                                                                    <h:selectOneMenu value="#{elementosConstruccion.estadoDetalle}" style="width:100%">
+                                                                        <f:selectItems value="#{fichaCatastralBB.listaEstadosPisoDetalle}" var="estadoPisoDetalle" itemLabel="#{estadoPisoDetalle}" itemValue="#{estadoPisoDetalle.estadoDetalle}" />
+                                                                    </h:selectOneMenu>
+                                                                </f:facet>
+                                                            </p:cellEditor>
+                                                        </p:column>
+                                                        <p:column headerText="Opciones" width="60">
+                                                            <p:rowEditor/>
+                                                        </p:column>
+                                                    </p:dataTable>
+                                                </p:rowExpansion>
+
+                                            </p:dataTable>
+                                        </p:rowExpansion>
+                                    </p:dataTable>
+
+
+                                </h:panelGrid>
+
+                            </p:tab>                            
+                        </p:tabView>
+
+                    </p:outputPanel>
+
                 </h:form>
             </p:panel>
 

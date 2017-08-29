@@ -347,5 +347,5 @@ public interface CatastroServicio {
      * @param fechaAvaluo fecha por la que se filtrará
      * @return lista de avaluos
      */
-    public List<Avaluo> consultarListaAvaluosPorFecha(Date fechaAvaluo);
+    public List<Avaluo> consultarListaAvaluosPorFecha(String fechaAvaluo);
 }

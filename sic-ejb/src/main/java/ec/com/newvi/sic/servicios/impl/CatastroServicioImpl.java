@@ -680,11 +680,11 @@ public class CatastroServicioImpl implements CatastroServicio {
     @Override
     public List<Avaluo> consultarListaAvaluosActuales() {
         Avaluo avaluoActual = avaluoFacade.consultarAvaluoActual();
-        return avaluoFacade.consultarAvaluos(avaluoActual.getFecavId().getFecavFechaavaluo());
+        return avaluoFacade.consultarAvaluos(avaluoActual.getFecavId().getFechaDescripcion());
     }
 
     @Override
-    public List<Avaluo> consultarListaAvaluosPorFecha(Date fechaAvaluo) {
+    public List<Avaluo> consultarListaAvaluosPorFecha(String fechaAvaluo) {
         return avaluoFacade.consultarAvaluos(fechaAvaluo);
     }
 
