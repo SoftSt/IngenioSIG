@@ -39,6 +39,7 @@ import ec.com.newvi.sic.modelo.Predios;
 import ec.com.newvi.sic.modelo.Propiedad;
 import ec.com.newvi.sic.modelo.Servicios;
 import ec.com.newvi.sic.modelo.Terreno;
+import ec.com.newvi.sic.servicios.CatastroServicio;
 import ec.com.newvi.sic.util.ComunUtil;
 import ec.com.newvi.sic.util.excepciones.NewviExcepcion;
 import ec.com.newvi.sic.util.logs.LoggerNewvi;
@@ -52,6 +53,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.math.RoundingMode;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -840,11 +842,11 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
 
     }
 
-    public DefaultStreamedContent imprimir(int tipoReporte) {
-        return generarReportes(tipoReporte);
+    public DefaultStreamedContent imprimir(int tipoReporte, Date fecavFechaavaluo) {
+        return generarReportes(tipoReporte, fecavFechaavaluo);
     }
 
-    protected DefaultStreamedContent generarReportes(int tipoReporte) {
+    protected DefaultStreamedContent generarReportes(int tipoReporte, Date fecavFechaavaluo) {
         try {
             String archivo = "Tabla Catastral Urbana.";
             DefaultStreamedContent dscXlsPa;
@@ -856,7 +858,8 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
             List<Avaluo> listaAvaluos = generarListaAvaluo();
             List<PresentacionFichaCatastralDto> tablita = new ArrayList<>();
             tablita.add(new PresentacionFichaCatastralDto(this.predio));
-            datosImpresion = obtenerListadoAvaluos(listaAvaluos);
+            //datosImpresion = obtenerListadoAvaluos(listaAvaluos);
+            datosImpresion = obtenerListadoAvaluos(catastroServicio.consultarAvaluos(fecavFechaavaluo));
             String formatoTabla = "/opt/tablaCatastralUrbana.jasper";
             if (tipoReporte == 0) {
                 archivo = "Tabla Catastral Urbana Condensada.";

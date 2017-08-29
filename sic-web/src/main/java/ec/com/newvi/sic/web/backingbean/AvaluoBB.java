@@ -265,74 +265,34 @@ public class AvaluoBB extends AdminAvaluo {
     public void onComplete() {
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Progress Completed"));
     }
-/*
-    public DefaultStreamedContent imprimir() {
-        return generarReportes();
+
+        public DefaultStreamedContent imprimir(int tipoReporte) {
+        return generarReportes(tipoReporte);
     }
 
-    protected DefaultStreamedContent generarReportes() {
+    protected DefaultStreamedContent generarReportes(int tipoReporte) {
         try {
+            String archivo = "Tabla Catastral Urbana.";
             DefaultStreamedContent dscXlsPa;
-            //List<Avaluo>listaAvaluos=generarListaAvaluo();
-            List<TablaCatastralDto> datosImpresion = new ArrayList<>();
-            TablaCatastralDto datosAvaluo;
-            for (Avaluo avaluo : listaAvaluos) {
-                datosAvaluo = new TablaCatastralDto();
-                datosAvaluo.setCodigoCatastral(avaluo.getCodCatastral().getCodCatastral().toString());
-                datosAvaluo.setNombreCodigoCatastral(avaluo.getNomCodigocatastral());
-                datosAvaluo.setPropietario(avaluo.getNomnomape());
-                datosAvaluo.setCiRuc(avaluo.getCodCedularuc());
-                datosAvaluo.setBarrio(avaluo.getStsBarrio());
-                datosAvaluo.setDireccion(avaluo.getTxtDireccion());
-                datosAvaluo.setAvaluoTerreno(avaluo.getValTerreno());
-                datosAvaluo.setAreaTerreno(avaluo.getValTerreno());
-                datosAvaluo.setAreaEdificacion(avaluo.getValAreaconstruccion());
-                datosAvaluo.setAvaluoEdificacion(avaluo.getValEdifica());
-                datosAvaluo.setAvaluoPredio(avaluo.getValPredio());
-                datosAvaluo.setAreaPredio(avaluo.getValAreapredio());
-                datosAvaluo.setImpuestoPredial(avaluo.getValImpuesto());
-                datosAvaluo.setContribucionEspecialMejoras(avaluo.getValCem());
-                datosAvaluo.setTasaRecoleccionBasura(avaluo.getValBasura());
-                datosAvaluo.setCostoEmision(avaluo.getValEmision());
-                datosAvaluo.setTasaBomberos(avaluo.getValBomberos());
-                datosAvaluo.setServiciosAmbientales(avaluo.getValAmbientales());
-                datosAvaluo.setTotalAPagar(avaluo.getValImppredial());
-                datosAvaluo.setObservaciones(avaluo.getCatCasosespeciales());
-                datosImpresion.add(datosAvaluo);
-            }
-            List<Predios> predioImprimir = new ArrayList<>();
-            int i = 0;
-            /*for (FichaCatastralDto ficha : this.listaFichas) {
-                i++;
-                predioImprimir.add(ficha.getPredio());
-                if (i >= 500) {
-                    break;
-                }
-                
-            }*/
-
- /*  
-            Map<String, Class> paramRepA = new HashMap<String, Class>();
-            paramRepA.put("predios", Predios.class);
-            paramRepA.put("reportepredios", List.class);
-          
-             */
-   /*         Map<String, Class> paramRepA = new HashMap<String, Class>();
-            paramRepA.put("tablaCatastral", TablaCatastralDto.class);
-            paramRepA.put("reporTablaCatastral", List.class);
+            List datosImpresion;
+            Class claseImpresion = TablaCatastralDto.class;
             Map<String, Object> parametrosReporte = new HashMap<>();
-            parametrosReporte.put("TITULO_REPORTE", "REPORTECITO");
-            /*
-            Reporte reporte = new Reporte(ReporteGenerador.FormatoReporte.PDF, predioImprimir, paramRepA, "/opt/newReport.jasper", "/reportepredios//predios", parametrosReporte);
-            if (ComunUtil.esNulo(reporte)) {
-                return null;
-            }*/
-    /*        Reporte reporte = new Reporte(ReporteGenerador.FormatoReporte.XLSX, datosImpresion, paramRepA, "/opt/tablaCatastralUrbana.jasper", "/reporTablaCatastral//tablaCatastral", parametrosReporte);
+            datosImpresion = obtenerListadoAvaluos(listaAvaluos);
+            String formatoTabla = "/opt/tablaCatastralUrbana.jasper";
+            if (tipoReporte == 0) {
+                archivo = "Tabla Catastral Urbana Condensada.";
+                formatoTabla = "/opt/newReport.jasper";
+                parametrosReporte.put("TITULO_REPORTE", "REPORTECITO");
+            }
+            Map<String, Class> paramRepA = new HashMap<String, Class>();
+            paramRepA.put("tablaCatastral", claseImpresion);
+            paramRepA.put("reporTablaCatastral", List.class);
+            Reporte reporte = new Reporte(ReporteGenerador.FormatoReporte.PDF, datosImpresion, paramRepA, formatoTabla, "/reporTablaCatastral//tablaCatastral", parametrosReporte);
             if (ComunUtil.esNulo(reporte)) {
                 return null;
             }
             InputStream streamPa = new ByteArrayInputStream((byte[]) reporte.getDatos());
-            dscXlsPa = new DefaultStreamedContent(streamPa, reporte.getMimeType().name(), "ejemplo." + reporte.getArchivoExtension());
+            dscXlsPa = new DefaultStreamedContent(streamPa, reporte.getMimeType().name(), archivo + reporte.getArchivoExtension());
             streamPa.reset();
             streamPa.close();
             return dscXlsPa;
@@ -345,7 +305,42 @@ public class AvaluoBB extends AdminAvaluo {
         }
         return null;
     }
-*/
+
+
+    public List<TablaCatastralDto> obtenerListadoAvaluos(List<Avaluo> listaAvaluos) {
+        List<TablaCatastralDto> datosImpresion = new ArrayList<>();
+        TablaCatastralDto datosAvaluo;
+        for (Avaluo avaluo : listaAvaluos) {
+            datosAvaluo = new TablaCatastralDto();
+            datosAvaluo.setCodigoCatastral(avaluo.getCodCatastral().getCodCatastral().toString());
+            datosAvaluo.setNombreCodigoCatastral(avaluo.getNomCodigocatastral());
+            datosAvaluo.setPropietario(avaluo.getNomnomape());
+            datosAvaluo.setCiRuc(avaluo.getCodCedularuc());
+            datosAvaluo.setBarrio(avaluo.getStsBarrio());
+            datosAvaluo.setDireccion(avaluo.getTxtDireccion());
+            datosAvaluo.setAvaluoTerreno(avaluo.getValTerreno());
+            datosAvaluo.setAreaTerreno(avaluo.getValTerreno());
+            datosAvaluo.setAreaEdificacion(avaluo.getValAreaconstruccion());
+            datosAvaluo.setAvaluoEdificacion(avaluo.getValEdifica());
+            datosAvaluo.setAvaluoPredio(avaluo.getValPredio());
+            datosAvaluo.setAreaPredio(avaluo.getValAreapredio());
+            datosAvaluo.setImpuestoPredial(avaluo.getValImpuesto());
+            datosAvaluo.setContribucionEspecialMejoras(avaluo.getValCem());
+            datosAvaluo.setTasaRecoleccionBasura(avaluo.getValBasura());
+            datosAvaluo.setCostoEmision(avaluo.getValEmision());
+            datosAvaluo.setTasaBomberos(avaluo.getValBomberos());
+            datosAvaluo.setServiciosAmbientales(avaluo.getValAmbientales());
+            datosAvaluo.setTotalAPagar(avaluo.getValImppredial());
+            datosAvaluo.setObservaciones(avaluo.getCatCasosespeciales());
+            datosImpresion.add(datosAvaluo);
+        }
+        return datosImpresion;
+    }
+
+
+    
+    
+    
     public List<Avaluo> generarListaAvaluo() {
         return catastroServicio.consultarListaAvaluosActuales();
     }

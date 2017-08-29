@@ -94,14 +94,14 @@
                                              id="imprimirCondensado"
                                              update="grupoAvaluos"
                                              onclick="PrimeFaces.monitorDownload(start, stop);">
-                                <p:fileDownload value="#{fichaCatastralBB.imprimir(0)}" />
+                                <p:fileDownload value="#{avaluoBB.imprimir(0)}" />
                             </p:commandButton>
                             <p:commandButton icon="fa fa-print" 
                                              value="Completo" 
                                              id="imprimirCompleto"
                                              update="grupoAvaluos"
                                              onclick="PrimeFaces.monitorDownload(start, stop);">
-                                <p:fileDownload value="#{fichaCatastralBB.imprimir(1)}" />
+                                <p:fileDownload value="#{avaluoBB.imprimir(1)}" />
                             </p:commandButton>
                         </h:panelGrid>
                     </p:dialog>   
