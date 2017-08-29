@@ -111,7 +111,16 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
     private Boolean esPantallaFormularios;
     private Boolean esPantallaLista;
     private Boolean esPantallaEditable;
+    private Boolean esPantallaNueva;
 
+    public Boolean getEsPantallaNueva() {
+        return esPantallaNueva;
+    }
+
+    public void setEsPantallaNueva(Boolean esPantallaNueva) {
+        this.esPantallaNueva = esPantallaNueva;
+    }
+    
     public Boolean getEsPantallaLista() {
         return esPantallaLista;
     }
@@ -372,7 +381,7 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
 
         this.predio = new Predios();
         this.predio.setCatEstado(EnumEstadoRegistro.A);
-        conmutarPantalla(EnumPantallaMantenimiento.PANTALLA_ASIGNACION);
+        conmutarPantalla(EnumPantallaMantenimiento.PANTALLA_EDICION);
 
     }
 
@@ -957,7 +966,7 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
     private void ejecutarAccion(String cadenaAccion) {
         if (cadenaAccion.equals(EnumTipoPantalla.edicionFicha.getTipoPantalla())) {
             this.esPantallaLista = true;
-            this.esPantallaEdicion = true;
+            this.esPantallaEdicion = true;            
             establecerTitulo(EnumEtiquetas.FICHA_CATASTRAL_LISTA_EDITAR_TITULO,
                     EnumEtiquetas.FICHA_CATASTRAL_LISTA_EDITAR_ICONO,
                     EnumEtiquetas.FICHA_CATASTRAL_LISTA_EDITAR_DESCRIPCION);
@@ -979,6 +988,8 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
             actualizarListadoPredios();
 
         } else if (cadenaAccion.equals(EnumTipoPantalla.nuevaFicha.getTipoPantalla())) {
+            this.esPantallaNueva = false;
+            actualizarCaracteristicasPredios();
             establecerTitulo(EnumEtiquetas.FICHA_CATASTRAL_NUEVO_TITULO,
                     EnumEtiquetas.FICHA_CATASTRAL_NUEVO_ICONO,
                     EnumEtiquetas.FICHA_CATASTRAL_NUEVO_DESCRIPCION);
@@ -998,6 +1009,7 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
         this.esPantallaFormularios = false;
         this.esPantallaLista = false;
         this.esPantallaEditable = false;
+        this.esPantallaNueva = true;
         conmutarPantalla(EnumPantallaMantenimiento.PANTALLA_LISTADO);
         establecerTitulo(EnumEtiquetas.FICHA_CATASTRAL_LISTA_TITULO,
                 EnumEtiquetas.FICHA_CATASTRAL_LISTA_ICONO,
