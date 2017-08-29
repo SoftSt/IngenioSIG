@@ -381,7 +381,7 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
 
         this.predio = new Predios();
         this.predio.setCatEstado(EnumEstadoRegistro.A);
-        conmutarPantalla(EnumPantallaMantenimiento.PANTALLA_EDICION);
+        conmutarPantalla(EnumPantallaMantenimiento.PANTALLA_ASIGNACION);
 
     }
 
