@@ -62,6 +62,15 @@ public class AvaluoBB extends AdminAvaluo {
     private Integer progreso;
     private FechaAvaluo fechaAvaluoActual;
     private String fechaActualPrueba;
+    private Boolean esActivo;
+
+    public Boolean getEsActivo() {
+        return esActivo;
+    }
+
+    public void setEsActivo(Boolean esActivo) {
+        this.esActivo = esActivo;
+    }
 
     public String getFechaActualPrueba() {
         return fechaActualPrueba;
@@ -121,6 +130,7 @@ public class AvaluoBB extends AdminAvaluo {
 
     @PostConstruct
     public void init() {
+        this.esActivo = false;
         this.progreso = 0;
         fechaAvaluoActual = new FechaAvaluo();
         listaAvaluos = new ArrayList<>();
@@ -132,6 +142,7 @@ public class AvaluoBB extends AdminAvaluo {
         this.skip = false;
         actualizarListadoFechaAvaluos();
         //actualizarListadoAvaluos();
+        
     }
 
     public FechaAvaluo generarFechaAvaluo() throws NewviExcepcion {
@@ -160,14 +171,14 @@ public class AvaluoBB extends AdminAvaluo {
     }
 
     public void abrirModalEspera() throws NewviExcepcion {
-        WebUtils.obtenerContextoPeticion().execute("PF('dlgSimulacion').show()");
-        //generarSimulacion();
+        //WebUtils.obtenerContextoPeticion().execute("PF('calcularSimulacion').disable()");
+        generarSimulacion();
     }
 
     public void generarSimulacion() throws NewviExcepcion {
-        //WebUtils.obtenerContextoPeticion().execute("PF('dlgSimulacion').show()");
-        //PF('pbAjax').start();PF('calcularSimulacion').disable();
-
+        
+        this.esActivo = true;
+        
         Avaluo avaluo;
         int cont = 0;
 
@@ -204,14 +215,15 @@ public class AvaluoBB extends AdminAvaluo {
             catastroServicio.generarNuevoAvaluo(avaluo, sesionBean.obtenerSesionDto());
 
             //LoggerNewvi.getLogNewvi(this.getClass()).debug(cont++, sesionBean.obtenerSesionDto());
-            LoggerNewvi.getLogNewvi(this.getClass()).info(cont++, sesionBean.obtenerSesionDto());
-            /*if (this.progreso <= 100) {
+            //LoggerNewvi.getLogNewvi(this.getClass()).info(cont++, sesionBean.obtenerSesionDto());
+            if (this.progreso <= 100) {
                 if (cont++ == listaFichas.size() / 100) {
                     progreso++;
+                    cont=0;
                 }
             } else {
                 this.progreso = 100;
-            }*/
+            }
 
         }
 
@@ -266,7 +278,7 @@ public class AvaluoBB extends AdminAvaluo {
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Progress Completed"));
     }
 
-        public DefaultStreamedContent imprimir(int tipoReporte) {
+    public DefaultStreamedContent imprimir(int tipoReporte) {
         return generarReportes(tipoReporte);
     }
 
@@ -306,7 +318,6 @@ public class AvaluoBB extends AdminAvaluo {
         return null;
     }
 
-
     public List<TablaCatastralDto> obtenerListadoAvaluos(List<Avaluo> listaAvaluos) {
         List<TablaCatastralDto> datosImpresion = new ArrayList<>();
         TablaCatastralDto datosAvaluo;
@@ -337,10 +348,6 @@ public class AvaluoBB extends AdminAvaluo {
         return datosImpresion;
     }
 
-
-    
-    
-    
     public List<Avaluo> generarListaAvaluo() {
         return catastroServicio.consultarListaAvaluosActuales();
     }

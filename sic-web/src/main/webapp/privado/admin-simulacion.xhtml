@@ -107,26 +107,33 @@
                     </p:dialog>   
                 </h:form>
 
-                <p:dialog header="Generación de la sumulación" widgetVar="dlgSimulacion" modal="true" height="100">
-                    <p><h:outputText value="Se realizará el avaluo" /></p>
-                    <h:panelGrid>
-                        <p:commandButton actionListener="#{avaluoBB.generarSimulacion()}"
+                <p:dialog header="Generación de la sumulación" id="generarSim" widgetVar="dlgSimulacion" modal="true" height="300" width="400">
+                    <p><h:outputText value="Espere mientras se genera el avaluo" /></p>
+                    <h:form>
+
+                        <p:remoteCommand name="rc" actionListener="#{avaluoBB.generarSimulacion}" />
+                        <p:commandButton onclick="rc();PF('calcularSimulacion').disable();PF('pbAjax').start()"
                                          icon="fa fa-calculator"
                                          value="Iniciar"
-                                         update="grupoAvaluos"
                                          widgetVar="calcularSimulacion"
                                          id="generarSimulacion">
                         </p:commandButton>
-                        
-                        
-                        <p:commandButton value="Start" type="button" onclick="PF('pbAjax').start();PF('startButton2').disable();" widgetVar="startButton2" />
                         <br /><br />
-                        <p:progressBar widgetVar="pbAjax" ajax="true" value="#{avaluoBB.progreso}" labelTemplate="{value}%" styleClass="animated" global="false">
-                            <p:ajax event="complete" oncomplete="PF('startButton2').enable()"/>
+                        <p:progressBar widgetVar="pbAjax" ajax="true" value="#{avaluoBB.progreso}" labelTemplate="{value}%" style="width:300px" styleClass="animated" global="false">
+                            <p:ajax event="complete" listener="#{avaluoBB.onComplete}" oncomplete="PF('startButton2').enable()"/>
                         </p:progressBar>
-                    </h:panelGrid>
+
+
+                    </h:form>
+
                 </p:dialog>
 
+                <style tyle="text/css">
+                    .animated .ui-progressbar-value { 
+                        background-color:#f47920;
+                        background-image:none; 
+                    }
+                </style>
 
             </p:panel>
         </h:panelGroup>
