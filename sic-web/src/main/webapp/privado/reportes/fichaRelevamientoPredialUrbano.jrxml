@@ -167,28 +167,28 @@
 				<staticText>
 					<reportElement x="98" y="0" width="359" height="17" uuid="a55a0133-75e3-4c78-ab19-11fe0e52a16b"/>
 					<textElement textAlignment="Center">
-						<font fontName="Verdana" size="13" isBold="true"/>
+						<font fontName="SansSerif" size="13" isBold="true"/>
 					</textElement>
 					<text><![CDATA[GOBIERNO MUNICIPAL DE PEDRO VICENTE]]></text>
 				</staticText>
 				<textField pattern="dd/MM/yy">
 					<reportElement x="393" y="44" width="64" height="20" uuid="f9f197c1-0519-4b99-8b20-0b9020997fe9"/>
 					<textElement verticalAlignment="Top">
-						<font fontName="Verdana" size="8" isBold="true"/>
+						<font fontName="SansSerif" size="8" isBold="true"/>
 					</textElement>
 					<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
 				</textField>
 				<staticText>
 					<reportElement x="98" y="17" width="359" height="14" uuid="b1072e7d-a2a9-4799-944b-1934c4b27cc6"/>
 					<textElement textAlignment="Center">
-						<font fontName="Verdana" size="11" isBold="true"/>
+						<font fontName="SansSerif" size="11" isBold="true"/>
 					</textElement>
 					<text><![CDATA[CATASTRO PREDIAL URBANO]]></text>
 				</staticText>
 				<staticText>
 					<reportElement x="98" y="31" width="359" height="13" uuid="c1bd3d6c-dc2a-4747-abc7-95c3ca7a66c9"/>
 					<textElement textAlignment="Center">
-						<font fontName="Verdana" size="10" isBold="true"/>
+						<font fontName="SansSerif" size="10" isBold="true"/>
 					</textElement>
 					<text><![CDATA[FICHA DE RELEVAMIENTO PREDIAL URBANO]]></text>
 				</staticText>
@@ -233,35 +233,35 @@
 			<textField isBlankWhenNull="true">
 				<reportElement x="102" y="325" width="98" height="15" uuid="43cd67cf-a2cc-4c4b-bef3-8d0916e60afe"/>
 				<textElement>
-					<font fontName="Verdana" size="7"/>
+					<font fontName="SansSerif" size="7"/>
 				</textElement>
 				<textFieldExpression><![CDATA[]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="245" y="340" width="144" height="15" uuid="ce232387-a9aa-4668-854d-97016eb14a09"/>
 				<textElement>
-					<font fontName="Verdana" size="7"/>
+					<font fontName="SansSerif" size="7"/>
 				</textElement>
 				<textFieldExpression><![CDATA[]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="221" y="340" width="24" height="15" uuid="31327ba8-9e90-4e72-a46d-a6cb2869379e"/>
 				<textElement>
-					<font fontName="Verdana" size="6" isBold="true"/>
+					<font fontName="SansSerif" size="6" isBold="true"/>
 				</textElement>
 				<text><![CDATA[E:]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="20" y="310" width="180" height="15" uuid="db9d8121-579c-46f6-bebc-aa61a2367090"/>
 				<textElement>
-					<font fontName="Verdana" size="7" isBold="true"/>
+					<font fontName="SansSerif" size="7" isBold="true"/>
 				</textElement>
 				<text><![CDATA[5. REFERENCIAS CARTOGRAFICAS]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="221" y="310" width="95" height="30" uuid="6367e7a0-0042-4737-98f3-76d8ce3e0d5d"/>
 				<textElement>
-					<font fontName="Verdana" size="6" isBold="true"/>
+					<font fontName="SansSerif" size="6" isBold="true"/>
 				</textElement>
 				<text><![CDATA[COORDENADAS PLANAS
 DE REFERENCIA:
@@ -270,35 +270,35 @@ DE REFERENCIA:
 			<staticText>
 				<reportElement x="21" y="325" width="81" height="15" uuid="b4017418-3233-4685-b605-71d266e5e313"/>
 				<textElement>
-					<font fontName="Verdana" size="6" isBold="true"/>
+					<font fontName="SansSerif" size="6" isBold="true"/>
 				</textElement>
 				<text><![CDATA[C. TOPOGRAFICA: ]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="21" y="340" width="81" height="15" uuid="2ae84081-3535-493e-8a27-0744a3ae5b31"/>
 				<textElement>
-					<font fontName="Verdana" size="6" isBold="true"/>
+					<font fontName="SansSerif" size="6" isBold="true"/>
 				</textElement>
 				<text><![CDATA[FOTO AEREA:]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="221" y="355" width="24" height="15" uuid="b22ea60c-4e2a-4973-aec7-47e040a39f04"/>
 				<textElement>
-					<font fontName="Verdana" size="6" isBold="true"/>
+					<font fontName="SansSerif" size="6" isBold="true"/>
 				</textElement>
 				<text><![CDATA[N:]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="21" y="355" width="81" height="15" uuid="f1c8628a-4670-4682-8c33-f826be0f2b1c"/>
 				<textElement>
-					<font fontName="Verdana" size="6" isBold="true"/>
+					<font fontName="SansSerif" size="6" isBold="true"/>
 				</textElement>
 				<text><![CDATA[OTROS:]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="390" y="310" width="164" height="15" uuid="67fd9f45-0748-4588-b150-f4e1b19f456f"/>
 				<textElement>
-					<font fontName="Verdana" size="7" isBold="true"/>
+					<font fontName="SansSerif" size="7" isBold="true"/>
 				</textElement>
 				<text><![CDATA[7. EMPLAZAMIENTO DEL PREDIO]]></text>
 			</staticText>
@@ -308,280 +308,280 @@ DE REFERENCIA:
 					<rightPen lineWidth="1.0"/>
 				</box>
 				<textElement rotation="Left">
-					<font fontName="Verdana" size="7" isBold="true"/>
+					<font fontName="SansSerif" size="7" isBold="true"/>
 				</textElement>
 				<text><![CDATA[ PREDIAL]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
 				<reportElement x="180" y="419" width="123" height="15" uuid="64a79c9d-6a68-4b75-9d94-d3fd186267e4"/>
 				<textElement>
-					<font fontName="Verdana" size="7"/>
+					<font fontName="SansSerif" size="7"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{valAreaConstruccion}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="21" y="389" width="159" height="15" uuid="696856d5-d8fd-41f6-9ea6-a0be67f61804"/>
 				<textElement>
-					<font fontName="Verdana" size="6" isBold="true"/>
+					<font fontName="SansSerif" size="6" isBold="true"/>
 				</textElement>
 				<text><![CDATA[AREA TOTAL TERRENO:]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
 				<reportElement x="180" y="404" width="123" height="15" uuid="94a888e9-201b-46ff-9ec0-cc2cbb8f3b89"/>
 				<textElement>
-					<font fontName="Verdana" size="7"/>
+					<font fontName="SansSerif" size="7"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{valAreaFrente}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="21" y="404" width="159" height="15" uuid="3495aaf6-7e39-4247-a9ee-d7f3ead81e28"/>
 				<textElement>
-					<font fontName="Verdana" size="6" isBold="true"/>
+					<font fontName="SansSerif" size="6" isBold="true"/>
 				</textElement>
 				<text><![CDATA[FRENTE PRINCIPAL:]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="21" y="419" width="159" height="15" uuid="bcdff6cd-c723-416a-bc9f-c38d9973bb18"/>
 				<textElement>
-					<font fontName="Verdana" size="6" isBold="true"/>
+					<font fontName="SansSerif" size="6" isBold="true"/>
 				</textElement>
 				<text><![CDATA[AREA CONSTRUCCIÓN:]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="21" y="372" width="179" height="15" uuid="37a89042-c9fe-44bd-a964-438ad3df1dc2"/>
 				<textElement>
-					<font fontName="Verdana" size="7" isBold="true"/>
+					<font fontName="SansSerif" size="7" isBold="true"/>
 				</textElement>
 				<text><![CDATA[6. SUPERFICIES DEL PREDIO]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
 				<reportElement x="180" y="389" width="123" height="15" uuid="88a35ea1-e278-4cb7-883b-55e572001fad"/>
 				<textElement>
-					<font fontName="Verdana" size="7"/>
+					<font fontName="SansSerif" size="7"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{valAreaPredio}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="102" y="355" width="98" height="15" uuid="716c92f9-b81c-4bbf-9f20-bd07334c566e"/>
 				<textElement>
-					<font fontName="Verdana" size="7"/>
+					<font fontName="SansSerif" size="7"/>
 				</textElement>
 				<textFieldExpression><![CDATA[]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="102" y="340" width="98" height="15" uuid="abbabf0b-d8da-46a3-96e4-df97bd5615c8"/>
 				<textElement>
-					<font fontName="Verdana" size="7"/>
+					<font fontName="SansSerif" size="7"/>
 				</textElement>
 				<textFieldExpression><![CDATA[]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="316" y="310" width="73" height="15" uuid="b90df415-b35f-482c-bfe0-42ee3c04f646"/>
 				<textElement>
-					<font fontName="Verdana" size="7"/>
+					<font fontName="SansSerif" size="7"/>
 				</textElement>
 				<textFieldExpression><![CDATA[]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="245" y="355" width="144" height="15" uuid="2c73dc60-43e0-4573-8593-e5dcbf3e0d56"/>
 				<textElement>
-					<font fontName="Verdana" size="7"/>
+					<font fontName="SansSerif" size="7"/>
 				</textElement>
 				<textFieldExpression><![CDATA[]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="19" y="2" width="155" height="15" uuid="19489df5-15e7-455a-823a-279cfef1aab9"/>
 				<textElement>
-					<font fontName="Verdana" size="7" isBold="true"/>
+					<font fontName="SansSerif" size="7" isBold="true"/>
 				</textElement>
 				<text><![CDATA[1. CLAVE CATASTRAL:]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="32" y="19" width="91" height="15" uuid="57849aaa-8cb6-43c5-ac72-6709dd8a1521"/>
 				<textElement textAlignment="Center">
-					<font fontName="Verdana" size="7" isBold="false"/>
+					<font fontName="SansSerif" size="7" isBold="false"/>
 				</textElement>
 				<text><![CDATA[CODIGO NACIONAL]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="135" y="19" width="295" height="15" uuid="397d5cf3-875e-4fb8-9a86-d981d60725b0"/>
 				<textElement textAlignment="Center">
-					<font fontName="Verdana" size="7" isBold="false"/>
+					<font fontName="SansSerif" size="7" isBold="false"/>
 				</textElement>
 				<text><![CDATA[CODIGO NACIONAL]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="135" y="55" width="40" height="15" uuid="093e85a7-a2f9-4c8f-b414-a6de455fc719"/>
 				<textElement textAlignment="Center">
-					<font fontName="Arial" size="5" isBold="false"/>
+					<font fontName="SansSerif" size="5" isBold="false"/>
 				</textElement>
 				<text><![CDATA[ZONA]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="185" y="55" width="40" height="15" uuid="46e31a20-7ae0-4aa3-88ff-40bf228dcc71"/>
 				<textElement textAlignment="Center">
-					<font fontName="Arial" size="5" isBold="false"/>
+					<font fontName="SansSerif" size="5" isBold="false"/>
 				</textElement>
 				<text><![CDATA[SECTOR]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="235" y="55" width="40" height="15" uuid="febd80bb-719e-47bb-9487-71c845baad58"/>
 				<textElement textAlignment="Center">
-					<font fontName="Arial" size="5" isBold="false"/>
+					<font fontName="SansSerif" size="5" isBold="false"/>
 				</textElement>
 				<text><![CDATA[MANZANA]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="285" y="55" width="40" height="15" uuid="bd2b9814-bcce-4635-8763-7503ebd2ae4d"/>
 				<textElement textAlignment="Center">
-					<font fontName="Arial" size="5" isBold="false"/>
+					<font fontName="SansSerif" size="5" isBold="false"/>
 				</textElement>
 				<text><![CDATA[PREDIO]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="386" y="54" width="55" height="15" uuid="cf912836-36ed-41ff-b957-b3e982cbbaf7"/>
 				<textElement textAlignment="Center">
-					<font fontName="Arial" size="5" isBold="false"/>
+					<font fontName="SansSerif" size="5" isBold="false"/>
 				</textElement>
 				<text><![CDATA[P. HORIZONTAL]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="441" y="19" width="100" height="15" uuid="ca288eeb-d857-4e8d-8147-a12a739dcc4a"/>
 				<textElement>
-					<font fontName="Verdana" size="7" isBold="true"/>
+					<font fontName="SansSerif" size="7" isBold="true"/>
 				</textElement>
 				<text><![CDATA[CODIGO ANTERIOR]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="20" y="72" width="150" height="15" uuid="9ed7c2d0-3448-4e90-874d-8cbf79c1e763"/>
 				<textElement>
-					<font fontName="Verdana" size="7" isBold="true"/>
+					<font fontName="SansSerif" size="7" isBold="true"/>
 				</textElement>
 				<text><![CDATA[2. UBICACIÓN]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="21" y="87" width="51" height="15" uuid="1e30e886-4b67-4759-948d-46e632b5d42d"/>
 				<textElement>
-					<font fontName="Verdana" size="6" isBold="true"/>
+					<font fontName="SansSerif" size="6" isBold="true"/>
 				</textElement>
 				<text><![CDATA[CALLE:]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="21" y="102" width="51" height="15" uuid="cabecbe6-ccf9-4395-8762-f4b33fceaf30"/>
 				<textElement>
-					<font fontName="Verdana" size="6" isBold="true"/>
+					<font fontName="SansSerif" size="6" isBold="true"/>
 				</textElement>
 				<text><![CDATA[NUMERO:]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="180" y="102" width="69" height="15" uuid="3dc47960-de84-4382-81b0-9ae7bdc004c9"/>
 				<textElement>
-					<font fontName="Verdana" size="6" isBold="true"/>
+					<font fontName="SansSerif" size="6" isBold="true"/>
 				</textElement>
 				<text><![CDATA[BARRIO/SITIO:]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="21" y="123" width="176" height="15" uuid="af8da8e2-8029-4b05-802a-375899e8023f"/>
 				<textElement>
-					<font fontName="Verdana" size="7" isBold="true"/>
+					<font fontName="SansSerif" size="7" isBold="true"/>
 				</textElement>
 				<text><![CDATA[3. PROPIETARIO]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="21" y="138" width="71" height="15" uuid="4e3a79a1-924d-4626-9ed2-73af8c75c407"/>
 				<textElement>
-					<font fontName="Verdana" size="6" isBold="true"/>
+					<font fontName="SansSerif" size="6" isBold="true"/>
 				</textElement>
 				<text><![CDATA[APELLIDOS:]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="21" y="153" width="71" height="15" uuid="706d0120-f510-4499-9948-ec4a2bf6f15b"/>
 				<textElement>
-					<font fontName="Verdana" size="6" isBold="true"/>
+					<font fontName="SansSerif" size="6" isBold="true"/>
 				</textElement>
 				<text><![CDATA[NOMBRES:]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="21" y="168" width="71" height="15" uuid="1001d93b-6650-4ec7-a5e4-2ef48ae356e1"/>
 				<textElement>
-					<font fontName="Verdana" size="6" isBold="true"/>
+					<font fontName="SansSerif" size="6" isBold="true"/>
 				</textElement>
 				<text><![CDATA[CEDULA/RUC:]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="21" y="183" width="71" height="15" uuid="5f9b74af-5fdf-42f8-875b-afaa761e9283"/>
 				<textElement>
-					<font fontName="Verdana" size="6" isBold="true"/>
+					<font fontName="SansSerif" size="6" isBold="true"/>
 				</textElement>
 				<text><![CDATA[DOMICILIO:]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="21" y="198" width="71" height="15" uuid="373d24e9-96e9-4f18-a11f-ffd3b7c8da47"/>
 				<textElement>
-					<font fontName="Verdana" size="6" isBold="true"/>
+					<font fontName="SansSerif" size="6" isBold="true"/>
 				</textElement>
 				<text><![CDATA[DIRECCION:]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="212" y="168" width="60" height="15" uuid="fd5be47c-0076-4a33-8201-f5e5afe8df0d"/>
 				<textElement>
-					<font fontName="Verdana" size="6" isBold="true"/>
+					<font fontName="SansSerif" size="6" isBold="true"/>
 				</textElement>
 				<text><![CDATA[TELEFONO:]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="212" y="183" width="60" height="15" uuid="d4345465-5a61-4917-b5aa-a0533ea35535"/>
 				<textElement>
-					<font fontName="Verdana" size="6" isBold="true"/>
+					<font fontName="SansSerif" size="6" isBold="true"/>
 				</textElement>
 				<text><![CDATA[CIUDAD:]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="357" y="168" width="100" height="15" uuid="3a0f2fd4-11c4-4b1e-8418-5e73db63eef6"/>
 				<textElement>
-					<font fontName="Verdana" size="6" isBold="true"/>
+					<font fontName="SansSerif" size="6" isBold="true"/>
 				</textElement>
 				<text><![CDATA[CORREO ELECTRONICO:]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="21" y="217" width="176" height="15" uuid="f7df396c-5c16-470b-9ed5-721e070d7d12"/>
 				<textElement>
-					<font fontName="Verdana" size="7" isBold="true"/>
+					<font fontName="SansSerif" size="7" isBold="true"/>
 				</textElement>
 				<text><![CDATA[3.1 REPRESENTANTE LEGAL]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="21" y="232" width="118" height="15" uuid="63d3776c-acc2-4835-b56e-5ae7e15fa261"/>
 				<textElement>
-					<font fontName="Verdana" size="6" isBold="true"/>
+					<font fontName="SansSerif" size="6" isBold="true"/>
 				</textElement>
 				<text><![CDATA[APELLIDOS Y NOMBRES:]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="21" y="247" width="118" height="15" uuid="919580d1-c55d-41ca-bac9-712fe6a3758f"/>
 				<textElement>
-					<font fontName="Verdana" size="6" isBold="true"/>
+					<font fontName="SansSerif" size="6" isBold="true"/>
 				</textElement>
 				<text><![CDATA[CEDULA/RUC:]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="261" y="247" width="64" height="15" uuid="6b9879e1-eef2-4e62-8b89-cca243030b36"/>
 				<textElement>
-					<font fontName="Verdana" size="6" isBold="true"/>
+					<font fontName="SansSerif" size="6" isBold="true"/>
 				</textElement>
 				<text><![CDATA[DIRECCION:]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
 				<reportElement x="72" y="87" width="358" height="15" uuid="12495835-fe55-4821-a64c-b0371f9d3685"/>
 				<textElement>
-					<font fontName="Verdana" size="7"/>
+					<font fontName="SansSerif" size="7"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{txtDireccion}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="72" y="102" width="98" height="15" uuid="12be12af-2aaf-4ad8-a350-843066e14c44"/>
 				<textElement>
-					<font fontName="Verdana" size="7"/>
+					<font fontName="SansSerif" size="7"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{nomNumero}]]></textFieldExpression>
 			</textField>
@@ -594,14 +594,14 @@ DE REFERENCIA:
 					<rightPen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="7"/>
+					<font fontName="SansSerif" size="7"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{codDpa}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="180" y="1" width="150" height="15" uuid="3218b120-d5f6-4747-a676-8e837356bb13"/>
 				<textElement>
-					<font size="7"/>
+					<font fontName="SansSerif" size="7"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{nomCodigocatastral}]]></textFieldExpression>
 			</textField>
@@ -614,7 +614,7 @@ DE REFERENCIA:
 					<rightPen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="7"/>
+					<font fontName="SansSerif" size="7"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{codZona}]]></textFieldExpression>
 			</textField>
@@ -627,7 +627,7 @@ DE REFERENCIA:
 					<rightPen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="7"/>
+					<font fontName="SansSerif" size="7"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{codSector}]]></textFieldExpression>
 			</textField>
@@ -640,7 +640,7 @@ DE REFERENCIA:
 					<rightPen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="7"/>
+					<font fontName="SansSerif" size="7"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{codManzana}]]></textFieldExpression>
 			</textField>
@@ -653,7 +653,7 @@ DE REFERENCIA:
 					<rightPen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="7"/>
+					<font fontName="SansSerif" size="7"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{codPredio}]]></textFieldExpression>
 			</textField>
@@ -666,7 +666,7 @@ DE REFERENCIA:
 					<rightPen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="7"/>
+					<font fontName="SansSerif" size="7"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{codHorizontal}]]></textFieldExpression>
 			</textField>
@@ -679,98 +679,98 @@ DE REFERENCIA:
 					<rightPen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="7"/>
+					<font fontName="SansSerif" size="7"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{nomCodigocatastralanterior}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="249" y="102" width="181" height="15" uuid="da70108d-6f37-4a1c-97a5-7243ba66f4f5"/>
 				<textElement>
-					<font fontName="Verdana" size="7"/>
+					<font fontName="SansSerif" size="7"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{stsBarrio}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="92" y="138" width="105" height="15" uuid="f6ffdefe-fb12-41f3-860c-7502202c5e80"/>
 				<textElement>
-					<font fontName="Verdana" size="7"/>
+					<font fontName="SansSerif" size="7"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{nomApellidos}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="92" y="153" width="105" height="15" uuid="d5792f1b-c62b-47e1-b41d-91c1da610951"/>
 				<textElement>
-					<font fontName="Verdana" size="7"/>
+					<font fontName="SansSerif" size="7"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{nomNombres}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="92" y="168" width="105" height="15" uuid="2a89551d-91fe-4da8-85f6-5964eb0ac8f3"/>
 				<textElement>
-					<font fontName="Verdana" size="7"/>
+					<font fontName="SansSerif" size="7"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{codCedularuc}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="92" y="183" width="105" height="15" uuid="7fdfa773-e44b-4480-ae07-89b05cd76705"/>
 				<textElement>
-					<font fontName="Verdana" size="7"/>
+					<font fontName="SansSerif" size="7"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{nomCiudadDomicilio}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="92" y="198" width="180" height="15" uuid="e9c4dbba-b6a8-4f8d-afea-f3d2277ce353"/>
 				<textElement>
-					<font fontName="Verdana" size="7"/>
+					<font fontName="SansSerif" size="7"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{txtDireccion}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="272" y="168" width="70" height="15" uuid="dff3e897-6b8b-4131-a133-9730b3e8ebc4"/>
 				<textElement>
-					<font fontName="Verdana" size="7"/>
+					<font fontName="SansSerif" size="7"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{txtTelefono}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="272" y="183" width="70" height="15" uuid="ebf9116c-5967-41df-91cb-7c3c9bfe4d38"/>
 				<textElement>
-					<font fontName="Verdana" size="7"/>
+					<font fontName="SansSerif" size="7"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{txtCiudad}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="457" y="168" width="84" height="15" uuid="13deab7d-7961-4577-93e5-c13ccc9bebe1"/>
 				<textElement>
-					<font fontName="Verdana" size="7"/>
+					<font fontName="SansSerif" size="7"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{txtEmail}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="325" y="247" width="216" height="15" uuid="14e4910a-aba8-4358-ab54-6711af42b4bf"/>
 				<textElement>
-					<font fontName="Verdana" size="7"/>
+					<font fontName="SansSerif" size="7"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{direccionRepresentante}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="139" y="232" width="186" height="15" uuid="f05359ee-4561-4a11-8f20-36f1f89df3d0"/>
 				<textElement>
-					<font fontName="Verdana" size="7"/>
+					<font fontName="SansSerif" size="7"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{nombreRepresentante}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="139" y="247" width="122" height="15" uuid="95d78329-a0bd-4018-a09d-a33fa56d25a2"/>
 				<textElement>
-					<font fontName="Verdana" size="7"/>
+					<font fontName="SansSerif" size="7"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{cedulaRepresentante}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="139" y="282" width="186" height="15" uuid="8ae4d568-bf7e-48b2-853e-d0645aa22ac7"/>
 				<textElement>
-					<font fontName="Verdana" size="7"/>
+					<font fontName="SansSerif" size="7"/>
 				</textElement>
 				<textFieldExpression><![CDATA[]]></textFieldExpression>
 			</textField>
@@ -783,28 +783,28 @@ DE REFERENCIA:
 					<rightPen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="7"/>
+					<font fontName="SansSerif" size="7"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{codRegimentenencia}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="21" y="267" width="176" height="15" uuid="bd0ef380-4a7a-46c7-b7ab-6cfb87cb536f"/>
 				<textElement>
-					<font fontName="Verdana" size="7" isBold="true"/>
+					<font fontName="SansSerif" size="7" isBold="true"/>
 				</textElement>
 				<text><![CDATA[4. PROPIETARIO ANTERIOR]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="21" y="282" width="118" height="15" uuid="6becb3a4-3058-4e3b-8517-507a8152f6ad"/>
 				<textElement>
-					<font fontName="Verdana" size="6" isBold="true"/>
+					<font fontName="SansSerif" size="6" isBold="true"/>
 				</textElement>
 				<text><![CDATA[APELLIDOS Y NOMBRES:]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="330" y="55" width="47" height="15" uuid="e0d629f5-95da-40cf-9a14-1b4fad0ad1ae"/>
 				<textElement textAlignment="Center">
-					<font fontName="Arial" size="5" isBold="false"/>
+					<font fontName="SansSerif" size="5" isBold="false"/>
 				</textElement>
 				<text><![CDATA[R. TENENCIA]]></text>
 			</staticText>
@@ -822,7 +822,7 @@ DE REFERENCIA:
 			<staticText>
 				<reportElement x="21" y="0" width="368" height="15" uuid="c47a6011-b01d-4515-80ca-72b187ccfd5d"/>
 				<textElement>
-					<font fontName="Verdana" size="7" isBold="true"/>
+					<font fontName="SansSerif" size="7" isBold="true"/>
 				</textElement>
 				<text><![CDATA[8. DELIMITACION Y DIMENSIONAMIENTO DEL PREDIO]]></text>
 			</staticText>
@@ -832,70 +832,70 @@ DE REFERENCIA:
 					<rightPen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Right" rotation="Left">
-					<font fontName="Verdana" size="7" isBold="true"/>
+					<font fontName="SansSerif" size="7" isBold="true"/>
 				</textElement>
 				<text><![CDATA[01 IDENTIFICACIÓN ]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="21" y="141" width="45" height="15" uuid="545c88b4-61b9-4edc-9fff-7c2bea193404"/>
 				<textElement>
-					<font fontName="Verdana" size="6" isBold="true"/>
+					<font fontName="SansSerif" size="6" isBold="true"/>
 				</textElement>
 				<text><![CDATA[SUR:]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
 				<reportElement x="348" y="126" width="184" height="15" uuid="4c2251fc-16d4-4f7b-b8cd-acf5e148ba81"/>
 				<textElement>
-					<font fontName="Verdana" size="7"/>
+					<font fontName="SansSerif" size="7"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{txtEste}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="21" y="111" width="229" height="15" uuid="7dd0c2fc-22d2-42d5-85bc-c14553084222"/>
 				<textElement>
-					<font fontName="Verdana" size="7" isBold="true"/>
+					<font fontName="SansSerif" size="7" isBold="true"/>
 				</textElement>
 				<text><![CDATA[9. COLINDANTES]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
 				<reportElement x="66" y="141" width="184" height="15" uuid="3cc3ce46-a792-4925-96c7-6d82f045c47a"/>
 				<textElement>
-					<font fontName="Verdana" size="7"/>
+					<font fontName="SansSerif" size="7"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{txtSur}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="303" y="141" width="45" height="15" uuid="a5057f1d-4a4a-48c9-b895-845a08a07016"/>
 				<textElement>
-					<font fontName="Verdana" size="6" isBold="true"/>
+					<font fontName="SansSerif" size="6" isBold="true"/>
 				</textElement>
 				<text><![CDATA[OESTE:]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
 				<reportElement x="66" y="126" width="184" height="15" uuid="51c00268-e44e-4557-8849-5e88d1fc7cf9"/>
 				<textElement>
-					<font fontName="Verdana" size="7"/>
+					<font fontName="SansSerif" size="7"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{txtNorte}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="21" y="126" width="45" height="15" uuid="b35ea30b-259f-4f77-939a-94b07d6a907c"/>
 				<textElement>
-					<font fontName="Verdana" size="6" isBold="true"/>
+					<font fontName="SansSerif" size="6" isBold="true"/>
 				</textElement>
 				<text><![CDATA[NORTE: ]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="303" y="126" width="45" height="15" uuid="9edb06ec-7345-41d9-bf22-73e7082e4bd2"/>
 				<textElement>
-					<font fontName="Verdana" size="6" isBold="true"/>
+					<font fontName="SansSerif" size="6" isBold="true"/>
 				</textElement>
 				<text><![CDATA[ESTE:]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
 				<reportElement x="348" y="141" width="184" height="15" uuid="14b2b085-3e7d-43e6-9c5d-221a6d101543"/>
 				<textElement>
-					<font fontName="Verdana" size="7"/>
+					<font fontName="SansSerif" size="7"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{txtOeste}]]></textFieldExpression>
 			</textField>
@@ -922,7 +922,7 @@ DE REFERENCIA:
 									<bottomPen lineWidth="1.0"/>
 								</box>
 								<textElement>
-									<font fontName="Verdana" size="6"/>
+									<font fontName="SansSerif" size="6"/>
 								</textElement>
 								<textFieldExpression><![CDATA[$F{stsCodigo}]]></textFieldExpression>
 							</textField>
@@ -932,7 +932,7 @@ DE REFERENCIA:
 									<bottomPen lineWidth="1.0"/>
 								</box>
 								<textElement>
-									<font fontName="Verdana" size="6"/>
+									<font fontName="SansSerif" size="6"/>
 								</textElement>
 								<textFieldExpression><![CDATA[$F{stsSubgrupo}]]></textFieldExpression>
 							</textField>
@@ -942,7 +942,7 @@ DE REFERENCIA:
 									<bottomPen lineWidth="1.0"/>
 								</box>
 								<textElement>
-									<font fontName="Verdana" size="6"/>
+									<font fontName="SansSerif" size="6"/>
 								</textElement>
 								<textFieldExpression><![CDATA[$F{stsDescripcion}]]></textFieldExpression>
 							</textField>
@@ -952,28 +952,28 @@ DE REFERENCIA:
 				<staticText>
 					<reportElement x="21" y="16" width="45" height="10" uuid="550a2738-4a2f-4ba0-9c89-dcc99c27af39"/>
 					<textElement>
-						<font fontName="Verdana" size="6" isBold="true"/>
+						<font fontName="SansSerif" size="6" isBold="true"/>
 					</textElement>
 					<text><![CDATA[Codigo]]></text>
 				</staticText>
 				<staticText>
 					<reportElement x="285" y="16" width="81" height="10" uuid="0b824f20-6190-41ac-b1e1-8fdb06866589"/>
 					<textElement>
-						<font fontName="Verdana" size="6" isBold="true"/>
+						<font fontName="SansSerif" size="6" isBold="true"/>
 					</textElement>
 					<text><![CDATA[Detalles]]></text>
 				</staticText>
 				<staticText>
 					<reportElement x="21" y="1" width="229" height="15" uuid="a60a85de-f3c4-48d3-b1f2-c8bf16d97b7a"/>
 					<textElement>
-						<font fontName="Verdana" size="7" isBold="true"/>
+						<font fontName="SansSerif" size="7" isBold="true"/>
 					</textElement>
 					<text><![CDATA[Descripción del terreno]]></text>
 				</staticText>
 				<staticText>
 					<reportElement x="140" y="16" width="81" height="10" uuid="8ee5c888-1271-4ab1-a801-b8ff3d9ea117"/>
 					<textElement>
-						<font fontName="Verdana" size="6" isBold="true"/>
+						<font fontName="SansSerif" size="6" isBold="true"/>
 					</textElement>
 					<text><![CDATA[Carateristicas]]></text>
 				</staticText>
@@ -1001,7 +1001,7 @@ DE REFERENCIA:
 									<bottomPen lineWidth="1.0"/>
 								</box>
 								<textElement>
-									<font fontName="Verdana" size="6"/>
+									<font fontName="SansSerif" size="6"/>
 								</textElement>
 								<textFieldExpression><![CDATA[$F{stsCodigo}]]></textFieldExpression>
 							</textField>
@@ -1011,7 +1011,7 @@ DE REFERENCIA:
 									<bottomPen lineWidth="1.0"/>
 								</box>
 								<textElement>
-									<font fontName="Verdana" size="6"/>
+									<font fontName="SansSerif" size="6"/>
 								</textElement>
 								<textFieldExpression><![CDATA[$F{stsGrupo}]]></textFieldExpression>
 							</textField>
@@ -1021,7 +1021,7 @@ DE REFERENCIA:
 									<bottomPen lineWidth="1.0"/>
 								</box>
 								<textElement>
-									<font fontName="Verdana" size="6"/>
+									<font fontName="SansSerif" size="6"/>
 								</textElement>
 								<textFieldExpression><![CDATA[$F{stsDescripcion}]]></textFieldExpression>
 							</textField>
@@ -1031,7 +1031,7 @@ DE REFERENCIA:
 									<bottomPen lineWidth="1.0"/>
 								</box>
 								<textElement>
-									<font fontName="Verdana" size="6"/>
+									<font fontName="SansSerif" size="6"/>
 								</textElement>
 								<textFieldExpression><![CDATA[$F{stsSubGrupo}]]></textFieldExpression>
 							</textField>
@@ -1041,7 +1041,7 @@ DE REFERENCIA:
 									<bottomPen lineWidth="1.0"/>
 								</box>
 								<textElement>
-									<font fontName="Verdana" size="6"/>
+									<font fontName="SansSerif" size="6"/>
 								</textElement>
 								<textFieldExpression><![CDATA[$F{nomMedidor}]]></textFieldExpression>
 							</textField>
@@ -1051,7 +1051,7 @@ DE REFERENCIA:
 									<bottomPen lineWidth="1.0"/>
 								</box>
 								<textElement>
-									<font fontName="Verdana" size="6"/>
+									<font fontName="SansSerif" size="6"/>
 								</textElement>
 								<textFieldExpression><![CDATA[$F{numMedidores}]]></textFieldExpression>
 							</textField>
@@ -1061,7 +1061,7 @@ DE REFERENCIA:
 									<bottomPen lineWidth="1.0"/>
 								</box>
 								<textElement>
-									<font fontName="Verdana" size="6"/>
+									<font fontName="SansSerif" size="6"/>
 								</textElement>
 								<textFieldExpression><![CDATA[$F{numMedidores}]]></textFieldExpression>
 							</textField>
@@ -1071,56 +1071,56 @@ DE REFERENCIA:
 				<staticText>
 					<reportElement x="21" y="1" width="229" height="15" uuid="98d5253d-6b76-42f0-b842-53575dafb643"/>
 					<textElement>
-						<font fontName="Verdana" size="7" isBold="true"/>
+						<font fontName="SansSerif" size="7" isBold="true"/>
 					</textElement>
 					<text><![CDATA[Infraestructura y Servicios]]></text>
 				</staticText>
 				<staticText>
 					<reportElement x="21" y="16" width="45" height="10" uuid="c33957d9-bc5f-485f-8b6f-0d6eaf54491d"/>
 					<textElement>
-						<font fontName="Verdana" size="6" isBold="true"/>
+						<font fontName="SansSerif" size="6" isBold="true"/>
 					</textElement>
 					<text><![CDATA[Codigo]]></text>
 				</staticText>
 				<staticText>
 					<reportElement x="72" y="16" width="45" height="10" uuid="bd67851e-be27-426f-a328-2e67323b582a"/>
 					<textElement>
-						<font fontName="Verdana" size="6" isBold="true"/>
+						<font fontName="SansSerif" size="6" isBold="true"/>
 					</textElement>
 					<text><![CDATA[Grupo]]></text>
 				</staticText>
 				<staticText>
 					<reportElement x="218" y="16" width="45" height="10" uuid="f39e7162-7498-44ec-94b6-1144cda4d121"/>
 					<textElement>
-						<font fontName="Verdana" size="6" isBold="true"/>
+						<font fontName="SansSerif" size="6" isBold="true"/>
 					</textElement>
 					<text><![CDATA[Servicios]]></text>
 				</staticText>
 				<staticText>
 					<reportElement x="292" y="16" width="74" height="10" uuid="3191e8b9-6a57-43bc-ac44-1dcffe1fce9b"/>
 					<textElement>
-						<font fontName="Verdana" size="6" isBold="true"/>
+						<font fontName="SansSerif" size="6" isBold="true"/>
 					</textElement>
 					<text><![CDATA[Descripción]]></text>
 				</staticText>
 				<staticText>
 					<reportElement x="366" y="16" width="45" height="10" uuid="4f328356-fc86-41d8-a72e-910d4d72cc75"/>
 					<textElement>
-						<font fontName="Verdana" size="6" isBold="true"/>
+						<font fontName="SansSerif" size="6" isBold="true"/>
 					</textElement>
 					<text><![CDATA[Medidor]]></text>
 				</staticText>
 				<staticText>
 					<reportElement x="422" y="16" width="45" height="10" uuid="87e64fab-a4c3-476e-8ad6-5eae61a9a18e"/>
 					<textElement>
-						<font fontName="Verdana" size="6" isBold="true"/>
+						<font fontName="SansSerif" size="6" isBold="true"/>
 					</textElement>
 					<text><![CDATA[Estado]]></text>
 				</staticText>
 				<staticText>
 					<reportElement x="467" y="16" width="65" height="10" uuid="168b5b15-a6d0-4ce1-845d-2d8cd6aac1ca"/>
 					<textElement>
-						<font fontName="Verdana" size="6" isBold="true"/>
+						<font fontName="SansSerif" size="6" isBold="true"/>
 					</textElement>
 					<text><![CDATA[# Medidores]]></text>
 				</staticText>
@@ -1148,7 +1148,7 @@ DE REFERENCIA:
 									<bottomPen lineWidth="1.0"/>
 								</box>
 								<textElement>
-									<font fontName="Verdana" size="6"/>
+									<font fontName="SansSerif" size="6"/>
 								</textElement>
 								<textFieldExpression><![CDATA[$F{nomBloque}]]></textFieldExpression>
 							</textField>
@@ -1158,7 +1158,7 @@ DE REFERENCIA:
 									<bottomPen lineWidth="1.0"/>
 								</box>
 								<textElement>
-									<font fontName="Verdana" size="6"/>
+									<font fontName="SansSerif" size="6"/>
 								</textElement>
 								<textFieldExpression><![CDATA[$F{valNropisos}]]></textFieldExpression>
 							</textField>
@@ -1168,28 +1168,28 @@ DE REFERENCIA:
 				<staticText>
 					<reportElement x="21" y="1" width="229" height="14" uuid="523bd1e9-ec93-4ae9-addd-f445de86dc5c"/>
 					<textElement>
-						<font fontName="Verdana" size="7" isBold="true"/>
+						<font fontName="SansSerif" size="7" isBold="true"/>
 					</textElement>
 					<text><![CDATA[Características de la edificación]]></text>
 				</staticText>
 				<staticText>
 					<reportElement x="21" y="15" width="227" height="10" uuid="ca8db2d2-629f-4428-833e-fcd70284d29a"/>
 					<textElement>
-						<font fontName="Verdana" size="6" isBold="false"/>
+						<font fontName="SansSerif" size="6" isBold="false"/>
 					</textElement>
 					<text><![CDATA[Información de Bloques]]></text>
 				</staticText>
 				<staticText>
 					<reportElement x="21" y="25" width="45" height="10" uuid="92ce6cd6-a2c7-42a8-b894-50fa93873eaf"/>
 					<textElement>
-						<font fontName="Verdana" size="6" isBold="true"/>
+						<font fontName="SansSerif" size="6" isBold="true"/>
 					</textElement>
 					<text><![CDATA[Codigo]]></text>
 				</staticText>
 				<staticText>
 					<reportElement x="74" y="25" width="80" height="10" uuid="e28309af-ecde-46b0-9d3d-9c4686975395"/>
 					<textElement>
-						<font fontName="Verdana" size="6" isBold="true"/>
+						<font fontName="SansSerif" size="6" isBold="true"/>
 					</textElement>
 					<text><![CDATA[No. Pisos]]></text>
 				</staticText>
@@ -1207,77 +1207,77 @@ DE REFERENCIA:
 				<staticText>
 					<reportElement x="86" y="1" width="40" height="20" uuid="c3e29204-9742-4e4c-97b3-7bcc65795b30"/>
 					<textElement>
-						<font fontName="Verdana" size="6" isBold="true"/>
+						<font fontName="SansSerif" size="6" isBold="true"/>
 					</textElement>
 					<text><![CDATA[Piso]]></text>
 				</staticText>
 				<staticText>
 					<reportElement x="126" y="1" width="40" height="20" uuid="88d23a54-a2ee-478f-a59d-5cc1b40d40ce"/>
 					<textElement>
-						<font fontName="Verdana" size="6" isBold="true"/>
+						<font fontName="SansSerif" size="6" isBold="true"/>
 					</textElement>
 					<text><![CDATA[Área (m2)]]></text>
 				</staticText>
 				<staticText>
 					<reportElement x="166" y="1" width="57" height="20" uuid="d55e4253-6b24-45a6-9483-d5365d209f1b"/>
 					<textElement>
-						<font fontName="Verdana" size="6" isBold="true"/>
+						<font fontName="SansSerif" size="6" isBold="true"/>
 					</textElement>
 					<text><![CDATA[Año construcción]]></text>
 				</staticText>
 				<staticText>
 					<reportElement x="223" y="1" width="48" height="20" uuid="aea0fe06-60ba-4fd4-ab33-a12e631680d9"/>
 					<textElement>
-						<font fontName="Verdana" size="6" isBold="true"/>
+						<font fontName="SansSerif" size="6" isBold="true"/>
 					</textElement>
 					<text><![CDATA[Año reparación]]></text>
 				</staticText>
 				<staticText>
 					<reportElement x="436" y="1" width="65" height="20" uuid="84fe7185-4f06-4291-8d2b-0accce871ee4"/>
 					<textElement>
-						<font fontName="Verdana" size="6" isBold="true"/>
+						<font fontName="SansSerif" size="6" isBold="true"/>
 					</textElement>
 					<text><![CDATA[Material de construcción]]></text>
 				</staticText>
 				<staticText>
 					<reportElement x="21" y="1" width="35" height="20" uuid="571a3a48-fd99-48d5-a832-f54ca3b98483"/>
 					<textElement>
-						<font fontName="Verdana" size="6" isBold="true"/>
+						<font fontName="SansSerif" size="6" isBold="true"/>
 					</textElement>
 					<text><![CDATA[Bloque]]></text>
 				</staticText>
 				<staticText>
 					<reportElement x="271" y="1" width="45" height="20" uuid="935c1456-eaf1-40fd-8b48-5cb05298f5fd"/>
 					<textElement>
-						<font fontName="Verdana" size="6" isBold="true"/>
+						<font fontName="SansSerif" size="6" isBold="true"/>
 					</textElement>
 					<text><![CDATA[Código]]></text>
 				</staticText>
 				<staticText>
 					<reportElement x="371" y="1" width="65" height="20" uuid="3f9fe00b-4ffc-4f12-a646-5a36459c9d08"/>
 					<textElement>
-						<font fontName="Verdana" size="6" isBold="true"/>
+						<font fontName="SansSerif" size="6" isBold="true"/>
 					</textElement>
 					<text><![CDATA[Subgrupo]]></text>
 				</staticText>
 				<staticText>
 					<reportElement x="501" y="1" width="40" height="20" uuid="5c0b4080-cd08-4943-b9e9-7d0ca7cd903e"/>
 					<textElement>
-						<font fontName="Verdana" size="6" isBold="true"/>
+						<font fontName="SansSerif" size="6" isBold="true"/>
 					</textElement>
 					<text><![CDATA[Estado]]></text>
 				</staticText>
 				<staticText>
 					<reportElement x="56" y="1" width="30" height="20" uuid="44e79262-a7f3-4d46-8b3f-0b0d5dc6e617"/>
 					<textElement>
-						<font fontName="Verdana" size="6" isBold="true"/>
+						<font fontName="SansSerif" size="6" isBold="true"/>
 					</textElement>
 					<text><![CDATA[No. Pisos]]></text>
 				</staticText>
 				<staticText>
 					<reportElement x="316" y="1" width="55" height="20" uuid="82164a98-7ce9-444e-9ce5-8974f8e44d70"/>
 					<textElement>
-						<font fontName="Verdana" size="6" isBold="true"/>
+						<font fontName="SansSerif" size="6" isBold="true"/>
 					</textElement>
 					<text><![CDATA[Grupo]]></text>
 				</staticText>
@@ -1294,7 +1294,7 @@ DE REFERENCIA:
 									<bottomPen lineWidth="1.0"/>
 								</box>
 								<textElement>
-									<font fontName="Verdana" size="6"/>
+									<font fontName="SansSerif" size="6"/>
 								</textElement>
 								<textFieldExpression><![CDATA[$F{subgrupo}]]></textFieldExpression>
 							</textField>
@@ -1304,7 +1304,7 @@ DE REFERENCIA:
 									<bottomPen lineWidth="1.0"/>
 								</box>
 								<textElement>
-									<font fontName="Verdana" size="6"/>
+									<font fontName="SansSerif" size="6"/>
 								</textElement>
 								<textFieldExpression><![CDATA[$F{descripcion}]]></textFieldExpression>
 							</textField>
@@ -1314,7 +1314,7 @@ DE REFERENCIA:
 									<bottomPen lineWidth="1.0"/>
 								</box>
 								<textElement>
-									<font fontName="Verdana" size="6"/>
+									<font fontName="SansSerif" size="6"/>
 								</textElement>
 								<textFieldExpression><![CDATA[$F{estadoDetalle}]]></textFieldExpression>
 							</textField>
@@ -1324,7 +1324,7 @@ DE REFERENCIA:
 									<bottomPen lineWidth="1.0"/>
 								</box>
 								<textElement>
-									<font fontName="Verdana" size="6"/>
+									<font fontName="SansSerif" size="6"/>
 								</textElement>
 								<textFieldExpression><![CDATA[$F{codigo}]]></textFieldExpression>
 							</textField>
@@ -1334,7 +1334,7 @@ DE REFERENCIA:
 									<bottomPen lineWidth="1.0"/>
 								</box>
 								<textElement>
-									<font fontName="Verdana" size="6"/>
+									<font fontName="SansSerif" size="6"/>
 								</textElement>
 								<textFieldExpression><![CDATA[$F{nomPiso}]]></textFieldExpression>
 							</textField>
@@ -1344,7 +1344,7 @@ DE REFERENCIA:
 									<bottomPen lineWidth="1.0"/>
 								</box>
 								<textElement>
-									<font fontName="Verdana" size="6"/>
+									<font fontName="SansSerif" size="6"/>
 								</textElement>
 								<textFieldExpression><![CDATA[$F{valAreapiso}]]></textFieldExpression>
 							</textField>
@@ -1354,7 +1354,7 @@ DE REFERENCIA:
 									<bottomPen lineWidth="1.0"/>
 								</box>
 								<textElement>
-									<font fontName="Verdana" size="6"/>
+									<font fontName="SansSerif" size="6"/>
 								</textElement>
 								<textFieldExpression><![CDATA[$F{valAnioconstruccion}]]></textFieldExpression>
 							</textField>
@@ -1364,7 +1364,7 @@ DE REFERENCIA:
 									<bottomPen lineWidth="1.0"/>
 								</box>
 								<textElement>
-									<font fontName="Verdana" size="6"/>
+									<font fontName="SansSerif" size="6"/>
 								</textElement>
 								<textFieldExpression><![CDATA[$F{valAnioreparacion}]]></textFieldExpression>
 							</textField>
@@ -1374,7 +1374,7 @@ DE REFERENCIA:
 									<bottomPen lineWidth="1.0"/>
 								</box>
 								<textElement>
-									<font fontName="Verdana" size="6"/>
+									<font fontName="SansSerif" size="6"/>
 								</textElement>
 								<textFieldExpression><![CDATA[$F{nomBloque}]]></textFieldExpression>
 							</textField>
@@ -1384,7 +1384,7 @@ DE REFERENCIA:
 									<bottomPen lineWidth="1.0"/>
 								</box>
 								<textElement>
-									<font fontName="Verdana" size="6"/>
+									<font fontName="SansSerif" size="6"/>
 								</textElement>
 								<textFieldExpression><![CDATA[$F{grupo}]]></textFieldExpression>
 							</textField>
@@ -1394,7 +1394,7 @@ DE REFERENCIA:
 									<bottomPen lineWidth="1.0"/>
 								</box>
 								<textElement>
-									<font fontName="Verdana" size="6"/>
+									<font fontName="SansSerif" size="6"/>
 								</textElement>
 								<textFieldExpression><![CDATA[$F{valNropisos}]]></textFieldExpression>
 							</textField>

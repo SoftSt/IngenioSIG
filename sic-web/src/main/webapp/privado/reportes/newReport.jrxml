@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="240fd7c8-daae-4d60-869c-ac6eb700ef02">
-	<property name="ireport.zoom" value="1.4265583530550014"/>
+	<property name="ireport.zoom" value="0.75"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<style name="table">
@@ -93,35 +93,35 @@
 				<staticText>
 					<reportElement x="73" y="36" width="656" height="19" uuid="c174faa9-6e3d-4b1a-a4b3-ff378cf1bc2d"/>
 					<textElement textAlignment="Center">
-						<font fontName="Verdana" size="11" isBold="true"/>
+						<font fontName="SansSerif" size="11" isBold="true"/>
 					</textElement>
 					<text><![CDATA[TABLA CATASTRAL URBANA]]></text>
 				</staticText>
 				<staticText>
 					<reportElement x="73" y="17" width="656" height="19" uuid="dbf65cfa-3def-4a7d-baf3-e0d5e6708994"/>
 					<textElement textAlignment="Center">
-						<font fontName="Verdana" size="11" isBold="true"/>
+						<font fontName="SansSerif" size="11" isBold="true"/>
 					</textElement>
 					<text><![CDATA[CATASTRO PREDIAL URBANO]]></text>
 				</staticText>
 				<staticText>
 					<reportElement x="73" y="0" width="656" height="17" uuid="d0943499-d82c-4331-93e3-2014a70e7da3"/>
 					<textElement textAlignment="Center">
-						<font fontName="Verdana" size="13" isBold="true"/>
+						<font fontName="SansSerif" size="13" isBold="true"/>
 					</textElement>
 					<text><![CDATA[GOBIERNO MUNICIPAL DE PEDRO VICENTE]]></text>
 				</staticText>
 				<staticText>
 					<reportElement x="73" y="55" width="350" height="20" uuid="51d68e3c-0f44-43fe-8e22-96de7d25aeac"/>
 					<textElement textAlignment="Right">
-						<font fontName="Verdana" size="11" isBold="true"/>
+						<font fontName="SansSerif" size="11" isBold="true"/>
 					</textElement>
 					<text><![CDATA[AL  ]]></text>
 				</staticText>
 				<textField pattern="dd/MM/yy">
 					<reportElement x="423" y="55" width="306" height="20" uuid="8bc847b4-aa43-4b9d-ae8e-82789d64c206"/>
 					<textElement verticalAlignment="Top">
-						<font fontName="Verdana" size="11" isBold="true"/>
+						<font fontName="SansSerif" size="11" isBold="true"/>
 					</textElement>
 					<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
 				</textField>
@@ -149,7 +149,7 @@
 						<bottomPen lineWidth="1.0"/>
 					</box>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font fontName="Verdana" size="8"/>
+						<font fontName="SansSerif" size="8"/>
 					</textElement>
 					<text><![CDATA[CODIGO CATASTRAL]]></text>
 				</staticText>
@@ -160,7 +160,7 @@
 						<bottomPen lineWidth="1.0"/>
 					</box>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font fontName="Verdana" size="8"/>
+						<font fontName="SansSerif" size="8"/>
 					</textElement>
 					<text><![CDATA[PROPIETARIO]]></text>
 				</staticText>
@@ -171,7 +171,7 @@
 						<bottomPen lineWidth="1.0"/>
 					</box>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font fontName="Verdana" size="8"/>
+						<font fontName="SansSerif" size="8"/>
 					</textElement>
 					<text><![CDATA[CI/RUC]]></text>
 				</staticText>
@@ -182,7 +182,7 @@
 						<bottomPen lineWidth="1.0"/>
 					</box>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font fontName="Verdana" size="8"/>
+						<font fontName="SansSerif" size="8"/>
 					</textElement>
 					<text><![CDATA[AVALUO TERRENO]]></text>
 				</staticText>
@@ -193,7 +193,7 @@
 						<bottomPen lineWidth="1.0"/>
 					</box>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font fontName="Verdana" size="8"/>
+						<font fontName="SansSerif" size="8"/>
 					</textElement>
 					<text><![CDATA[AVALUO EDIFICACION]]></text>
 				</staticText>
@@ -204,7 +204,7 @@
 						<bottomPen lineWidth="1.0"/>
 					</box>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font fontName="Verdana" size="8"/>
+						<font fontName="SansSerif" size="8"/>
 					</textElement>
 					<text><![CDATA[AVALUO PREDIO]]></text>
 				</staticText>
@@ -215,7 +215,7 @@
 						<bottomPen lineWidth="1.0"/>
 					</box>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font fontName="Verdana" size="8"/>
+						<font fontName="SansSerif" size="8"/>
 					</textElement>
 					<text><![CDATA[IMPUESTO PREDIO]]></text>
 				</staticText>
@@ -226,7 +226,7 @@
 						<bottomPen lineWidth="1.0"/>
 					</box>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font fontName="Verdana" size="8"/>
+						<font fontName="SansSerif" size="8"/>
 					</textElement>
 					<text><![CDATA[CEM]]></text>
 				</staticText>
@@ -237,7 +237,7 @@
 						<bottomPen lineWidth="1.0"/>
 					</box>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font fontName="Verdana" size="8"/>
+						<font fontName="SansSerif" size="8"/>
 					</textElement>
 					<text><![CDATA[SERVICIOS]]></text>
 				</staticText>
@@ -248,7 +248,7 @@
 						<bottomPen lineWidth="1.0"/>
 					</box>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font fontName="Verdana" size="8"/>
+						<font fontName="SansSerif" size="8"/>
 					</textElement>
 					<text><![CDATA[TOTAL]]></text>
 				</staticText>
@@ -272,7 +272,7 @@
 						<bottomPen lineWidth="1.0"/>
 					</box>
 					<textElement verticalAlignment="Middle">
-						<font fontName="Verdana" size="8"/>
+						<font fontName="SansSerif" size="8"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{nombreCodigoCatastral}]]></textFieldExpression>
 				</textField>
@@ -283,7 +283,7 @@
 						<bottomPen lineWidth="1.0"/>
 					</box>
 					<textElement verticalAlignment="Middle">
-						<font fontName="Verdana" size="8"/>
+						<font fontName="SansSerif" size="8"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{propietario}]]></textFieldExpression>
 				</textField>
@@ -294,7 +294,7 @@
 						<bottomPen lineWidth="1.0"/>
 					</box>
 					<textElement verticalAlignment="Middle">
-						<font fontName="Verdana" size="8"/>
+						<font fontName="SansSerif" size="8"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{ciRuc}]]></textFieldExpression>
 				</textField>
@@ -305,7 +305,7 @@
 						<bottomPen lineWidth="1.0"/>
 					</box>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font fontName="Verdana" size="8"/>
+						<font fontName="SansSerif" size="8"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$V{AVALUO_TERRENO}]]></textFieldExpression>
 				</textField>
@@ -316,7 +316,7 @@
 						<bottomPen lineWidth="1.0"/>
 					</box>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font fontName="Verdana" size="8"/>
+						<font fontName="SansSerif" size="8"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$V{AVALUO_EDIFICACION}]]></textFieldExpression>
 				</textField>
@@ -327,7 +327,7 @@
 						<bottomPen lineWidth="1.0"/>
 					</box>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font fontName="Verdana" size="8"/>
+						<font fontName="SansSerif" size="8"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$V{AVALUO_PREDIO}]]></textFieldExpression>
 				</textField>
@@ -338,7 +338,7 @@
 						<bottomPen lineWidth="1.0"/>
 					</box>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font fontName="Verdana" size="8"/>
+						<font fontName="SansSerif" size="8"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$V{IMPUESTO_PREDIAL}]]></textFieldExpression>
 				</textField>
@@ -349,7 +349,7 @@
 						<bottomPen lineWidth="1.0"/>
 					</box>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font fontName="Verdana" size="8"/>
+						<font fontName="SansSerif" size="8"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$V{CEM}]]></textFieldExpression>
 				</textField>
@@ -360,7 +360,7 @@
 						<bottomPen lineWidth="1.0"/>
 					</box>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font fontName="Verdana" size="8"/>
+						<font fontName="SansSerif" size="8"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$V{SERVICIOS}]]></textFieldExpression>
 				</textField>
@@ -371,7 +371,7 @@
 						<bottomPen lineWidth="1.0"/>
 					</box>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font fontName="Verdana" size="8"/>
+						<font fontName="SansSerif" size="8"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$V{TOTAL}]]></textFieldExpression>
 				</textField>
@@ -383,14 +383,14 @@
 			<textField>
 				<reportElement x="0" y="0" width="401" height="15" uuid="8547f0d9-696c-4a96-88de-6372618f381b"/>
 				<textElement textAlignment="Right">
-					<font fontName="Verdana" size="8"/>
+					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
 			</textField>
 			<textField evaluationTime="Report">
 				<reportElement x="401" y="0" width="401" height="15" uuid="24da6db5-cb74-47b8-bb12-2767c7e641ae"/>
 				<textElement>
-					<font fontName="Verdana" size="8"/>
+					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
 			</textField>
@@ -413,7 +413,7 @@
 						<bottomPen lineWidth="1.0"/>
 					</box>
 					<textElement verticalAlignment="Middle">
-						<font fontName="Verdana" size="8" isBold="true"/>
+						<font fontName="SansSerif" size="8" isBold="true"/>
 					</textElement>
 					<text><![CDATA[TOTAL]]></text>
 				</staticText>
@@ -424,7 +424,7 @@
 						<bottomPen lineWidth="1.0"/>
 					</box>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font fontName="Verdana" size="8" isBold="true"/>
+						<font fontName="SansSerif" size="8" isBold="true"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$V{SUMA_TOTAL}]]></textFieldExpression>
 				</textField>

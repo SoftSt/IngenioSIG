@@ -25,14 +25,14 @@
 			<staticText>
 				<reportElement x="98" y="10" width="457" height="20" uuid="979dd7be-8779-404b-8616-01e292610d12"/>
 				<textElement textAlignment="Center">
-					<font fontName="Arial" size="12" isBold="true"/>
+					<font fontName="SansSerif" size="12" isBold="true"/>
 				</textElement>
 				<text><![CDATA[GOBIERNO AUTÓNOMO DESCENTRALIZADO PEDRO VICENTE MALDONADO]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="98" y="30" width="457" height="20" uuid="93bf8ef5-f697-4e4c-ac4e-4fab0fa07878"/>
 				<textElement textAlignment="Center">
-					<font fontName="Arial" size="11" isBold="true"/>
+					<font fontName="SansSerif" size="11" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Departamento de Catastros]]></text>
 			</staticText>
@@ -42,14 +42,14 @@
 			<staticText>
 				<reportElement x="20" y="61" width="107" height="20" uuid="b2882dfe-eeb5-4d2b-9fd7-9037ae6981e5"/>
 				<textElement>
-					<font fontName="Arial" size="9" isBold="true"/>
+					<font fontName="SansSerif" size="9" isBold="true"/>
 				</textElement>
 				<text><![CDATA[PREDIAL RURAL]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="210" y="61" width="186" height="20" uuid="22ba0b13-5a0a-461a-854d-d496791469e3"/>
 				<textElement>
-					<font fontName="Arial" size="9" isBold="true"/>
+					<font fontName="SansSerif" size="9" isBold="true"/>
 				</textElement>
 				<text><![CDATA[AVALÚOS  Y  CATASTROS]]></text>
 			</staticText>
@@ -63,112 +63,112 @@
 			<staticText>
 				<reportElement x="0" y="10" width="110" height="15" uuid="b292f633-66d8-47ac-937a-8fad203bb845"/>
 				<textElement textAlignment="Right">
-					<font fontName="Arial" size="8" isBold="true"/>
+					<font fontName="SansSerif" size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Código Catastral:]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="0" y="25" width="110" height="15" uuid="83eb28a2-e9ff-4b65-b4b7-c298f030d662"/>
 				<textElement textAlignment="Right">
-					<font fontName="Arial" size="9" isBold="true"/>
+					<font fontName="SansSerif" size="9" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Nombre del Predio:]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="0" y="40" width="110" height="15" uuid="2b4aa9b9-a633-4fb0-9d47-9477c999a618"/>
 				<textElement textAlignment="Right">
-					<font fontName="Arial" size="9" isBold="true"/>
+					<font fontName="SansSerif" size="9" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Apellidos y Nombres:]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="0" y="55" width="110" height="15" uuid="0b9ca8aa-9c25-4c53-b9b0-71ca29797e32"/>
 				<textElement textAlignment="Right">
-					<font fontName="Arial" size="9" isBold="true"/>
+					<font fontName="SansSerif" size="9" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Cédula de Identidad:]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="288" y="10" width="108" height="15" uuid="7fcc7f8d-1197-4034-be42-8da7a9a680da"/>
 				<textElement textAlignment="Right">
-					<font fontName="Arial" size="8" isBold="true"/>
+					<font fontName="SansSerif" size="8" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Fecha:]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="288" y="25" width="108" height="15" uuid="116d64c5-96d9-41d5-98d6-35c55d2901b1"/>
 				<textElement textAlignment="Right">
-					<font fontName="Arial" size="9" isBold="true"/>
+					<font fontName="SansSerif" size="9" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Denominación Social:]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="288" y="40" width="108" height="15" uuid="4ddfc79b-0f6b-4ac5-8b7c-5e6e9935cd50"/>
 				<textElement textAlignment="Right">
-					<font fontName="Arial" size="9" isBold="true"/>
+					<font fontName="SansSerif" size="9" isBold="true"/>
 				</textElement>
 				<text><![CDATA[RUC:]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="288" y="55" width="108" height="15" uuid="713d43a7-23e7-4cb9-9255-60eacfc8bd32"/>
 				<textElement textAlignment="Right">
-					<font fontName="Arial" size="9" isBold="true"/>
+					<font fontName="SansSerif" size="9" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Representante Legal:]]></text>
 			</staticText>
 			<textField pattern="dd/MM/yy">
 				<reportElement x="396" y="10" width="149" height="15" uuid="1f2eb0da-c246-4dea-aa51-7e43503b1fd5"/>
 				<textElement verticalAlignment="Top">
-					<font fontName="Arial" size="8" isBold="false"/>
+					<font fontName="SansSerif" size="8" isBold="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="110" y="10" width="158" height="15" uuid="2393d7a3-eda5-4478-9811-9f9fe37fc290"/>
 				<textElement>
-					<font fontName="Arial" size="8"/>
+					<font fontName="SansSerif" size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{nomCodigocatastral}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="110" y="25" width="178" height="15" uuid="4daacc80-97d7-433b-b9bb-94569c9b4823"/>
 				<textElement>
-					<font fontName="Arial" size="9"/>
+					<font fontName="SansSerif" size="9"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{nomCodigocatastral}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="110" y="40" width="178" height="15" uuid="09ee708e-2a9c-4fd0-be47-696d9a971ad5"/>
 				<textElement>
-					<font fontName="Arial" size="9"/>
+					<font fontName="SansSerif" size="9"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{nomApellidos}.trim()+" "+$F{nomNombres}.trim()]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="110" y="55" width="178" height="15" uuid="306ebed7-07e4-4c73-b4f0-11cb80acf266"/>
 				<textElement>
-					<font fontName="Arial" size="9"/>
+					<font fontName="SansSerif" size="9"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{codCedularuc}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="396" y="25" width="149" height="15" uuid="9c5d8edd-d25e-436f-8f03-115ca3190325"/>
 				<textElement>
-					<font fontName="Arial" size="9"/>
+					<font fontName="SansSerif" size="9"/>
 				</textElement>
 				<textFieldExpression><![CDATA[]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="396" y="40" width="149" height="15" uuid="4775f335-acab-498a-a64a-5a5cff46d780"/>
 				<textElement>
-					<font fontName="Arial" size="9"/>
+					<font fontName="SansSerif" size="9"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{cedulaRepresentante}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="396" y="55" width="149" height="15" uuid="cd92b19b-54ab-4184-836a-260f85c928bc"/>
 				<textElement>
-					<font fontName="Arial" size="9"/>
+					<font fontName="SansSerif" size="9"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{nombreRepresentante}]]></textFieldExpression>
 			</textField>
@@ -185,7 +185,7 @@
 					<rightPen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Center">
-					<font fontName="Arial" size="9" isBold="true"/>
+					<font fontName="SansSerif" size="9" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Área Total del Predio]]></text>
 			</staticText>
@@ -198,7 +198,7 @@
 					<rightPen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Center">
-					<font fontName="Arial" size="9" isBold="true"/>
+					<font fontName="SansSerif" size="9" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Avalúo Catastro]]></text>
 			</staticText>
@@ -211,21 +211,21 @@
 					<rightPen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Center">
-					<font fontName="Arial" size="9" isBold="true"/>
+					<font fontName="SansSerif" size="9" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Fecha de Emisión]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="59" y="30" width="91" height="40" uuid="758521dd-bb4e-4656-9614-3c81c1917768"/>
 				<textElement textAlignment="Right">
-					<font fontName="Arial" size="9" isBold="true"/>
+					<font fontName="SansSerif" size="9" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Observaciones:]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="176" y="95" width="220" height="15" uuid="9af854a8-4ad3-47c6-9527-ab241d51f6fe"/>
 				<textElement textAlignment="Center">
-					<font fontName="Arial" size="9" isBold="true"/>
+					<font fontName="SansSerif" size="9" isBold="true"/>
 				</textElement>
 				<text><![CDATA[JEFE DE AVALÚOS Y CATASTROS]]></text>
 			</staticText>
@@ -238,7 +238,7 @@
 					<rightPen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Center">
-					<font fontName="Arial" size="9"/>
+					<font fontName="SansSerif" size="9"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{valAreaPredio}]]></textFieldExpression>
 			</textField>
@@ -251,14 +251,14 @@
 					<rightPen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Center">
-					<font fontName="Arial" size="9"/>
+					<font fontName="SansSerif" size="9"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{valPredio}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="150" y="30" width="345" height="40" uuid="10c6a839-3f67-44fa-9952-157126494dff"/>
 				<textElement textAlignment="Justified">
-					<font fontName="Arial" size="9"/>
+					<font fontName="SansSerif" size="9"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{txtObservacion}]]></textFieldExpression>
 			</textField>
@@ -268,7 +268,7 @@
 					<bottomPen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Center">
-					<font fontName="Arial" size="9"/>
+					<font fontName="SansSerif" size="9"/>
 				</textElement>
 				<textFieldExpression><![CDATA[]]></textFieldExpression>
 			</textField>
@@ -281,7 +281,7 @@
 					<rightPen lineWidth="1.0"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Top">
-					<font fontName="Arial" size="9" isBold="false"/>
+					<font fontName="SansSerif" size="9" isBold="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
 			</textField>
