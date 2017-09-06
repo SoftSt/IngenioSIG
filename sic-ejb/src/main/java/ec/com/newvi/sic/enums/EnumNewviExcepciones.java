@@ -99,7 +99,13 @@ public enum EnumNewviExcepciones {
     INF367("INF367", "Parametro eliminado.", "El parametro se ha eliminado correctamente."),
     INF368("INF368", "Predio registrado.", "El predio se ha registrado correctamente en la contribución."),
     INF369("INF369", "Predio eliminado.", "El predio se ha eliminado correctamente de la contribución."),
-    INF370("INF370", "Predios eliminados.", "Los predios se ha eliminado correctamente de la contribución.");
+    INF370("INF370", "Predios eliminados.", "Los predios se ha eliminado correctamente de la contribución."),
+    // 400 al 450 excepciones de impresión
+    ERR400("ERR400", "Error al acceder al reporte", "No se pudo acceder al archivo de reporte. Por favor, compruebe que existe en la carpeta del servidor."),
+    ERR401("ERR401", "Error al interpretar el reporte", "El reporte generado no está correctamente formado. Revise los archivos de LOG o contacte con el administrador."),
+    ERR402("ERR402", "Error al generar la impresión", "No se pudo generar el reporte Jasper. Posiblemente no se encuentre el servidor correctamente configurado. Revise los archivos de LOG o contacte con el administrador."),
+    ERR403("ERR403", "No existe el tipo de letra de la impresión", "El tipo de letra que se utiliza para el reporte no se encuentra instalado en el servidor. Revise los LOGs del sistema o contacte con el administrador."),
+    ERR404("ERR404", "Error al intentar procesar el flujo del reporte", "El sistema intentó acceder a los contenidos del reporte generado, y no se pudo obtener la información. Contacte con el administrador.");
     
     private final String codigoExcepcion;
     private final String nombreExcepcion;

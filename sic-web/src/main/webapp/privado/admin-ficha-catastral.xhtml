@@ -693,7 +693,7 @@
                                              process="@this"
                                              ajax="false"  
                                              onclick="PrimeFaces.monitorDownload(start, stop);">
-                                <p:fileDownload value="#{fichaCatastralBB.imprimir(1)}" />
+                                <p:fileDownload value="#{fichaCatastralBB.imprimir('FICHA_RELEVAMIENTO_PREDIAL_URBANO')}" />
                                 <p:ajax update="toolTipSave" process="@this" /> 
                             </p:commandButton>
                             <p:tooltip id="toolTipImprimir" for="imprimir" value="Imprimir" showEffect="fade" hideEffect="fade" position="top"/>

@@ -7,15 +7,18 @@ package ec.com.newvi.sic.servicios.impl;
 
 import ec.com.newvi.sic.dao.ConstantesImpuestosFacade;
 import ec.com.newvi.sic.dao.DominiosFacade;
+import ec.com.newvi.sic.dao.ReporteFacade;
 import ec.com.newvi.sic.dto.DominioDto;
 import ec.com.newvi.sic.enums.EnumEstadoRegistro;
 import ec.com.newvi.sic.dto.SesionDto;
 import ec.com.newvi.sic.enums.EnumNewviExcepciones;
+import ec.com.newvi.sic.enums.EnumReporte;
 import ec.com.newvi.sic.modelo.ConstantesImpuestos;
 import ec.com.newvi.sic.modelo.Dominios;
 import ec.com.newvi.sic.modelo.PisoDetalle;
 import ec.com.newvi.sic.modelo.Pisos;
 import ec.com.newvi.sic.modelo.Predios;
+import ec.com.newvi.sic.modelo.Reporte;
 import ec.com.newvi.sic.modelo.Terreno;
 import ec.com.newvi.sic.servicios.ParametrosServicio;
 import ec.com.newvi.sic.util.ComunUtil;
@@ -42,6 +45,8 @@ public class ParametrosServicioImpl implements ParametrosServicio {
     private DominiosFacade dominiosFacade;
     @EJB
     private ConstantesImpuestosFacade constantesFacade;
+    @EJB
+    private ReporteFacade reporteFacade;
 
     /*------------------------------------------------------------Dominios------------------------------------------------------------*/
     @Override
@@ -268,4 +273,12 @@ public class ParametrosServicioImpl implements ParametrosServicio {
         constantesImpuestos.setconImpuestoEstado(EnumEstadoRegistro.E);
         return actualizarConstanteImpuesto(constantesImpuestos, sesion);
     }
+    
+    /*------------------------------------------------------------Reportes------------------------------------------------------------*/
+
+    @Override
+    public Reporte obtenerReporte(EnumReporte nombreReporte, SesionDto sesion) throws NewviExcepcion {
+        return reporteFacade.obtenerReportePorNombre(nombreReporte, sesion);
+    }
+    
 }

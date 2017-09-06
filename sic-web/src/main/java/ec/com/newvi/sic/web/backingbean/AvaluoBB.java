@@ -5,7 +5,7 @@
  */
 package ec.com.newvi.sic.web.backingbean;
 
-import ec.com.newvi.componente.reporte.Reporte;
+import ec.com.newvi.componente.reporte.ConfiguracionReporte;
 import ec.com.newvi.componente.reporte.ReporteGenerador;
 import ec.com.newvi.sic.dto.AvaluoDto;
 import ec.com.newvi.sic.dto.FichaCatastralDto;
@@ -296,10 +296,15 @@ public class AvaluoBB extends AdminAvaluo {
                 formatoTabla = "/opt/newReport.jasper";
                 parametrosReporte.put("TITULO_REPORTE", "REPORTECITO");
             }
+            if (tipoReporte == 1) {
+                archivo = "Tabla Catastral Urbana Condensada.";
+                formatoTabla = "/opt/GeneracionTitulos.jasper";
+                parametrosReporte.put("TITULO_REPORTE", "REPORTECITO");
+            }            
             Map<String, Class> paramRepA = new HashMap<String, Class>();
             paramRepA.put("tablaCatastral", claseImpresion);
             paramRepA.put("reporTablaCatastral", List.class);
-            Reporte reporte = new Reporte(ReporteGenerador.FormatoReporte.PDF, datosImpresion, paramRepA, formatoTabla, "/reporTablaCatastral//tablaCatastral", parametrosReporte);
+            ConfiguracionReporte reporte = new ConfiguracionReporte(ReporteGenerador.FormatoReporte.PDF, datosImpresion, paramRepA, formatoTabla, "/reporTablaCatastral//tablaCatastral", parametrosReporte);
             if (ComunUtil.esNulo(reporte)) {
                 return null;
             }

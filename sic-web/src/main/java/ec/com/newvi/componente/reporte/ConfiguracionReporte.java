@@ -9,6 +9,7 @@ import ec.com.newvi.sic.util.excepciones.NewviExcepcion;
 import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringReader;
 import java.io.StringWriter;
@@ -19,6 +20,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.Result;
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
@@ -27,14 +29,16 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.util.JRFontNotFoundException;
 import org.w3c.dom.Node;
 import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
 /**
  *
  * @author israelavila
  */
-public class Reporte {
+public class ConfiguracionReporte {
 
     private String archivoNombre;
     private String archivoRuta;
@@ -151,7 +155,7 @@ public class Reporte {
         this.xml = xml;
     }
 
-    public Reporte(ReporteGenerador.FormatoReporte formatoReporte, List informacionReporte, Map<String, Class> paramsXml, String nombreJasper, String xPath, Map<String, Object> adicionalesParams) throws NewviExcepcion {
+    public ConfiguracionReporte(ReporteGenerador.FormatoReporte formatoReporte, List informacionReporte, Map<String, Class> paramsXml, String nombreJasper, String xPath, Map<String, Object> adicionalesParams) throws NewviExcepcion {
         this.mimeType = formatoReporte;
         this.archivoJasperNombreRuta = nombreJasper;
         this.xpath = xPath;
@@ -190,9 +194,15 @@ public class Reporte {
                 String xmlHeader = "<?xml version=\"1.0\" encoding=\"" + "UTF-8" + "\" ?>\n";
                 this.xml = xmlHeader + this.xml;
             }
-            this.datos = ReporteGenerador.generarReporte(new FileInputStream(this.archivoJasperNombreRuta), Reporte.doc2bytes(DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new InputSource(new StringReader(this.xml)))), this.mimeType, this.params);
-        } catch (Exception e) {
-            throw new NewviExcepcion(EnumNewviExcepciones.ERR000);
+            this.datos = ReporteGenerador.generarReporte(new FileInputStream(this.archivoJasperNombreRuta), ConfiguracionReporte.doc2bytes(DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new InputSource(new StringReader(this.xml)))), this.mimeType, this.params);
+        } catch (IOException ex) {
+            throw new NewviExcepcion(EnumNewviExcepciones.ERR400, ex);
+        } catch (ParserConfigurationException | SAXException ex) {
+            throw new NewviExcepcion(EnumNewviExcepciones.ERR401, ex);
+        } catch (JRException ex) {
+            throw new NewviExcepcion(EnumNewviExcepciones.ERR402, ex);
+        } catch (JRFontNotFoundException ex) {
+            throw new NewviExcepcion(EnumNewviExcepciones.ERR403, ex);
         }
     }
     

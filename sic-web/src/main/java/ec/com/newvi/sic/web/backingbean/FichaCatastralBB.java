@@ -5,41 +5,30 @@
  */
 package ec.com.newvi.sic.web.backingbean;
 
-import ec.com.newvi.componente.reporte.Reporte;
-import ec.com.newvi.componente.reporte.ReporteGenerador;
 import ec.com.newvi.sic.dto.AvaluoDto;
-import ec.com.newvi.sic.dto.BloqueDto;
-import ec.com.newvi.sic.dto.CaracteristicasTerrenoDto;
 import ec.com.newvi.sic.dto.DominioDto;
 import ec.com.newvi.sic.dto.FichaCatastralDto;
 import ec.com.newvi.sic.dto.PresentacionFichaCatastral;
-import ec.com.newvi.sic.dto.PresentacionFichaCatastralDto;
-import ec.com.newvi.sic.dto.TablaCatastralDto;
-import ec.com.newvi.sic.dto.SesionDto;
-import ec.com.newvi.sic.dto.CaracteristicasEdificacionesDto;
 import ec.com.newvi.sic.enums.EnumEstadoPisoDetalle;
 import ec.com.newvi.sic.enums.EnumEstadoRegistro;
 import ec.com.newvi.sic.enums.EnumNewviExcepciones;
 import ec.com.newvi.sic.enums.EnumRelacionDominios;
+import ec.com.newvi.sic.enums.EnumReporte;
 import ec.com.newvi.sic.enums.EnumSiNo;
 import ec.com.newvi.sic.enums.EnumSitActual;
 import ec.com.newvi.sic.enums.EnumTenencia;
 import ec.com.newvi.sic.enums.EnumTipoPantalla;
 import ec.com.newvi.sic.enums.EnumTraslacion;
-import ec.com.newvi.sic.modelo.Avaluo;
 import ec.com.newvi.sic.modelo.Bloques;
-import ec.com.newvi.sic.modelo.ConstantesImpuestos;
 import ec.com.newvi.sic.modelo.Dominios;
 import ec.com.newvi.sic.modelo.Fotos;
 import ec.com.newvi.sic.modelo.ModeloPredioLazy;
 import ec.com.newvi.sic.modelo.PisoDetalle;
 import ec.com.newvi.sic.modelo.Pisos;
-import ec.com.newvi.sic.modelo.PredioLazy;
 import ec.com.newvi.sic.modelo.Predios;
 import ec.com.newvi.sic.modelo.Propiedad;
 import ec.com.newvi.sic.modelo.Servicios;
 import ec.com.newvi.sic.modelo.Terreno;
-import ec.com.newvi.sic.servicios.CatastroServicio;
 import ec.com.newvi.sic.util.ComunUtil;
 import ec.com.newvi.sic.util.excepciones.NewviExcepcion;
 import ec.com.newvi.sic.util.logs.LoggerNewvi;
@@ -48,22 +37,13 @@ import ec.com.newvi.sic.web.enums.EnumEtiquetas;
 import ec.com.newvi.sic.web.enums.EnumPantallaMantenimiento;
 import ec.com.newvi.sic.web.utils.ValidacionUtils;
 import ec.com.newvi.sic.web.utils.WebUtils;
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.math.RoundingMode;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
-import javax.websocket.OnOpen;
 import org.primefaces.event.NodeSelectEvent;
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.DefaultTreeNode;
@@ -79,8 +59,6 @@ import org.primefaces.model.TreeNode;
 
 public class FichaCatastralBB extends AdminFichaCatastralBB {
 
-    private Predios predio;
-    private Predios predioAvaluo;
     private Propiedad propiedadActual;
     private Propiedad propiedad;
     private List<FichaCatastralDto> listaFichas;
@@ -89,7 +67,6 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
     private List<AvaluoDto> nodo;
     private EnumPantallaMantenimiento pantallaActual;
     private Bloques bloqueSeleccionado;
-    private Bloques bloqueAvaluo;
     private TreeNode listaArbolServicios;
     private TreeNode listaArbolAvaluo;
     private TreeNode listaArbolDescripcionTerreno;
@@ -101,7 +78,6 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
     private List<Fotos> listaFotosPorPredio;
     private List<String> listaFotosJpg;
     private Pisos pisoSeleccionado;
-    private Pisos pisoAvaluo;
     private EnumEstadoPisoDetalle[] listaEstadosPisoDetalle;
     private EnumTenencia[] listaTenenciaDominios;
     private EnumTraslacion[] listaTraslacion;
@@ -169,14 +145,6 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
 
     public void setListaFichasLazy(LazyDataModel<FichaCatastralDto> listaFichasLazy) {
         this.listaFichasLazy = listaFichasLazy;
-    }
-
-    public Predios getPredio() {
-        return predio;
-    }
-
-    public void setPredio(Predios predio) {
-        this.predio = predio;
     }
 
     public List<FichaCatastralDto> getListaFichas() {
@@ -842,117 +810,14 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
 
     }
 
-    public DefaultStreamedContent imprimir(int tipoReporte, Date fecavFechaavaluo) {
-        return generarReportes(tipoReporte, fecavFechaavaluo);
-    }
-
-    protected DefaultStreamedContent generarReportes(int tipoReporte, Date fecavFechaavaluo) {
-        try {
-            String archivo = "Tabla Catastral Urbana.";
-            DefaultStreamedContent dscXlsPa;
-            List datosImpresion;
-            Class claseImpresion = TablaCatastralDto.class;
-            //BloqueDto bloques;
-            CaracteristicasEdificacionesDto bloques;
-            Map<String, Object> parametrosReporte = new HashMap<>();
-            List<Avaluo> listaAvaluos = generarListaAvaluo();
-            List<PresentacionFichaCatastralDto> tablita = new ArrayList<>();
-            tablita.add(new PresentacionFichaCatastralDto(this.predio));
-            //datosImpresion = obtenerListadoAvaluos(listaAvaluos);
-            datosImpresion = obtenerListadoAvaluos(catastroServicio.consultarAvaluos(fecavFechaavaluo));
-            String formatoTabla = "/opt/tablaCatastralUrbana.jasper";
-            if (tipoReporte == 0) {
-                archivo = "Tabla Catastral Urbana Condensada.";
-                formatoTabla = "/opt/newReport.jasper";
-                parametrosReporte.put("TITULO_REPORTE", "REPORTECITO");
-            }
-            if (tipoReporte == 1) {
-                archivo = "Ficha Relevamiento Predial Urbano.";
-                formatoTabla = "/opt/fichaRelevamientoPredialUrbano.jasper";
-
-                bloques = new CaracteristicasEdificacionesDto(this.predio);
-                datosImpresion = tablita;
-                claseImpresion = PresentacionFichaCatastralDto.class;
-                parametrosReporte.put("DESCRIPCION_TERRENO", tablita.get(0).getListaDescripcionTerreno());
-                parametrosReporte.put("INFRAESTRUCTURA_SERVICIOS", tablita.get(0).getListaServicios());
-                parametrosReporte.put("CARACTERISTICAS_EDIFICACION", tablita.get(0).getListaBloques());
-                parametrosReporte.put("PISO", bloques.getListadetallesPisoDtoD());
-            }
-
-            if (tipoReporte == 2) {
-                datosImpresion = tablita;
-                claseImpresion = PresentacionFichaCatastralDto.class;
-                archivo = "Notificacion Avalúo.";
-                formatoTabla = "/opt/notificacionAvaluo.jasper";
-            }
-            if (tipoReporte == 3) {
-                datosImpresion = tablita;
-                claseImpresion = PresentacionFichaCatastralDto.class;
-                archivo = "Certificación Avalúo.";
-                formatoTabla = "/opt/certificacionAvaluo.jasper";
-
-            }
-            if (tipoReporte == 4) {
-                datosImpresion = tablita;
-                claseImpresion = PresentacionFichaCatastralDto.class;
-                archivo = "Titulo Crédito.";
-                formatoTabla = "/opt/tituloCredito.jasper";
-            }
-
-            Map<String, Class> paramRepA = new HashMap<String, Class>();
-            paramRepA.put("tablaCatastral", claseImpresion);
-            paramRepA.put("reporTablaCatastral", List.class);
-            Reporte reporte = new Reporte(ReporteGenerador.FormatoReporte.PDF, datosImpresion, paramRepA, formatoTabla, "/reporTablaCatastral//tablaCatastral", parametrosReporte);
-            if (ComunUtil.esNulo(reporte)) {
-                return null;
-            }
-            InputStream streamPa = new ByteArrayInputStream((byte[]) reporte.getDatos());
-            dscXlsPa = new DefaultStreamedContent(streamPa, reporte.getMimeType().name(), archivo + reporte.getArchivoExtension());
-            streamPa.reset();
-            streamPa.close();
-            return dscXlsPa;
-        } catch (IOException ex) {
-            LoggerNewvi.getLogNewvi(this.getClass()).error(ex, sesionBean.obtenerSesionDto());
-            MensajesFaces.mensajeError(ex.getMessage());
+    public DefaultStreamedContent imprimir(EnumReporte tipoReporte) {
+        /*try {
+            MensajesFaces.mensajeInformacion(geoCatastroServicio.obtenerBordesPredio(predio, BigDecimal.valueOf(256), BigDecimal.valueOf(512), sesionBean.obtenerSesionDto()));
         } catch (Exception ex) {
             LoggerNewvi.getLogNewvi(this.getClass()).error(ex, sesionBean.obtenerSesionDto());
             return null;
-        }
-        return null;
-    }
-
-    public List<Avaluo> generarListaAvaluo() {
-        return catastroServicio.consultarListaAvaluosActuales();
-    }
-
-    public List<TablaCatastralDto> obtenerListadoAvaluos(List<Avaluo> listaAvaluos) {
-        List<TablaCatastralDto> datosImpresion = new ArrayList<>();
-        TablaCatastralDto datosAvaluo;
-        for (Avaluo avaluo : listaAvaluos) {
-            datosAvaluo = new TablaCatastralDto();
-            datosAvaluo.setCodigoCatastral(avaluo.getCodCatastral().getCodCatastral().toString());
-            datosAvaluo.setNombreCodigoCatastral(avaluo.getNomCodigocatastral());
-            datosAvaluo.setPropietario(avaluo.getNomnomape());
-            datosAvaluo.setCiRuc(avaluo.getCodCedularuc());
-            datosAvaluo.setBarrio(avaluo.getStsBarrio());
-            datosAvaluo.setDireccion(avaluo.getTxtDireccion());
-            datosAvaluo.setAvaluoTerreno(avaluo.getValTerreno());
-            datosAvaluo.setAreaTerreno(avaluo.getValTerreno());
-            datosAvaluo.setAreaEdificacion(avaluo.getValAreaconstruccion());
-            datosAvaluo.setAvaluoEdificacion(avaluo.getValEdifica());
-            datosAvaluo.setAvaluoPredio(avaluo.getValPredio());
-            datosAvaluo.setAreaPredio(avaluo.getValAreapredio());
-            datosAvaluo.setImpuestoPredial(avaluo.getValImpuesto());
-            datosAvaluo.setContribucionEspecialMejoras(avaluo.getValCem());
-            datosAvaluo.setTasaRecoleccionBasura(avaluo.getValBasura());
-            datosAvaluo.setCostoEmision(avaluo.getValEmision());
-            datosAvaluo.setTasaBomberos(avaluo.getValBomberos());
-            datosAvaluo.setServiciosAmbientales(avaluo.getValAmbientales());
-            datosAvaluo.setTotalAPagar(avaluo.getValImppredial());
-            datosAvaluo.setObservaciones(avaluo.getCatCasosespeciales());
-            datosImpresion.add(datosAvaluo);
-        }
-        return datosImpresion;
+        }*/
+        return generarReporteCatastro(tipoReporte);
     }
 
     public void seleccionPantallas() {
