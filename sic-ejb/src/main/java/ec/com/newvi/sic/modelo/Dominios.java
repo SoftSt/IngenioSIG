@@ -9,6 +9,8 @@ import ec.com.newvi.sic.enums.EnumEstadoRegistro;
 import ec.com.newvi.sic.enums.EnumRelacionDominios;
 import ec.com.newvi.sic.util.ComunUtil;
 import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.Collection;
 //import java.math.BigDecimal;
 import java.util.Date;
 import javax.persistence.Basic;
@@ -18,6 +20,7 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -33,6 +36,14 @@ import javax.validation.constraints.Size;
 @Table(name = "cat_cat_dominios", schema = "public")
 
 public class Dominios implements Serializable {
+
+    
+    
+    
+    
+    
+    @OneToMany(mappedBy = "domiId")
+    private Collection<DetallesAvaluo> detallesAvaluoCollection;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -147,7 +158,7 @@ public class Dominios implements Serializable {
     public EnumRelacionDominios getDomiRelacion() {
         return domiRelacion;
     }
-
+    
     public void setDomiRelacion(EnumRelacionDominios domiRelacion) {
         this.domiRelacion = domiRelacion;
     }
@@ -334,5 +345,12 @@ public class Dominios implements Serializable {
     public Boolean esDominioValido(){
         return (!ComunUtil.esNulo(this.domiCodigo));
     }
-    
+
+    public Collection<DetallesAvaluo> getDetallesAvaluoCollection() {
+        return detallesAvaluoCollection;
+    }
+
+    public void setDetallesAvaluoCollection(Collection<DetallesAvaluo> detallesAvaluoCollection) {
+        this.detallesAvaluoCollection = detallesAvaluoCollection;
+    }
 }

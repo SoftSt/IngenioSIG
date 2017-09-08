@@ -9,6 +9,7 @@ import ec.com.newvi.sic.dto.AvaluoDto;
 import ec.com.newvi.sic.dto.SesionDto;
 import ec.com.newvi.sic.modelo.Avaluo;
 import ec.com.newvi.sic.modelo.Bloques;
+import ec.com.newvi.sic.modelo.DetallesAvaluo;
 import ec.com.newvi.sic.modelo.FechaAvaluo;
 import ec.com.newvi.sic.modelo.Fotos;
 import ec.com.newvi.sic.modelo.PisoDetalle;
@@ -348,4 +349,21 @@ public interface CatastroServicio {
      * @return lista de avaluos
      */
     public List<Avaluo> consultarListaAvaluosPorFecha(String fechaAvaluo);
+    
+    /*------------------------------------------------------------Detalles Avaluo------------------------------------------------------------*/
+    /**
+     * Lista los detalles de avaluo
+     * @return lista de detalles de avaluo
+     */
+    public List<DetallesAvaluo> consultarListaDetallesAvaluo();
+    
+    /**
+     * Genera un nuevo detalle de avaluo
+     * @param nuevoDetalleAvaluo nuevo detalle avaluo
+     * @param sesion Usuario que genera el detalle de avalúo
+     * @return el codigo del detalle avaluo generado
+     * @throws NewviExcepcion 
+     */
+    public Integer generarNuevoDetalleAvaluo(DetallesAvaluo nuevoDetalleAvaluo, SesionDto sesion) throws NewviExcepcion;
+    
 }

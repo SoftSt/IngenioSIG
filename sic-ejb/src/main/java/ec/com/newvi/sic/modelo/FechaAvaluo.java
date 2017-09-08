@@ -8,6 +8,7 @@ package ec.com.newvi.sic.modelo;
 import ec.com.newvi.sic.enums.EnumEstadoRegistro;
 import ec.com.newvi.sic.util.ComunUtil;
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -17,6 +18,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -31,6 +33,19 @@ import javax.validation.constraints.Size;
 @Table(name = "cat_cat_fechaavaluo")
 
 public class FechaAvaluo implements Serializable {
+
+
+    @Column(name = "fechaavaluo")
+    @Temporal(TemporalType.TIME)
+    private Date fechaavaluo;
+    @Column(name = "fech")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fech;
+    @Column(name = "fe")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date fe;
+    @OneToMany(mappedBy = "fecavId")
+    private Collection<DetallesAvaluo> detallesAvaluoCollection;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -180,5 +195,39 @@ public class FechaAvaluo implements Serializable {
     
     public Boolean esFechaAvaluoValido() {
         return (!ComunUtil.esNulo(this.fecavEstado));
+    }
+
+   
+
+    public Date getFechaavaluo() {
+        return fechaavaluo;
+    }
+
+    public void setFechaavaluo(Date fechaavaluo) {
+        this.fechaavaluo = fechaavaluo;
+    }
+
+    public Date getFech() {
+        return fech;
+    }
+
+    public void setFech(Date fech) {
+        this.fech = fech;
+    }
+
+    public Date getFe() {
+        return fe;
+    }
+
+    public void setFe(Date fe) {
+        this.fe = fe;
+    }
+
+    public Collection<DetallesAvaluo> getDetallesAvaluoCollection() {
+        return detallesAvaluoCollection;
+    }
+
+    public void setDetallesAvaluoCollection(Collection<DetallesAvaluo> detallesAvaluoCollection) {
+        this.detallesAvaluoCollection = detallesAvaluoCollection;
     }
 }

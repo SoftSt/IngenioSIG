@@ -35,6 +35,9 @@ import javax.validation.constraints.Size;
 
 public class Predios implements Serializable {
 
+    @OneToMany(mappedBy = "codCatastral")
+    private Collection<DetallesAvaluo> detallesAvaluoCollection;
+
     @Size(max = 100)
     @Column(name = "nom_predio")
     private String nomPredio;
@@ -734,6 +737,14 @@ public class Predios implements Serializable {
 
     public void setAvaluoCollection(Collection<Avaluo> avaluoCollection) {
         this.avaluoCollection = avaluoCollection;
+    }
+
+    public Collection<DetallesAvaluo> getDetallesAvaluoCollection() {
+        return detallesAvaluoCollection;
+    }
+
+    public void setDetallesAvaluoCollection(Collection<DetallesAvaluo> detallesAvaluoCollection) {
+        this.detallesAvaluoCollection = detallesAvaluoCollection;
     }
 
 }
