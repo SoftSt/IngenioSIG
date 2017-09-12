@@ -3,12 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ec.com.newvi.sic.web.backingbean;
+package ec.com.newvi.sic.enums;
 
 /**
  *
  * @author israelavila
  */
-public abstract class AdminSeguridadesBB extends SistemaBB {
-
+public enum EnumGrupoParametroSistema {
+    DATOS_SISTEMA,
+    DATOS_MUNICIPIO
 }

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isIgnorePagination="true" uuid="1312ccb7-b94d-4126-982d-4fbcc8dc4521">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="1312ccb7-b94d-4126-982d-4fbcc8dc4521">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="48"/>
+	<property name="ireport.y" value="480"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -87,8 +87,8 @@
 		<field name="valNropisos" class="java.lang.String"/>
 	</subDataset>
 	<subDataset name="dataset4" uuid="b669ec50-2310-4e82-8157-c9ff15bde5d5">
-		<parameter name="ARCHIVO_REPORTE" class="java.lang.String">
-			<defaultValueExpression><![CDATA[$P{ARCHIVO_REPORTE}]]></defaultValueExpression>
+		<parameter name="RUTA_REPORTES" class="java.lang.String">
+			<defaultValueExpression><![CDATA[$P{RUTA_REPORTES}]]></defaultValueExpression>
 		</parameter>
 		<field name="nomBloque" class="java.lang.String"/>
 		<field name="nomPiso" class="java.lang.String"/>
@@ -110,8 +110,14 @@
 	<parameter name="CARACTERISTICAS_EDIFICACION" class="java.util.Collection"/>
 	<parameter name="PISO" class="java.util.Collection"/>
 	<parameter name="COLECCION_DETALLE" class="java.util.Collection"/>
-	<parameter name="ARCHIVO_REPORTE" class="java.lang.String"/>
+	<parameter name="RUTA_REPORTES" class="java.lang.String"/>
 	<parameter name="RUTA_IMAGENES" class="java.lang.String"/>
+	<parameter name="TITULO_REPORTE" class="java.lang.String"/>
+	<parameter name="NOMBRE_MODULO" class="java.lang.String"/>
+	<parameter name="NOMBRE_USUARIO" class="java.lang.String"/>
+	<parameter name="NOMBRE_SISTEMA" class="java.lang.String"/>
+	<parameter name="NOMBRE_MUNICIPIO" class="java.lang.String"/>
+	<parameter name="IMAGEN_DELIMITACION_PREDIO" class="java.lang.String"/>
 	<field name="nomCodigocatastral" class="java.lang.String"/>
 	<field name="nomCodigocatastralanterior" class="java.lang.String"/>
 	<field name="codDpa" class="java.lang.String"/>
@@ -164,34 +170,41 @@
 					<reportElement x="490" y="1" width="64" height="64" uuid="08f8d8cf-c694-43c7-8a70-012fbe72c18b"/>
 					<imageExpression><![CDATA[$P{RUTA_IMAGENES}+"logo1.png"]]></imageExpression>
 				</image>
-				<staticText>
-					<reportElement x="98" y="0" width="359" height="17" uuid="a55a0133-75e3-4c78-ab19-11fe0e52a16b"/>
-					<textElement textAlignment="Center">
-						<font fontName="SansSerif" size="13" isBold="true"/>
-					</textElement>
-					<text><![CDATA[GOBIERNO MUNICIPAL DE PEDRO VICENTE]]></text>
-				</staticText>
 				<textField pattern="dd/MM/yy">
-					<reportElement x="393" y="44" width="64" height="20" uuid="f9f197c1-0519-4b99-8b20-0b9020997fe9"/>
+					<reportElement x="393" y="47" width="64" height="18" uuid="f9f197c1-0519-4b99-8b20-0b9020997fe9"/>
 					<textElement verticalAlignment="Top">
 						<font fontName="SansSerif" size="8" isBold="true"/>
 					</textElement>
 					<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
 				</textField>
-				<staticText>
-					<reportElement x="98" y="17" width="359" height="14" uuid="b1072e7d-a2a9-4799-944b-1934c4b27cc6"/>
-					<textElement textAlignment="Center">
-						<font fontName="SansSerif" size="11" isBold="true"/>
+				<textField>
+					<reportElement x="98" y="34" width="359" height="13" uuid="1fee90af-82ae-4839-a5a9-1e487de63707"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="10" isBold="true"/>
 					</textElement>
-					<text><![CDATA[CATASTRO PREDIAL URBANO]]></text>
-				</staticText>
-				<staticText>
-					<reportElement x="98" y="31" width="359" height="13" uuid="c1bd3d6c-dc2a-4747-abc7-95c3ca7a66c9"/>
-					<textElement textAlignment="Center">
-						<font fontName="SansSerif" size="10" isBold="true"/>
+					<textFieldExpression><![CDATA[$P{TITULO_REPORTE}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="98" y="17" width="359" height="17" uuid="4622b146-efd5-4788-98ae-60bbd15165da"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="11" isBold="true"/>
 					</textElement>
-					<text><![CDATA[FICHA DE RELEVAMIENTO PREDIAL URBANO]]></text>
-				</staticText>
+					<textFieldExpression><![CDATA[$P{NOMBRE_MODULO}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="98" y="0" width="359" height="17" uuid="1280ca40-be6b-44f1-9ee7-fba4f121870a"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="13" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{NOMBRE_MUNICIPIO}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="76" y="47" width="310" height="15" uuid="115bdc0e-8919-4344-bc1a-30ba2737a28a"/>
+					<textElement>
+						<font size="7"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{IMAGEN_DELIMITACION_PREDIO}]]></textFieldExpression>
+				</textField>
 			</frame>
 		</band>
 	</title>
@@ -809,15 +822,15 @@ DE REFERENCIA:
 				<text><![CDATA[R. TENENCIA]]></text>
 			</staticText>
 		</band>
-		<band height="157">
+		<band height="281">
 			<line>
-				<reportElement x="0" y="0" width="1" height="156" uuid="c2814850-6699-4432-a408-5bdbbfad1968"/>
+				<reportElement x="0" y="0" width="1" height="281" uuid="c2814850-6699-4432-a408-5bdbbfad1968"/>
 			</line>
 			<line>
-				<reportElement x="555" y="0" width="1" height="157" uuid="9c96ce9d-2c88-4560-b969-ca310c070490"/>
+				<reportElement x="555" y="0" width="1" height="281" uuid="9c96ce9d-2c88-4560-b969-ca310c070490"/>
 			</line>
 			<line>
-				<reportElement x="20" y="110" width="535" height="1" uuid="54a05198-506c-4a32-a597-22398119cec1"/>
+				<reportElement x="19" y="233" width="535" height="1" uuid="54a05198-506c-4a32-a597-22398119cec1"/>
 			</line>
 			<staticText>
 				<reportElement x="21" y="0" width="368" height="15" uuid="c47a6011-b01d-4515-80ca-72b187ccfd5d"/>
@@ -827,7 +840,70 @@ DE REFERENCIA:
 				<text><![CDATA[8. DELIMITACION Y DIMENSIONAMIENTO DEL PREDIO]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="1" y="0" width="19" height="110" uuid="44fa6f9a-8f42-4abe-8917-fa17f9a39ee3"/>
+				<reportElement x="21" y="264" width="45" height="15" uuid="545c88b4-61b9-4edc-9fff-7c2bea193404"/>
+				<textElement>
+					<font fontName="SansSerif" size="6" isBold="true"/>
+				</textElement>
+				<text><![CDATA[SUR:]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="348" y="249" width="184" height="15" uuid="4c2251fc-16d4-4f7b-b8cd-acf5e148ba81"/>
+				<textElement>
+					<font fontName="SansSerif" size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{txtEste}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="21" y="234" width="229" height="15" uuid="7dd0c2fc-22d2-42d5-85bc-c14553084222"/>
+				<textElement>
+					<font fontName="SansSerif" size="7" isBold="true"/>
+				</textElement>
+				<text><![CDATA[9. COLINDANTES]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="66" y="264" width="184" height="15" uuid="3cc3ce46-a792-4925-96c7-6d82f045c47a"/>
+				<textElement>
+					<font fontName="SansSerif" size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{txtSur}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="303" y="264" width="45" height="15" uuid="a5057f1d-4a4a-48c9-b895-845a08a07016"/>
+				<textElement>
+					<font fontName="SansSerif" size="6" isBold="true"/>
+				</textElement>
+				<text><![CDATA[OESTE:]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="66" y="249" width="184" height="15" uuid="51c00268-e44e-4557-8849-5e88d1fc7cf9"/>
+				<textElement>
+					<font fontName="SansSerif" size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{txtNorte}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="21" y="249" width="45" height="15" uuid="b35ea30b-259f-4f77-939a-94b07d6a907c"/>
+				<textElement>
+					<font fontName="SansSerif" size="6" isBold="true"/>
+				</textElement>
+				<text><![CDATA[NORTE: ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="303" y="249" width="45" height="15" uuid="9edb06ec-7345-41d9-bf22-73e7082e4bd2"/>
+				<textElement>
+					<font fontName="SansSerif" size="6" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ESTE:]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="348" y="264" width="184" height="15" uuid="14b2b085-3e7d-43e6-9c5d-221a6d101543"/>
+				<textElement>
+					<font fontName="SansSerif" size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{txtOeste}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="1" y="0" width="19" height="281" uuid="44fa6f9a-8f42-4abe-8917-fa17f9a39ee3"/>
 				<box>
 					<rightPen lineWidth="1.0"/>
 				</box>
@@ -836,69 +912,10 @@ DE REFERENCIA:
 				</textElement>
 				<text><![CDATA[01 IDENTIFICACIÓN ]]></text>
 			</staticText>
-			<staticText>
-				<reportElement x="21" y="141" width="45" height="15" uuid="545c88b4-61b9-4edc-9fff-7c2bea193404"/>
-				<textElement>
-					<font fontName="SansSerif" size="6" isBold="true"/>
-				</textElement>
-				<text><![CDATA[SUR:]]></text>
-			</staticText>
-			<textField isBlankWhenNull="true">
-				<reportElement x="348" y="126" width="184" height="15" uuid="4c2251fc-16d4-4f7b-b8cd-acf5e148ba81"/>
-				<textElement>
-					<font fontName="SansSerif" size="7"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{txtEste}]]></textFieldExpression>
-			</textField>
-			<staticText>
-				<reportElement x="21" y="111" width="229" height="15" uuid="7dd0c2fc-22d2-42d5-85bc-c14553084222"/>
-				<textElement>
-					<font fontName="SansSerif" size="7" isBold="true"/>
-				</textElement>
-				<text><![CDATA[9. COLINDANTES]]></text>
-			</staticText>
-			<textField isBlankWhenNull="true">
-				<reportElement x="66" y="141" width="184" height="15" uuid="3cc3ce46-a792-4925-96c7-6d82f045c47a"/>
-				<textElement>
-					<font fontName="SansSerif" size="7"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{txtSur}]]></textFieldExpression>
-			</textField>
-			<staticText>
-				<reportElement x="303" y="141" width="45" height="15" uuid="a5057f1d-4a4a-48c9-b895-845a08a07016"/>
-				<textElement>
-					<font fontName="SansSerif" size="6" isBold="true"/>
-				</textElement>
-				<text><![CDATA[OESTE:]]></text>
-			</staticText>
-			<textField isBlankWhenNull="true">
-				<reportElement x="66" y="126" width="184" height="15" uuid="51c00268-e44e-4557-8849-5e88d1fc7cf9"/>
-				<textElement>
-					<font fontName="SansSerif" size="7"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{txtNorte}]]></textFieldExpression>
-			</textField>
-			<staticText>
-				<reportElement x="21" y="126" width="45" height="15" uuid="b35ea30b-259f-4f77-939a-94b07d6a907c"/>
-				<textElement>
-					<font fontName="SansSerif" size="6" isBold="true"/>
-				</textElement>
-				<text><![CDATA[NORTE: ]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="303" y="126" width="45" height="15" uuid="9edb06ec-7345-41d9-bf22-73e7082e4bd2"/>
-				<textElement>
-					<font fontName="SansSerif" size="6" isBold="true"/>
-				</textElement>
-				<text><![CDATA[ESTE:]]></text>
-			</staticText>
-			<textField isBlankWhenNull="true">
-				<reportElement x="348" y="141" width="184" height="15" uuid="14b2b085-3e7d-43e6-9c5d-221a6d101543"/>
-				<textElement>
-					<font fontName="SansSerif" size="7"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{txtOeste}]]></textFieldExpression>
-			</textField>
+			<image>
+				<reportElement x="20" y="25" width="533" height="195" uuid="4e23c340-a09d-4222-85d6-98cacae20a7e"/>
+				<imageExpression><![CDATA["http://192.168.100.120:8080/geoserver/wms?LAYERS=nwi_catastro%3Abase_predios,nwi_catastro%3Aap031_via,nwi_catastro%3Ahe002_lote&SERVICE=WMS&VERSION=1.1.1&REQUEST=GetMap&STYLES=&FORMAT=image%2Fjpeg&SRS=EPSG%3A900913&WIDTH=533&HEIGHT=195&BBOX=" + $P{IMAGEN_DELIMITACION_PREDIO}]]></imageExpression>
+			</image>
 		</band>
 		<band height="37">
 			<frame>

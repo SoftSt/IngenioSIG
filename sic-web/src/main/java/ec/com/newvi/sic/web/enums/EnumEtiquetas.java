@@ -136,7 +136,16 @@ public enum EnumEtiquetas {
     PARAMETROS_EDITAR_DESCRIPCION("Edición de Parametros seleccionado."),
     FORMULARIO_ECONOMICO_LISTA_TITULO("Formulario Económico"),
     FORMULARIO_ECONOMICO_LISTA_ICONO("fa fa-money"),
-    FORMULARIO_ECONOMICO_LISTA_DESCRIPCION("Gestión de formularios económicos."),;
+    FORMULARIO_ECONOMICO_LISTA_DESCRIPCION("Gestión de formularios económicos."),
+    PARAMETROS_SISTEMA_LISTA_TITULO("Parámetros del Sistema"),
+    PARAMETROS_SISTEMA_LISTA_ICONO("fa fa-list-ul"),
+    PARAMETROS_SISTEMA_LISTA_DESCRIPCION("Gestión de Parámetros en el sistema SIGC."),
+    PARAMETROS_SISTEMA_NUEVO_TITULO("Nuevo Parámetro del sistema"),
+    PARAMETROS_SISTEMA_NUEVO_ICONO("fa fa-plus"),
+    PARAMETROS_SISTEMA_NUEVO_DESCRIPCION("Creación de nuevo Parametro del Sistema."),
+    PARAMETROS_SISTEMA_EDITAR_TITULO("Editar Parámetro del Sistema"),
+    PARAMETROS_SISTEMA_EDITAR_ICONO("fa fa-edit"),
+    PARAMETROS_SISTEMA_EDITAR_DESCRIPCION("Edición de Parámetros seleccionado.");
     
     private final String textoEtiqueta;
 

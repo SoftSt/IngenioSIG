@@ -62,14 +62,14 @@ public class AsignacionPermisosBB extends AdminSeguridadesBB {
     
         public void insertarAsignacion() {
         try {
-            seguridadesServicio.generarNuevaAsignacion(asignacionPermisos, sesionBean.obtenerSesionDto());
+            seguridadesServicio.generarNuevaAsignacion(asignacionPermisos, sesionBean.getSesion());
             actualizarListadoAsignaciones();
             MensajesFaces.mensajeInformacion(EnumNewviExcepciones.INF314.presentarMensaje());
         } catch (NewviExcepcion e) {
-            LoggerNewvi.getLogNewvi(this.getClass()).error(e, sesionBean.obtenerSesionDto());
+            LoggerNewvi.getLogNewvi(this.getClass()).error(e, sesionBean.getSesion());
             MensajesFaces.mensajeError(e.getMessage());
         } catch (Exception e) {
-            LoggerNewvi.getLogNewvi(this.getClass()).error(EnumNewviExcepciones.ERR000.presentarMensajeCodigo(), e, sesionBean.obtenerSesionDto());
+            LoggerNewvi.getLogNewvi(this.getClass()).error(EnumNewviExcepciones.ERR000.presentarMensajeCodigo(), e, sesionBean.getSesion());
             MensajesFaces.mensajeError(e.getMessage());
         }
     }
@@ -79,14 +79,14 @@ public class AsignacionPermisosBB extends AdminSeguridadesBB {
             insertarAsignacion();
         } else {
             try {
-                seguridadesServicio.actualizarAsignacion(asignacionPermisos, sesionBean.obtenerSesionDto());
+                seguridadesServicio.actualizarAsignacion(asignacionPermisos, sesionBean.getSesion());
                 actualizarListadoAsignaciones();
                 MensajesFaces.mensajeInformacion(EnumNewviExcepciones.INF316.presentarMensaje());
             } catch (NewviExcepcion e) {
-                LoggerNewvi.getLogNewvi(this.getClass()).error(e, sesionBean.obtenerSesionDto());
+                LoggerNewvi.getLogNewvi(this.getClass()).error(e, sesionBean.getSesion());
                 MensajesFaces.mensajeError(e.getMessage());
             } catch (Exception e) {
-                LoggerNewvi.getLogNewvi(this.getClass()).error(EnumNewviExcepciones.ERR000.presentarMensajeCodigo(), e, sesionBean.obtenerSesionDto());
+                LoggerNewvi.getLogNewvi(this.getClass()).error(EnumNewviExcepciones.ERR000.presentarMensajeCodigo(), e, sesionBean.getSesion());
                 MensajesFaces.mensajeError(e.getMessage());
             }
         }
@@ -96,18 +96,18 @@ public class AsignacionPermisosBB extends AdminSeguridadesBB {
         try {
             this.seleccionarAsignacionPorCodigo(idAsignacion);
             if (!ComunUtil.esNulo(asignacionPermisos)) {
-                seguridadesServicio.eliminarAsignacion(asignacionPermisos, sesionBean.obtenerSesionDto());
+                seguridadesServicio.eliminarAsignacion(asignacionPermisos, sesionBean.getSesion());
                 MensajesFaces.mensajeInformacion(EnumNewviExcepciones.INF312.presentarMensaje());
                 actualizarListadoAsignaciones();
             } else {
-                LoggerNewvi.getLogNewvi(this.getClass()).error(EnumNewviExcepciones.ERR010.presentarMensajeCodigo(), sesionBean.obtenerSesionDto());
+                LoggerNewvi.getLogNewvi(this.getClass()).error(EnumNewviExcepciones.ERR010.presentarMensajeCodigo(), sesionBean.getSesion());
                 MensajesFaces.mensajeError(EnumNewviExcepciones.ERR010.presentarMensajeCodigo());
             }
         } catch (NewviExcepcion e) {
-            LoggerNewvi.getLogNewvi(this.getClass()).error(e, sesionBean.obtenerSesionDto());
+            LoggerNewvi.getLogNewvi(this.getClass()).error(e, sesionBean.getSesion());
             MensajesFaces.mensajeError(e.getMessage());
         } catch (Exception e) {
-            LoggerNewvi.getLogNewvi(this.getClass()).error(EnumNewviExcepciones.ERR000.presentarMensajeCodigo(), e, sesionBean.obtenerSesionDto());
+            LoggerNewvi.getLogNewvi(this.getClass()).error(EnumNewviExcepciones.ERR000.presentarMensajeCodigo(), e, sesionBean.getSesion());
             MensajesFaces.mensajeError(e.getMessage());
         }
 
@@ -119,7 +119,7 @@ public class AsignacionPermisosBB extends AdminSeguridadesBB {
         } catch (NewviExcepcion e) {
             MensajesFaces.mensajeError(e.getMessage());
         } catch (Exception e) {
-            LoggerNewvi.getLogNewvi(this.getClass()).error(EnumNewviExcepciones.ERR000.presentarMensajeCodigo(), e, sesionBean.obtenerSesionDto());
+            LoggerNewvi.getLogNewvi(this.getClass()).error(EnumNewviExcepciones.ERR000.presentarMensajeCodigo(), e, sesionBean.getSesion());
             MensajesFaces.mensajeError(EnumNewviExcepciones.ERR000.presentarMensajeCodigo());
         }
     }

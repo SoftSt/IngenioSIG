@@ -7,14 +7,18 @@ package ec.com.newvi.sic.servicios.impl;
 
 import ec.com.newvi.sic.dao.ConstantesImpuestosFacade;
 import ec.com.newvi.sic.dao.DominiosFacade;
+import ec.com.newvi.sic.dao.ParametroSistemaFacade;
 import ec.com.newvi.sic.dao.ReporteFacade;
 import ec.com.newvi.sic.dto.DominioDto;
 import ec.com.newvi.sic.enums.EnumEstadoRegistro;
 import ec.com.newvi.sic.dto.SesionDto;
+import ec.com.newvi.sic.enums.EnumGrupoParametroSistema;
 import ec.com.newvi.sic.enums.EnumNewviExcepciones;
+import ec.com.newvi.sic.enums.EnumParametroSistema;
 import ec.com.newvi.sic.enums.EnumReporte;
 import ec.com.newvi.sic.modelo.ConstantesImpuestos;
 import ec.com.newvi.sic.modelo.Dominios;
+import ec.com.newvi.sic.modelo.ParametroSistema;
 import ec.com.newvi.sic.modelo.PisoDetalle;
 import ec.com.newvi.sic.modelo.Pisos;
 import ec.com.newvi.sic.modelo.Predios;
@@ -47,7 +51,80 @@ public class ParametrosServicioImpl implements ParametrosServicio {
     private ConstantesImpuestosFacade constantesFacade;
     @EJB
     private ReporteFacade reporteFacade;
+    @EJB
+    private ParametroSistemaFacade parametroSistemaFacade;
 
+    /*---------------------------------------------------- Parámetros del Sistema ----------------------------------------------------*/
+
+    @Override
+    public String generarNuevoParametroSistema(ParametroSistema nuevoParametroSistema, SesionDto sesion) throws NewviExcepcion {
+        // Validar que los datos no sean incorrectos
+        LoggerNewvi.getLogNewvi(this.getClass()).debug("Validando parámetro del sistema...", sesion);
+        if (!nuevoParametroSistema.esParametroSistemaValido()) {
+            throw new NewviExcepcion(EnumNewviExcepciones.ERR301);
+        }
+        // Crear el usuario
+        LoggerNewvi.getLogNewvi(this.getClass()).debug("Creando parámetro del sistema...", sesion);
+        
+        Date fechaIngreso = Calendar.getInstance().getTime();
+        
+        //Registramos la auditoria de ingreso
+        nuevoParametroSistema.setAudIngIp(sesion.getDireccionIP());
+        nuevoParametroSistema.setAudIngUsu(sesion.getUsuarioRegistrado().getUsuUsuario().trim());
+        
+        nuevoParametroSistema.setAudIngFec(fechaIngreso);
+        
+        
+        parametroSistemaFacade.create(nuevoParametroSistema);
+        // Si todo marcha bien enviar nombre de usuario
+        return nuevoParametroSistema.getParametro().name();
+    }
+
+    @Override
+    public String actualizarParametroSistema(ParametroSistema parametroSistema, SesionDto sesion) throws NewviExcepcion {
+        // Validar que los datos no sean incorrectos
+        LoggerNewvi.getLogNewvi(this.getClass()).debug("Validando parámetro del sistema...", sesion);
+        if (!parametroSistema.esParametroSistemaValido()) {
+            throw new NewviExcepcion(EnumNewviExcepciones.ERR451);
+        }
+        // Acturlizar el parámetro
+        LoggerNewvi.getLogNewvi(this.getClass()).debug("Editando parámetro del sistema...", sesion);
+        
+        //Registramos la auditoria de modificacion
+        parametroSistema.setAudModIp(sesion.getDireccionIP());
+        parametroSistema.setAudModUsu(sesion.getUsuarioRegistrado().getUsuPalabraclave().trim());
+        Date fechaModificacion = Calendar.getInstance().getTime();
+        parametroSistema.setAudModFec(fechaModificacion);
+        
+        parametroSistemaFacade.edit(parametroSistema);
+        // Si todo marcha bien enviar nombre de usuario
+        return parametroSistema.getParametro().name();
+    }
+
+    @Override
+    public ParametroSistema seleccionarParametroSistema(Integer codParametro) throws NewviExcepcion {
+        if (ComunUtil.esNumeroPositivo(codParametro)) {
+            return parametroSistemaFacade.find(codParametro);
+        } else {
+            throw new NewviExcepcion(EnumNewviExcepciones.ERR011);
+        }
+    }
+
+    @Override
+    public List<ParametroSistema> obtenerListaParametrosSistema(SesionDto sesion) throws NewviExcepcion {
+        return obtenerListaParametrosSistemaPorTipo(null, sesion);
+    }
+
+    @Override
+    public List<ParametroSistema> obtenerListaParametrosSistemaPorTipo(EnumGrupoParametroSistema grupo, SesionDto sesion) throws NewviExcepcion {
+        return parametroSistemaFacade.obtenerListaParametrosPorGrupo(grupo, sesion);
+    }
+
+    @Override
+    public ParametroSistema obtenerParametroPorNombre(EnumParametroSistema parametro, SesionDto sesion) throws NewviExcepcion {
+        return parametroSistemaFacade.obtenerParametroPorNombre(parametro, sesion);
+    }
+    
     /*------------------------------------------------------------Dominios------------------------------------------------------------*/
     @Override
     public String generaNuevoDominio(Dominios nuevoDominio, SesionDto sesion) throws NewviExcepcion {
@@ -280,5 +357,6 @@ public class ParametrosServicioImpl implements ParametrosServicio {
     public Reporte obtenerReporte(EnumReporte nombreReporte, SesionDto sesion) throws NewviExcepcion {
         return reporteFacade.obtenerReportePorNombre(nombreReporte, sesion);
     }
+    
     
 }

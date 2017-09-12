@@ -103,15 +103,15 @@ public class UsuariosBB extends AdminSeguridadesBB {
     public void insertarUsuario() {
         try {
             encriptarPassword();
-            seguridadesServicio.generarNuevoUsuario(usuario, sesionBean.obtenerSesionDto());
-            LoggerNewvi.getLogNewvi(this.getClass()).info(EnumNewviExcepciones.INF302.presentarMensaje(), sesionBean.obtenerSesionDto());
+            seguridadesServicio.generarNuevoUsuario(usuario, sesionBean.getSesion());
+            LoggerNewvi.getLogNewvi(this.getClass()).info(EnumNewviExcepciones.INF302.presentarMensaje(), sesionBean.getSesion());
             MensajesFaces.mensajeInformacion(EnumNewviExcepciones.INF302.presentarMensaje());
             actualizarListadoUsuarios();
         } catch (NewviExcepcion e) {
-            LoggerNewvi.getLogNewvi(this.getClass()).error(e, sesionBean.obtenerSesionDto());
+            LoggerNewvi.getLogNewvi(this.getClass()).error(e, sesionBean.getSesion());
             MensajesFaces.mensajeError(e.getMessage());
         } catch (Exception e) {
-            LoggerNewvi.getLogNewvi(this.getClass()).error(EnumNewviExcepciones.ERR000.presentarMensajeCodigo(), e, sesionBean.obtenerSesionDto());
+            LoggerNewvi.getLogNewvi(this.getClass()).error(EnumNewviExcepciones.ERR000.presentarMensajeCodigo(), e, sesionBean.getSesion());
             MensajesFaces.mensajeError(e.getMessage());
         }
     }
@@ -122,15 +122,15 @@ public class UsuariosBB extends AdminSeguridadesBB {
         } else {
             try {
                 encriptarPassword();
-                seguridadesServicio.actualizarUsuario(usuario, sesionBean.obtenerSesionDto());
+                seguridadesServicio.actualizarUsuario(usuario, sesionBean.getSesion());
                 actualizarListadoUsuarios();
-                LoggerNewvi.getLogNewvi(this.getClass()).info(EnumNewviExcepciones.INF305.presentarMensaje(), sesionBean.obtenerSesionDto());
+                LoggerNewvi.getLogNewvi(this.getClass()).info(EnumNewviExcepciones.INF305.presentarMensaje(), sesionBean.getSesion());
                 MensajesFaces.mensajeInformacion(EnumNewviExcepciones.INF305.presentarMensaje());
             } catch (NewviExcepcion e) {
-                LoggerNewvi.getLogNewvi(this.getClass()).error(e, sesionBean.obtenerSesionDto());
+                LoggerNewvi.getLogNewvi(this.getClass()).error(e, sesionBean.getSesion());
                 MensajesFaces.mensajeError(e.getMessage());
             } catch (Exception e) {
-                LoggerNewvi.getLogNewvi(this.getClass()).error(EnumNewviExcepciones.ERR000.presentarMensajeCodigo(), e, sesionBean.obtenerSesionDto());
+                LoggerNewvi.getLogNewvi(this.getClass()).error(EnumNewviExcepciones.ERR000.presentarMensajeCodigo(), e, sesionBean.getSesion());
                 MensajesFaces.mensajeError(e.getMessage());
             }
         }
@@ -148,19 +148,19 @@ public class UsuariosBB extends AdminSeguridadesBB {
         try {
             this.seleccionarUsuarioPorCodigo(idUsuario);
             if (!ComunUtil.esNulo(usuario)) {
-                seguridadesServicio.eliminarUsuario(usuario, sesionBean.obtenerSesionDto());
+                seguridadesServicio.eliminarUsuario(usuario, sesionBean.getSesion());
                 MensajesFaces.mensajeInformacion(EnumNewviExcepciones.INF304.presentarMensaje());
                 actualizarListadoUsuarios();
 
             } else {
-                LoggerNewvi.getLogNewvi(this.getClass()).error(EnumNewviExcepciones.ERR010.presentarMensajeCodigo(), sesionBean.obtenerSesionDto());
+                LoggerNewvi.getLogNewvi(this.getClass()).error(EnumNewviExcepciones.ERR010.presentarMensajeCodigo(), sesionBean.getSesion());
                 MensajesFaces.mensajeError(EnumNewviExcepciones.ERR010.presentarMensajeCodigo());
             }
         } catch (NewviExcepcion e) {
-            LoggerNewvi.getLogNewvi(this.getClass()).error(e, sesionBean.obtenerSesionDto());
+            LoggerNewvi.getLogNewvi(this.getClass()).error(e, sesionBean.getSesion());
             MensajesFaces.mensajeError(e.getMessage());
         } catch (Exception e) {
-            LoggerNewvi.getLogNewvi(this.getClass()).error(EnumNewviExcepciones.ERR000.presentarMensajeCodigo(), e, sesionBean.obtenerSesionDto());
+            LoggerNewvi.getLogNewvi(this.getClass()).error(EnumNewviExcepciones.ERR000.presentarMensajeCodigo(), e, sesionBean.getSesion());
             MensajesFaces.mensajeError(e.getMessage());
         }
 
@@ -172,7 +172,7 @@ public class UsuariosBB extends AdminSeguridadesBB {
         } catch (NewviExcepcion e) {
             MensajesFaces.mensajeError(e.getMessage());
         } catch (Exception e) {
-            LoggerNewvi.getLogNewvi(this.getClass()).error(EnumNewviExcepciones.ERR000.presentarMensajeCodigo(), e, sesionBean.obtenerSesionDto());
+            LoggerNewvi.getLogNewvi(this.getClass()).error(EnumNewviExcepciones.ERR000.presentarMensajeCodigo(), e, sesionBean.getSesion());
             MensajesFaces.mensajeError(EnumNewviExcepciones.ERR000.presentarMensajeCodigo());
         }
         conmutarPantalla(EnumPantallaMantenimiento.PANTALLA_EDICION);
@@ -201,7 +201,7 @@ public class UsuariosBB extends AdminSeguridadesBB {
         try {
             return this.pantallaActual.equals(EnumPantallaMantenimiento.obtenerPantallaPorNombre(pantallaEsperada));
         } catch (NewviExcepcion e) {
-            LoggerNewvi.getLogNewvi(this.getClass()).error(e, sesionBean.obtenerSesionDto());
+            LoggerNewvi.getLogNewvi(this.getClass()).error(e, sesionBean.getSesion());
             MensajesFaces.mensajeError(e.getMessage());
             return false;
         }
@@ -219,7 +219,7 @@ public class UsuariosBB extends AdminSeguridadesBB {
             }
 
         } catch (NewviExcepcion e) {
-            LoggerNewvi.getLogNewvi(this.getClass()).error(e, sesionBean.obtenerSesionDto());
+            LoggerNewvi.getLogNewvi(this.getClass()).error(e, sesionBean.getSesion());
             MensajesFaces.mensajeError(e.getMessage());
         }
     }
@@ -235,7 +235,7 @@ public class UsuariosBB extends AdminSeguridadesBB {
                     throw ValidacionUtils.lanzarExcepcionValidacion(EnumNewviExcepciones.ERR328);
                 }
             } catch (NewviExcepcion e) {
-                LoggerNewvi.getLogNewvi(this.getClass()).error(e, sesionBean.obtenerSesionDto());
+                LoggerNewvi.getLogNewvi(this.getClass()).error(e, sesionBean.getSesion());
                 MensajesFaces.mensajeError(e.getMessage());
             }
         }

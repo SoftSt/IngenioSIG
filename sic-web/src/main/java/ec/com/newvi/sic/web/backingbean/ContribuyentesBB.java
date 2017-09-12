@@ -107,15 +107,15 @@ public class ContribuyentesBB extends AdminContribuyentesBB {
 
     public void insertarContribuyente() {
         try {
-            contribuyentesServicio.generarNuevoContribuyente(contribuyente, sesionBean.obtenerSesionDto());
-            LoggerNewvi.getLogNewvi(this.getClass()).info(EnumNewviExcepciones.INF330.presentarMensaje(), sesionBean.obtenerSesionDto());
+            contribuyentesServicio.generarNuevoContribuyente(contribuyente, sesionBean.getSesion());
+            LoggerNewvi.getLogNewvi(this.getClass()).info(EnumNewviExcepciones.INF330.presentarMensaje(), sesionBean.getSesion());
             MensajesFaces.mensajeInformacion(EnumNewviExcepciones.INF330.presentarMensaje());
             actualizarListadoContribuyentes();
         } catch (NewviExcepcion e) {
-            LoggerNewvi.getLogNewvi(this.getClass()).error(e, sesionBean.obtenerSesionDto());
+            LoggerNewvi.getLogNewvi(this.getClass()).error(e, sesionBean.getSesion());
             MensajesFaces.mensajeError(e.getMessage());
         } catch (Exception e) {
-            LoggerNewvi.getLogNewvi(this.getClass()).error(EnumNewviExcepciones.ERR000.presentarMensajeCodigo(), e, sesionBean.obtenerSesionDto());
+            LoggerNewvi.getLogNewvi(this.getClass()).error(EnumNewviExcepciones.ERR000.presentarMensajeCodigo(), e, sesionBean.getSesion());
             MensajesFaces.mensajeError(e.getMessage());
         }
     }
@@ -125,15 +125,15 @@ public class ContribuyentesBB extends AdminContribuyentesBB {
             insertarContribuyente();
         } else {
             try {
-                contribuyentesServicio.actualizarContribuyente(contribuyente, sesionBean.obtenerSesionDto());
+                contribuyentesServicio.actualizarContribuyente(contribuyente, sesionBean.getSesion());
                 actualizarListadoContribuyentes();
-                LoggerNewvi.getLogNewvi(this.getClass()).info(EnumNewviExcepciones.INF331.presentarMensaje(), sesionBean.obtenerSesionDto());
+                LoggerNewvi.getLogNewvi(this.getClass()).info(EnumNewviExcepciones.INF331.presentarMensaje(), sesionBean.getSesion());
                 MensajesFaces.mensajeInformacion(EnumNewviExcepciones.INF331.presentarMensaje());
             } catch (NewviExcepcion e) {
-                LoggerNewvi.getLogNewvi(this.getClass()).error(e, sesionBean.obtenerSesionDto());
+                LoggerNewvi.getLogNewvi(this.getClass()).error(e, sesionBean.getSesion());
                 MensajesFaces.mensajeError(e.getMessage());
             } catch (Exception e) {
-                LoggerNewvi.getLogNewvi(this.getClass()).error(EnumNewviExcepciones.ERR000.presentarMensajeCodigo(), e, sesionBean.obtenerSesionDto());
+                LoggerNewvi.getLogNewvi(this.getClass()).error(EnumNewviExcepciones.ERR000.presentarMensajeCodigo(), e, sesionBean.getSesion());
                 MensajesFaces.mensajeError(e.getMessage());
             }
         }
@@ -147,19 +147,19 @@ public class ContribuyentesBB extends AdminContribuyentesBB {
         try {
             this.seleccionarContribuyentePorCodigo(idContribuyente);
             if (!ComunUtil.esNulo(contribuyente)) {
-                contribuyentesServicio.eliminarContribuyente(contribuyente, sesionBean.obtenerSesionDto());
+                contribuyentesServicio.eliminarContribuyente(contribuyente, sesionBean.getSesion());
                 MensajesFaces.mensajeInformacion(EnumNewviExcepciones.INF332.presentarMensaje());
                 actualizarListadoContribuyentes();
 
             } else {
-                LoggerNewvi.getLogNewvi(this.getClass()).error(EnumNewviExcepciones.ERR010.presentarMensajeCodigo(), sesionBean.obtenerSesionDto());
+                LoggerNewvi.getLogNewvi(this.getClass()).error(EnumNewviExcepciones.ERR010.presentarMensajeCodigo(), sesionBean.getSesion());
                 MensajesFaces.mensajeError(EnumNewviExcepciones.ERR010.presentarMensajeCodigo());
             }
         } catch (NewviExcepcion e) {
-            LoggerNewvi.getLogNewvi(this.getClass()).error(e, sesionBean.obtenerSesionDto());
+            LoggerNewvi.getLogNewvi(this.getClass()).error(e, sesionBean.getSesion());
             MensajesFaces.mensajeError(e.getMessage());
         } catch (Exception e) {
-            LoggerNewvi.getLogNewvi(this.getClass()).error(EnumNewviExcepciones.ERR000.presentarMensajeCodigo(), e, sesionBean.obtenerSesionDto());
+            LoggerNewvi.getLogNewvi(this.getClass()).error(EnumNewviExcepciones.ERR000.presentarMensajeCodigo(), e, sesionBean.getSesion());
             MensajesFaces.mensajeError(e.getMessage());
         }
 
@@ -171,7 +171,7 @@ public class ContribuyentesBB extends AdminContribuyentesBB {
         } catch (NewviExcepcion e) {
             MensajesFaces.mensajeError(e.getMessage());
         } catch (Exception e) {
-            LoggerNewvi.getLogNewvi(this.getClass()).error(EnumNewviExcepciones.ERR000.presentarMensajeCodigo(), e, sesionBean.obtenerSesionDto());
+            LoggerNewvi.getLogNewvi(this.getClass()).error(EnumNewviExcepciones.ERR000.presentarMensajeCodigo(), e, sesionBean.getSesion());
             MensajesFaces.mensajeError(EnumNewviExcepciones.ERR000.presentarMensajeCodigo());
         }
         conmutarPantalla(EnumPantallaMantenimiento.PANTALLA_EDICION);
@@ -200,7 +200,7 @@ public class ContribuyentesBB extends AdminContribuyentesBB {
         try {
             return this.pantallaActual.equals(EnumPantallaMantenimiento.obtenerPantallaPorNombre(pantallaEsperada));
         } catch (NewviExcepcion e) {
-            LoggerNewvi.getLogNewvi(this.getClass()).error(e, sesionBean.obtenerSesionDto());
+            LoggerNewvi.getLogNewvi(this.getClass()).error(e, sesionBean.getSesion());
             MensajesFaces.mensajeError(e.getMessage());
             return false;
         }

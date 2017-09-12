@@ -28,18 +28,20 @@ public class LoggerNewvi {
         String ipCliente = "N/D";
         String nomServidor = "N/D";
         String nomUsuario = "N/D";
+        String nomHostUsuario = "N/D";
         String nomSistema = "N/D";
 
         // TODO tomar los datos desde la sesion
         if (sesion != null) {
             nomServidor = sesion.getNombreServidor();
             nomUsuario = sesion.getUsuarioRegistrado().getUsuPalabraclave().trim();
+            nomHostUsuario = sesion.getNombreEquipo();
             //todo colocar variable del nombre del sistema
             nomSistema = "SIC";
             ipCliente = sesion.getDireccionIP();
         }
 
-        return "cliente: " + ipCliente + " - server: " + nomServidor + " - usuario: " + nomUsuario + " - sistema: " + nomSistema + " - ";
+        return "cliente: " + ipCliente + " - host: " + nomHostUsuario + " - server: " + nomServidor + " - usuario: " + nomUsuario + " - sistema: " + nomSistema + " - ";
     }
 
     private Logger getLOGGER() {

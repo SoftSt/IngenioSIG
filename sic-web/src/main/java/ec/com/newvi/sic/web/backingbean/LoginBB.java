@@ -63,20 +63,20 @@ public class LoginBB extends AdminSeguridadesBB {
                 this.peticion.login(this.usuario, this.clave);
                 sesionBean.registrarUsuario();
                 WebUtils.redireccionar("/privado/index.xhtml");
-                LoggerNewvi.getLogNewvi(this.getClass()).info(EnumNewviExcepciones.INF320.presentarMensaje(), sesionBean.obtenerSesionDto());
+                LoggerNewvi.getLogNewvi(this.getClass()).info(EnumNewviExcepciones.INF320.presentarMensaje(), sesionBean.getSesion());
                 MensajesFaces.mensajeInformacion(EnumNewviExcepciones.INF320.presentarMensajeCodigo());
             } catch (NewviExcepcion e) {
-                LoggerNewvi.getLogNewvi(this.getClass()).error(e, sesionBean.obtenerSesionDto());
+                LoggerNewvi.getLogNewvi(this.getClass()).error(e, sesionBean.getSesion());
                 MensajesFaces.mensajeError(e.getMessage());
             } catch (ServletException e) {
-                LoggerNewvi.getLogNewvi(this.getClass()).error(EnumNewviExcepciones.ERR319.presentarMensajeCodigo(), e, sesionBean.obtenerSesionDto());
+                LoggerNewvi.getLogNewvi(this.getClass()).error(EnumNewviExcepciones.ERR319.presentarMensajeCodigo(), e, sesionBean.getSesion());
                 MensajesFaces.mensajeError(EnumNewviExcepciones.ERR319.presentarMensajeCodigo());
             } catch (Exception e) {
-                LoggerNewvi.getLogNewvi(this.getClass()).error(EnumNewviExcepciones.ERR000.presentarMensajeCodigo(), e, sesionBean.obtenerSesionDto());
+                LoggerNewvi.getLogNewvi(this.getClass()).error(EnumNewviExcepciones.ERR000.presentarMensajeCodigo(), e, sesionBean.getSesion());
                 MensajesFaces.mensajeError(EnumNewviExcepciones.ERR000.presentarMensajeCodigo());
             }
         } else {
-            LoggerNewvi.getLogNewvi(this.getClass()).error(EnumNewviExcepciones.ERR317.presentarMensajeCodigo(), sesionBean.obtenerSesionDto());
+            LoggerNewvi.getLogNewvi(this.getClass()).error(EnumNewviExcepciones.ERR317.presentarMensajeCodigo(), sesionBean.getSesion());
             MensajesFaces.mensajeError(EnumNewviExcepciones.ERR317.presentarMensajeCodigo());
             WebUtils.obtenerContextoExterno().getFlash().setKeepMessages(true);
             redireccionarLogin();
@@ -95,7 +95,7 @@ public class LoginBB extends AdminSeguridadesBB {
         try {
             WebUtils.redireccionar("/publico/login.xhtml");
         } catch (NewviExcepcion e) {
-            LoggerNewvi.getLogNewvi(this.getClass()).error(e, sesionBean.obtenerSesionDto());
+            LoggerNewvi.getLogNewvi(this.getClass()).error(e, sesionBean.getSesion());
             MensajesFaces.mensajeError(e.getMessage());
         }
     }
@@ -106,10 +106,10 @@ public class LoginBB extends AdminSeguridadesBB {
             try {
                 peticion.logout();
             } catch (ServletException e) {
-                LoggerNewvi.getLogNewvi(this.getClass()).error(EnumNewviExcepciones.ERR317.presentarMensajeCodigo(), e, sesionBean.obtenerSesionDto());
+                LoggerNewvi.getLogNewvi(this.getClass()).error(EnumNewviExcepciones.ERR317.presentarMensajeCodigo(), e, sesionBean.getSesion());
                 MensajesFaces.mensajeError(EnumNewviExcepciones.ERR317.presentarMensajeCodigo());
             } catch (Exception e) {
-                LoggerNewvi.getLogNewvi(this.getClass()).error(EnumNewviExcepciones.ERR000.presentarMensajeCodigo(), e, sesionBean.obtenerSesionDto());
+                LoggerNewvi.getLogNewvi(this.getClass()).error(EnumNewviExcepciones.ERR000.presentarMensajeCodigo(), e, sesionBean.getSesion());
                 MensajesFaces.mensajeError(EnumNewviExcepciones.ERR000.presentarMensajeCodigo());
             }
         }

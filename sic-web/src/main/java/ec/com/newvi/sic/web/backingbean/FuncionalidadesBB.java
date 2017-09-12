@@ -83,10 +83,10 @@ public class FuncionalidadesBB extends AdminSeguridadesBB {
             listaArbolFuncionalidades = new DefaultTreeNode();
             listaArbolFuncionalidades = WebUtils.generarArbol(listaFuncionalidades, listaArbolFuncionalidades, "getListaSubFuncionalidadesActivas");
         } catch (NewviExcepcion ex) {
-            LoggerNewvi.getLogNewvi(this.getClass()).error(ex, sesionBean.obtenerSesionDto());
+            LoggerNewvi.getLogNewvi(this.getClass()).error(ex, sesionBean.getSesion());
             MensajesFaces.mensajeError(ex.getMessage());
         } catch (Exception e) {
-            LoggerNewvi.getLogNewvi(this.getClass()).error(EnumNewviExcepciones.ERR000.presentarMensajeCodigo(), e, sesionBean.obtenerSesionDto());
+            LoggerNewvi.getLogNewvi(this.getClass()).error(EnumNewviExcepciones.ERR000.presentarMensajeCodigo(), e, sesionBean.getSesion());
             MensajesFaces.mensajeError(e.getMessage());
         }
     }
@@ -108,10 +108,10 @@ public class FuncionalidadesBB extends AdminSeguridadesBB {
             this.funcionalidad.setFunEstado(EnumEstadoRegistro.A);
             this.funcionalidad.setFunIdPadre(funcionalidadPadre);
         } catch (NewviExcepcion e) {
-            LoggerNewvi.getLogNewvi(this.getClass()).error(e, sesionBean.obtenerSesionDto());
+            LoggerNewvi.getLogNewvi(this.getClass()).error(e, sesionBean.getSesion());
             MensajesFaces.mensajeError(e.getMessage());
         } catch (Exception e) {
-            LoggerNewvi.getLogNewvi(this.getClass()).error(EnumNewviExcepciones.ERR000.presentarMensajeCodigo(), e, sesionBean.obtenerSesionDto());
+            LoggerNewvi.getLogNewvi(this.getClass()).error(EnumNewviExcepciones.ERR000.presentarMensajeCodigo(), e, sesionBean.getSesion());
             MensajesFaces.mensajeError(e.getMessage());
         }
         establecerTitulo(EnumEtiquetas.FUNCIONALIDADES_SUB_NUEVO_TITULO,
@@ -122,14 +122,14 @@ public class FuncionalidadesBB extends AdminSeguridadesBB {
 
     public void insertarFuncionalidad() {
         try {
-            seguridadesServicio.generarNuevaFuncionalidad(funcionalidad, sesionBean.obtenerSesionDto());
+            seguridadesServicio.generarNuevaFuncionalidad(funcionalidad, sesionBean.getSesion());
             actualizarListadoFuncionalidades();
             MensajesFaces.mensajeInformacion(EnumNewviExcepciones.INF311.presentarMensaje());
         } catch (NewviExcepcion e) {
-            LoggerNewvi.getLogNewvi(this.getClass()).error(e, sesionBean.obtenerSesionDto());
+            LoggerNewvi.getLogNewvi(this.getClass()).error(e, sesionBean.getSesion());
             MensajesFaces.mensajeError(e.getMessage());
         } catch (Exception e) {
-            LoggerNewvi.getLogNewvi(this.getClass()).error(EnumNewviExcepciones.ERR000.presentarMensajeCodigo(), e, sesionBean.obtenerSesionDto());
+            LoggerNewvi.getLogNewvi(this.getClass()).error(EnumNewviExcepciones.ERR000.presentarMensajeCodigo(), e, sesionBean.getSesion());
             MensajesFaces.mensajeError(e.getMessage());
         }
     }
@@ -139,14 +139,14 @@ public class FuncionalidadesBB extends AdminSeguridadesBB {
             insertarFuncionalidad();
         } else {
             try {
-                seguridadesServicio.actualizarFuncionalidad(funcionalidad, sesionBean.obtenerSesionDto());
+                seguridadesServicio.actualizarFuncionalidad(funcionalidad, sesionBean.getSesion());
                 actualizarListadoFuncionalidades();
                 MensajesFaces.mensajeInformacion(EnumNewviExcepciones.INF313.presentarMensaje());
             } catch (NewviExcepcion e) {
-                LoggerNewvi.getLogNewvi(this.getClass()).error(e, sesionBean.obtenerSesionDto());
+                LoggerNewvi.getLogNewvi(this.getClass()).error(e, sesionBean.getSesion());
                 MensajesFaces.mensajeError(e.getMessage());
             } catch (Exception e) {
-                LoggerNewvi.getLogNewvi(this.getClass()).error(EnumNewviExcepciones.ERR000.presentarMensajeCodigo(), e, sesionBean.obtenerSesionDto());
+                LoggerNewvi.getLogNewvi(this.getClass()).error(EnumNewviExcepciones.ERR000.presentarMensajeCodigo(), e, sesionBean.getSesion());
                 MensajesFaces.mensajeError(e.getMessage());
             }
         }
@@ -160,18 +160,18 @@ public class FuncionalidadesBB extends AdminSeguridadesBB {
         try {
             this.funcionalidad = SeguridadesUtil.seleccionarFuncionalidadPorCodigo(idFuncionalidad, seguridadesServicio);
             if (!ComunUtil.esNulo(funcionalidad)) {
-                seguridadesServicio.eliminarFuncionalidad(funcionalidad, sesionBean.obtenerSesionDto());
+                seguridadesServicio.eliminarFuncionalidad(funcionalidad, sesionBean.getSesion());
                 MensajesFaces.mensajeInformacion(EnumNewviExcepciones.INF312.presentarMensaje());
                 actualizarListadoFuncionalidades();
             } else {
-                LoggerNewvi.getLogNewvi(this.getClass()).error(EnumNewviExcepciones.ERR010.presentarMensajeCodigo(), sesionBean.obtenerSesionDto());
+                LoggerNewvi.getLogNewvi(this.getClass()).error(EnumNewviExcepciones.ERR010.presentarMensajeCodigo(), sesionBean.getSesion());
                 MensajesFaces.mensajeError(EnumNewviExcepciones.ERR010.presentarMensajeCodigo());
             }
         } catch (NewviExcepcion e) {
-            LoggerNewvi.getLogNewvi(this.getClass()).error(e, sesionBean.obtenerSesionDto());
+            LoggerNewvi.getLogNewvi(this.getClass()).error(e, sesionBean.getSesion());
             MensajesFaces.mensajeError(e.getMessage());
         } catch (Exception e) {
-            LoggerNewvi.getLogNewvi(this.getClass()).error(EnumNewviExcepciones.ERR000.presentarMensajeCodigo(), e, sesionBean.obtenerSesionDto());
+            LoggerNewvi.getLogNewvi(this.getClass()).error(EnumNewviExcepciones.ERR000.presentarMensajeCodigo(), e, sesionBean.getSesion());
             MensajesFaces.mensajeError(e.getMessage());
         }
 
@@ -201,7 +201,7 @@ public class FuncionalidadesBB extends AdminSeguridadesBB {
         try {
             return this.pantallaActual.equals(EnumPantallaMantenimiento.obtenerPantallaPorNombre(pantallaEsperada));
         } catch (NewviExcepcion e) {
-            LoggerNewvi.getLogNewvi(this.getClass()).error(e, sesionBean.obtenerSesionDto());
+            LoggerNewvi.getLogNewvi(this.getClass()).error(e, sesionBean.getSesion());
             MensajesFaces.mensajeError(e.getMessage());
             return false;
         }

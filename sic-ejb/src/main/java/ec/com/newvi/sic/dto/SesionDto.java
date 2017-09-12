@@ -15,17 +15,19 @@ public class SesionDto {
 
     private Usuarios usuarioRegistrado;
     private String direccionIP;
+    private String nombreEquipo;
     private String nombreServidor;
 
     public SesionDto() {
     }
 
-    public SesionDto(Usuarios usuarioRegistrado, String direccionIP, String nombreServidor) {
+    public SesionDto(Usuarios usuarioRegistrado, String direccionIP, String nombreEquipo, String nombreServidor) {
         this.usuarioRegistrado = usuarioRegistrado;
         this.direccionIP = direccionIP;
+        this.nombreEquipo = nombreEquipo;
         this.nombreServidor = nombreServidor;
     }
-    
+
     public Usuarios getUsuarioRegistrado() {
         return usuarioRegistrado;
     }
@@ -42,6 +44,14 @@ public class SesionDto {
         this.direccionIP = direccionIP;
     }
 
+    public String getNombreEquipo() {
+        return nombreEquipo;
+    }
+
+    public void setNombreEquipo(String nombreEquipo) {
+        this.nombreEquipo = nombreEquipo;
+    }
+
     public String getNombreServidor() {
         return nombreServidor;
     }
@@ -49,5 +59,5 @@ public class SesionDto {
     public void setNombreServidor(String nombreServidor) {
         this.nombreServidor = nombreServidor;
     }
-    
+
 }

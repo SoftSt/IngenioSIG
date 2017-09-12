@@ -7,9 +7,12 @@ package ec.com.newvi.sic.servicios;
 
 import ec.com.newvi.sic.dto.DominioDto;
 import ec.com.newvi.sic.dto.SesionDto;
+import ec.com.newvi.sic.enums.EnumGrupoParametroSistema;
+import ec.com.newvi.sic.enums.EnumParametroSistema;
 import ec.com.newvi.sic.enums.EnumReporte;
 import ec.com.newvi.sic.modelo.ConstantesImpuestos;
 import ec.com.newvi.sic.modelo.Dominios;
+import ec.com.newvi.sic.modelo.ParametroSistema;
 import ec.com.newvi.sic.modelo.PisoDetalle;
 import ec.com.newvi.sic.modelo.Pisos;
 import ec.com.newvi.sic.modelo.Predios;
@@ -27,6 +30,71 @@ import javax.ejb.Local;
 @Local
 @PermitAll
 public interface ParametrosServicio {
+
+    /*----------------------------------------------------- Parametros del Sistema ----------------------------------------------------*/
+    
+    
+    /**
+     * Genera un nuevo parámetro del sistema, de acuerdo a un objeto entregado.
+     *
+     * @param nuevoParametroSistema El nuevo parametro a ser ingresado
+     * @param sesion Sesion que realiza la operación
+     * @return Nombre del parámetro generado.
+     * @throws NewviExcepcion
+     */
+    public String generarNuevoParametroSistema(ParametroSistema nuevoParametroSistema, SesionDto sesion) throws NewviExcepcion;
+    
+    /**
+     * Actualiza un parámetro existente.
+     *
+     * @param parametroSistema El parámetro a actualizar
+     * @param sesion Sesion que realiza la operación
+     * @return Nombre del parámetro actualizado
+     * @throws NewviExcepcion
+     */
+    public String actualizarParametroSistema(ParametroSistema parametroSistema, SesionDto sesion) throws NewviExcepcion;
+    
+    /**
+     * Devuelve un parámetro dado una id
+     *
+     * @param codParametro Integer, código del parámetro a obtener
+     * @return parámetro del sistema encontrado
+     * @throws NewviExcepcion
+     */
+    public ParametroSistema seleccionarParametroSistema(Integer codParametro) throws NewviExcepcion;
+    
+    /**
+     * Obtiene el listado de parámetros registrados en el sistema.
+     *
+     * @param sesion Sesión del usuario que realiza la consulta.
+     * @return Listado de parámetros existentes.
+     * @throws NewviExcepcion
+     */
+    public List<ParametroSistema> obtenerListaParametrosSistema(SesionDto sesion) throws NewviExcepcion;
+
+    /**
+     * Obtiene el listado de parámetros registrados en el sistema filtrados por
+     * el grupo al que pertenece el parámetro. Se puede enviar un valor de null
+     * como parámetro para enviar todos los parámetros existentes.
+     *
+     * @param grupo Enumerado del grupo por el cual filtrar la lista de
+     * parámetros
+     * @param sesion Sesión del usuario que realiza la consulta
+     * @return
+     * @throws NewviExcepcion
+     */
+    public List<ParametroSistema> obtenerListaParametrosSistemaPorTipo(EnumGrupoParametroSistema grupo, SesionDto sesion) throws NewviExcepcion;
+    
+    /**
+     * Obtiene un paraámetro dado
+     * @param parametro Enumerado del parámetro a buscar
+     * @param sesion Sesión del usuario que busca el parámetro
+     * @return Parámetro encontrado en base de datos
+     * @throws NewviExcepcion 
+     */
+    public ParametroSistema obtenerParametroPorNombre(EnumParametroSistema parametro, SesionDto sesion) throws NewviExcepcion;
+
+    /*----------------------------------------------------- Dominios ----------------------------------------------------*/
 
     /**
      * Generar un nuevo dominio, de acuerdo a un objeto entregado.
@@ -235,10 +303,12 @@ public interface ParametrosServicio {
     /*------------------------------------------------------------Reportes------------------------------------------------------------*/
     /**
      * Obtiene un reporte dado un enumerado del reporte a buscar.
+     *
      * @param nombreReporte Enumerado del reporte a buscar
      * @param sesion Sesión que realiza la consulta
      * @return Reporte encontrado
-     * @throws NewviExcepcion 
+     * @throws NewviExcepcion
      */
     public Reporte obtenerReporte(EnumReporte nombreReporte, SesionDto sesion) throws NewviExcepcion;
+
 }

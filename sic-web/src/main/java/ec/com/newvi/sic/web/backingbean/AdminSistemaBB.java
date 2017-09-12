@@ -8,59 +8,56 @@ package ec.com.newvi.sic.web.backingbean;
 import ec.com.newvi.componente.reporte.ConfiguracionReporte;
 import ec.com.newvi.componente.reporte.ReporteGenerador;
 import ec.com.newvi.sic.enums.EnumNewviExcepciones;
+import ec.com.newvi.sic.enums.EnumParametroSistema;
 import ec.com.newvi.sic.enums.EnumReporte;
 import ec.com.newvi.sic.modelo.Reporte;
-import ec.com.newvi.sic.servicios.ParametrosServicio;
 import ec.com.newvi.sic.util.ComunUtil;
 import ec.com.newvi.sic.util.excepciones.NewviExcepcion;
-import ec.com.newvi.sic.web.enums.EnumEtiquetas;
-import ec.com.newvi.sic.web.sesion.SesionBean;
+import ec.com.newvi.sic.util.logs.LoggerNewvi;
+import ec.com.newvi.sic.web.enums.EnumParametrosReporte;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import javax.ejb.EJB;
-import javax.inject.Inject;
 import org.primefaces.model.DefaultStreamedContent;
 
 /**
  *
  * @author israelavila
  */
-public abstract class AdminSistemaBB {
-    
-    @Inject
-    protected SesionBean sesionBean;
-    
-    @EJB
-    protected ParametrosServicio parametrosServicio;
-    
-    protected EnumEtiquetas tituloPantalla;
-    protected EnumEtiquetas iconoPantalla;
-    protected EnumEtiquetas descripcionPantalla;
+public abstract class AdminSistemaBB extends SistemaBB {
 
-    public EnumEtiquetas getTituloPantalla() {
-        return tituloPantalla;
-    }
+    protected Map<String, Object> obtenerParametrosSistemaParaReporte() {
+        String rutaReporte = "";
+        String rutaImagenReporte = "";
+        String nombreSistema = "";
+        String nombreMunicipio = "";
+        String nombreUsuario = "";
+        try {
+            rutaReporte = parametrosServicio.obtenerParametroPorNombre(EnumParametroSistema.RUTA_UBICACION_REPORTES, sesionBean.getSesion()).getValor();
+            rutaImagenReporte = parametrosServicio.obtenerParametroPorNombre(EnumParametroSistema.RUTA_UBICACION_IMAGENES_REPORTE, sesionBean.getSesion()).getValor();
+            nombreSistema = parametrosServicio.obtenerParametroPorNombre(EnumParametroSistema.NOMBRE_SISTEMA, sesionBean.getSesion()).getValor();
+            nombreMunicipio = parametrosServicio.obtenerParametroPorNombre(EnumParametroSistema.NOMBRE_COMPLETO_MUNICIPIO, sesionBean.getSesion()).getValor();
+            nombreUsuario = sesionBean.getSesion().getUsuarioRegistrado().getUsuUsuario();
+        } catch (NewviExcepcion ex) {
+            LoggerNewvi.getLogNewvi(this.getClass()).error(ex, sesionBean.getSesion());
+        }
 
-    public EnumEtiquetas getIconoPantalla() {
-        return iconoPantalla;
-    }
-
-    public EnumEtiquetas getDescripcionPantalla() {
-        return descripcionPantalla;
-    }
-    
-    protected void establecerTitulo(EnumEtiquetas titulo, EnumEtiquetas icono, EnumEtiquetas descripcion) {
-        this.tituloPantalla = titulo;
-        this.iconoPantalla = icono;
-        this.descripcionPantalla = descripcion;
+        Map<String, Object> params = new HashMap<>();
+        params.put(EnumParametrosReporte.RUTA_REPORTES.getNombre(), rutaReporte);
+        params.put(EnumParametrosReporte.NOMBRE_SISTEMA.getNombre(), nombreSistema);
+        params.put(EnumParametrosReporte.NOMBRE_MUNICIPIO.getNombre(), nombreMunicipio);
+        params.put(EnumParametrosReporte.NOMBRE_USUARIO.getNombre(), nombreUsuario);
+        params.put(EnumParametrosReporte.RUTA_IMAGENES_REPORTES.getNombre(), rutaImagenReporte);
+        return params;
     }
 
     protected DefaultStreamedContent generarReporte(EnumReporte tipoReporte, List datosReporte, Map<String, Class> clasesDatosReporte, String xPath, Map<String, Object> parametrosReporte, ReporteGenerador.FormatoReporte formatoReporte) throws NewviExcepcion {
         DefaultStreamedContent archivoReporteGenerado = null;
-        Reporte reporte = parametrosServicio.obtenerReporte(tipoReporte, sesionBean.obtenerSesionDto());
+        parametrosReporte.putAll(this.obtenerParametrosSistemaParaReporte());
+        Reporte reporte = parametrosServicio.obtenerReporte(tipoReporte, sesionBean.getSesion());
         ConfiguracionReporte configReporte = new ConfiguracionReporte(formatoReporte, datosReporte, clasesDatosReporte, reporte.getArchivoReporte(), xPath, parametrosReporte);
         if (ComunUtil.esNulo(configReporte)) {
             return null;

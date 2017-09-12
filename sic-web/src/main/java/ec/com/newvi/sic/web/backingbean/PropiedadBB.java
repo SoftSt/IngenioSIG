@@ -135,14 +135,14 @@ public class PropiedadBB extends AdminContribuyentesBB {
 
     public void insertarPropiedad() {
         try {
-            contribuyentesServicio.generarNuevoPropiedad(propiedad, sesionBean.obtenerSesionDto());
+            contribuyentesServicio.generarNuevoPropiedad(propiedad, sesionBean.getSesion());
             actualizarListadoPropiedad();
             MensajesFaces.mensajeInformacion(EnumNewviExcepciones.INF348.presentarMensaje());
         } catch (NewviExcepcion e) {
-            LoggerNewvi.getLogNewvi(this.getClass()).error(e, sesionBean.obtenerSesionDto());
+            LoggerNewvi.getLogNewvi(this.getClass()).error(e, sesionBean.getSesion());
             MensajesFaces.mensajeError(e.getMessage());
         } catch (Exception e) {
-            LoggerNewvi.getLogNewvi(this.getClass()).error(EnumNewviExcepciones.ERR000.presentarMensajeCodigo(), e, sesionBean.obtenerSesionDto());
+            LoggerNewvi.getLogNewvi(this.getClass()).error(EnumNewviExcepciones.ERR000.presentarMensajeCodigo(), e, sesionBean.getSesion());
             MensajesFaces.mensajeError(e.getMessage());
         }
     }
@@ -152,14 +152,14 @@ public class PropiedadBB extends AdminContribuyentesBB {
             insertarPropiedad();
         } else {
             try {
-                contribuyentesServicio.actualizarPropiedad(propiedad, sesionBean.obtenerSesionDto());
+                contribuyentesServicio.actualizarPropiedad(propiedad, sesionBean.getSesion());
                 actualizarListadoPropiedad();
                 MensajesFaces.mensajeInformacion(EnumNewviExcepciones.INF349.presentarMensaje());
             } catch (NewviExcepcion e) {
-                LoggerNewvi.getLogNewvi(this.getClass()).error(e, sesionBean.obtenerSesionDto());
+                LoggerNewvi.getLogNewvi(this.getClass()).error(e, sesionBean.getSesion());
                 MensajesFaces.mensajeError(e.getMessage());
             } catch (Exception e) {
-                LoggerNewvi.getLogNewvi(this.getClass()).error(EnumNewviExcepciones.ERR000.presentarMensajeCodigo(), e, sesionBean.obtenerSesionDto());
+                LoggerNewvi.getLogNewvi(this.getClass()).error(EnumNewviExcepciones.ERR000.presentarMensajeCodigo(), e, sesionBean.getSesion());
                 MensajesFaces.mensajeError(e.getMessage());
             }
         }
@@ -173,19 +173,19 @@ public class PropiedadBB extends AdminContribuyentesBB {
         try {
             this.seleccionarPropiedadPorCodigo(idPropiedad);
             if (!ComunUtil.esNulo(propiedad)) {
-                contribuyentesServicio.eliminarPropiedad(propiedad, sesionBean.obtenerSesionDto());
+                contribuyentesServicio.eliminarPropiedad(propiedad, sesionBean.getSesion());
                 MensajesFaces.mensajeInformacion(EnumNewviExcepciones.INF350.presentarMensaje());
                 actualizarListadoPropiedad();
 
             } else {
-                LoggerNewvi.getLogNewvi(this.getClass()).error(EnumNewviExcepciones.ERR010.presentarMensajeCodigo(), sesionBean.obtenerSesionDto());
+                LoggerNewvi.getLogNewvi(this.getClass()).error(EnumNewviExcepciones.ERR010.presentarMensajeCodigo(), sesionBean.getSesion());
                 MensajesFaces.mensajeError(EnumNewviExcepciones.ERR010.presentarMensajeCodigo());
             }
         } catch (NewviExcepcion e) {
-            LoggerNewvi.getLogNewvi(this.getClass()).error(e, sesionBean.obtenerSesionDto());
+            LoggerNewvi.getLogNewvi(this.getClass()).error(e, sesionBean.getSesion());
             MensajesFaces.mensajeError(e.getMessage());
         } catch (Exception e) {
-            LoggerNewvi.getLogNewvi(this.getClass()).error(EnumNewviExcepciones.ERR000.presentarMensajeCodigo(), e, sesionBean.obtenerSesionDto());
+            LoggerNewvi.getLogNewvi(this.getClass()).error(EnumNewviExcepciones.ERR000.presentarMensajeCodigo(), e, sesionBean.getSesion());
             MensajesFaces.mensajeError(e.getMessage());
         }
 
@@ -197,7 +197,7 @@ public class PropiedadBB extends AdminContribuyentesBB {
         } catch (NewviExcepcion e) {
             MensajesFaces.mensajeError(e.getMessage());
         } catch (Exception e) {
-            LoggerNewvi.getLogNewvi(this.getClass()).error(EnumNewviExcepciones.ERR000.presentarMensajeCodigo(), e, sesionBean.obtenerSesionDto());
+            LoggerNewvi.getLogNewvi(this.getClass()).error(EnumNewviExcepciones.ERR000.presentarMensajeCodigo(), e, sesionBean.getSesion());
             MensajesFaces.mensajeError(EnumNewviExcepciones.ERR000.presentarMensajeCodigo());
         }
         conmutarPantalla(EnumPantallaMantenimiento.PANTALLA_EDICION);
@@ -226,7 +226,7 @@ public class PropiedadBB extends AdminContribuyentesBB {
         try {
             return this.pantallaActual.equals(EnumPantallaMantenimiento.obtenerPantallaPorNombre(pantallaEsperada));
         } catch (NewviExcepcion e) {
-            LoggerNewvi.getLogNewvi(this.getClass()).error(e, sesionBean.obtenerSesionDto());
+            LoggerNewvi.getLogNewvi(this.getClass()).error(e, sesionBean.getSesion());
             MensajesFaces.mensajeError(e.getMessage());
             return false;
         }

@@ -105,7 +105,15 @@ public enum EnumNewviExcepciones {
     ERR401("ERR401", "Error al interpretar el reporte", "El reporte generado no está correctamente formado. Revise los archivos de LOG o contacte con el administrador."),
     ERR402("ERR402", "Error al generar la impresión", "No se pudo generar el reporte Jasper. Posiblemente no se encuentre el servidor correctamente configurado. Revise los archivos de LOG o contacte con el administrador."),
     ERR403("ERR403", "No existe el tipo de letra de la impresión", "El tipo de letra que se utiliza para el reporte no se encuentra instalado en el servidor. Revise los LOGs del sistema o contacte con el administrador."),
-    ERR404("ERR404", "Error al intentar procesar el flujo del reporte", "El sistema intentó acceder a los contenidos del reporte generado, y no se pudo obtener la información. Contacte con el administrador.");
+    ERR404("ERR404", "Error al intentar procesar el flujo del reporte", "El sistema intentó acceder a los contenidos del reporte generado, y no se pudo obtener la información. Contacte con el administrador."),
+    // 451 al 500 excepciones de parámetros
+    ERR451("ERR451", "Parámetro no válido.", "El parámetro ingresado no es válido. Por favor verifique que los datos ingresados no contengan valores nulos."),
+    INF452("INF452", "Parámetro ingresado.", "El parámetro se ha registrado correctamente."),
+    ERR453("ERR453", "Parámetro no registrado.", "No se pudo generar el parámetro."),
+    INF454("INF454", "Parámetro editado.", "El parámetro se ha editado correctamente."),
+    ERR455("ERR455", "Parámetro no encontrado.", "El parámetro buscado no se ha encontrado."),
+
+    ;
     
     private final String codigoExcepcion;
     private final String nombreExcepcion;

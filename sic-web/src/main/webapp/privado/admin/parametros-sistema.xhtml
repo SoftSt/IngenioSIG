@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                template="/WEB-INF/templates/default.xhtml"
+                xmlns:p="http://primefaces.org/ui">
+    <ui:define name="content">
+        <h:panelGroup id="grupoParametrosSistema">
+            <p:panel id="panelListaParametrosSistema" rendered="#{parametrosSistemaBB.esPantallaActual('PANTALLA_LISTADO')}">
+                <h:form id="formularioListaParametrosSistema">  
+
+                    <p:growl id="growl" showDetail="true" sticky="true" life="800"/>
+                    <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+                    <p>
+                        <h2>
+                            <h:outputText styleClass="#{parametrosSistemaBB.iconoPantalla.textoEtiqueta}"/>
+                            <h:outputText value=" #{parametrosSistemaBB.tituloPantalla.textoEtiqueta}"/>
+                        </h2>
+                    </p>
+                    <p>#{usuariosBB.descripcionPantalla.textoEtiqueta}</p>
+                    <p>
+                        <p:commandButton value="Nuevo parámetro" icon="fa fa-plus" 
+                                         update="messages grupoParametrosSistema"
+                                         id="ingresarParametroSistema"
+                                         actionListener="#{parametrosSistemaBB.crearNuevoParametroSistema()}">
+                            <p:ajax update="toolTipInsert" process="@this" />  
+                        </p:commandButton>
+                        <p:tooltip id="toolTipInsert" for="ingresarParametroSistema" value="Ingresar un nuevo usuario" showEffect="fade" hideEffect="fade" position="bottom"/>
+
+                    </p>
+                    <p:dataTable id="listaParametrosSistema" var="parametro" widgetVar="listaParametrosSistemaTabla"
+                                 value="#{parametrosSistemaBB.listaParametros}" rowKey="#{parametro.codParametro}" filteredValue="#{parametrosSistemaBB.listaParametrosFiltrado}"
+                                 paginator="true" rows="10" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" 
+                                 rowsPerPageTemplate="10,15,20" 
+                                 resizableColumns="true" 
+                                 emptyMessage="No se han encontrado resultados" 
+                                 paginatorPosition="bottom">
+
+                        <p:column rendered="false">
+                            <h:outputText value="#{parametro.codParametro}" />
+                        </p:column>
+
+                        <p:column headerText="Parametro" sortBy="#{parametro.parametro}" filterBy="#{parametro.parametro}" filterMatchMode="contains">
+                            <h:outputText value="#{parametro.parametro}" />
+                        </p:column>            
+
+                        <p:column headerText="Descripción">
+                            <h:outputText value="#{parametro.descripcion}" />
+                        </p:column>
+
+                        <p:column headerText="Valor">
+                            <h:outputText value="#{parametro.valor}" />
+                        </p:column>
+
+                        <p:column headerText="Grupo" sortBy="#{parametro.grupo}" filterBy="#{parametro.grupo}" filterMatchMode="contains">
+                            <h:outputText value="#{parametro.grupo}" />
+                        </p:column>            
+                        <p:column width="80">
+                            <p:commandButton process="listaParametrosSistema" 
+                                             actionListener="#{parametrosSistemaBB.seleccionarParametroSistema(parametro.codParametro)}"
+                                             icon="fa fa-edit"
+                                             id="editarParametroSistema"
+                                             update="grupoParametrosSistema">
+                                <p:ajax update="toolTipEdit" process="@this" /> 
+                            </p:commandButton>
+                            <p:tooltip id="toolTipEdit" for="editarParametroSistema" value="Editar Parámetro del Sistema" showEffect="fade" hideEffect="fade" position="bottom"/>
+                        </p:column>            
+                    </p:dataTable>
+                </h:form>
+            </p:panel>
+            <p:panel id="panelParametroSistema" rendered="#{parametrosSistemaBB.esPantallaActual('PANTALLA_EDICION')}">
+                <h:form id="formularioParametroSistema">
+                    <p>
+                        <h2>
+                            <h:outputText styleClass="#{parametrosSistemaBB.iconoPantalla.textoEtiqueta}"/>
+                            <h:outputText value=" #{parametrosSistemaBB.tituloPantalla.textoEtiqueta}"/>
+                        </h2>
+                    </p>
+                    <p>#{parametrosSistemaBB.descripcionPantalla.textoEtiqueta}</p>
+                    <p:messages id="mensajeFormulario" showDetail="true" autoUpdate="true" closable="true" />
+                    <p:tooltip />
+                    <p:outputPanel id="opDetalleParametroSistema">
+                        <h:panelGrid>
+                            <br/>
+                            <div style="font-size:1.2em;font-weight:bold;">Datos del parámetro del sistema</div>
+                            <p:separator />
+
+                            <h:outputLabel for="parametro" value="Nombre del Parámetro" style="font-weight: bold;"/>
+                            <p:selectOneMenu value="#{parametrosSistemaBB.parametroSeleccionado.parametro}" id="parametro" label="Nombre del Parámetro" required="true">
+                                <f:selectItem itemLabel="Seleccione uno" itemValue="" />
+                                <f:selectItems var="enumParametro" value="#{parametrosSistemaBB.listaSeleccionParametros}" itemLabel="#{enumParametro}" itemValue="#{enumParametro}"  />
+                            </p:selectOneMenu>
+                            <p:message for="parametro" display="tooltip"/>
+
+                            <h:outputLabel for="descripcionParametro" value="Descripción" style="font-weight: bold;"/>
+                            <p:inputText id="descripcionParametro" value="#{parametrosSistemaBB.parametroSeleccionado.descripcion}" label="Descripción" required="true" size="100"/>
+                            <p:message for="descripcionParametro" display="tooltip"/>
+
+                            <h:outputLabel for="valorParametro" value="Valor" style="font-weight: bold;"/>
+                            <p:inputText id="valorParametro" value="#{parametrosSistemaBB.parametroSeleccionado.valor}" label="Valor" required="true" size="100"/>
+                            <p:message for="valorParametro" display="tooltip"/>
+
+                            <h:outputLabel for="grupoParametro" value="Grupo" style="font-weight: bold;"/>
+                            <p:selectOneMenu value="#{parametrosSistemaBB.parametroSeleccionado.grupo}" id="grupoParametro" label="Grupo del Parámetro" required="true">
+                                <f:selectItem itemLabel="Seleccione uno" itemValue="" />
+                                <f:selectItems var="enumGrupoParametro" value="#{parametrosSistemaBB.listaSeleccionGrupoParametros}" itemLabel="#{enumGrupoParametro}" itemValue="#{enumGrupoParametro}"  />
+                            </p:selectOneMenu>
+                            <p:message for="grupoParametro" display="tooltip"/>
+
+                        </h:panelGrid>
+                        <h:panelGrid columns="4">
+
+                            <p:commandButton actionListener="#{parametrosSistemaBB.actualizarParametroSistema()}" 
+                                             update="grupoParametrosSistema" 
+                                             icon="fa fa-check"
+                                             id="guardarParametroSistema"
+                                             value="Guardar">
+                                <p:ajax update="toolTipSave" process="@this" /> 
+                            </p:commandButton>
+                            <p:tooltip id="toolTipSave" for="guardarParametroSistema" value="Guardar cambios en el parámetro" showEffect="fade" hideEffect="fade" position="top"/>
+
+                            <p:commandButton icon="fa fa-close" 
+                                             value="Cerrar"
+                                             id="cancelar"
+                                             update="grupoParametrosSistema" 
+                                             process="@this"
+                                             actionListener="#{parametrosSistemaBB.cancelarEdicion()}">
+                                <p:ajax update="toolTipCancel" process="@this" />
+                                <p:resetInput target="panelParametroSistema" />
+                            </p:commandButton>
+                            <p:tooltip id="toolTipCancel" for="cancelar" value="Regresar sin guardar cambios" showEffect="fade" hideEffect="fade" position="top"/>
+                        </h:panelGrid>
+                    </p:outputPanel>
+                </h:form>
+            </p:panel>
+        </h:panelGroup>
+    </ui:define>
+</ui:composition>

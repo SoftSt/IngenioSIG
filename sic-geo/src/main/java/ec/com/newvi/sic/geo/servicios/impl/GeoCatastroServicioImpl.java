@@ -33,10 +33,10 @@ public class GeoCatastroServicioImpl implements GeoCatastroServicio {
     public String obtenerBordesPredio(Predios predio, BigDecimal alto, BigDecimal ancho, SesionDto sesion) throws NewviExcepcion {
         Geometry poligono = obtenerGeometriaPredio(predio, sesion);
         Envelope borde = UtilGeografico.obtenerMarcoParaImagen(poligono, alto, ancho);
-        String bordeTexto = (BigDecimal.valueOf(borde.getMinX()).setScale(6, BigDecimal.ROUND_HALF_EVEN)).toString().concat(",")
-                .concat((BigDecimal.valueOf(borde.getMinY()).setScale(6, BigDecimal.ROUND_HALF_EVEN)).toString()).concat(",")
-                .concat((BigDecimal.valueOf(borde.getMaxX()).setScale(6, BigDecimal.ROUND_HALF_EVEN)).toString()).concat(",")
-                .concat((BigDecimal.valueOf(borde.getMaxY()).setScale(6, BigDecimal.ROUND_HALF_EVEN)).toString());
+        String bordeTexto = (BigDecimal.valueOf(borde.getMinX()).setScale(12, BigDecimal.ROUND_HALF_EVEN)).toString().concat(",")
+                .concat((BigDecimal.valueOf(borde.getMinY()).setScale(12, BigDecimal.ROUND_HALF_EVEN)).toString()).concat(",")
+                .concat((BigDecimal.valueOf(borde.getMaxX()).setScale(12, BigDecimal.ROUND_HALF_EVEN)).toString()).concat(",")
+                .concat((BigDecimal.valueOf(borde.getMaxY()).setScale(12, BigDecimal.ROUND_HALF_EVEN)).toString());
         return bordeTexto;
     }
 

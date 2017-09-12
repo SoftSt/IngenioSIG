@@ -6,7 +6,6 @@
 package ec.com.newvi.sic.dao;
 
 import ec.com.newvi.sic.dto.SesionDto;
-import ec.com.newvi.sic.enums.EnumEstadoRegistro;
 import ec.com.newvi.sic.enums.EnumNewviExcepciones;
 import ec.com.newvi.sic.enums.EnumReporte;
 import ec.com.newvi.sic.modelo.Reporte;

@@ -8,15 +8,12 @@ package ec.com.newvi.sic.web.backingbean;
 import ec.com.newvi.sic.enums.EnumTipoPermisos;
 import ec.com.newvi.sic.modelo.AsignacionPermisos;
 import ec.com.newvi.sic.modelo.Funcionalidades;
-import ec.com.newvi.sic.modelo.Usuarios;
 import ec.com.newvi.sic.util.ComunUtil;
-import ec.com.newvi.sic.web.sesion.SesionBean;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
-import javax.inject.Inject;
 import org.primefaces.model.menu.DefaultMenuItem;
 import org.primefaces.model.menu.DefaultMenuModel;
 import org.primefaces.model.menu.DefaultSubMenu;
@@ -29,9 +26,6 @@ import org.primefaces.model.menu.MenuModel;
 @ManagedBean
 @ViewScoped
 public class MenuBB extends AdminSeguridadesBB {
-
-    @Inject
-    private SesionBean sesionBean;
 
     private List<Funcionalidades> listaFuncionalidades;
     private MenuModel menu;

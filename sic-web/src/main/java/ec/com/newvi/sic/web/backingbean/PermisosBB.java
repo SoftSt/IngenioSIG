@@ -126,7 +126,7 @@ public class PermisosBB extends AdminSeguridadesBB {
         // Obtener las funcionalidades raíz, y convertirlas en DTOs de asignación permisos
         listaFuncionalidadesDto = new ArrayList<AsignacionPermisosDto>();
         List<Funcionalidades> listaFuncionalidades = seguridadesServicio.consultarFuncionalidadesPadre();
-        listaFuncionalidades.stream().map((elementoFuncionalidad) -> new AsignacionPermisosDto(permiso, elementoFuncionalidad, seguridadesServicio, sesionBean.obtenerSesionDto())).forEachOrdered((nuevaFuncionalidad) -> {
+        listaFuncionalidades.stream().map((elementoFuncionalidad) -> new AsignacionPermisosDto(permiso, elementoFuncionalidad, seguridadesServicio, sesionBean.getSesion())).forEachOrdered((nuevaFuncionalidad) -> {
             listaFuncionalidadesDto.add(nuevaFuncionalidad);
         });
         // Crear la raíz de asignación funcionalidades
@@ -135,10 +135,10 @@ public class PermisosBB extends AdminSeguridadesBB {
         try {
             listaArbolFuncionalidadesDto = WebUtils.generarArbol(listaFuncionalidadesDto, listaArbolFuncionalidadesDto, "getListaPermisosSubfuncionalidades");
         } catch (NewviExcepcion ex) {
-            LoggerNewvi.getLogNewvi(this.getClass()).error(ex, sesionBean.obtenerSesionDto());
+            LoggerNewvi.getLogNewvi(this.getClass()).error(ex, sesionBean.getSesion());
             MensajesFaces.mensajeError(ex.getMessage());
         } catch (Exception e) {
-            LoggerNewvi.getLogNewvi(this.getClass()).error(EnumNewviExcepciones.ERR000.presentarMensajeCodigo(), e, sesionBean.obtenerSesionDto());
+            LoggerNewvi.getLogNewvi(this.getClass()).error(EnumNewviExcepciones.ERR000.presentarMensajeCodigo(), e, sesionBean.getSesion());
             MensajesFaces.mensajeError(e.getMessage());
         }
         // Actualizar la pantalla para Asignación
@@ -168,14 +168,14 @@ public class PermisosBB extends AdminSeguridadesBB {
      */
     public void insertarPermiso() {
         try {
-            seguridadesServicio.generarNuevoPermiso(permiso, sesionBean.obtenerSesionDto());
+            seguridadesServicio.generarNuevoPermiso(permiso, sesionBean.getSesion());
             actualizarListadoPermisos();
             MensajesFaces.mensajeInformacion(EnumNewviExcepciones.INF307.presentarMensaje());
         } catch (NewviExcepcion e) {
-            LoggerNewvi.getLogNewvi(this.getClass()).error(e, sesionBean.obtenerSesionDto());
+            LoggerNewvi.getLogNewvi(this.getClass()).error(e, sesionBean.getSesion());
             MensajesFaces.mensajeError(e.getMessage());
         } catch (Exception e) {
-            LoggerNewvi.getLogNewvi(this.getClass()).error(EnumNewviExcepciones.ERR000.presentarMensajeCodigo(), e, sesionBean.obtenerSesionDto());
+            LoggerNewvi.getLogNewvi(this.getClass()).error(EnumNewviExcepciones.ERR000.presentarMensajeCodigo(), e, sesionBean.getSesion());
             MensajesFaces.mensajeError(EnumNewviExcepciones.ERR000.presentarMensajeCodigo());
         }
     }
@@ -190,14 +190,14 @@ public class PermisosBB extends AdminSeguridadesBB {
             insertarPermiso();
         } else {
             try {
-                seguridadesServicio.actualizarPermiso(permiso, sesionBean.obtenerSesionDto());
+                seguridadesServicio.actualizarPermiso(permiso, sesionBean.getSesion());
                 actualizarListadoPermisos();
                 MensajesFaces.mensajeInformacion(EnumNewviExcepciones.INF309.presentarMensaje());
             } catch (NewviExcepcion e) {
-                LoggerNewvi.getLogNewvi(this.getClass()).error(e, sesionBean.obtenerSesionDto());
+                LoggerNewvi.getLogNewvi(this.getClass()).error(e, sesionBean.getSesion());
                 MensajesFaces.mensajeError(e.getMessage());
             } catch (Exception e) {
-                LoggerNewvi.getLogNewvi(this.getClass()).error(EnumNewviExcepciones.ERR000.presentarMensajeCodigo(), e, sesionBean.obtenerSesionDto());
+                LoggerNewvi.getLogNewvi(this.getClass()).error(EnumNewviExcepciones.ERR000.presentarMensajeCodigo(), e, sesionBean.getSesion());
                 MensajesFaces.mensajeError(e.getMessage());
             }
         }
@@ -216,18 +216,18 @@ public class PermisosBB extends AdminSeguridadesBB {
         try {
             this.seleccionarPermisoPorCodigo(idPermiso);
             if (!ComunUtil.esNulo(permiso)) {
-                seguridadesServicio.eliminarPermiso(permiso, sesionBean.obtenerSesionDto());
+                seguridadesServicio.eliminarPermiso(permiso, sesionBean.getSesion());
                 MensajesFaces.mensajeInformacion(EnumNewviExcepciones.INF308.presentarMensaje());
                 actualizarListadoPermisos();
             } else {
-                LoggerNewvi.getLogNewvi(this.getClass()).error(EnumNewviExcepciones.ERR010.presentarMensajeCodigo(), sesionBean.obtenerSesionDto());
+                LoggerNewvi.getLogNewvi(this.getClass()).error(EnumNewviExcepciones.ERR010.presentarMensajeCodigo(), sesionBean.getSesion());
                 MensajesFaces.mensajeError(EnumNewviExcepciones.ERR010.presentarMensajeCodigo());
             }
         } catch (NewviExcepcion e) {
-            LoggerNewvi.getLogNewvi(this.getClass()).error(e, sesionBean.obtenerSesionDto());
+            LoggerNewvi.getLogNewvi(this.getClass()).error(e, sesionBean.getSesion());
             MensajesFaces.mensajeError(e.getMessage());
         } catch (Exception e) {
-            LoggerNewvi.getLogNewvi(this.getClass()).error(EnumNewviExcepciones.ERR000.presentarMensajeCodigo(), e, sesionBean.obtenerSesionDto());
+            LoggerNewvi.getLogNewvi(this.getClass()).error(EnumNewviExcepciones.ERR000.presentarMensajeCodigo(), e, sesionBean.getSesion());
             MensajesFaces.mensajeError(e.getMessage());
         }
 
@@ -239,7 +239,7 @@ public class PermisosBB extends AdminSeguridadesBB {
         } catch (NewviExcepcion e) {
             MensajesFaces.mensajeError(e.getMessage());
         } catch (Exception e) {
-            LoggerNewvi.getLogNewvi(this.getClass()).error(EnumNewviExcepciones.ERR000.presentarMensajeCodigo(), e, sesionBean.obtenerSesionDto());
+            LoggerNewvi.getLogNewvi(this.getClass()).error(EnumNewviExcepciones.ERR000.presentarMensajeCodigo(), e, sesionBean.getSesion());
             MensajesFaces.mensajeError(EnumNewviExcepciones.ERR000.presentarMensajeCodigo());
         }
         conmutarPantalla(EnumPantallaMantenimiento.PANTALLA_EDICION);
@@ -261,11 +261,11 @@ public class PermisosBB extends AdminSeguridadesBB {
                 asignacionPermiso.setRolId(funcionalidad);
                 asignacionPermiso.setPefEstado(EnumEstadoRegistro.A);
                 asignacionPermiso.setPefOperaciones(permisoAsignado);
-                seguridadesServicio.generarNuevaAsignacion(asignacionPermiso, sesionBean.obtenerSesionDto());
+                seguridadesServicio.generarNuevaAsignacion(asignacionPermiso, sesionBean.getSesion());
             } else {
                 this.asignacionPermiso = asignacionPermisoSeleccionado;
                 asignacionPermiso.setPefOperaciones(permisoAsignado);
-                seguridadesServicio.actualizarAsignacion(asignacionPermiso, sesionBean.obtenerSesionDto());
+                seguridadesServicio.actualizarAsignacion(asignacionPermiso, sesionBean.getSesion());
             }
             MensajesFaces.mensajeInformacion("Operación actualizada.");
         } catch (NewviExcepcion ex) {
@@ -289,7 +289,7 @@ public class PermisosBB extends AdminSeguridadesBB {
         try {
             return this.pantallaActual.equals(EnumPantallaMantenimiento.obtenerPantallaPorNombre(pantallaEsperada));
         } catch (NewviExcepcion e) {
-            LoggerNewvi.getLogNewvi(this.getClass()).error(e, sesionBean.obtenerSesionDto());
+            LoggerNewvi.getLogNewvi(this.getClass()).error(e, sesionBean.getSesion());
             MensajesFaces.mensajeError(e.getMessage());
             return false;
         }

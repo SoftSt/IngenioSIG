@@ -154,7 +154,7 @@ public class AvaluoBB extends AdminAvaluo {
         fechaAvaluo.setFecavEstado(EnumEstadoRegistro.A);
         fechaAvaluo.setFechaDescripcion(formato.format(fecha));
 
-        return catastroServicio.generarNuevaFechaAvaluo(fechaAvaluo, sesionBean.obtenerSesionDto());
+        return catastroServicio.generarNuevaFechaAvaluo(fechaAvaluo, sesionBean.getSesion());
     }
 
     public List<FichaCatastralDto> generarListaFichaCatastral() {
@@ -188,7 +188,7 @@ public class AvaluoBB extends AdminAvaluo {
         for (FichaCatastralDto fichaDto : listaFichas) {
             Predios predio = fichaDto.getPredio();
             Contribuyentes contribuyente = fichaDto.getContribuyentePropiedad();
-            List<AvaluoDto> calculoAvaluo = catastroServicio.obtenerAvaluoPredio(predio, sesionBean.obtenerSesionDto());
+            List<AvaluoDto> calculoAvaluo = catastroServicio.obtenerAvaluoPredio(predio, sesionBean.getSesion());
             avaluo = new Avaluo();
             if (!(calculoAvaluo == null)) {
                 avaluo.setValTerreno(predio.getValTerreno());
@@ -212,10 +212,10 @@ public class AvaluoBB extends AdminAvaluo {
             avaluo.setNomnomape(contribuyente.getNomNombres().trim() + " " + contribuyente.getNomApellidos().trim());
             avaluo.setFecavId(fecavId);
             avaluo.setAvalEstado(EnumEstadoRegistro.A);
-            catastroServicio.generarNuevoAvaluo(avaluo, sesionBean.obtenerSesionDto());
+            catastroServicio.generarNuevoAvaluo(avaluo, sesionBean.getSesion());
 
-            //LoggerNewvi.getLogNewvi(this.getClass()).debug(cont++, sesionBean.obtenerSesionDto());
-            //LoggerNewvi.getLogNewvi(this.getClass()).info(cont++, sesionBean.obtenerSesionDto());
+            //LoggerNewvi.getLogNewvi(this.getClass()).debug(cont++, sesionBean.getSesion());
+            //LoggerNewvi.getLogNewvi(this.getClass()).info(cont++, sesionBean.getSesion());
             if (this.progreso <= 100) {
                 if (cont++ == listaFichas.size() / 100) {
                     progreso++;
@@ -239,7 +239,7 @@ public class AvaluoBB extends AdminAvaluo {
         try {
             return this.pantallaActual.equals(EnumPantallaMantenimiento.obtenerPantallaPorNombre(pantallaEsperada));
         } catch (NewviExcepcion e) {
-            LoggerNewvi.getLogNewvi(this.getClass()).error(e, sesionBean.obtenerSesionDto());
+            LoggerNewvi.getLogNewvi(this.getClass()).error(e, sesionBean.getSesion());
             MensajesFaces.mensajeError(e.getMessage());
             return false;
         }
@@ -268,7 +268,7 @@ public class AvaluoBB extends AdminAvaluo {
             //listaAvaluos = catastroServicio.consultarListaAvaluosPorFecha(formato.parse(fechaDescripcion));
             listaAvaluos = catastroServicio.consultarListaAvaluosPorFecha(fechaDescripcion);
         } catch (Exception e) {
-            LoggerNewvi.getLogNewvi(this.getClass()).error(EnumNewviExcepciones.ERR001.presentarMensajeCodigo(), e, sesionBean.obtenerSesionDto());
+            LoggerNewvi.getLogNewvi(this.getClass()).error(EnumNewviExcepciones.ERR001.presentarMensajeCodigo(), e, sesionBean.getSesion());
             MensajesFaces.mensajeError(e.getMessage());
         }
 
@@ -314,10 +314,10 @@ public class AvaluoBB extends AdminAvaluo {
             streamPa.close();
             return dscXlsPa;
         } catch (IOException ex) {
-            LoggerNewvi.getLogNewvi(this.getClass()).error(ex, sesionBean.obtenerSesionDto());
+            LoggerNewvi.getLogNewvi(this.getClass()).error(ex, sesionBean.getSesion());
             MensajesFaces.mensajeError(ex.getMessage());
         } catch (Exception ex) {
-            LoggerNewvi.getLogNewvi(this.getClass()).error(ex, sesionBean.obtenerSesionDto());
+            LoggerNewvi.getLogNewvi(this.getClass()).error(ex, sesionBean.getSesion());
             return null;
         }
         return null;

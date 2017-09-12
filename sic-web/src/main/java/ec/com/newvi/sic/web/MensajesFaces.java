@@ -15,7 +15,7 @@ import javax.faces.context.FacesContext;
 public class MensajesFaces {
 
     public enum EnumMensajes {
-        INFORMACION("Informacion"), ERROR("Error"), ADVERTENCIA("Advertencia");
+        INFORMACION("Información"), ERROR("Error"), ADVERTENCIA("Advertencia");
         private String valor;
 
         private EnumMensajes(String valor) {

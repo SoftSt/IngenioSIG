@@ -212,15 +212,15 @@ public class ContribucionMejorasBB extends AdminContribucionMejorasBB {
 
     public void insertarContribucionMejoras() {
         try {
-            contribucionMejorasServicio.generarNuevaContribucionMejoras(contribucionMejoras, sesionBean.obtenerSesionDto());
-            LoggerNewvi.getLogNewvi(this.getClass()).info(EnumNewviExcepciones.INF333.presentarMensaje(), sesionBean.obtenerSesionDto());
+            contribucionMejorasServicio.generarNuevaContribucionMejoras(contribucionMejoras, sesionBean.getSesion());
+            LoggerNewvi.getLogNewvi(this.getClass()).info(EnumNewviExcepciones.INF333.presentarMensaje(), sesionBean.getSesion());
             MensajesFaces.mensajeInformacion(EnumNewviExcepciones.INF333.presentarMensaje());
             actualizarListadoContribucionMejoras();
         } catch (NewviExcepcion e) {
-            LoggerNewvi.getLogNewvi(this.getClass()).error(e, sesionBean.obtenerSesionDto());
+            LoggerNewvi.getLogNewvi(this.getClass()).error(e, sesionBean.getSesion());
             MensajesFaces.mensajeError(e.getMessage());
         } catch (Exception e) {
-            LoggerNewvi.getLogNewvi(this.getClass()).error(EnumNewviExcepciones.ERR000.presentarMensajeCodigo(), e, sesionBean.obtenerSesionDto());
+            LoggerNewvi.getLogNewvi(this.getClass()).error(EnumNewviExcepciones.ERR000.presentarMensajeCodigo(), e, sesionBean.getSesion());
             MensajesFaces.mensajeError(e.getMessage());
         }
     }
@@ -231,15 +231,15 @@ public class ContribucionMejorasBB extends AdminContribucionMejorasBB {
         } else {
             try {
                 actualizarValorCEM(this.contribucionMejoras.getCodObras(), this.contribucionMejoras.getValAcobrar());
-                contribucionMejorasServicio.actualizarContribucionMejoras(contribucionMejoras, sesionBean.obtenerSesionDto());
+                contribucionMejorasServicio.actualizarContribucionMejoras(contribucionMejoras, sesionBean.getSesion());
                 actualizarListadoContribucionMejoras();
-                LoggerNewvi.getLogNewvi(this.getClass()).info(EnumNewviExcepciones.INF334.presentarMensaje(), sesionBean.obtenerSesionDto());
+                LoggerNewvi.getLogNewvi(this.getClass()).info(EnumNewviExcepciones.INF334.presentarMensaje(), sesionBean.getSesion());
                 MensajesFaces.mensajeInformacion(EnumNewviExcepciones.INF334.presentarMensaje());
             } catch (NewviExcepcion e) {
-                LoggerNewvi.getLogNewvi(this.getClass()).error(e, sesionBean.obtenerSesionDto());
+                LoggerNewvi.getLogNewvi(this.getClass()).error(e, sesionBean.getSesion());
                 MensajesFaces.mensajeError(e.getMessage());
             } catch (Exception e) {
-                LoggerNewvi.getLogNewvi(this.getClass()).error(EnumNewviExcepciones.ERR000.presentarMensajeCodigo(), e, sesionBean.obtenerSesionDto());
+                LoggerNewvi.getLogNewvi(this.getClass()).error(EnumNewviExcepciones.ERR000.presentarMensajeCodigo(), e, sesionBean.getSesion());
                 MensajesFaces.mensajeError(e.getMessage());
             }
         }
@@ -253,19 +253,19 @@ public class ContribucionMejorasBB extends AdminContribucionMejorasBB {
         try {
             this.seleccionarContribucionMejorasPorCodigo(idContribucionMejoras);
             if (!ComunUtil.esNulo(contribucionMejoras)) {
-                contribucionMejorasServicio.eliminarContribucionMejoras(contribucionMejoras, sesionBean.obtenerSesionDto());
+                contribucionMejorasServicio.eliminarContribucionMejoras(contribucionMejoras, sesionBean.getSesion());
                 MensajesFaces.mensajeInformacion(EnumNewviExcepciones.INF335.presentarMensaje());
                 actualizarListadoContribucionMejoras();
 
             } else {
-                LoggerNewvi.getLogNewvi(this.getClass()).error(EnumNewviExcepciones.ERR010.presentarMensajeCodigo(), sesionBean.obtenerSesionDto());
+                LoggerNewvi.getLogNewvi(this.getClass()).error(EnumNewviExcepciones.ERR010.presentarMensajeCodigo(), sesionBean.getSesion());
                 MensajesFaces.mensajeError(EnumNewviExcepciones.ERR010.presentarMensajeCodigo());
             }
         } catch (NewviExcepcion e) {
-            LoggerNewvi.getLogNewvi(this.getClass()).error(e, sesionBean.obtenerSesionDto());
+            LoggerNewvi.getLogNewvi(this.getClass()).error(e, sesionBean.getSesion());
             MensajesFaces.mensajeError(e.getMessage());
         } catch (Exception e) {
-            LoggerNewvi.getLogNewvi(this.getClass()).error(EnumNewviExcepciones.ERR000.presentarMensajeCodigo(), e, sesionBean.obtenerSesionDto());
+            LoggerNewvi.getLogNewvi(this.getClass()).error(EnumNewviExcepciones.ERR000.presentarMensajeCodigo(), e, sesionBean.getSesion());
             MensajesFaces.mensajeError(e.getMessage());
         }
 
@@ -278,7 +278,7 @@ public class ContribucionMejorasBB extends AdminContribucionMejorasBB {
         } catch (NewviExcepcion e) {
             MensajesFaces.mensajeError(e.getMessage());
         } catch (Exception e) {
-            LoggerNewvi.getLogNewvi(this.getClass()).error(EnumNewviExcepciones.ERR000.presentarMensajeCodigo(), e, sesionBean.obtenerSesionDto());
+            LoggerNewvi.getLogNewvi(this.getClass()).error(EnumNewviExcepciones.ERR000.presentarMensajeCodigo(), e, sesionBean.getSesion());
             MensajesFaces.mensajeError(EnumNewviExcepciones.ERR000.presentarMensajeCodigo());
         }
         conmutarPantalla(EnumPantallaMantenimiento.PANTALLA_EDICION);
@@ -311,7 +311,7 @@ public class ContribucionMejorasBB extends AdminContribucionMejorasBB {
         try {
             return this.pantallaActual.equals(EnumPantallaMantenimiento.obtenerPantallaPorNombre(pantallaEsperada));
         } catch (NewviExcepcion e) {
-            LoggerNewvi.getLogNewvi(this.getClass()).error(e, sesionBean.obtenerSesionDto());
+            LoggerNewvi.getLogNewvi(this.getClass()).error(e, sesionBean.getSesion());
             MensajesFaces.mensajeError(e.getMessage());
             return false;
         }
@@ -370,9 +370,9 @@ public class ContribucionMejorasBB extends AdminContribucionMejorasBB {
                 }
                 predioActual.setValCem(realizarOperacionCEM(cem, obraDetalle.getCodObras().getValAcobrar(), operacion));
                 try {
-                    catastroServicio.actualizarPredio(predioActual, sesionBean.obtenerSesionDto());
+                    catastroServicio.actualizarPredio(predioActual, sesionBean.getSesion());
                 } catch (NewviExcepcion ex) {
-                    LoggerNewvi.getLogNewvi(this.getClass()).error(ex, sesionBean.obtenerSesionDto());
+                    LoggerNewvi.getLogNewvi(this.getClass()).error(ex, sesionBean.getSesion());
                     MensajesFaces.mensajeError(ex.getMessage());
                 }
                 break;
@@ -382,17 +382,17 @@ public class ContribucionMejorasBB extends AdminContribucionMejorasBB {
 
     public void generarNuevoDetalleObra(ObrasDetalle obraDetalle) {
         try {
-            contribucionMejorasServicio.generarNuevaObrasDetalle(obraDetalle, sesionBean.obtenerSesionDto());
+            contribucionMejorasServicio.generarNuevaObrasDetalle(obraDetalle, sesionBean.getSesion());
             actualizarListadoPrediosParaDialog((List<ObrasDetalle>) contribucionMejoras.getObrasdetalleCollection());
             registrarCEMPredios(obraDetalle, "sumar");
-            LoggerNewvi.getLogNewvi(this.getClass()).info(EnumNewviExcepciones.INF368.presentarMensaje(), sesionBean.obtenerSesionDto());
+            LoggerNewvi.getLogNewvi(this.getClass()).info(EnumNewviExcepciones.INF368.presentarMensaje(), sesionBean.getSesion());
             MensajesFaces.mensajeInformacion(EnumNewviExcepciones.INF368.presentarMensaje());
             actualizarListadoContribucionMejoras();
         } catch (NewviExcepcion e) {
-            LoggerNewvi.getLogNewvi(this.getClass()).error(e, sesionBean.obtenerSesionDto());
+            LoggerNewvi.getLogNewvi(this.getClass()).error(e, sesionBean.getSesion());
             MensajesFaces.mensajeError(e.getMessage());
         } catch (Exception e) {
-            LoggerNewvi.getLogNewvi(this.getClass()).error(EnumNewviExcepciones.ERR000.presentarMensajeCodigo(), e, sesionBean.obtenerSesionDto());
+            LoggerNewvi.getLogNewvi(this.getClass()).error(EnumNewviExcepciones.ERR000.presentarMensajeCodigo(), e, sesionBean.getSesion());
             MensajesFaces.mensajeError(e.getMessage());
         }
     }
@@ -412,20 +412,20 @@ public class ContribucionMejorasBB extends AdminContribucionMejorasBB {
         try {
             this.seleccionarDetalleObraPorCodigo(codObrasdetalle);
             if (!ComunUtil.esNulo(obrasDetalle)) {
-                contribucionMejorasServicio.eliminarObrasDetalle(obrasDetalle, sesionBean.obtenerSesionDto());
+                contribucionMejorasServicio.eliminarObrasDetalle(obrasDetalle, sesionBean.getSesion());
                 registrarCEMPredios(obrasDetalle, "restar");
                 //listaPrediosActualizados.add(obrasDetalle.getCodCatastral());
                 actualizarListadoObrasDetalle(obrasDetalle.getCodObras().getCodObras());
                 retorno = true;
             } else {
-                LoggerNewvi.getLogNewvi(this.getClass()).error(EnumNewviExcepciones.ERR010.presentarMensajeCodigo(), sesionBean.obtenerSesionDto());
+                LoggerNewvi.getLogNewvi(this.getClass()).error(EnumNewviExcepciones.ERR010.presentarMensajeCodigo(), sesionBean.getSesion());
                 MensajesFaces.mensajeError(EnumNewviExcepciones.ERR010.presentarMensajeCodigo());
             }
         } catch (NewviExcepcion e) {
-            LoggerNewvi.getLogNewvi(this.getClass()).error(e, sesionBean.obtenerSesionDto());
+            LoggerNewvi.getLogNewvi(this.getClass()).error(e, sesionBean.getSesion());
             MensajesFaces.mensajeError(e.getMessage());
         } catch (Exception e) {
-            LoggerNewvi.getLogNewvi(this.getClass()).error(EnumNewviExcepciones.ERR000.presentarMensajeCodigo(), e, sesionBean.obtenerSesionDto());
+            LoggerNewvi.getLogNewvi(this.getClass()).error(EnumNewviExcepciones.ERR000.presentarMensajeCodigo(), e, sesionBean.getSesion());
             MensajesFaces.mensajeError(e.getMessage());
         }
         return retorno;
@@ -454,7 +454,7 @@ public class ContribucionMejorasBB extends AdminContribucionMejorasBB {
             if(detallesAntiguos.getObdEstado().equals(EnumEstadoRegistro.A)){
                 detallesAntiguos.getCodCatastral().setValCem(realizarOperacionCEM(detallesAntiguos.getCodCatastral().getValCem(), detallesAntiguos.getCodObras().getValAcobrar(), "restar"));
                 detallesAntiguos.getCodCatastral().setValCem(realizarOperacionCEM(detallesAntiguos.getCodCatastral().getValCem(), valActual, "sumar"));
-                catastroServicio.actualizarPredio(detallesAntiguos.getCodCatastral(), sesionBean.obtenerSesionDto());
+                catastroServicio.actualizarPredio(detallesAntiguos.getCodCatastral(), sesionBean.getSesion());
             }
         }
 

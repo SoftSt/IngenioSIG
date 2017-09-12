@@ -192,6 +192,15 @@ public interface SeguridadesServicio {
      * @throws NewviExcepcion
      */
     public String eliminarFuncionalidad(Funcionalidades funcionalidad, SesionDto sesion) throws NewviExcepcion;
+    
+    /**
+     * Obtiene una funcionalidad dada por el nombre.
+     * @param nombreFuncionalidad Nombre de la funcionalidad a buscar.
+     * @param sesion Sesión del usuario que realiza la consulta.
+     * @return Funcionalidad encontrada.
+     * @throws NewviExcepcion 
+     */
+    public Funcionalidades obtenerFuncionalidadPorNombre(String nombreFuncionalidad, SesionDto sesion) throws NewviExcepcion;
             
     /*------------------------------------------------------------ASignaciones------------------------------------------------------------*/
     /**

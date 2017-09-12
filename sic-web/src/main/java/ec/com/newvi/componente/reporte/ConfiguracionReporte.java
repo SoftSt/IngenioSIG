@@ -6,11 +6,10 @@ package ec.com.newvi.componente.reporte;
 
 import ec.com.newvi.sic.enums.EnumNewviExcepciones;
 import ec.com.newvi.sic.util.excepciones.NewviExcepcion;
+import ec.com.newvi.sic.web.enums.EnumParametrosReporte;
 import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.Date;
@@ -39,7 +38,7 @@ import org.xml.sax.SAXException;
  * @author israelavila
  */
 public class ConfiguracionReporte {
-
+    
     private String archivoNombre;
     private String archivoRuta;
     private String archivoExtension;
@@ -172,16 +171,11 @@ public class ConfiguracionReporte {
     }
 
     private void procesarParametrosGenerales() {
-        String rutaReporte = "/opt/";
-        this.params.put("ARCHIVO_REPORTE", rutaReporte);
-        this.params.put("DATASOURCE_EXPRESSION", this.xpath);
         Locale locale = new Locale("en", "US");
-        this.params.put("LOCALE", locale);
         TimeZone timeZone = TimeZone.getTimeZone("America/Guayaquil");
-        this.params.put("REPORT_TIME_ZONE", timeZone);
-        this.params.put("NOMBRE_SISTEMA", "SICG");
-        this.params.put("NOMBRE_USUARIO", "USUARIO");
-        this.params.put("RUTA_IMAGENES", "/opt/");
+        this.params.put(EnumParametrosReporte.DATASOURCE_EXPRESSION.getNombre(), this.xpath);
+        this.params.put(EnumParametrosReporte.LOCALE.getNombre(), locale);
+        this.params.put(EnumParametrosReporte.REPORT_TIME_ZONE.getNombre(), timeZone);
     }
 
     private void procesarParametrosReporte(Map<String, Object> adicionalesParams) {
