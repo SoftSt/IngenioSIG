@@ -284,7 +284,7 @@ public interface CatastroServicio {
      * @return Listado de tipo AvaluoDto que tiene los valores jerarquizados.
      * @throws NewviExcepcion
      */
-    public List<AvaluoDto> obtenerAvaluoPredio(Predios predio, SesionDto sesion) throws NewviExcepcion;
+    public void obtenerAvaluoPredio(Predios predio, SesionDto sesion) throws NewviExcepcion;
     
     /**
      * Genera la simulacion del calculo de los avaluos
@@ -355,7 +355,7 @@ public interface CatastroServicio {
      * Lista los detalles de avaluo
      * @return lista de detalles de avaluo
      */
-    public List<DetallesAvaluo> consultarListaDetallesAvaluo();
+    public List<DetallesAvaluo> consultarListaDetallesAvaluo(Integer codCatastral);
     
     /**
      * Genera un nuevo detalle de avaluo

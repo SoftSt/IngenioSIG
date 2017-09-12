@@ -110,8 +110,11 @@ public abstract class AdminFichaCatastralBB extends AdminSistemaBB {
             //datosImpresion = obtenerListadoAvaluos(catastroServicio.consultarAvaluos(fecavFechaavaluo));
             String xPath = "/reporTablaCatastral//tablaCatastral";
 
-            if (EnumReporte.TABLA_CATASTRAL_URBANA_CONDENSADA.equals(tipoReporte)) {
+            if (EnumReporte.TABLA_CATASTRAL_URBANA.equals(tipoReporte)) {
                 parametrosReporte.put("TITULO_REPORTE", "TABLA CATASTRAL URBANA");
+            }
+            if (EnumReporte.TABLA_CATASTRAL_URBANA_CONDENSADA.equals(tipoReporte)) {
+                parametrosReporte.put("TITULO_REPORTE", "TABLA CATASTRAL URBANA CONDENSADA");
             }
             if (EnumReporte.FICHA_RELEVAMIENTO_PREDIAL_URBANO.equals(tipoReporte)) {
                 bloques = new CaracteristicasEdificacionesDto(this.predio);

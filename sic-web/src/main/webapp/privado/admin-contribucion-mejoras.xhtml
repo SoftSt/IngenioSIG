@@ -163,11 +163,17 @@
                             <p:inputNumber id="valValor" value="#{contribucionMejorasBB.contribucionMejoras.valValor}" label="Valor Total" size="50"/>
                             <p:message for="valValor" display="tooltip"/>
 
-                            <h:outputLabel for="stsAplicacionforma" value="Forma de apliación" style="font-weight: bold;"/>
-                            <p:inputText id="stsAplicacionforma" value="#{contribucionMejorasBB.contribucionMejoras.stsAplicacionforma}" label="Forma de apliación" size="50">
-                                <f:validateLength minimum="0" maximum="25" />
-                            </p:inputText>
-                            <p:message for="stsAplicacionforma" display="tooltip"/>
+                            
+
+
+                            <h:outputLabel for="cem" value="Forma de apliación" style="font-weight: bold;"/>
+                            <p:selectOneMenu id="cem" value="#{contribucionMejorasBB.contribucionMejoras.stsAplicacionforma}" style="width:125px" >
+                                <f:selectItem itemLabel="Seleccione forma de aplicación..." itemValue="null" />
+                                <f:selectItems value="#{contribucionMejorasBB.listaAplicacion}" var="tipoAplicacion" itemValue="#{tipoAplicacion}" itemLabel="#{tipoAplicacion.aplicacion}"/>
+                            </p:selectOneMenu>
+                            <p:message for="cem" display="tooltip"/>
+                            
+                            
 
                             <h:outputLabel for="valAcobrar" value="Valor a cobrar" style="font-weight: bold;"/>
                             <p:inputNumber id="valAcobrar" value="#{contribucionMejorasBB.contribucionMejoras.valAcobrar}" label="Valor a cobrar" size="50"/>

@@ -6,6 +6,7 @@
 package ec.com.newvi.sic.dto;
 
 import ec.com.newvi.sic.modelo.Bloques;
+import ec.com.newvi.sic.modelo.DetallesAvaluo;
 import ec.com.newvi.sic.modelo.Pisos;
 import ec.com.newvi.sic.modelo.Predios;
 import ec.com.newvi.sic.servicios.CatastroServicio;
@@ -57,9 +58,16 @@ public class AvaluoDto {
         this.factor = factor;
     }
 
-    public AvaluoDto() {
-        //AvaluoDto raiz = new AvaluoDto();
+    public AvaluoDto(DetallesAvaluo detalleAvaluo, CatastroServicio catastroServicio) {
+        this.descripcion = detalleAvaluo.getDavalDescripcion();
+        this.factor = detalleAvaluo.getDavalFactor();
+        this.valor = detalleAvaluo.getDavalValor();
     }
+
+    public AvaluoDto() {
+    }
+    
+    
     
     
     

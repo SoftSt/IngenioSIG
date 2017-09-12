@@ -25,10 +25,11 @@ public class DetallesAvaluoFacade extends AbstractFacade<DetallesAvaluo, Integer
         super(DetallesAvaluo.class, Integer.class);
     }
     
-    public List<DetallesAvaluo> buscarDetallesAvaluo(){
+    public List<DetallesAvaluo> buscarDetallesAvaluo(Integer codCatastral){
         // Busca un listado de detalles de avaluo
-        Query q = this.getEntityManager().createQuery("SELECT detalles FROM DetallesAvaluo detalles where detalles.davalEstado =:ESTADO");
+        Query q = this.getEntityManager().createQuery("SELECT detalles FROM DetallesAvaluo detalles where detalles.davalEstado =:ESTADO and detalles.codCatastral.codCatastral =:CODCATASTRAL");
         q.setParameter("ESTADO", EnumEstadoRegistro.A);
+        q.setParameter("CODCATASTRAL", codCatastral);
         //@return listado de detalles de avaluo
         return q.getResultList();        
     }

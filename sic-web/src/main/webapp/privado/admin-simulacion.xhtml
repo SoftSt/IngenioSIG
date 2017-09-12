@@ -94,14 +94,14 @@
                                              id="imprimirCondensado"
                                              update="grupoAvaluos"
                                              onclick="PrimeFaces.monitorDownload(start, stop);">
-                                <p:fileDownload value="#{avaluoBB.imprimir(0)}" />
+                                <p:fileDownload value="#{avaluoBB.imprimir('TABLA_CATASTRAL_URBANA_CONDENSADA')}" />
                             </p:commandButton>
                             <p:commandButton icon="fa fa-print" 
                                              value="Completo" 
                                              id="imprimirCompleto"
                                              update="grupoAvaluos"
                                              onclick="PrimeFaces.monitorDownload(start, stop);">
-                                <p:fileDownload value="#{avaluoBB.imprimir(1)}" />
+                                <p:fileDownload value="#{avaluoBB.imprimir('TABLA_CATASTRAL_URBANA')}" />
                             </p:commandButton>
                         </h:panelGrid>
                     </p:dialog>   

@@ -5,6 +5,7 @@
  */
 package ec.com.newvi.sic.web.backingbean;
 
+import ec.com.newvi.sic.enums.EnumAplicacion;
 import ec.com.newvi.sic.enums.EnumEstadoRegistro;
 import ec.com.newvi.sic.enums.EnumNewviExcepciones;
 import ec.com.newvi.sic.modelo.ContribucionMejoras;
@@ -53,6 +54,7 @@ public class ContribucionMejorasBB extends AdminContribucionMejorasBB {
     private List<Predios> listaPrediosSeleccionados;
     private Predios predioSeleccionado;
     private EnumPantallaMantenimiento pantallaActual;
+    private EnumAplicacion[] listaAplicacion;
 
     public List<Predios> getListaPrediosActualizados() {
         return listaPrediosActualizados;
@@ -150,11 +152,21 @@ public class ContribucionMejorasBB extends AdminContribucionMejorasBB {
         this.listaPrediosFiltrado = listaPrediosFiltrado;
     }
 
+    public EnumAplicacion[] getListaAplicacion() {
+        return listaAplicacion;
+    }
+
+    public void setListaAplicacion(EnumAplicacion[] listaAplicacion) {
+        this.listaAplicacion = listaAplicacion;
+    }
+    
+
     @PostConstruct
     public void init() {
         this.contribucionMejoras = new ContribucionMejoras();
         actualizarListadoContribucionMejoras();
         actualizarListadoPredios();
+        listaAplicacion = EnumAplicacion.values();
         //listaTipoPersoneria= EnumTipoPersoneria.values();
         conmutarPantalla(EnumPantallaMantenimiento.PANTALLA_LISTADO);
         establecerTitulo(EnumEtiquetas.CONTRIBUCION_MEJORAS_LISTA_TITULO,
@@ -204,6 +216,7 @@ public class ContribucionMejorasBB extends AdminContribucionMejorasBB {
     public void crearNuevaContribucionMejoras() {
         this.contribucionMejoras = new ContribucionMejoras();
         this.contribucionMejoras.setObrEstado(EnumEstadoRegistro.A);
+        this.listaObrasDetalle = new ArrayList<>();
         conmutarPantalla(EnumPantallaMantenimiento.PANTALLA_EDICION);
         establecerTitulo(EnumEtiquetas.CONTRIBUCION_MEJORAS_NUEVO_TITULO,
                 EnumEtiquetas.CONTRIBUCION_MEJORAS_NUEVO_ICONO,

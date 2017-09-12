@@ -20,6 +20,7 @@ import ec.com.newvi.sic.enums.EnumTenencia;
 import ec.com.newvi.sic.enums.EnumTipoPantalla;
 import ec.com.newvi.sic.enums.EnumTraslacion;
 import ec.com.newvi.sic.modelo.Bloques;
+import ec.com.newvi.sic.modelo.DetallesAvaluo;
 import ec.com.newvi.sic.modelo.Dominios;
 import ec.com.newvi.sic.modelo.Fotos;
 import ec.com.newvi.sic.modelo.ModeloPredioLazy;
@@ -65,6 +66,7 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
     private List<FichaCatastralDto> listaFichasFiltradas;
     private AvaluoDto raiz;
     private List<AvaluoDto> nodo;
+    private List<DetallesAvaluo> nodoFinal;
     private EnumPantallaMantenimiento pantallaActual;
     private Bloques bloqueSeleccionado;
     private TreeNode listaArbolServicios;
@@ -803,7 +805,8 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
     }
 
     public void calcularAvaluo() throws NewviExcepcion {
-        this.nodo = catastroServicio.obtenerAvaluoPredio(this.predio, sesionBean.getSesion());
+        //this.nodo = catastroServicio.obtenerAvaluoPredio(this.predio, sesionBean.getSesion());
+        catastroServicio.obtenerAvaluoPredio(this.predio, sesionBean.getSesion());
         if (this.nodo != null) {
             generarArbolAvaluo();
         }
@@ -811,12 +814,6 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
     }
 
     public DefaultStreamedContent imprimir(EnumReporte tipoReporte) {
-        /*try {
-            MensajesFaces.mensajeInformacion(geoCatastroServicio.obtenerBordesPredio(predio, BigDecimal.valueOf(256), BigDecimal.valueOf(512), sesionBean.getSesion()));
-        } catch (Exception ex) {
-            LoggerNewvi.getLogNewvi(this.getClass()).error(ex, sesionBean.getSesion());
-            return null;
-        }*/
         return generarReporteCatastro(tipoReporte);
     }
 

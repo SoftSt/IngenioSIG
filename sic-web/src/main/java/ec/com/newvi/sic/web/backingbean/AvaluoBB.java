@@ -12,6 +12,7 @@ import ec.com.newvi.sic.dto.FichaCatastralDto;
 import ec.com.newvi.sic.dto.TablaCatastralDto;
 import ec.com.newvi.sic.enums.EnumEstadoRegistro;
 import ec.com.newvi.sic.enums.EnumNewviExcepciones;
+import ec.com.newvi.sic.enums.EnumReporte;
 import ec.com.newvi.sic.modelo.Avaluo;
 import ec.com.newvi.sic.modelo.Bloques;
 import ec.com.newvi.sic.modelo.Contribuyentes;
@@ -52,7 +53,7 @@ import org.primefaces.model.DefaultStreamedContent;
  */
 @ManagedBean
 @ViewScoped
-public class AvaluoBB extends AdminAvaluo {
+public class AvaluoBB extends AdminFichaCatastralBB {
 
     private EnumPantallaMantenimiento pantallaActual;
     private Boolean skip;
@@ -188,9 +189,11 @@ public class AvaluoBB extends AdminAvaluo {
         for (FichaCatastralDto fichaDto : listaFichas) {
             Predios predio = fichaDto.getPredio();
             Contribuyentes contribuyente = fichaDto.getContribuyentePropiedad();
-            List<AvaluoDto> calculoAvaluo = catastroServicio.obtenerAvaluoPredio(predio, sesionBean.getSesion());
+            //List<AvaluoDto> calculoAvaluo = catastroServicio.obtenerAvaluoPredio(predio, sesionBean.obtenerSesionDto());
+            catastroServicio.obtenerAvaluoPredio(predio, sesionBean.getSesion());
             avaluo = new Avaluo();
-            if (!(calculoAvaluo == null)) {
+            //if (!(calculoAvaluo == null)) {
+            if (Boolean.TRUE) {
                 avaluo.setValTerreno(predio.getValTerreno());
                 avaluo.setValPredio(predio.getValPredio());
                 avaluo.setValImppredial(predio.getValImppredial());
@@ -278,49 +281,8 @@ public class AvaluoBB extends AdminAvaluo {
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Progress Completed"));
     }
 
-    public DefaultStreamedContent imprimir(int tipoReporte) {
-        return generarReportes(tipoReporte);
-    }
-
-    protected DefaultStreamedContent generarReportes(int tipoReporte) {
-        try {
-            String archivo = "Tabla Catastral Urbana.";
-            DefaultStreamedContent dscXlsPa;
-            List datosImpresion;
-            Class claseImpresion = TablaCatastralDto.class;
-            Map<String, Object> parametrosReporte = new HashMap<>();
-            datosImpresion = obtenerListadoAvaluos(listaAvaluos);
-            String formatoTabla = "/opt/tablaCatastralUrbana.jasper";
-            if (tipoReporte == 0) {
-                archivo = "Tabla Catastral Urbana Condensada.";
-                formatoTabla = "/opt/newReport.jasper";
-                parametrosReporte.put("TITULO_REPORTE", "REPORTECITO");
-            }
-            if (tipoReporte == 1) {
-                archivo = "Tabla Catastral Urbana Condensada.";
-                formatoTabla = "/opt/GeneracionTitulos.jasper";
-                parametrosReporte.put("TITULO_REPORTE", "REPORTECITO");
-            }            
-            Map<String, Class> paramRepA = new HashMap<String, Class>();
-            paramRepA.put("tablaCatastral", claseImpresion);
-            paramRepA.put("reporTablaCatastral", List.class);
-            ConfiguracionReporte reporte = new ConfiguracionReporte(ReporteGenerador.FormatoReporte.PDF, datosImpresion, paramRepA, formatoTabla, "/reporTablaCatastral//tablaCatastral", parametrosReporte);
-            if (ComunUtil.esNulo(reporte)) {
-                return null;
-            }
-            InputStream streamPa = new ByteArrayInputStream((byte[]) reporte.getDatos());
-            dscXlsPa = new DefaultStreamedContent(streamPa, reporte.getMimeType().name(), archivo + reporte.getArchivoExtension());
-            streamPa.reset();
-            streamPa.close();
-            return dscXlsPa;
-        } catch (IOException ex) {
-            LoggerNewvi.getLogNewvi(this.getClass()).error(ex, sesionBean.getSesion());
-            MensajesFaces.mensajeError(ex.getMessage());
-        } catch (Exception ex) {
-            LoggerNewvi.getLogNewvi(this.getClass()).error(ex, sesionBean.getSesion());
-            return null;
-        }
-        return null;
+    public DefaultStreamedContent imprimir(EnumReporte tipoReporte) {
+        return generarReporteCatastro(tipoReporte);
     }
 
     public List<TablaCatastralDto> obtenerListadoAvaluos(List<Avaluo> listaAvaluos) {

@@ -5,6 +5,7 @@
  */
 package ec.com.newvi.sic.modelo;
 
+import ec.com.newvi.sic.enums.EnumAplicacion;
 import ec.com.newvi.sic.enums.EnumEstadoRegistro;
 import ec.com.newvi.sic.util.ComunUtil;
 import java.io.Serializable;
@@ -60,7 +61,7 @@ public class ContribucionMejoras implements Serializable {
     private BigDecimal valPorcentaje;
     @Column(name = "val_valor")
     private BigDecimal valValor;
-    @Size(max = 25)
+    
     @Column(name = "sts_aplicacionforma")
     private String stsAplicacionforma;
     @Column(name = "val_acobrar")
@@ -164,12 +165,12 @@ public class ContribucionMejoras implements Serializable {
         this.valValor = valValor;
     }
 
-    public String getStsAplicacionforma() {
-        return stsAplicacionforma;
+    public EnumAplicacion getStsAplicacionforma() {
+        return EnumAplicacion.obtenerAplicacion(stsAplicacionforma);
     }
 
-    public void setStsAplicacionforma(String stsAplicacionforma) {
-        this.stsAplicacionforma = stsAplicacionforma;
+    public void setStsAplicacionforma(EnumAplicacion stsAplicacionforma) {
+        this.stsAplicacionforma = stsAplicacionforma.toString();
     }
 
     public BigDecimal getValAcobrar() {
