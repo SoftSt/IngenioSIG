@@ -27,6 +27,8 @@
 	<parameter name="TITULO_REPORTE" class="java.lang.String"/>
 	<parameter name="VAL_SERVICIOS" class="java.math.BigDecimal"/>
 	<parameter name="RUTA_IMAGENES" class="java.lang.String"/>
+	<parameter name="NOMBRE_MUNICIPIO" class="java.lang.String"/>
+	<parameter name="NOMBRE_MODULO" class="java.lang.String"/>
 	<field name="nombreCodigoCatastral" class="java.lang.String"/>
 	<field name="propietario" class="java.lang.String"/>
 	<field name="ciRuc" class="java.lang.String"/>
@@ -91,27 +93,6 @@
 					<imageExpression><![CDATA[$P{RUTA_IMAGENES}+"logo.png"]]></imageExpression>
 				</image>
 				<staticText>
-					<reportElement x="73" y="36" width="656" height="19" uuid="c174faa9-6e3d-4b1a-a4b3-ff378cf1bc2d"/>
-					<textElement textAlignment="Center">
-						<font fontName="SansSerif" size="11" isBold="true"/>
-					</textElement>
-					<text><![CDATA[TABLA CATASTRAL URBANA]]></text>
-				</staticText>
-				<staticText>
-					<reportElement x="73" y="17" width="656" height="19" uuid="dbf65cfa-3def-4a7d-baf3-e0d5e6708994"/>
-					<textElement textAlignment="Center">
-						<font fontName="SansSerif" size="11" isBold="true"/>
-					</textElement>
-					<text><![CDATA[CATASTRO PREDIAL URBANO]]></text>
-				</staticText>
-				<staticText>
-					<reportElement x="73" y="0" width="656" height="17" uuid="d0943499-d82c-4331-93e3-2014a70e7da3"/>
-					<textElement textAlignment="Center">
-						<font fontName="SansSerif" size="13" isBold="true"/>
-					</textElement>
-					<text><![CDATA[GOBIERNO MUNICIPAL DE PEDRO VICENTE]]></text>
-				</staticText>
-				<staticText>
 					<reportElement x="73" y="55" width="350" height="20" uuid="51d68e3c-0f44-43fe-8e22-96de7d25aeac"/>
 					<textElement textAlignment="Right">
 						<font fontName="SansSerif" size="11" isBold="true"/>
@@ -129,6 +110,27 @@
 					<reportElement x="729" y="1" width="72" height="72" uuid="7109c97d-d7f2-4437-b13e-967d2482ce26"/>
 					<imageExpression><![CDATA[$P{RUTA_IMAGENES}+"logo1.png"]]></imageExpression>
 				</image>
+				<textField>
+					<reportElement x="73" y="2" width="656" height="17" uuid="b17cedb4-f07b-4815-8182-c8d7318d9dd7"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="13" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{NOMBRE_MUNICIPIO}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="73" y="19" width="656" height="17" uuid="5a6961ad-7fd6-43ee-9b4d-5ff2eb5bea6f"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="11" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{NOMBRE_MODULO}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="73" y="36" width="656" height="13" uuid="418e92ad-dffd-4b35-aef1-110615a8d04d"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{TITULO_REPORTE}]]></textFieldExpression>
+				</textField>
 			</frame>
 		</band>
 	</pageHeader>
