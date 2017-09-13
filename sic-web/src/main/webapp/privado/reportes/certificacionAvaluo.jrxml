@@ -47,21 +47,21 @@
 			</line>
 			<textField>
 				<reportElement x="98" y="0" width="457" height="20" uuid="678bf945-ad4c-489f-ad93-4ea20fe01d96"/>
-				<textElement textAlignment="Center">
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="13" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{NOMBRE_MUNICIPIO}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="98" y="20" width="457" height="20" uuid="c7ffb420-db76-424d-a4cf-0c7975cab78b"/>
-				<textElement textAlignment="Center">
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="11" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{NOMBRE_MODULO}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="98" y="41" width="457" height="20" uuid="0a2813f6-8e70-4e76-8b72-279ef866194f"/>
-				<textElement textAlignment="Center">
+				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$P{TITULO_REPORTE}]]></textFieldExpression>
