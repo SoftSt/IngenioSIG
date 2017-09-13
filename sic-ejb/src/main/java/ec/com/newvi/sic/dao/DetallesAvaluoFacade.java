@@ -7,6 +7,7 @@ package ec.com.newvi.sic.dao;
 
 import ec.com.newvi.sic.enums.EnumEstadoRegistro;
 import ec.com.newvi.sic.modelo.DetallesAvaluo;
+import ec.com.newvi.sic.modelo.Predios;
 import java.io.Serializable;
 import java.util.List;
 import javax.annotation.security.PermitAll;
@@ -34,6 +35,22 @@ public class DetallesAvaluoFacade extends AbstractFacade<DetallesAvaluo, Integer
         return q.getResultList();        
     }
     
+    public List<DetallesAvaluo> buscarHijosDetallesAvaluo(DetallesAvaluo detallesAvaluo){
+        //Busca un listado de detalles avaluo de hijo
+        Query q = this.getEntityManager().createQuery("SELECT detalles FROM DetallesAvaluo detalles where detalles.davalPadre =:PADRE");
+        q.setParameter("PADRE", detallesAvaluo.getDavalId().toString());
+        //@return listado de detallesAvaluo
+        return q.getResultList();
+    }
+    
+    public List<DetallesAvaluo> buscarDetallesAvaluoNodo(String relacion, Predios predio){
+        // Busca un listado de detalles de avaluo
+        Query q = this.getEntityManager().createQuery("SELECT detalles FROM DetallesAvaluo detalles where detalles.davalRelacion =:RELACION and detalles.codCatastral =:PREDIO");
+        q.setParameter("RELACION", relacion);
+        q.setParameter("PREDIO", predio);
+        //@return listado de detalles de avaluo
+        return q.getResultList();        
+    }
     
     
 }

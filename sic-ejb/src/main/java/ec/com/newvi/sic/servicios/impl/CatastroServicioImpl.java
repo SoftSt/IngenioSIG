@@ -536,27 +536,27 @@ public class CatastroServicioImpl implements CatastroServicio {
             basura = BigDecimal.ZERO;
         }
 
-        
-        generarNodos(generarElementoArbolAvaluo("Area", area.setScale(2, BigDecimal.ROUND_UP).toString(), null, null), predio.getCodCatastral(), "SubNodo", sesion,predio);
-        generarNodos(generarElementoArbolAvaluo("Frente", frente.setScale(2, BigDecimal.ROUND_UP).toString(), null, null),predio.getCodCatastral(),"SubNodo",sesion,predio);
-        generarNodos(generarElementoArbolAvaluo("Fondo relativo", predio.getValAreaFondo().setScale(2, BigDecimal.ROUND_UP).toString(), null, null),predio.getCodCatastral(),"SubNodo",sesion,predio);
-        generarNodos(generarElementoArbolAvaluo("Factor frente fondo", coff.toString(), null, null),predio.getCodCatastral(),"SubNodo",sesion,predio);
-        generarNodos(generarElementoArbolAvaluo("Topografía", cot.toString(), null, null),predio.getCodCatastral(),"SubNodo",sesion,predio);
-        generarNodos(generarElementoArbolAvaluo("Erosión", cero.toString(), null, null),predio.getCodCatastral(),"SubNodo",sesion,predio);
-        generarNodos(generarElementoArbolAvaluo("Forma", cofo.toString(), null, null),predio.getCodCatastral(),"SubNodo",sesion,predio);
-        generarNodos(generarElementoArbolAvaluo("Ubicación", cubi.toString(), null, null),predio.getCodCatastral(),"SubNodo",sesion,predio);
-        generarNodos(generarElementoArbolAvaluo("Promedio de factores", promedioFactores.setScale(2, BigDecimal.ROUND_UP).toString(), null, null),predio.getCodCatastral(),"SubNodo",sesion,predio);
-        generarNodos(generarElementoArbolAvaluo("Precio base en M2 en la zona " + zona + " sector " + sector, vterreno.setScale(2, BigDecimal.ROUND_UP).toString(), null, null),predio.getCodCatastral(),"SubNodo",sesion,predio);
+        generarNodos(generarElementoArbolAvaluo("Arbol Avaluo", null, null, null), predio.getCodCatastral(), "Nodo", sesion, predio);
+        generarNodos(generarElementoArbolAvaluo("Area", area.setScale(2, BigDecimal.ROUND_UP).toString(), null, null), predio.getCodCatastral(), "SubNodo", sesion, predio);
+        generarNodos(generarElementoArbolAvaluo("Frente", frente.setScale(2, BigDecimal.ROUND_UP).toString(), null, null), predio.getCodCatastral(), "SubNodo", sesion, predio);
+        generarNodos(generarElementoArbolAvaluo("Fondo relativo", predio.getValAreaFondo().setScale(2, BigDecimal.ROUND_UP).toString(), null, null), predio.getCodCatastral(), "SubNodo", sesion, predio);
+        generarNodos(generarElementoArbolAvaluo("Factor frente fondo", coff.toString(), null, null), predio.getCodCatastral(), "SubNodo", sesion, predio);
+        generarNodos(generarElementoArbolAvaluo("Topografía", cot.toString(), null, null), predio.getCodCatastral(), "SubNodo", sesion, predio);
+        generarNodos(generarElementoArbolAvaluo("Erosión", cero.toString(), null, null), predio.getCodCatastral(), "SubNodo", sesion, predio);
+        generarNodos(generarElementoArbolAvaluo("Forma", cofo.toString(), null, null), predio.getCodCatastral(), "SubNodo", sesion, predio);
+        generarNodos(generarElementoArbolAvaluo("Ubicación", cubi.toString(), null, null), predio.getCodCatastral(), "SubNodo", sesion, predio);
+        generarNodos(generarElementoArbolAvaluo("Promedio de factores", promedioFactores.setScale(2, BigDecimal.ROUND_UP).toString(), null, null), predio.getCodCatastral(), "SubNodo", sesion, predio);
+        generarNodos(generarElementoArbolAvaluo("Precio base en M2 en la zona " + zona + " sector " + sector, vterreno.setScale(2, BigDecimal.ROUND_UP).toString(), null, null), predio.getCodCatastral(), "SubNodo", sesion, predio);
 
         for (Bloques bloque : predio.getBloques()) {
             valorEdificacion = valorEdificacion.add(bloque.getValBloque());
             areaConstruccion = areaConstruccion.add(bloque.getValAreabloque());
-            generarNodos(obtenerAvaluoBloque(bloque, promedioFactores, sesion), predio.getCodCatastral(), "SubNodo", sesion,predio);
-            generarNodos(generarElementoArbolAvaluo("Costo Total bloque", bloque.getValBloque().setScale(2, BigDecimal.ROUND_UP).toString(), null, null), predio.getCodCatastral(), "SubNodo", sesion,predio);
+            generarNodos(obtenerAvaluoBloque(bloque, promedioFactores, sesion), predio.getCodCatastral(), "SubNodo", sesion, predio);
+            generarNodos(generarElementoArbolAvaluo("Costo Total bloque", bloque.getValBloque().setScale(2, BigDecimal.ROUND_UP).toString(), null, null), predio.getCodCatastral(), "SubNodo", sesion, predio);
         }
 
-        generarNodos(generarElementoArbolAvaluo("Valor del terreno", valor_terreno.setScale(2, BigDecimal.ROUND_UP).toPlainString(), null, null), predio.getCodCatastral(), "SubNodo", sesion,predio);
-        generarNodos(generarElementoArbolAvaluo("Valor de la edificacion", valorEdificacion.setScale(2, BigDecimal.ROUND_UP).toString(), null, null), predio.getCodCatastral(), "SubNodo", sesion,predio);
+        generarNodos(generarElementoArbolAvaluo("Valor del terreno", valor_terreno.setScale(2, BigDecimal.ROUND_UP).toPlainString(), null, null), predio.getCodCatastral(), "SubNodo", sesion, predio);
+        generarNodos(generarElementoArbolAvaluo("Valor de la edificacion", valorEdificacion.setScale(2, BigDecimal.ROUND_UP).toString(), null, null), predio.getCodCatastral(), "SubNodo", sesion, predio);
         generarNodos(generarElementoArbolAvaluo("Valor del predio", valPredio.setScale(2, BigDecimal.ROUND_UP).toString(), null, null), predio.getCodCatastral(), "SubNodo", sesion, predio);
 
         nodoAlterno = generarImpuestoPredial(predio, basura, sesion);
@@ -565,7 +565,6 @@ public class CatastroServicioImpl implements CatastroServicio {
         }
 
         //return nodo;
-
     }
 
     private void generarNodos(AvaluoDto nodo, Integer codigoPadre, String relacion, SesionDto sesion, Predios predio) throws NewviExcepcion {
@@ -663,10 +662,9 @@ public class CatastroServicioImpl implements CatastroServicio {
         listaOtrosRubros.add(generarElementoArbolAvaluo("Servicios ambientales", predio.getValAmbientales().setScale(2, BigDecimal.ROUND_UP).toString(), null, null));
         listaOtrosRubros.add(generarElementoArbolAvaluo("Tasa recolección basura", predio.getValBasura().setScale(2, BigDecimal.ROUND_UP).toString(), null, null));
 
-        
-        generarNodos(generarElementoArbolAvaluo("Impuesto predial", predio.getValImpuesto().setScale(2, BigDecimal.ROUND_UP).toString(), null, null), predio.getCodCatastral(), "SubNodo", sesion,predio);
-        generarNodos(generarElementoArbolAvaluo("OTROS RUBROS", null, null, listaOtrosRubros), predio.getCodCatastral(), "SubNodo", sesion,predio);
-        generarNodos(generarElementoArbolAvaluo("A pagar", predio.getValImppredial().setScale(2, BigDecimal.ROUND_UP).toString(), null, null), predio.getCodCatastral(), "SubNodo", sesion,predio);
+        generarNodos(generarElementoArbolAvaluo("Impuesto predial", predio.getValImpuesto().setScale(2, BigDecimal.ROUND_UP).toString(), null, null), predio.getCodCatastral(), "SubNodo", sesion, predio);
+        generarNodos(generarElementoArbolAvaluo("OTROS RUBROS", null, null, listaOtrosRubros), predio.getCodCatastral(), "SubNodo", sesion, predio);
+        generarNodos(generarElementoArbolAvaluo("A pagar", predio.getValImppredial().setScale(2, BigDecimal.ROUND_UP).toString(), null, null), predio.getCodCatastral(), "SubNodo", sesion, predio);
 
         return nodoAlterno;
     }
@@ -797,6 +795,22 @@ public class CatastroServicioImpl implements CatastroServicio {
 
         // Si todo marcha bien enviar id del detalle de avaluo
         return nuevoDetalleAvaluo.getDavalId();
+    }
+
+    @Override
+    public List<DetallesAvaluo> consultarHijosDetallesAvaluo(DetallesAvaluo detallesAvaluo) {
+
+        return detallesAvaluoFacade.buscarHijosDetallesAvaluo(detallesAvaluo);
+    }
+
+    @Override
+    public List<AvaluoDto> listarAvaluoDto(String relacion, Predios predio) {
+        List<AvaluoDto> listaAvaluoDto = new ArrayList<>();
+
+        for (DetallesAvaluo nuevoDetalle : detallesAvaluoFacade.buscarDetallesAvaluoNodo(relacion, predio)) {
+                listaAvaluoDto.add(new AvaluoDto(nuevoDetalle, this));
+        }
+        return listaAvaluoDto;
     }
 
 }

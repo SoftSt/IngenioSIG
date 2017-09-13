@@ -527,11 +527,11 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
         }
     }
 
-    private void generarArbolAvaluo() {
+    private void generarArbolAvaluo(List<AvaluoDto> listaArbol) {
 
         try {
             listaArbolAvaluo = new DefaultTreeNode();
-            listaArbolAvaluo = WebUtils.generarArbol(this.nodo, listaArbolAvaluo, "getHijos");
+            listaArbolAvaluo = WebUtils.generarArbol(listaArbol, listaArbolAvaluo, "getHijos");
         } catch (NewviExcepcion ex) {
             LoggerNewvi.getLogNewvi(this.getClass()).error(ex, sesionBean.getSesion());
             MensajesFaces.mensajeError(ex.getMessage());
@@ -807,10 +807,11 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
     public void calcularAvaluo() throws NewviExcepcion {
         //this.nodo = catastroServicio.obtenerAvaluoPredio(this.predio, sesionBean.getSesion());
         catastroServicio.obtenerAvaluoPredio(this.predio, sesionBean.getSesion());
-        if (this.nodo != null) {
+        //generarArbolAvaluo(catastroServicio.listarAvaluoDto("Nodo", predio));
+        /*if (this.nodo != null) {
             generarArbolAvaluo();
-        }
-
+        }*/
+        //catastroServicio.listarAvaluoDto("Nodo", predio);
     }
 
     public DefaultStreamedContent imprimir(EnumReporte tipoReporte) {

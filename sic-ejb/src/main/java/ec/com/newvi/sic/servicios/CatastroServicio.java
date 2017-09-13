@@ -365,5 +365,18 @@ public interface CatastroServicio {
      * @throws NewviExcepcion 
      */
     public Integer generarNuevoDetalleAvaluo(DetallesAvaluo nuevoDetalleAvaluo, SesionDto sesion) throws NewviExcepcion;
+    /**
+     * Lista lista de hijos de detallesAvaluo
+     * @param detallesAvaluo objeto por el cual se buscara sus hijos
+     * @return lista de detalles avaluo
+     */
+    public List<DetallesAvaluo> consultarHijosDetallesAvaluo(DetallesAvaluo detallesAvaluo);
+    /**
+     * Lista el avaluoDto
+     * @param relacion relacion por la cual se filtra
+     * @param predio predio por el cual se filtrara
+     * @return lista de AvaluoDto
+     */
+    public List<AvaluoDto> listarAvaluoDto(String relacion, Predios predio);
     
 }

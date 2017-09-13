@@ -19,12 +19,12 @@ import java.util.List;
  * @author Andrés
  */
 public class AvaluoDto {
-    
 
     private String descripcion;
     private String valor;
     private String factor;
     private List<AvaluoDto> hijos;
+    private DetallesAvaluo detallesAvaluo;
 
     public List<AvaluoDto> getHijos() {
         return hijos;
@@ -58,18 +58,25 @@ public class AvaluoDto {
         this.factor = factor;
     }
 
+    public AvaluoDto() {
+    }
+
     public AvaluoDto(DetallesAvaluo detalleAvaluo, CatastroServicio catastroServicio) {
         this.descripcion = detalleAvaluo.getDavalDescripcion();
         this.factor = detalleAvaluo.getDavalFactor();
         this.valor = detalleAvaluo.getDavalValor();
+        this.detallesAvaluo = detalleAvaluo;
+        obtenerHijos(catastroServicio);
     }
 
-    public AvaluoDto() {
+    private void obtenerHijos(CatastroServicio catastroServicio) {
+        this.hijos = new ArrayList<>();
+        List<DetallesAvaluo> detallesHijos = catastroServicio.consultarHijosDetallesAvaluo(detallesAvaluo);
+        for (DetallesAvaluo nuevoHijo : detallesHijos) {
+            if(!nuevoHijo.getDavalRelacion().equals("Nodo"))
+            this.hijos.add(new AvaluoDto(nuevoHijo,catastroServicio));
+        }
     }
     
-    
-    
-    
-    
-    
+
 }
