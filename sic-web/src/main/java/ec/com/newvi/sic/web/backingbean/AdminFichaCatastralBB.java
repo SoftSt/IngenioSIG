@@ -111,9 +111,11 @@ public abstract class AdminFichaCatastralBB extends AdminSistemaBB {
             String xPath = "/reporTablaCatastral//tablaCatastral";
 
             if (EnumReporte.TABLA_CATASTRAL_URBANA.equals(tipoReporte)) {
+                parametrosReporte.put(EnumParametrosReporte.NOMBRE_MODULO.getNombre(), "CATASTRO PREDIAL URBANO");
                 parametrosReporte.put("TITULO_REPORTE", "TABLA CATASTRAL URBANA");
             }
             if (EnumReporte.TABLA_CATASTRAL_URBANA_CONDENSADA.equals(tipoReporte)) {
+                parametrosReporte.put(EnumParametrosReporte.NOMBRE_MODULO.getNombre(), "CATASTRO PREDIAL URBANO");
                 parametrosReporte.put("TITULO_REPORTE", "TABLA CATASTRAL URBANA CONDENSADA");
             }
             if (EnumReporte.FICHA_RELEVAMIENTO_PREDIAL_URBANO.equals(tipoReporte)) {

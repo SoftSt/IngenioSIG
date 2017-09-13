@@ -156,7 +156,7 @@ public class ConfiguracionReporte {
 
     public ConfiguracionReporte(ReporteGenerador.FormatoReporte formatoReporte, List informacionReporte, Map<String, Class> paramsXml, String nombreJasper, String xPath, Map<String, Object> adicionalesParams) throws NewviExcepcion {
         this.mimeType = formatoReporte;
-        this.archivoJasperNombreRuta = nombreJasper;
+        this.archivoJasperNombreRuta = ((String) adicionalesParams.get(EnumParametrosReporte.RUTA_REPORTES.getNombre())).concat(nombreJasper);
         this.xpath = xPath;
         this.params = new HashMap<>();
         if (ReporteGenerador.FormatoReporte.XLSX.equals(this.mimeType)) {
