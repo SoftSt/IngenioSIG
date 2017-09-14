@@ -218,7 +218,7 @@ public class AvaluoBB extends AdminFichaCatastralBB {
             catastroServicio.generarNuevoAvaluo(avaluo, sesionBean.getSesion());
 
             //LoggerNewvi.getLogNewvi(this.getClass()).debug(cont++, sesionBean.getSesion());
-            //LoggerNewvi.getLogNewvi(this.getClass()).info(cont++, sesionBean.getSesion());
+            LoggerNewvi.getLogNewvi(this.getClass()).info(progreso, sesionBean.getSesion());
             if (this.progreso <= 100) {
                 if (cont++ == listaFichas.size() / 100) {
                     progreso++;

@@ -378,5 +378,17 @@ public interface CatastroServicio {
      * @return lista de AvaluoDto
      */
     public List<AvaluoDto> listarAvaluoDto(String relacion, Predios predio);
+    /**
+     * Consulta el padre del detalle
+     * @param predio predio por filtrar
+     * @param relacion relacion por filtrar
+     * @return detalleAvaluo padre
+     */
+    public DetallesAvaluo consultarPadre(Predios predio, String relacion);
+    /**
+     * Borra los detalles de avaluo
+     * @param predio parametro para borrar
+     */
+    public void eliminarDetallesPorPredio(Predios predio);
     
 }

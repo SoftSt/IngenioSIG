@@ -51,6 +51,20 @@ public class DetallesAvaluoFacade extends AbstractFacade<DetallesAvaluo, Integer
         //@return listado de detalles de avaluo
         return q.getResultList();        
     }
+    public DetallesAvaluo buscarPadre(Predios predio, String relacion){
+        // Busca un detalles de avaluo
+        Query q = this.getEntityManager().createQuery("SELECT detalles FROM DetallesAvaluo detalles where detalles.codCatastral =:PREDIO and detalles.davalRelacion =:RELACION");
+        q.setParameter("PREDIO", predio);
+        q.setParameter("RELACION", relacion);
+        //@return un detalles de avaluo
+        return (DetallesAvaluo)q.getSingleResult();
+    }
+    
+    public void eliminarDetallesPorPredio(Predios predio){
+        Query q = this.getEntityManager().createQuery("DELETE FROM DetallesAvaluo detalles where detalles.codCatastral =:PREDIO");
+        q.setParameter("PREDIO", predio);
+        q.executeUpdate();
+    }
     
     
 }

@@ -573,7 +573,7 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
 
     public void actualizarElementosPredio() throws NewviExcepcion {
         catastroServicio.actualizarPredio(this.predio, sesionBean.getSesion());
-        seleccionarPredio(this.predio.getCodCatastral());
+        catastroServicio.seleccionarPredio(this.predio.getCodCatastral());
     }
 
     public void agregarNuevoBloque() throws NewviExcepcion {
@@ -807,7 +807,7 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
     public void calcularAvaluo() throws NewviExcepcion {
         //this.nodo = catastroServicio.obtenerAvaluoPredio(this.predio, sesionBean.getSesion());
         catastroServicio.obtenerAvaluoPredio(this.predio, sesionBean.getSesion());
-        //generarArbolAvaluo(catastroServicio.listarAvaluoDto("Nodo", predio));
+        generarArbolAvaluo(catastroServicio.listarAvaluoDto("Nodo", predio));
         /*if (this.nodo != null) {
             generarArbolAvaluo();
         }*/
