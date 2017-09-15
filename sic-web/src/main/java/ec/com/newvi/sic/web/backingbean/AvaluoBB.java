@@ -220,7 +220,7 @@ public class AvaluoBB extends AdminFichaCatastralBB {
             //LoggerNewvi.getLogNewvi(this.getClass()).debug(cont++, sesionBean.getSesion());
             LoggerNewvi.getLogNewvi(this.getClass()).info(predio.getCodCatastral(), sesionBean.getSesion());
             if (this.progreso <= 100) {
-                if (cont++ == listaFichas.size() / 100) {
+                if ((cont++ % (listaFichas.size() / 100))==0) {
                     progreso++;
                     //cont=0;
                 }
