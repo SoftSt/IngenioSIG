@@ -100,7 +100,7 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
     public void setEsPantallaNueva(Boolean esPantallaNueva) {
         this.esPantallaNueva = esPantallaNueva;
     }
-    
+
     public Boolean getEsPantallaLista() {
         return esPantallaLista;
     }
@@ -805,12 +805,12 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
     }
 
     public void calcularAvaluo() throws NewviExcepcion {
-        //this.nodo = catastroServicio.obtenerAvaluoPredio(this.predio, sesionBean.getSesion());
-        catastroServicio.obtenerAvaluoPredio(this.predio, sesionBean.getSesion());
-        generarArbolAvaluo(catastroServicio.listarAvaluoDto("Nodo", predio));
-        /*if (this.nodo != null) {
-            generarArbolAvaluo();
-        }*/
+        this.nodo = catastroServicio.obtenerAvaluoPredio(this.predio, sesionBean.getSesion());
+        //catastroServicio.obtenerAvaluoPredio(this.predio, sesionBean.getSesion());
+        //generarArbolAvaluo(catastroServicio.listarAvaluoDto("Nodo", predio));
+        if (this.nodo != null) {
+            generarArbolAvaluo(this.nodo);
+        }
         //catastroServicio.listarAvaluoDto("Nodo", predio);
     }
 
@@ -832,7 +832,7 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
     private void ejecutarAccion(String cadenaAccion) {
         if (cadenaAccion.equals(EnumTipoPantalla.edicionFicha.getTipoPantalla())) {
             this.esPantallaLista = true;
-            this.esPantallaEdicion = true;            
+            this.esPantallaEdicion = true;
             establecerTitulo(EnumEtiquetas.FICHA_CATASTRAL_LISTA_EDITAR_TITULO,
                     EnumEtiquetas.FICHA_CATASTRAL_LISTA_EDITAR_ICONO,
                     EnumEtiquetas.FICHA_CATASTRAL_LISTA_EDITAR_DESCRIPCION);

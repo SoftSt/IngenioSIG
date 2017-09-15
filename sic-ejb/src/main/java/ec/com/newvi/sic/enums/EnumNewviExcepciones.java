@@ -18,6 +18,7 @@ public enum EnumNewviExcepciones {
     ERR012("ERR012", "Texto en blanco.", "Los datos enviados están en blanco. Por favor, enviar datos correctos."),
     ERR020("ERR020", "Error al acceder a una función.", "Se ha intentado acceder a una función no existente."),
     ERR021("ERR021", "Host desconocido.", "El host al que se intentó acceder es desconocido."),
+    ERR022("ERR022", "Error al acceder a una función.", "Se intentó acceder a una función no permitida."),
     // 101 al 200 excepciones de conexion
     ERR101("ERR101", "No se pudo conectar.", "No se pudo conectar a la URL solicitada."),
     ERR120("ERR120", "No se ha encontrado una transacción.", "Se requiere de una transacción para realizar el registro. No se ha encontrado ninguna."),

@@ -138,7 +138,7 @@ public interface CatastroServicio {
      * @return Objeto AvaluoDto que contiene el avalúo del bloque
      * @throws NewviExcepcion 
      */
-    public AvaluoDto obtenerAvaluoBloque(Bloques bloque, BigDecimal promedioFactores, SesionDto sesion) throws NewviExcepcion;
+    public List<AvaluoDto> obtenerAvaluoBloque(Bloques bloque, BigDecimal promedioFactores, SesionDto sesion) throws NewviExcepcion;
         /*------------------------------------------------------------Pisos------------------------------------------------------------*/
     /**
      * Genera un nuevo Piso, de acuerdo a un objeto entregado.
@@ -284,7 +284,7 @@ public interface CatastroServicio {
      * @return Listado de tipo AvaluoDto que tiene los valores jerarquizados.
      * @throws NewviExcepcion
      */
-    public void obtenerAvaluoPredio(Predios predio, SesionDto sesion) throws NewviExcepcion;
+    public List<AvaluoDto> obtenerAvaluoPredio(Predios predio, SesionDto sesion) throws NewviExcepcion;
     
     /**
      * Genera la simulacion del calculo de los avaluos
