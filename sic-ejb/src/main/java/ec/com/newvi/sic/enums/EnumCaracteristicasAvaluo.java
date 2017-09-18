@@ -29,6 +29,8 @@ public enum EnumCaracteristicasAvaluo {
     DETALLE_VALORACION("Total", "N"),
     DETALLE_VALORACION_METRO("Valor m2", "N"),
     DETALLE_FACTORES("Total Factores", "N"),
+    
+    DETALLE_COSTO_METRO_REFERENCIAL("Costo metro referencial", "S");
     ;
 
     private final String titulo;

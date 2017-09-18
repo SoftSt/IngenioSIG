@@ -15,7 +15,6 @@ import ec.com.newvi.sic.dao.PisosFacade;
 import ec.com.newvi.sic.dao.PrediosFacade;
 import ec.com.newvi.sic.dao.TerrenoFacade;
 import ec.com.newvi.sic.dto.AvaluoDto;
-import ec.com.newvi.sic.dto.DetallesAvaluoDto;
 import ec.com.newvi.sic.dto.SesionDto;
 import ec.com.newvi.sic.enums.EnumCaracteristicasAvaluo;
 import ec.com.newvi.sic.enums.EnumEstadoRegistro;
@@ -24,6 +23,7 @@ import ec.com.newvi.sic.modelo.Avaluo;
 import ec.com.newvi.sic.modelo.Bloques;
 import ec.com.newvi.sic.modelo.ConstantesImpuestos;
 import ec.com.newvi.sic.modelo.DetallesAvaluo;
+import ec.com.newvi.sic.modelo.Dominios;
 import ec.com.newvi.sic.modelo.FechaAvaluo;
 import ec.com.newvi.sic.modelo.Fotos;
 import ec.com.newvi.sic.modelo.PisoDetalle;
@@ -35,19 +35,12 @@ import ec.com.newvi.sic.servicios.ParametrosServicio;
 import ec.com.newvi.sic.util.ComunUtil;
 import ec.com.newvi.sic.util.excepciones.NewviExcepcion;
 import ec.com.newvi.sic.util.logs.LoggerNewvi;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collection;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.annotation.security.PermitAll;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -124,6 +117,7 @@ public class CatastroServicioImpl implements CatastroServicio {
         predio.setCodManzana(predio.getCodManzana().trim());
 
         prediosFacade.edit(predio);
+        
         // Si todo marcha bien enviar nombre de la predio
         return predio.getNomCodigocatastral();
     }
@@ -272,7 +266,7 @@ public class CatastroServicioImpl implements CatastroServicio {
         bloque.setValAreabloque(areaBloque);
         bloque.setValBloque(costoBloque);
         actualizarBloque(bloque, sesion);*/
-        
+
         return listaPisosDto;
     }
 
@@ -373,24 +367,59 @@ public class CatastroServicioImpl implements CatastroServicio {
         return pisoDetalle.getCodigo();
     }
 
+    private BigDecimal obtenerTotalCoeficienteDominiosPorCodigo(String codigo, List<Dominios> dominios) {
+        BigDecimal totalCoeficiente = BigDecimal.ZERO;
+        for (Dominios dominio : dominios) {
+            if (dominio.getDomiCodigo().contains(codigo)) {
+                totalCoeficiente = totalCoeficiente.add(BigDecimal.valueOf(dominio.getDomiCoefic()));
+            }
+        }
+        return totalCoeficiente;
+    }
+
+    private BigDecimal obtenerCoeficienteConstruccion(Pisos piso, String domiCalculo, List<Dominios> dominios) {
+        BigDecimal totalDetalleConstruccion = BigDecimal.ZERO;
+        for (PisoDetalle detalle : piso.getDetalles()) {
+            totalDetalleConstruccion = totalDetalleConstruccion.add(obtenerCoeficienteDetallePiso(detalle, domiCalculo, dominios));
+        }
+        return totalDetalleConstruccion;
+    }
+
+    private BigDecimal obtenerCoeficienteDetallePiso(PisoDetalle detalle, String domiCalculo, List<Dominios> dominios) {
+        BigDecimal totalDetalle = BigDecimal.ZERO;
+        for (Dominios dominio : dominios) {
+            if (dominio.getDomiCodigo().contains(detalle.getCodigo().trim())
+                    && dominio.getDomiGrupos().contains("DESCRIPCION EDIFICACION")
+                    && dominio.getDomiCalculo().contains(domiCalculo)) {
+                totalDetalle = totalDetalle.add(BigDecimal.valueOf(dominio.getDomiCoefic()));
+            }
+        }
+        return totalDetalle;
+    }
+
     public List<AvaluoDto> obtenerListaDetallesPiso(Pisos piso, BigDecimal valorDepreciacion, BigDecimal promedioFactores, SesionDto sesion) throws NewviExcepcion {
+        List<Dominios> dominios = parametrosServicio.consultarDominios();
+
         List<AvaluoDto> listaDetallesConstruccion = new ArrayList<>();
-        List<AvaluoDto> listaDetallesEstructura = obtenerListaDetallesPisoPorTipo(piso, valorDepreciacion, promedioFactores, "210101", "ESTRUCTURA");
-        List<AvaluoDto> listaDetallesAcabado = obtenerListaDetallesPisoPorTipo(piso, valorDepreciacion, promedioFactores, "210102", "ACABADOS");
-        List<AvaluoDto> listaDetallesExtras = obtenerListaDetallesPisoPorTipo(piso, valorDepreciacion, promedioFactores, "210103", "EXTRAS");
-        BigDecimal coeficienteEstructura = parametrosServicio.obtenerCoeficienteConstruccion(piso, "ESTRUCTURA");
-        BigDecimal coeficienteAcabado = parametrosServicio.obtenerCoeficienteConstruccion(piso, "ACABADOS");
-        BigDecimal coeficienteExtras = parametrosServicio.obtenerCoeficienteConstruccion(piso, "EXTRAS");
-        BigDecimal v1 = parametrosServicio.obtenerTotalCoeficienteDominiosPorCodigo("210101");
-        BigDecimal v2 = parametrosServicio.obtenerTotalCoeficienteDominiosPorCodigo("210102");
-        BigDecimal v3 = parametrosServicio.obtenerTotalCoeficienteDominiosPorCodigo("210103");
+        List<AvaluoDto> listaDetallesEstructura = obtenerListaDetallesPisoPorTipo(piso, valorDepreciacion, promedioFactores, "210101", "ESTRUCTURA", dominios);
+        List<AvaluoDto> listaDetallesAcabado = obtenerListaDetallesPisoPorTipo(piso, valorDepreciacion, promedioFactores, "210102", "ACABADOS", dominios);
+        List<AvaluoDto> listaDetallesExtras = obtenerListaDetallesPisoPorTipo(piso, valorDepreciacion, promedioFactores, "210103", "EXTRAS", dominios);
+        BigDecimal coeficienteEstructura = obtenerCoeficienteConstruccion(piso, "ESTRUCTURA", dominios);
+        BigDecimal coeficienteAcabado = obtenerCoeficienteConstruccion(piso, "ACABADOS", dominios);
+        BigDecimal coeficienteExtras = obtenerCoeficienteConstruccion(piso, "EXTRAS", dominios);
+        //BigDecimal v1 = obtenerTotalCoeficienteDominiosPorCodigo("210101", dominios);
+        BigDecimal v1 = obtenerElementoAvaluoPorDescripcion(listaDetallesEstructura, EnumCaracteristicasAvaluo.DETALLE_COSTO_METRO_REFERENCIAL.getTitulo());
+        //BigDecimal v2 = obtenerTotalCoeficienteDominiosPorCodigo("210102", dominios);
+        BigDecimal v2 = obtenerElementoAvaluoPorDescripcion(listaDetallesAcabado, EnumCaracteristicasAvaluo.DETALLE_COSTO_METRO_REFERENCIAL.getTitulo());
+        //BigDecimal v3 = obtenerTotalCoeficienteDominiosPorCodigo("210103", dominios);
+        BigDecimal v3 = obtenerElementoAvaluoPorDescripcion(listaDetallesExtras, EnumCaracteristicasAvaluo.DETALLE_COSTO_METRO_REFERENCIAL.getTitulo());
         BigDecimal areaPiso = piso.getValAreapiso();
 
         // Factos de costos del pios es igual a la suma de los factores por el área menos la depreciación del bien por edad y estado
         BigDecimal sumaFactores = areaPiso.multiply((coeficienteEstructura.multiply(v1)).add(coeficienteAcabado.multiply(v2)).add(coeficienteExtras.multiply(v3)));
         BigDecimal depreciacion = sumaFactores.multiply(valorDepreciacion);
         BigDecimal costoPiso = sumaFactores.subtract(depreciacion);
-        
+
         //TODO Aplicar actualizacion al final
         /*piso.setValFactordepreciacion(valorDepreciacion);
         piso.setValSumafactores(coeficienteEstructura.add(coeficienteAcabado).add(coeficienteExtras));
@@ -399,7 +428,6 @@ public class CatastroServicioImpl implements CatastroServicio {
         piso.setValPiso(costoPiso);
         //piso = seleccionarPiso(codigo_piso);
         actualizarPiso(piso, sesion);*/
-        
         //Detalle de construccion Estructura
         listaDetallesConstruccion.add(generarElementoArbolAvaluo(EnumCaracteristicasAvaluo.DETALLE_ESTRUCTURA.getTitulo(), null, null, listaDetallesEstructura));
         //Destalle de construccion Acabados
@@ -417,10 +445,10 @@ public class CatastroServicioImpl implements CatastroServicio {
         return listaDetallesConstruccion;
     }
 
-    public List<AvaluoDto> obtenerListaDetallesPisoPorTipo(Pisos piso, BigDecimal valorDepreciacion, BigDecimal promedioFactores, String codigoDominio, String elementoCalculo) throws NewviExcepcion {
+    public List<AvaluoDto> obtenerListaDetallesPisoPorTipo(Pisos piso, BigDecimal valorDepreciacion, BigDecimal promedioFactores, String codigoDominio, String elementoCalculo, List<Dominios> dominios) throws NewviExcepcion {
         List<AvaluoDto> listaDetallesPiso = new ArrayList<>();
-        BigDecimal coeficiente = parametrosServicio.obtenerCoeficienteConstruccion(piso, elementoCalculo);
-        BigDecimal costoMetroReferencial = parametrosServicio.obtenerTotalCoeficienteDominiosPorCodigo(codigoDominio);
+        BigDecimal coeficiente = obtenerCoeficienteConstruccion(piso, elementoCalculo, dominios);
+        BigDecimal costoMetroReferencial = obtenerTotalCoeficienteDominiosPorCodigo(codigoDominio, dominios);
 
         piso.getDetalles().forEach((pisoDetalle) -> {
             AvaluoDto nuevoDetalle = generarNodoDetalle(pisoDetalle, elementoCalculo);
@@ -431,7 +459,7 @@ public class CatastroServicioImpl implements CatastroServicio {
         });
 
         listaDetallesPiso.add(generarElementoArbolAvaluo("Promedio general " + elementoCalculo.toLowerCase(), null, coeficiente.toString(), null));
-        listaDetallesPiso.add(generarElementoArbolAvaluo("Costo metro referencial", null, costoMetroReferencial.toString(), null));
+        listaDetallesPiso.add(generarElementoArbolAvaluo(EnumCaracteristicasAvaluo.DETALLE_COSTO_METRO_REFERENCIAL.getTitulo(), costoMetroReferencial.toString(), null, null));
 
         return listaDetallesPiso;
     }
@@ -521,6 +549,7 @@ public class CatastroServicioImpl implements CatastroServicio {
         BigDecimal promedioFactores = BigDecimal.ZERO;
         BigDecimal div = new BigDecimal(5);
         BigDecimal frente = predio.getValAreaFrente();
+        BigDecimal fondo = predio.getValAreaFondo();
         BigDecimal area = predio.getValAreaPredio();
         BigDecimal areaConstruccion = BigDecimal.ZERO;
         BigDecimal valorEdificacion = BigDecimal.ZERO;
@@ -558,7 +587,7 @@ public class CatastroServicioImpl implements CatastroServicio {
         }
         nodo.add(generarElementoArbolAvaluo("Area", area.setScale(2, BigDecimal.ROUND_UP).toString(), null, null));
         nodo.add(generarElementoArbolAvaluo("Frente", frente.setScale(2, BigDecimal.ROUND_UP).toString(), null, null));
-        nodo.add(generarElementoArbolAvaluo("Fondo relativo", predio.getValAreaFondo().setScale(2, BigDecimal.ROUND_UP).toString(), null, null));
+        nodo.add(generarElementoArbolAvaluo("Fondo relativo", fondo.setScale(2, BigDecimal.ROUND_UP).toString(), null, null));
         nodo.add(generarElementoArbolAvaluo("Factor frente fondo", coff.toString(), null, null));
         nodo.add(generarElementoArbolAvaluo("Topografía", cot.toString(), null, null));
         nodo.add(generarElementoArbolAvaluo("Erosión", cero.toString(), null, null));
@@ -684,7 +713,6 @@ public class CatastroServicioImpl implements CatastroServicio {
         predio.setValImppredial(aPagar);
 
         //actualizarPredio(predio, sesion);
-
         listaOtrosRubros.add(generarElementoArbolAvaluo("Bomberos", predio.getValBomberos().setScale(2, BigDecimal.ROUND_UP).toString(), null, null));
         listaOtrosRubros.add(generarElementoArbolAvaluo("Costo emisión", predio.getValEmision().setScale(2, BigDecimal.ROUND_UP).toString(), null, null));
         listaOtrosRubros.add(generarElementoArbolAvaluo("CEM", predio.getValCem().setScale(2, BigDecimal.ROUND_UP).toString(), null, null));

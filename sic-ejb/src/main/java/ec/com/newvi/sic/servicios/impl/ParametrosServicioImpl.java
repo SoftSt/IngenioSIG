@@ -279,7 +279,7 @@ public class ParametrosServicioImpl implements ParametrosServicio {
         }
         return totalCoeficiente;
     }
-
+    
     @Override
     public List<ConstantesImpuestos> obtenerConstantesImpuestosPorTipo(String stsTipo) {
         return constantesFacade.obtenerConstantesImpuestosPorTipo(stsTipo);
