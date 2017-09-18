@@ -93,7 +93,7 @@ public class Terreno implements Serializable {
     }
 
     public String getStsCodigo() {
-        return stsCodigo;
+        return stsCodigo.trim();
     }
 
     public void setStsCodigo(String stsCodigo) {

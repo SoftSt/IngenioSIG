@@ -16,6 +16,7 @@ import ec.com.newvi.sic.enums.EnumReporte;
 import ec.com.newvi.sic.modelo.Avaluo;
 import ec.com.newvi.sic.modelo.Bloques;
 import ec.com.newvi.sic.modelo.Contribuyentes;
+import ec.com.newvi.sic.modelo.Dominios;
 import ec.com.newvi.sic.modelo.FechaAvaluo;
 import ec.com.newvi.sic.modelo.Predios;
 import ec.com.newvi.sic.util.ComunUtil;
@@ -185,32 +186,33 @@ public class AvaluoBB extends AdminFichaCatastralBB {
 
         FechaAvaluo fecavId = generarFechaAvaluo();
         List<FichaCatastralDto> listaFichas = generarListaFichaCatastral();
+        List<Dominios> dominios = parametrosServicio.consultarDominios();
 
         for (FichaCatastralDto fichaDto : listaFichas) {
-            Predios predio = fichaDto.getPredio();
+            Predios predioACalcular = fichaDto.getPredio();
             Contribuyentes contribuyente = fichaDto.getContribuyentePropiedad();
             //List<AvaluoDto> calculoAvaluo = catastroServicio.obtenerAvaluoPredio(predio, sesionBean.obtenerSesionDto());
-            catastroServicio.obtenerAvaluoPredio(predio, sesionBean.getSesion());
+            catastroServicio.obtenerAvaluoPredio(predioACalcular, dominios, sesionBean.getSesion());
             avaluo = new Avaluo();
             //if (!(calculoAvaluo == null)) {
             if (Boolean.TRUE) {
-                avaluo.setValTerreno(predio.getValTerreno());
-                avaluo.setValPredio(predio.getValPredio());
-                avaluo.setValImppredial(predio.getValImppredial());
-                avaluo.setValEmision(predio.getValEmision());
-                avaluo.setValEdifica(predio.getValEdifica());
-                avaluo.setValCem(predio.getValCem());
-                avaluo.setValBomberos(predio.getValBomberos());
-                avaluo.setValBasura(predio.getValBasura());
-                avaluo.setValAreapredio(predio.getValAreaPredio());
-                avaluo.setValAreaconstruccion(predio.getValAreaConstruccion());
-                avaluo.setValAmbientales(predio.getValAmbientales());
-                avaluo.setValImpuesto(predio.getValImpuesto());
+                avaluo.setValTerreno(predioACalcular.getValTerreno());
+                avaluo.setValPredio(predioACalcular.getValPredio());
+                avaluo.setValImppredial(predioACalcular.getValImppredial());
+                avaluo.setValEmision(predioACalcular.getValEmision());
+                avaluo.setValEdifica(predioACalcular.getValEdifica());
+                avaluo.setValCem(predioACalcular.getValCem());
+                avaluo.setValBomberos(predioACalcular.getValBomberos());
+                avaluo.setValBasura(predioACalcular.getValBasura());
+                avaluo.setValAreapredio(predioACalcular.getValAreaPredio());
+                avaluo.setValAreaconstruccion(predioACalcular.getValAreaConstruccion());
+                avaluo.setValAmbientales(predioACalcular.getValAmbientales());
+                avaluo.setValImpuesto(predioACalcular.getValImpuesto());
             }
-            avaluo.setCodCatastral(predio);
-            avaluo.setNomCodigocatastral(predio.getNomCodigocatastral());
-            avaluo.setTxtDireccion(predio.getTxtDireccion());
-            avaluo.setStsBarrio(predio.getStsBarrio());
+            avaluo.setCodCatastral(predioACalcular);
+            avaluo.setNomCodigocatastral(predioACalcular.getNomCodigocatastral());
+            avaluo.setTxtDireccion(predioACalcular.getTxtDireccion());
+            avaluo.setStsBarrio(predioACalcular.getStsBarrio());
             avaluo.setCodCedularuc(contribuyente.getCodCedularuc());
             avaluo.setNomnomape(contribuyente.getNomNombres().trim() + " " + contribuyente.getNomApellidos().trim());
             avaluo.setFecavId(fecavId);
@@ -218,7 +220,7 @@ public class AvaluoBB extends AdminFichaCatastralBB {
             catastroServicio.generarNuevoAvaluo(avaluo, sesionBean.getSesion());
 
             //LoggerNewvi.getLogNewvi(this.getClass()).debug(cont++, sesionBean.getSesion());
-            LoggerNewvi.getLogNewvi(this.getClass()).info(predio.getCodCatastral(), sesionBean.getSesion());
+            LoggerNewvi.getLogNewvi(this.getClass()).info(predioACalcular.getCodCatastral(), sesionBean.getSesion());
             if (this.progreso <= 100) {
                 if ((cont++ % (listaFichas.size() / 100))==0) {
                     progreso++;

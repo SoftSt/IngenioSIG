@@ -10,6 +10,7 @@ import ec.com.newvi.sic.dto.SesionDto;
 import ec.com.newvi.sic.modelo.Avaluo;
 import ec.com.newvi.sic.modelo.Bloques;
 import ec.com.newvi.sic.modelo.DetallesAvaluo;
+import ec.com.newvi.sic.modelo.Dominios;
 import ec.com.newvi.sic.modelo.FechaAvaluo;
 import ec.com.newvi.sic.modelo.Fotos;
 import ec.com.newvi.sic.modelo.PisoDetalle;
@@ -30,7 +31,8 @@ import javax.ejb.Local;
 @Local
 @PermitAll
 public interface CatastroServicio {
-        /*------------------------------------------------------------Predios------------------------------------------------------------*/
+
+    /*------------------------------------------------------------Predios------------------------------------------------------------*/
     /**
      * Genera un nuevo Predio, de acuerdo a un objeto entregado.
      *
@@ -66,7 +68,7 @@ public interface CatastroServicio {
      * @return Listado de Predios
      */
     public List<Predios> consultarPredios();
-    
+
     /**
      * Elimina un predios dado
      *
@@ -76,7 +78,8 @@ public interface CatastroServicio {
      * @throws NewviExcepcion
      */
     public String eliminarPredio(Predios predio, SesionDto sesion) throws NewviExcepcion;
-        /*------------------------------------------------------------Bloques------------------------------------------------------------*/
+
+    /*------------------------------------------------------------Bloques------------------------------------------------------------*/
     /**
      * Genera un nuevo Bloque, de acuerdo a un objeto entregado.
      *
@@ -107,12 +110,12 @@ public interface CatastroServicio {
     public Bloques seleccionarBloque(Integer idBloque) throws NewviExcepcion;
 
     /**
-     * Devuelve un listado de Bloques.
+     * Devuelve un listado de Bloques. obtenerAvaluoPredio
      *
      * @return Listado de Bloques
      */
     public List<Bloques> consultarBloques();
-    
+
     /**
      * Elimina un predios dado
      *
@@ -122,24 +125,30 @@ public interface CatastroServicio {
      * @throws NewviExcepcion
      */
     public String eliminarBloque(Bloques bloque, SesionDto sesion) throws NewviExcepcion;
-    
+
     /**
      * Devuelve un listado de bloques por un codigo catastral
-     * @param codCatastral codigo del predio por el cual vamos a buscar los bloques
+     *
+     * @param codCatastral codigo del predio por el cual vamos a buscar los
+     * bloques
      * @return Listado de bos filtrados por codigo catastrak
      */
     public List<Bloques> buscarBloquesPorCodigoCatastral(Integer codCatastral);
-    
+
     /**
-     * Obtiene el avalúo de un bloque, dado un bloque y el promedio de factores del predio al que pertenece
+     * Obtiene el avalúo de un bloque, dado un bloque y el promedio de factores
+     * del predio al que pertenece
+     *
      * @param bloque Bloque al que se va a calcular el avalúo
      * @param promedioFactores Promedio de los factores para el cálculo
      * @param sesion Usuario que realiza la consulta
+     * @param dominios Listado de dominios
      * @return Objeto AvaluoDto que contiene el avalúo del bloque
-     * @throws NewviExcepcion 
+     * @throws NewviExcepcion
      */
-    public List<AvaluoDto> obtenerAvaluoBloque(Bloques bloque, BigDecimal promedioFactores, SesionDto sesion) throws NewviExcepcion;
-        /*------------------------------------------------------------Pisos------------------------------------------------------------*/
+    public List<AvaluoDto> obtenerAvaluoBloque(Bloques bloque, BigDecimal promedioFactores,List<Dominios> dominios, SesionDto sesion) throws NewviExcepcion;
+
+    /*------------------------------------------------------------Pisos------------------------------------------------------------*/
     /**
      * Genera un nuevo Piso, de acuerdo a un objeto entregado.
      *
@@ -175,7 +184,7 @@ public interface CatastroServicio {
      * @return Listado de Pisos
      */
     public List<Pisos> consultarPisos();
-    
+
     /**
      * Elimina un pisos dado
      *
@@ -185,29 +194,35 @@ public interface CatastroServicio {
      * @throws NewviExcepcion
      */
     public String eliminarPiso(Pisos piso, SesionDto sesion) throws NewviExcepcion;
+
     /**
      * Obtiene los datos del piso por bloque
+     *
      * @param codBloque codigo del bloque
      * @return Piso
      */
     public Object[] obtenerDatosPisoPorBloque(Integer codBloque);
+
     /**
      * Obtiene el listado de pisos por bloque
+     *
      * @param codBloques codigo del bloque
      * @return Lista de pisos
      */
     public Pisos buscarPisosPorCodigoBloque(Integer codBloques);
+
     /**
-     * 
+     *
      * @param piso
      * @param promedioFactores
      * @param sesion
+     * @param dominios
      * @return
-     * @throws NewviExcepcion 
+     * @throws NewviExcepcion
      */
-    public List<AvaluoDto> obtenerAvaluoPisos(Pisos piso, BigDecimal promedioFactores, SesionDto sesion) throws NewviExcepcion;
-    
-        /*------------------------------------------------------------PisoDetalle------------------------------------------------------------*/
+    public List<AvaluoDto> obtenerAvaluoPisos(Pisos piso, BigDecimal promedioFactores, List<Dominios> dominios, SesionDto sesion) throws NewviExcepcion;
+
+    /*------------------------------------------------------------PisoDetalle------------------------------------------------------------*/
     /**
      * Actualiza un Piso existente.
      *
@@ -217,10 +232,8 @@ public interface CatastroServicio {
      * @throws NewviExcepcion
      */
     public String actualizarPisoDetalle(PisoDetalle pisoDetalle, SesionDto sesion) throws NewviExcepcion;
-    
-    
-    
-        /*------------------------------------------------------------Terreno------------------------------------------------------------*/
+
+    /*------------------------------------------------------------Terreno------------------------------------------------------------*/
     /**
      * Genera un nuevo Terreno, de acuerdo a un objeto entregado.
      *
@@ -256,7 +269,7 @@ public interface CatastroServicio {
      * @return Listado de Terreno
      */
     public List<Terreno> consultarTerreno();
-    
+
     /**
      * Elimina un terreno dado
      *
@@ -268,127 +281,145 @@ public interface CatastroServicio {
     public String eliminarTerreno(Terreno terreno, SesionDto sesion) throws NewviExcepcion;
 
     /*------------------------------------------------------------Fotos------------------------------------------------------------*/
-
-   /**
-    * Consulta todas las imagenes que tiene un predio
-    * @param codCatastral codigo del predio asignado
-    * @return lista de fotos del predio
-    */
+    /**
+     * Consulta todas las imagenes que tiene un predio
+     *
+     * @param codCatastral codigo del predio asignado
+     * @return lista de fotos del predio
+     */
     public List<Fotos> consultarFotosPorPredio(int codCatastral);
-        /*------------------------------------------------------------Avalúos------------------------------------------------------------*/
-    
+
+    /*------------------------------------------------------------Avalúos------------------------------------------------------------*/
+
     /**
      * Devuelve el avalúo del predio, dado un predio.
+     *
      * @param predio Predio a calcular el avalúo
      * @param sesion Usuario que genera el avalúo
+     * @param dominios lista de dominios
      * @return Listado de tipo AvaluoDto que tiene los valores jerarquizados.
      * @throws NewviExcepcion
      */
-    public List<AvaluoDto> obtenerAvaluoPredio(Predios predio, SesionDto sesion) throws NewviExcepcion;
-    
+    public List<AvaluoDto> obtenerAvaluoPredio(Predios predio, List<Dominios> dominios, SesionDto sesion) throws NewviExcepcion;
+
     /**
      * Genera la simulacion del calculo de los avaluos
-     * @param predio 
+     *
+     * @param predio
      * @param sesion
-     * @throws NewviExcepcion 
+     * @throws NewviExcepcion
      */
-    
     //public void obtenerSimulacionAvaluoPredio(Predios predio, SesionDto sesion) throws NewviExcepcion;
-    
     /*------------------------------------------------------------FechaAvaluo------------------------------------------------------------*/
     /**
      * Genera una nueva FechaAvaluo
+     *
      * @param nuevoFechaAvaluo nueva Fecha
      * @param sesion Usuario que genera la fecha avalúo
      * @return id de fechaAvaluo
-     * @throws NewviExcepcion 
+     * @throws NewviExcepcion
      */
     public FechaAvaluo generarNuevaFechaAvaluo(FechaAvaluo nuevoFechaAvaluo, SesionDto sesion) throws NewviExcepcion;
-    
+
     /**
      * Lista las fechas de los avaluos
+     *
      * @return listado de fechas de avaluos
      */
     public List<FechaAvaluo> consultarFechaAvaluos();
-    
-        /*------------------------------------------------------------Avaluo------------------------------------------------------------*/
+
+    /*------------------------------------------------------------Avaluo------------------------------------------------------------*/
     /**
      * Genera un nuevo Avaluo
+     *
      * @param nuevoAvaluo nuevo Avaluo
      * @param sesion Usuario que genera el avalúo
      * @return id de avaluo
-     * @throws NewviExcepcion 
+     * @throws NewviExcepcion
      */
     public Integer generarNuevoAvaluo(Avaluo nuevoAvaluo, SesionDto sesion) throws NewviExcepcion;
-    
+
     /**
-     *Lista los avaluos por determinada fecha 
+     * Lista los avaluos por determinada fecha
+     *
      * @param fecavFechaavaluo fecha por la que se filtraráa
      * @return lista de avaluos
      */
     public List<Avaluo> consultarAvaluos(Date fecavFechaavaluo);
-    
+
     /**
      * Devuelve el avaluo dado por un id
+     *
      * @param avalId id del avaluo
      * @return avaluo
-     * @throws NewviExcepcion 
+     * @throws NewviExcepcion
      */
     public Avaluo seleccionarAvaluo(Integer avalId) throws NewviExcepcion;
-    
-    
+
     /**
      * Lista los avaluos actuales
+     *
      * @return lista de avaluos
      */
     public List<Avaluo> consultarListaAvaluosActuales();
-    
+
     /**
      * Lista los avaluos por una fecha
+     *
      * @param fechaAvaluo fecha por la que se filtrará
      * @return lista de avaluos
      */
     public List<Avaluo> consultarListaAvaluosPorFecha(String fechaAvaluo);
-    
+
     /*------------------------------------------------------------Detalles Avaluo------------------------------------------------------------*/
     /**
      * Lista los detalles de avaluo
+     *
      * @return lista de detalles de avaluo
      */
     public List<DetallesAvaluo> consultarListaDetallesAvaluo(Integer codCatastral);
-    
+
     /**
      * Genera un nuevo detalle de avaluo
+     *
      * @param nuevoDetalleAvaluo nuevo detalle avaluo
      * @param sesion Usuario que genera el detalle de avalúo
      * @return el codigo del detalle avaluo generado
-     * @throws NewviExcepcion 
+     * @throws NewviExcepcion
      */
     public Integer generarNuevoDetalleAvaluo(DetallesAvaluo nuevoDetalleAvaluo, SesionDto sesion) throws NewviExcepcion;
+
     /**
      * Lista lista de hijos de detallesAvaluo
+     *
      * @param detallesAvaluo objeto por el cual se buscara sus hijos
      * @return lista de detalles avaluo
      */
     public List<DetallesAvaluo> consultarHijosDetallesAvaluo(DetallesAvaluo detallesAvaluo);
+
     /**
      * Lista el avaluoDto
+     *
      * @param relacion relacion por la cual se filtra
      * @param predio predio por el cual se filtrara
      * @return lista de AvaluoDto
      */
     public List<AvaluoDto> listarAvaluoDto(String relacion, Predios predio);
+
     /**
      * Consulta el padre del detalle
+     *
      * @param predio predio por filtrar
      * @param relacion relacion por filtrar
      * @return detalleAvaluo padre
      */
     public DetallesAvaluo consultarPadre(Predios predio, String relacion);
+
     /**
      * Borra los detalles de avaluo
+     *
      * @param predio parametro para borrar
      */
     public void eliminarDetallesPorPredio(Predios predio);
-    
+
 }
