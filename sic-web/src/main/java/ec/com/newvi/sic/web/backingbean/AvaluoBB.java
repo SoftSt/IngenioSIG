@@ -65,6 +65,7 @@ public class AvaluoBB extends AdminFichaCatastralBB {
     private FechaAvaluo fechaAvaluoActual;
     private String fechaActualPrueba;
     private Boolean esActivo;
+    private Boolean esProcesoIniciado;
 
     public Boolean getEsActivo() {
         return esActivo;
@@ -74,6 +75,14 @@ public class AvaluoBB extends AdminFichaCatastralBB {
         this.esActivo = esActivo;
     }
 
+    public Boolean getEsProcesoIniciado() {
+        return esProcesoIniciado;
+    }
+
+    public void setEsProcesoIniciado(Boolean esProcesoIniciado) {
+        this.esProcesoIniciado = esProcesoIniciado;
+    }
+    
     public String getFechaActualPrueba() {
         return fechaActualPrueba;
     }
@@ -133,6 +142,7 @@ public class AvaluoBB extends AdminFichaCatastralBB {
     @PostConstruct
     public void init() {
         this.esActivo = false;
+        this.esProcesoIniciado = false;
         this.progreso = 0;
         fechaAvaluoActual = new FechaAvaluo();
         listaAvaluos = new ArrayList<>();
@@ -179,6 +189,8 @@ public class AvaluoBB extends AdminFichaCatastralBB {
     }
 
     public void generarSimulacionFinal() throws NewviExcepcion {
+        this.esProcesoIniciado = true;
+        
         List<Predios> listaPredios = catastroServicio.consultarPredios();
         List<Dominios> dominios = parametrosServicio.consultarDominios();
         int cont = 0;
@@ -302,6 +314,7 @@ public class AvaluoBB extends AdminFichaCatastralBB {
     }
 
     public void onComplete() {
+        this.esProcesoIniciado = false;
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Progress Completed"));
     }
 

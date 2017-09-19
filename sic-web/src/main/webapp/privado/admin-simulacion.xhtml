@@ -107,19 +107,22 @@
                     </p:dialog>   
                 </h:form>
 
-                <p:dialog header="Generación de la sumulación" id="generarSim" widgetVar="dlgSimulacion" modal="true" height="300" width="400">
-                    <p><h:outputText value="Espere mientras se genera el avaluo" /></p>
+                <p:dialog header="Cálculo de Avalúos" id="generarSim" widgetVar="dlgSimulacion" modal="true" height="300" width="400">
                     <h:form>
 
-                        <p:remoteCommand name="rc" actionListener="#{avaluoBB.generarSimulacionFinal}" />
-                        <p:commandButton onclick="rc();PF('calcularSimulacion').disable();PF('pbAjax').start()"
+                        <p><h:outputText value="Para iniciar, de clic en el botón a continuación"></h:outputText></p>
+                        <p:remoteCommand name="rc" actionListener="#{avaluoBB.generarSimulacionFinal}" update="cmdIniciarAvaluo "/>
+                        <p:commandButton id="cmdIniciarAvaluo" onclick="rc();PF('calcularSimulacion').disable();PF('pbAjax').start()"
                                          icon="fa fa-calculator"
                                          value="Iniciar"
                                          widgetVar="calcularSimulacion"
-                                         id="generarSimulacion">
+                                         id="generarSimulacion" disabled="#{avaluoBB.esProcesoIniciado}">
                         </p:commandButton>
                         <br /><br />
-                        <p:progressBar widgetVar="pbAjax" ajax="true" value="#{avaluoBB.progreso}" labelTemplate="{value}%" style="width:300px" styleClass="animated" global="false">
+                        <p>
+                            <h:outputText value="Calculando avalúos, por favor espere." rendered="#{avaluoBB.esProcesoIniciado}"/>
+                        </p>
+                        <p:progressBar widgetVar="pbAjax" ajax="true" value="#{avaluoBB.progreso}" rendered="#{avaluoBB.esProcesoIniciado}" labelTemplate="{value}%" style="width:300px" styleClass="animated" global="false">
                             <p:ajax event="complete" listener="#{avaluoBB.onComplete}" oncomplete="PF('startButton2').enable()"/>
                         </p:progressBar>
 
