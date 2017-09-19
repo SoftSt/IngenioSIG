@@ -66,6 +66,11 @@ public class AvaluoBB extends AdminFichaCatastralBB {
     private String fechaActualPrueba;
     private Boolean esActivo;
     private Boolean esProcesoIniciado;
+    private Boolean esProcesoCancelado;
+
+    public Boolean getEsProcesoCancelado() {
+        return esProcesoCancelado;
+    }
 
     public Boolean getEsActivo() {
         return esActivo;
@@ -82,7 +87,7 @@ public class AvaluoBB extends AdminFichaCatastralBB {
     public void setEsProcesoIniciado(Boolean esProcesoIniciado) {
         this.esProcesoIniciado = esProcesoIniciado;
     }
-    
+
     public String getFechaActualPrueba() {
         return fechaActualPrueba;
     }
@@ -143,6 +148,7 @@ public class AvaluoBB extends AdminFichaCatastralBB {
     public void init() {
         this.esActivo = false;
         this.esProcesoIniciado = false;
+        this.esProcesoCancelado = false;
         this.progreso = 0;
         fechaAvaluoActual = new FechaAvaluo();
         listaAvaluos = new ArrayList<>();
@@ -188,25 +194,31 @@ public class AvaluoBB extends AdminFichaCatastralBB {
         generarSimulacionFinal();
     }
 
+    public void cancelarAvaluo() {
+        this.esProcesoCancelado = true;
+    }
+
     public void generarSimulacionFinal() throws NewviExcepcion {
         this.esProcesoIniciado = true;
-        
+
         List<Predios> listaPredios = catastroServicio.consultarPredios();
         List<Dominios> dominios = parametrosServicio.consultarDominios();
         int cont = 0;
-        
+
         for (Predios predioACalcular : listaPredios) {
             List<AvaluoDto> calculoAvaluo = catastroServicio.obtenerAvaluoPredio(predioACalcular, dominios, sesionBean.getSesion());
             catastroServicio.registrarArbol(calculoAvaluo, predioACalcular, sesionBean.getSesion());
-            
+
             LoggerNewvi.getLogNewvi(this.getClass()).info(predioACalcular.getCodCatastral(), sesionBean.getSesion());
             if (this.progreso <= 100) {
                 if ((cont++ % (listaPredios.size() / 100)) == 0) {
                     progreso++;
-                    //cont=0;
                 }
             } else {
                 this.progreso = 100;
+            }
+            if (esProcesoCancelado) {
+                break;
             }
         }
     }
