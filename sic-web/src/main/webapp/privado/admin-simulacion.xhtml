@@ -111,7 +111,7 @@
                     <p><h:outputText value="Espere mientras se genera el avaluo" /></p>
                     <h:form>
 
-                        <p:remoteCommand name="rc" actionListener="#{avaluoBB.generarSimulacion}" />
+                        <p:remoteCommand name="rc" actionListener="#{avaluoBB.generarSimulacionFinal}" />
                         <p:commandButton onclick="rc();PF('calcularSimulacion').disable();PF('pbAjax').start()"
                                          icon="fa fa-calculator"
                                          value="Iniciar"

@@ -941,6 +941,14 @@ public class CatastroServicioImpl implements CatastroServicio {
 
         return detallesAvaluoFacade.buscarHijosDetallesAvaluo(detallesAvaluo);
     }
+    
+    public List<AvaluoDto> obtenerHijos(List<AvaluoDto> nodo){
+        List<AvaluoDto> hijos = new ArrayList<>();
+        for (AvaluoDto avaluoDto : nodo) {
+            hijos =avaluoDto.getHijos();
+        }
+        return hijos;
+    }
 
     @Override
     public List<AvaluoDto> listarAvaluoDto(String relacion, Predios predio) {
@@ -949,7 +957,7 @@ public class CatastroServicioImpl implements CatastroServicio {
         for (DetallesAvaluo nuevoDetalle : detallesAvaluoFacade.buscarDetallesAvaluoNodo(relacion, predio)) {
             listaAvaluoDto.add(new AvaluoDto(nuevoDetalle, this));
         }
-        return listaAvaluoDto;
+        return obtenerHijos(listaAvaluoDto);
     }
 
     @Override
@@ -960,6 +968,19 @@ public class CatastroServicioImpl implements CatastroServicio {
     @Override
     public void eliminarDetallesPorPredio(Predios predio) {
         detallesAvaluoFacade.eliminarDetallesPorPredio(predio);
+    }
+    
+    public Integer obtenerCodigoPadre(Predios predio, SesionDto sesion) throws NewviExcepcion{
+        eliminarDetallesPorPredio(predio);
+        generarNodos(generarElementoArbolAvaluo("Arbol Avaluo", null, null, null), 0, "Nodo", sesion, predio);
+        return (detallesAvaluoFacade.buscarPadre(predio, "Nodo")).getDavalId();
+    }
+    @Override
+    public void registrarArbol(List<AvaluoDto> nodo, Predios predio, SesionDto sesion) throws NewviExcepcion{
+        Integer padre = obtenerCodigoPadre(predio, sesion);
+        for (AvaluoDto avaluoDto : nodo) {
+            generarNodos(avaluoDto, padre, "SubNodo", sesion, predio);
+        }
     }
 
 }

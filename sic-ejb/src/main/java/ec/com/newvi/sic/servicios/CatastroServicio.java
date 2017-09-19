@@ -310,6 +310,15 @@ public interface CatastroServicio {
      * @throws NewviExcepcion
      */
     //public void obtenerSimulacionAvaluoPredio(Predios predio, SesionDto sesion) throws NewviExcepcion;
+    
+    /**
+     * Almacena el arbol en la tabla cat_cat_detallesAvaluo
+     * @param nodo lista de nodos a registrar 
+     * @param predio dato para el registro
+     * @param sesion quien realiza la acción 
+     * @throws NewviExcepcion 
+     */
+    public void registrarArbol(List<AvaluoDto> nodo, Predios predio, SesionDto sesion) throws NewviExcepcion;
     /*------------------------------------------------------------FechaAvaluo------------------------------------------------------------*/
     /**
      * Genera una nueva FechaAvaluo

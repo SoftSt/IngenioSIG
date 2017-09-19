@@ -144,7 +144,7 @@ public class AvaluoBB extends AdminFichaCatastralBB {
         this.skip = false;
         actualizarListadoFechaAvaluos();
         //actualizarListadoAvaluos();
-        
+
     }
 
     public FechaAvaluo generarFechaAvaluo() throws NewviExcepcion {
@@ -174,13 +174,35 @@ public class AvaluoBB extends AdminFichaCatastralBB {
 
     public void abrirModalEspera() throws NewviExcepcion {
         //WebUtils.obtenerContextoPeticion().execute("PF('calcularSimulacion').disable()");
-        generarSimulacion();
+        //generarSimulacion();
+        generarSimulacionFinal();
+    }
+
+    public void generarSimulacionFinal() throws NewviExcepcion {
+        List<Predios> listaPredios = catastroServicio.consultarPredios();
+        List<Dominios> dominios = parametrosServicio.consultarDominios();
+        int cont = 0;
+        
+        for (Predios predioACalcular : listaPredios) {
+            List<AvaluoDto> calculoAvaluo = catastroServicio.obtenerAvaluoPredio(predioACalcular, dominios, sesionBean.getSesion());
+            catastroServicio.registrarArbol(calculoAvaluo, predioACalcular, sesionBean.getSesion());
+            
+            LoggerNewvi.getLogNewvi(this.getClass()).info(predioACalcular.getCodCatastral(), sesionBean.getSesion());
+            if (this.progreso <= 100) {
+                if ((cont++ % (listaPredios.size() / 100)) == 0) {
+                    progreso++;
+                    //cont=0;
+                }
+            } else {
+                this.progreso = 100;
+            }
+        }
     }
 
     public void generarSimulacion() throws NewviExcepcion {
-        
+
         this.esActivo = true;
-        
+
         Avaluo avaluo;
         int cont = 0;
 
@@ -222,7 +244,7 @@ public class AvaluoBB extends AdminFichaCatastralBB {
             //LoggerNewvi.getLogNewvi(this.getClass()).debug(cont++, sesionBean.getSesion());
             LoggerNewvi.getLogNewvi(this.getClass()).info(predioACalcular.getCodCatastral(), sesionBean.getSesion());
             if (this.progreso <= 100) {
-                if ((cont++ % (listaFichas.size() / 100))==0) {
+                if ((cont++ % (listaFichas.size() / 100)) == 0) {
                     progreso++;
                     //cont=0;
                 }

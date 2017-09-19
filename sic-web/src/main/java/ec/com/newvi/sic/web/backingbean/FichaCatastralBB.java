@@ -808,9 +808,15 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
         this.nodo = catastroServicio.obtenerAvaluoPredio(this.predio, parametrosServicio.consultarDominios(), sesionBean.getSesion());
         //catastroServicio.obtenerAvaluoPredio(this.predio, sesionBean.getSesion());
         //generarArbolAvaluo(catastroServicio.listarAvaluoDto("Nodo", predio));
-        if (this.nodo != null) {
+
+        //List<AvaluoDto> calculoAvaluo = catastroServicio.obtenerAvaluoPredio(this.predio, parametrosServicio.consultarDominios(), sesionBean.getSesion());
+        catastroServicio.registrarArbol(this.nodo, this.predio, sesionBean.getSesion());
+        //List<AvaluoDto> arbol = catastroServicio.listarAvaluoDto("Nodo", this.predio);
+        generarArbolAvaluo(catastroServicio.listarAvaluoDto("Nodo", this.predio));
+        
+        /*if (this.nodo != null) {
             generarArbolAvaluo(this.nodo);
-        }
+        }*/
         //catastroServicio.listarAvaluoDto("Nodo", predio);
     }
 
