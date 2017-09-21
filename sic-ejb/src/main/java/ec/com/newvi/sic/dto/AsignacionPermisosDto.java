@@ -70,9 +70,9 @@ public class AsignacionPermisosDto {
     
     public final void generarListaPermisosSubfuncionalidades(SeguridadesServicio seguridadesServicio, SesionDto sesion) {
         this.listaPermisosSubfuncionalidades = new ArrayList<>();
-        funcionalidad.getListaSubFuncionalidadesActivas().stream().map((subfuncionalidad) -> new AsignacionPermisosDto(permiso, subfuncionalidad, seguridadesServicio, sesion)).forEachOrdered((subfuncionalidadHijo) -> {
-            this.listaPermisosSubfuncionalidades.add(subfuncionalidadHijo);
-        });
+        for (Funcionalidades subfuncionalidad : funcionalidad.getListaSubFuncionalidadesActivas()) {
+            this.listaPermisosSubfuncionalidades.add(new AsignacionPermisosDto(permiso, subfuncionalidad, seguridadesServicio, sesion));
+        }
     }
     
     public AsignacionPermisosDto(Permisos permisoAsignado, Funcionalidades funcionalidadAsignada, SeguridadesServicio seguridadesServicio, SesionDto sesion) {

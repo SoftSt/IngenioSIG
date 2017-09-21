@@ -23,8 +23,6 @@ import javax.annotation.security.PermitAll;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import ec.com.newvi.sic.servicios.ContribuyentesServicio;
-import java.util.Collection;
-import javafx.print.Collation;
 import javax.persistence.EntityNotFoundException;
 
 /**

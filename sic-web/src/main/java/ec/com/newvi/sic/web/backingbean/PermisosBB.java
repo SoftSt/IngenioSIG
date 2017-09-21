@@ -126,9 +126,9 @@ public class PermisosBB extends AdminSeguridadesBB {
         // Obtener las funcionalidades raíz, y convertirlas en DTOs de asignación permisos
         listaFuncionalidadesDto = new ArrayList<AsignacionPermisosDto>();
         List<Funcionalidades> listaFuncionalidades = seguridadesServicio.consultarFuncionalidadesPadre();
-        listaFuncionalidades.stream().map((elementoFuncionalidad) -> new AsignacionPermisosDto(permiso, elementoFuncionalidad, seguridadesServicio, sesionBean.getSesion())).forEachOrdered((nuevaFuncionalidad) -> {
-            listaFuncionalidadesDto.add(nuevaFuncionalidad);
-        });
+        for (Funcionalidades elementoFuncionalidad : listaFuncionalidades) {
+            listaFuncionalidadesDto.add(new AsignacionPermisosDto(permiso, elementoFuncionalidad, seguridadesServicio, sesionBean.getSesion()));
+        }
         // Crear la raíz de asignación funcionalidades
         listaArbolFuncionalidadesDto = new DefaultTreeNode();
         // Generar el árbol a partir del listado de funcionalidades raíz.

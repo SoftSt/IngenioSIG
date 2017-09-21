@@ -7,11 +7,9 @@ package ec.com.newvi.sic.web.backingbean;
 
 import ec.com.newvi.componente.reporte.ConfiguracionReporte;
 import ec.com.newvi.componente.reporte.ReporteGenerador;
-import ec.com.newvi.sic.dto.CaracteristicasEdificacionesDto;
 import ec.com.newvi.sic.dto.FichaCatastralDto;
 import ec.com.newvi.sic.dto.PresentacionFichaCatastralDto;
 import ec.com.newvi.sic.dto.TablaCatastralDto;
-import ec.com.newvi.sic.modelo.Avaluo;
 import ec.com.newvi.sic.modelo.Predios;
 import ec.com.newvi.sic.util.ComunUtil;
 import ec.com.newvi.sic.util.excepciones.NewviExcepcion;
@@ -95,9 +93,9 @@ public class FormularioEconomicoBB extends AdminFichaCatastralBB {
     private void actualizarListadoPredios() {
         List<Predios> listaPredios = catastroServicio.consultarPredios();
         listaFichas = new ArrayList<>();
-        listaPredios.forEach((elementoPredio) -> {
+        for (Predios elementoPredio : listaPredios) {
             listaFichas.add(new FichaCatastralDto(elementoPredio));
-        });
+        }
     }
 
     public void abrirDialogImpresionFormulario(Integer codCatastral) throws NewviExcepcion {

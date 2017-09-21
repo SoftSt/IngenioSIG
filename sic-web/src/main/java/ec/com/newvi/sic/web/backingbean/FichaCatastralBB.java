@@ -343,9 +343,9 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
     private void actualizarListadoPredios() {
         List<Predios> listaPredios = catastroServicio.consultarPredios();
         listaFichas = new ArrayList<>();
-        listaPredios.forEach((elementoPredio) -> {
+        for (Predios elementoPredio : listaPredios) {
             listaFichas.add(new FichaCatastralDto(elementoPredio));
-        });
+        }
         listaFichasLazy = new ModeloPredioLazy(listaFichas);
     }
 
