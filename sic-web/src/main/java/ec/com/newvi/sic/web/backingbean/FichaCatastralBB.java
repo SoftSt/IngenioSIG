@@ -12,6 +12,7 @@ import ec.com.newvi.sic.dto.PresentacionFichaCatastral;
 import ec.com.newvi.sic.enums.EnumEstadoPisoDetalle;
 import ec.com.newvi.sic.enums.EnumEstadoRegistro;
 import ec.com.newvi.sic.enums.EnumNewviExcepciones;
+import ec.com.newvi.sic.enums.EnumParametroSistema;
 import ec.com.newvi.sic.enums.EnumRelacionDominios;
 import ec.com.newvi.sic.enums.EnumReporte;
 import ec.com.newvi.sic.enums.EnumSiNo;
@@ -92,6 +93,7 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
     private Boolean esPantallaLista;
     private Boolean esPantallaEditable;
     private Boolean esPantallaNueva;
+    private String direccionVisorPredios;
 
     public Boolean getEsPantallaNueva() {
         return esPantallaNueva;
@@ -333,10 +335,14 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
         this.raiz = raiz;
     }
 
+    public String getDireccionVisorPredios() {
+        return direccionVisorPredios;
+    }
+
     @PostConstruct
     public void init() {
         this.predio = new Predios();
-        desabilitarPantallas();
+        deshabilitarPantallas();
         seleccionPantallas();
     }
 
@@ -422,6 +428,7 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
             this.seleccionarPredioPorCodigo(idPredio);
             calcularAvaluo();
             PresentacionFichaCatastral cat = new PresentacionFichaCatastral(this.predio);
+            this.direccionVisorPredios = parametrosServicio.obtenerParametroPorNombre(EnumParametroSistema.DIRECCION_VISOR_PREDIOS, sesionBean.getSesion()).getValor();
         } catch (NewviExcepcion e) {
             MensajesFaces.mensajeError(e.getMessage());
         } catch (Exception e) {
@@ -875,7 +882,7 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
         WebUtils.obtenerContextoPeticion().execute("PF('wgSeleccionFormulario').show()");
     }
 
-    private void desabilitarPantallas() {
+    private void deshabilitarPantallas() {
         this.esPantallaEdicion = false;
         this.esPantallaEliminacion = false;
         this.esPantallaFormularios = false;

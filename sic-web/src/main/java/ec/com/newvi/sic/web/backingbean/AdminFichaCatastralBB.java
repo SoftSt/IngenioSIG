@@ -5,28 +5,21 @@
  */
 package ec.com.newvi.sic.web.backingbean;
 
-import ec.com.newvi.componente.reporte.ConfiguracionReporte;
 import ec.com.newvi.componente.reporte.ReporteGenerador;
 import ec.com.newvi.sic.dto.CaracteristicasEdificacionesDto;
 import ec.com.newvi.sic.dto.PresentacionFichaCatastralDto;
-import ec.com.newvi.sic.dto.SesionDto;
 import ec.com.newvi.sic.dto.TablaCatastralDto;
-import ec.com.newvi.sic.enums.EnumNewviExcepciones;
+import ec.com.newvi.sic.enums.EnumParametroSistema;
 import ec.com.newvi.sic.enums.EnumReporte;
 import ec.com.newvi.sic.geo.servicios.GeoCatastroServicio;
 import ec.com.newvi.sic.modelo.Avaluo;
 import ec.com.newvi.sic.modelo.Predios;
-import ec.com.newvi.sic.modelo.Reporte;
 import ec.com.newvi.sic.servicios.CatastroServicio;
 import ec.com.newvi.sic.servicios.ContribuyentesServicio;
-import ec.com.newvi.sic.util.ComunUtil;
 import ec.com.newvi.sic.util.excepciones.NewviExcepcion;
 import ec.com.newvi.sic.util.logs.LoggerNewvi;
 import ec.com.newvi.sic.web.MensajesFaces;
 import ec.com.newvi.sic.web.enums.EnumParametrosReporte;
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -131,7 +124,7 @@ public abstract class AdminFichaCatastralBB extends AdminSistemaBB {
                 parametrosReporte.put(EnumParametrosReporte.CARACTERISTICAS_EDIFICACION.getNombre(), ((PresentacionFichaCatastralDto) datosImpresion.get(0)).getListaBloques());
                 parametrosReporte.put(EnumParametrosReporte.PISO.getNombre(), bloques.getListadetallesPisoDtoD());
                 
-                parametrosReporte.put(EnumParametrosReporte.IMAGEN_DELIMITACION_PREDIO.getNombre(), "".concat(geoCatastroServicio.obtenerBordesPredio(predio, BigDecimal.valueOf(95), BigDecimal.valueOf(533), sesionBean.getSesion())));
+                parametrosReporte.put(EnumParametrosReporte.IMAGEN_DELIMITACION_PREDIO.getNombre(), parametrosServicio.obtenerParametroPorNombre(EnumParametroSistema.DIRECCION_SERVICIO_IMAGEN_PREDIO, sesionBean.getSesion()).getValor().concat(geoCatastroServicio.obtenerBordesPredio(predio, BigDecimal.valueOf(95), BigDecimal.valueOf(533), sesionBean.getSesion())));
             }
 
             if (EnumReporte.NOTIFICACION_AVALUO.equals(tipoReporte)) {
