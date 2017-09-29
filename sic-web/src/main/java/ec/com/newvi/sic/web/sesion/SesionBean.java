@@ -42,7 +42,7 @@ public class SesionBean implements Serializable {
     private static final String SESION_LOCALHOST = "sesionLocalhost";
     @EJB
     private SeguridadesServicio seguridadesServicio;
-    
+
     @EJB
     private ParametrosServicio parametrosServicio;
 
@@ -122,16 +122,18 @@ public class SesionBean implements Serializable {
 
     public StreamedContent obtenerImagen(String direccionImagen) {
 
-        try {
-            String rutaFotografias = parametrosServicio.obtenerParametroPorNombre(EnumParametroSistema.DIRECCION_IMAGEN_PREDIO, getSesion()).getValor();
-            String contentType = WebUtils.obtenerContextoExterno().getMimeType(rutaFotografias.concat(direccionImagen));
-            return new DefaultStreamedContent(new FileInputStream(rutaFotografias.concat(direccionImagen)), contentType);
-        } catch (FileNotFoundException ex) {
-            LoggerNewvi.getLogNewvi(this.getClass()).error(ex, this.getSesion());
-            MensajesFaces.mensajeError(EnumNewviExcepciones.ERR205.presentarMensaje());
-        } catch (NewviExcepcion ex) {
-            LoggerNewvi.getLogNewvi(this.getClass()).error(ex, this.getSesion());
-            MensajesFaces.mensajeError(ex.getMessage());
+        if (!ComunUtil.esCadenaVacia(direccionImagen)) {
+            try {
+                direccionImagen = parametrosServicio.obtenerParametroPorNombre(EnumParametroSistema.DIRECCION_IMAGEN_PREDIO, getSesion()).getValor().concat(direccionImagen);
+                String contentType = WebUtils.obtenerContextoExterno().getMimeType(direccionImagen);
+                return new DefaultStreamedContent(new FileInputStream(direccionImagen), contentType);
+            } catch (FileNotFoundException ex) {
+                LoggerNewvi.getLogNewvi(this.getClass()).error(ex, this.getSesion());
+                MensajesFaces.mensajeError(EnumNewviExcepciones.ERR205.presentarMensaje());
+            } catch (NewviExcepcion ex) {
+                LoggerNewvi.getLogNewvi(this.getClass()).error(ex, this.getSesion());
+                MensajesFaces.mensajeError(ex.getMessage());
+            }
         }
         return new DefaultStreamedContent();
 
