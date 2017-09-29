@@ -7,8 +7,10 @@ package ec.com.newvi.sic.web.sesion;
 
 import ec.com.newvi.sic.dto.SesionDto;
 import ec.com.newvi.sic.enums.EnumNewviExcepciones;
+import ec.com.newvi.sic.enums.EnumParametroSistema;
 import ec.com.newvi.sic.modelo.Usuarios;
 import ec.com.newvi.sic.servicios.CatastroServicio;
+import ec.com.newvi.sic.servicios.ParametrosServicio;
 import ec.com.newvi.sic.servicios.SeguridadesServicio;
 import ec.com.newvi.sic.util.ComunUtil;
 import ec.com.newvi.sic.util.excepciones.NewviExcepcion;
@@ -20,6 +22,8 @@ import java.io.FileNotFoundException;
 import java.io.Serializable;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
@@ -40,7 +44,7 @@ public class SesionBean implements Serializable {
     private SeguridadesServicio seguridadesServicio;
     
     @EJB
-    private CatastroServicio catastroServicio;
+    private ParametrosServicio parametrosServicio;
 
     private String nombreUsuario;
     private String ipUsuario;
@@ -119,11 +123,15 @@ public class SesionBean implements Serializable {
     public StreamedContent obtenerImagen(String direccionImagen) {
 
         try {
-            String contentType = WebUtils.obtenerContextoExterno().getMimeType(direccionImagen);
-            return new DefaultStreamedContent(new FileInputStream(direccionImagen), contentType);
+            String rutaFotografias = parametrosServicio.obtenerParametroPorNombre(EnumParametroSistema.DIRECCION_IMAGEN_PREDIO, getSesion()).getValor();
+            String contentType = WebUtils.obtenerContextoExterno().getMimeType(rutaFotografias.concat(direccionImagen));
+            return new DefaultStreamedContent(new FileInputStream(rutaFotografias.concat(direccionImagen)), contentType);
         } catch (FileNotFoundException ex) {
             LoggerNewvi.getLogNewvi(this.getClass()).error(ex, this.getSesion());
             MensajesFaces.mensajeError(EnumNewviExcepciones.ERR205.presentarMensaje());
+        } catch (NewviExcepcion ex) {
+            LoggerNewvi.getLogNewvi(this.getClass()).error(ex, this.getSesion());
+            MensajesFaces.mensajeError(ex.getMessage());
         }
         return new DefaultStreamedContent();
 
