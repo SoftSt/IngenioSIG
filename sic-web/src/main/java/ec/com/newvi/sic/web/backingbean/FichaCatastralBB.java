@@ -39,35 +39,17 @@ import ec.com.newvi.sic.web.enums.EnumEtiquetas;
 import ec.com.newvi.sic.web.enums.EnumPantallaMantenimiento;
 import ec.com.newvi.sic.web.utils.ValidacionUtils;
 import ec.com.newvi.sic.web.utils.WebUtils;
-import java.awt.Graphics;
-import java.awt.Image;
-import java.awt.image.BufferedImage;
-import java.io.BufferedInputStream;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
-import javax.faces.event.PhaseId;
-import javax.imageio.ImageIO;
-import org.hibernate.validator.internal.util.privilegedactions.LoadClass;
 import org.primefaces.event.NodeSelectEvent;
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.LazyDataModel;
-import org.primefaces.model.StreamedContent;
 import org.primefaces.model.TreeNode;
 
 /**
@@ -112,6 +94,7 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
     private Boolean esPantallaEditable;
     private Boolean esPantallaNueva;
     private String direccionVisorPredios;
+    private String rutaFotografias;
 
     public Boolean getEsPantallaNueva() {
         return esPantallaNueva;
@@ -357,6 +340,10 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
         return direccionVisorPredios;
     }
 
+    public String getRutaFotografias() {
+        return rutaFotografias;
+    }
+
     @PostConstruct
     public void init() {
         this.predio = new Predios();
@@ -447,6 +434,7 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
             calcularAvaluo();
             PresentacionFichaCatastral cat = new PresentacionFichaCatastral(this.predio);
             this.direccionVisorPredios = parametrosServicio.obtenerParametroPorNombre(EnumParametroSistema.DIRECCION_VISOR_PREDIOS, sesionBean.getSesion()).getValor();
+            this.rutaFotografias = parametrosServicio.obtenerParametroPorNombre(EnumParametroSistema.DIRECCION_IMAGEN_PREDIO, sesionBean.getSesion()).getValor();
         } catch (NewviExcepcion e) {
             MensajesFaces.mensajeError(e.getMessage());
         } catch (Exception e) {
@@ -923,63 +911,6 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
         listaTraslacion = EnumTraslacion.values();
         listaSituacionActual = EnumSitActual.values();
         listaEstadoEscritura = EnumSiNo.values();
-    }
-
-    public StreamedContent obtenerImagen() throws IOException {
-        FacesContext context = FacesContext.getCurrentInstance();
-
-        if (context.getCurrentPhaseId() == PhaseId.RENDER_RESPONSE) {
-            return new DefaultStreamedContent();
-        } else {
-			ByteArrayOutputStream bos = new ByteArrayOutputStream();
-			BufferedImage img = ImageIO.read(context.getExternalContext()
-					.getResourceAsStream("imagenes/IMG_B03009_1.jpg"));
-			int w = img.getWidth(null);
-			int h = img.getHeight(null);
-
-			// image is scaled two times at run time
-			int scale = 2;
-
-			BufferedImage bi = new BufferedImage(w * scale, h * scale,
-					BufferedImage.TYPE_INT_ARGB);
-			         Graphics g = bi.getGraphics();
-
-			g.drawImage(img, 10, 10, w * scale, h * scale, null);
-
-			ImageIO.write(bi, "png", bos);
-
-			return new DefaultStreamedContent(new ByteArrayInputStream(
-					bos.toByteArray()), "image/png");
-            /*FileInputStream fileInputStream;
-            Image image = null;
-            try {
-                ByteArrayOutputStream bos = new ByteArrayOutputStream();
-
-                //fileInputStream = new FileInputStream("C:/opt/sigc/imagenes/".concat(nombreImagen));
-                fileInputStream = new FileInputStream("/opt/sigc/imagenes/IMG_B03009_1.jpg");
-                String contentType = WebUtils.obtenerContextoExterno().getMimeType("/opt/sigc/imagenes/IMG_B03009_1.jpg");
-                StreamedContent archivoDescarga = new DefaultStreamedContent(fileInputStream, contentType);
-
-                Integer tamanio = fileInputStream.available();
-                FileChannel fileChannel = fileInputStream.getChannel();
-
-                InputStream is = new BufferedInputStream(new FileInputStream("/opt/sigc/imagenes/IMG_B03009_1.jpg"));
-                BufferedImage img = ImageIO.read(is);
-                ImageIO.write(img, contentType, bos);
-                return new DefaultStreamedContent(new ByteArrayInputStream(bos.toByteArray()), contentType);
-
-                //return archivoDescarga;
-            } catch (FileNotFoundException ex) {
-                LoggerNewvi.getLogNewvi(this.getClass()).error(ex, sesionBean.getSesion());
-                MensajesFaces.mensajeError(EnumNewviExcepciones.ERR205.presentarMensaje());
-            } catch (IOException ex) {
-                LoggerNewvi.getLogNewvi(this.getClass()).error(ex, sesionBean.getSesion());
-                MensajesFaces.mensajeError(EnumNewviExcepciones.ERR206.presentarMensaje());
-            }
-            return new DefaultStreamedContent();*/
-
-        }
-
     }
 
 }

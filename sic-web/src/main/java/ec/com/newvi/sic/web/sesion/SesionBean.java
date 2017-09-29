@@ -8,17 +8,23 @@ package ec.com.newvi.sic.web.sesion;
 import ec.com.newvi.sic.dto.SesionDto;
 import ec.com.newvi.sic.enums.EnumNewviExcepciones;
 import ec.com.newvi.sic.modelo.Usuarios;
+import ec.com.newvi.sic.servicios.CatastroServicio;
 import ec.com.newvi.sic.servicios.SeguridadesServicio;
 import ec.com.newvi.sic.util.ComunUtil;
 import ec.com.newvi.sic.util.excepciones.NewviExcepcion;
 import ec.com.newvi.sic.util.logs.LoggerNewvi;
+import ec.com.newvi.sic.web.MensajesFaces;
 import ec.com.newvi.sic.web.utils.WebUtils;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.Serializable;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
+import org.primefaces.model.DefaultStreamedContent;
+import org.primefaces.model.StreamedContent;
 
 /**
  *
@@ -32,6 +38,9 @@ public class SesionBean implements Serializable {
     private static final String SESION_LOCALHOST = "sesionLocalhost";
     @EJB
     private SeguridadesServicio seguridadesServicio;
+    
+    @EJB
+    private CatastroServicio catastroServicio;
 
     private String nombreUsuario;
     private String ipUsuario;
@@ -107,4 +116,16 @@ public class SesionBean implements Serializable {
         this.nombreEquipoUsuario = (String) WebUtils.obtenerPeticion().getSession().getAttribute(SESION_LOCALHOST);
     }
 
+    public StreamedContent obtenerImagen(String direccionImagen) {
+
+        try {
+            String contentType = WebUtils.obtenerContextoExterno().getMimeType(direccionImagen);
+            return new DefaultStreamedContent(new FileInputStream(direccionImagen), contentType);
+        } catch (FileNotFoundException ex) {
+            LoggerNewvi.getLogNewvi(this.getClass()).error(ex, this.getSesion());
+            MensajesFaces.mensajeError(EnumNewviExcepciones.ERR205.presentarMensaje());
+        }
+        return new DefaultStreamedContent();
+
+    }
 }

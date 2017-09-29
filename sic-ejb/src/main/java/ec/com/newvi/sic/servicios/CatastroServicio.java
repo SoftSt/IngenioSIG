@@ -18,6 +18,7 @@ import ec.com.newvi.sic.modelo.Pisos;
 import ec.com.newvi.sic.modelo.Predios;
 import ec.com.newvi.sic.modelo.Terreno;
 import ec.com.newvi.sic.util.excepciones.NewviExcepcion;
+import java.io.InputStream;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
@@ -430,5 +431,5 @@ public interface CatastroServicio {
      * @param predio parametro para borrar
      */
     public void eliminarDetallesPorPredio(Predios predio);
-
+    
 }
