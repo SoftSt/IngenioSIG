@@ -39,17 +39,33 @@ import ec.com.newvi.sic.web.enums.EnumEtiquetas;
 import ec.com.newvi.sic.web.enums.EnumPantallaMantenimiento;
 import ec.com.newvi.sic.web.utils.ValidacionUtils;
 import ec.com.newvi.sic.web.utils.WebUtils;
+import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.io.BufferedInputStream;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
+import javax.imageio.ImageIO;
+import org.hibernate.validator.internal.util.privilegedactions.LoadClass;
 import org.primefaces.event.NodeSelectEvent;
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.LazyDataModel;
+import org.primefaces.model.StreamedContent;
 import org.primefaces.model.TreeNode;
 
 /**
@@ -443,7 +459,7 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
 
     private void construirImagenes(List<Fotos> imagenes) {
         for (Fotos fotos : imagenes) {
-            listaFotosJpg.add(fotos.getDirFotos().trim() + ".jpg");
+            listaFotosJpg.add(fotos.getDirFotos().trim() + ".JPG");
         }
     }
 
@@ -820,7 +836,7 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
         catastroServicio.registrarArbol(this.nodo, this.predio, sesionBean.getSesion());
         //List<AvaluoDto> arbol = catastroServicio.listarAvaluoDto("Nodo", this.predio);
         generarArbolAvaluo(catastroServicio.listarAvaluoDto("Nodo", this.predio));
-        
+
         /*if (this.nodo != null) {
             generarArbolAvaluo(this.nodo);
         }*/
@@ -906,4 +922,34 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
         listaSituacionActual = EnumSitActual.values();
         listaEstadoEscritura = EnumSiNo.values();
     }
+
+    public StreamedContent obtenerImagen(String nombreImagen) {
+        FileInputStream fileInputStream;
+        Image image = null;
+        try {
+            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+
+            fileInputStream = new FileInputStream("C:/opt/sigc/imagenes/".concat(nombreImagen));
+            String contentType = WebUtils.obtenerContextoExterno().getMimeType(nombreImagen);
+            StreamedContent archivoDescarga = new DefaultStreamedContent(fileInputStream, contentType);
+            
+            Integer tamanio = fileInputStream.available();
+            FileChannel fileChannel =  fileInputStream.getChannel();
+            
+            InputStream is = new BufferedInputStream(new FileInputStream("/opt/sigc/imagenes/".concat(nombreImagen)));
+            BufferedImage img = ImageIO.read(is);
+            ImageIO.write(img, contentType, bos);            
+            return new DefaultStreamedContent(new ByteArrayInputStream(bos.toByteArray()), contentType);
+
+            //return archivoDescarga;
+        } catch (FileNotFoundException ex) {
+            LoggerNewvi.getLogNewvi(this.getClass()).error(ex, sesionBean.getSesion());
+            MensajesFaces.mensajeError(EnumNewviExcepciones.ERR205.presentarMensaje());
+        } catch (IOException ex) {
+            LoggerNewvi.getLogNewvi(this.getClass()).error(ex, sesionBean.getSesion());
+            MensajesFaces.mensajeError(EnumNewviExcepciones.ERR206.presentarMensaje());
+        }
+        return null;
+    }
+
 }

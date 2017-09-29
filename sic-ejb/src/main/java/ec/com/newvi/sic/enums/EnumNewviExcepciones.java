@@ -27,6 +27,8 @@ public enum EnumNewviExcepciones {
     ERR202("ERR202", "No se han encontrado resultados.", "No se han encontrado resultados. Si cree que esto no es correcto, contacte con el administrador."),
     ERR203("ERR203", "Más de 1 resultado.", "Se ha encontrado más de un resultado. Puede existir un error de consistencia. Contacte con el administrador."),
     ERR204("ERR204", "Entidad inexistente.", "No existe una entidad con el código presentado. Puede deberse a un error en la base de datos. Contacte con el administrador."),
+    ERR205("ERR205", "Archivo no encontrado.", "No se ha encontrado el archivo con el nombre indicado, verifique que el archivo se encuentre en la carpeta."),
+    ERR206("ERR206", "Archivo no pudo ser leído.", "No se pudo leer el archivo con el nombre indicado, verifique que el archivo no tenga errores."),
     // 251 al 300 excepciones de validación
     ERR251("ERR251", "Correo electrónico no válido.", "El correo electrónico no es correcto. Registre un correo electrónico con el formato ejemplo@ejemplo.com"),
     

@@ -234,7 +234,7 @@
                                     <p:separator />
 
                                     <p:galleria value="#{fichaCatastralBB.listaFotosJpg}" var="image" panelWidth="500" panelHeight="313" showCaption="true">
-                                        <p:graphicImage value="../privado/imagenes/#{image}" title="#{image}" width="500" height="313"/>
+                                        <p:graphicImage value="#{fichaCatastralBB.obtenerImagen(image)}" title="#{image}" width="500" height="313"/>
                                     </p:galleria>
 
                                     <br/>
