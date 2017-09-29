@@ -690,11 +690,8 @@
                                              value="Imprimir" 
                                              id="imprimir"
                                              update="grupoFichaCatastral"
-                                             process="@this"
-                                             ajax="false"  
                                              onclick="PrimeFaces.monitorDownload(start, stop);">
                                 <p:fileDownload value="#{fichaCatastralBB.imprimir('FICHA_RELEVAMIENTO_PREDIAL_URBANO')}" />
-                                <p:ajax update="toolTipSave" process="@this" /> 
                             </p:commandButton>
                             <p:tooltip id="toolTipImprimir" for="imprimir" value="Imprimir" showEffect="fade" hideEffect="fade" position="top"/>
 
@@ -959,7 +956,7 @@
                                     <br/>
                                     <div style="font-size:1.2em;font-weight:bold;">Croquis del predio</div>
                                     <p:separator />
-                                    <iframe id="iframeCenter" src="http://192.168.100.120/catvisor/?predio=#{fichaCatastralBB.predio.nomCodigocatastral}" width="800px"  
+                                    <iframe id="iframeCenter" src="#{fichaCatastralBB.direccionVisorPredios.concat(fichaCatastralBB.predio.nomCodigocatastral.trim())}" width="800px"  
                                             height="500px" frameborder="0">  
                                     </iframe> 
 
@@ -968,7 +965,7 @@
                                     <p:separator />
 
                                     <p:galleria value="#{fichaCatastralBB.listaFotosJpg}" var="image" panelWidth="500" panelHeight="313" showCaption="true">
-                                        <p:graphicImage value="../privado/imagenes/#{image}" title="#{image}" width="500" height="313"/>
+                                        <p:graphicImage value="/opt/imagenes/#{image}" title="#{image}" width="500" height="313"/>
                                     </p:galleria>
 
                                     <br/>

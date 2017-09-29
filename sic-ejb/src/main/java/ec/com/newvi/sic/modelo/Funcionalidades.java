@@ -11,6 +11,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
@@ -271,12 +272,10 @@ public class Funcionalidades implements Serializable {
 
     public List<Funcionalidades> getListaSubFuncionalidadesActivas() {
         List<Funcionalidades> listaFuncionalidadesActivas = new ArrayList<Funcionalidades>();
-        for (Funcionalidades subfuncionalidad : listaSubFuncionalidades) {
-            if (subfuncionalidad.getFunEstado().equals(EnumEstadoRegistro.A)) {
+        listaSubFuncionalidades.stream().filter((subfuncionalidad) -> (subfuncionalidad.getFunEstado().equals(EnumEstadoRegistro.A))).forEachOrdered((subfuncionalidad) -> {
                 listaFuncionalidadesActivas.add(subfuncionalidad);
-            }
-        }
-        
+        });
+        Collections.sort(listaFuncionalidadesActivas, (Funcionalidades lhs, Funcionalidades rhs) -> lhs.getFunOrden() < rhs.getFunOrden() ? -1 : (lhs.getFunOrden() > rhs.getFunOrden()) ? 1 : 0);
         return listaFuncionalidadesActivas;
     }
 

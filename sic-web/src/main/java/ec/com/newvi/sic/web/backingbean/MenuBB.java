@@ -45,7 +45,7 @@ public class MenuBB extends AdminSeguridadesBB {
         // Traer el listado de permisos activos para el usuario actual
         obtenerFuncionalidadesAsignadas();
         //por cada funcionalidad
-        for (Funcionalidades funcionalidad : listaFuncionalidades) {
+        listaFuncionalidades.forEach((funcionalidad) -> {
             // Determinar si el usuario tiene permiso de acceder al elemento
             if (esFuncionalidadHabilitada(funcionalidad)) {
                 // Crear un objeto de tipo submenu y agregar al modelo
@@ -55,7 +55,7 @@ public class MenuBB extends AdminSeguridadesBB {
                     this.menu.addElement(generarMenuItem(funcionalidad));
                 }
             }
-        }
+        });
     }
 
     private void obtenerFuncionalidadesAsignadas() {

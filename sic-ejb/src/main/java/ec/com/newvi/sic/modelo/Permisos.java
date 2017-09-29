@@ -224,11 +224,9 @@ public class Permisos implements Serializable {
 
     public List<AsignacionPermisos> getListaAsignacionPermisosActivas() {
         List<AsignacionPermisos> listaAsignacionPermisosActivos = new ArrayList<AsignacionPermisos>();
-        for (AsignacionPermisos permiso : listaAsignacionPermisos) {
-            if (permiso.getPefEstado().equals(EnumEstadoRegistro.A)) {
-                listaAsignacionPermisosActivos.add(permiso);
-            }
-        }
+        listaAsignacionPermisos.stream().filter((permiso) -> (permiso.getPefEstado().equals(EnumEstadoRegistro.A))).forEachOrdered((subfuncionalidad) -> {
+            listaAsignacionPermisosActivos.add(subfuncionalidad);
+        });
         return listaAsignacionPermisosActivos;
     }
 

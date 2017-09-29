@@ -81,9 +81,9 @@ public class ReporteGenerador {
     
     public static String generarXml(Map<String, Class> alias, List recurso) {
         XStream xStream = new XStream();
-        for (Map.Entry e : alias.entrySet()) {
+        alias.entrySet().forEach((e) -> {
             xStream.alias((String) e.getKey(), (Class) e.getValue());
-        }
+        });
         return xStream.toXML(recurso);
     }
     

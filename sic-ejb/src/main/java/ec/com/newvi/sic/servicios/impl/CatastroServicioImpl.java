@@ -475,13 +475,13 @@ public class CatastroServicioImpl implements CatastroServicio {
         BigDecimal coeficiente = obtenerCoeficienteConstruccion(piso, elementoCalculo, dominios);
         BigDecimal costoMetroReferencial = obtenerTotalCoeficienteDominiosPorCodigo(codigoDominio, dominios);
 
-        for (PisoDetalle pisoDetalle : piso.getDetalles()) {
+        piso.getDetalles().forEach((pisoDetalle) -> {
             AvaluoDto nuevoDetalle = generarNodoDetalle(pisoDetalle, elementoCalculo,dominios);
             BigDecimal coeficienteObtenido = new BigDecimal(nuevoDetalle.getFactor());
             if (BigDecimal.ZERO.compareTo(coeficienteObtenido) != 0) {
                 listaDetallesPiso.add(nuevoDetalle);
             }
-        }
+        });
         
         listaDetallesPiso.add(generarElementoArbolAvaluo("Promedio general " + elementoCalculo.toLowerCase(), null, coeficiente.toString(), null));
         listaDetallesPiso.add(generarElementoArbolAvaluo(EnumCaracteristicasAvaluo.DETALLE_COSTO_METRO_REFERENCIAL.getTitulo(), costoMetroReferencial.toString(), null, null));

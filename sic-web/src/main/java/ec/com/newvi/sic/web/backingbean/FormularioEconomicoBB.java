@@ -93,9 +93,9 @@ public class FormularioEconomicoBB extends AdminFichaCatastralBB {
     private void actualizarListadoPredios() {
         List<Predios> listaPredios = catastroServicio.consultarPredios();
         listaFichas = new ArrayList<>();
-        for (Predios elementoPredio : listaPredios) {
+        listaPredios.forEach((elementoPredio) -> {
             listaFichas.add(new FichaCatastralDto(elementoPredio));
-        }
+        });
     }
 
     public void abrirDialogImpresionFormulario(Integer codCatastral) throws NewviExcepcion {
