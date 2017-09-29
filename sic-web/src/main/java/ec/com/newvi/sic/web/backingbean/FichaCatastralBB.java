@@ -39,6 +39,7 @@ import ec.com.newvi.sic.web.enums.EnumEtiquetas;
 import ec.com.newvi.sic.web.enums.EnumPantallaMantenimiento;
 import ec.com.newvi.sic.web.utils.ValidacionUtils;
 import ec.com.newvi.sic.web.utils.WebUtils;
+import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.BufferedInputStream;
@@ -59,6 +60,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
+import javax.faces.event.PhaseId;
 import javax.imageio.ImageIO;
 import org.hibernate.validator.internal.util.privilegedactions.LoadClass;
 import org.primefaces.event.NodeSelectEvent;
@@ -923,33 +925,61 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
         listaEstadoEscritura = EnumSiNo.values();
     }
 
-    public StreamedContent obtenerImagen(String nombreImagen) {
-        FileInputStream fileInputStream;
-        Image image = null;
-        try {
-            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+    public StreamedContent obtenerImagen() throws IOException {
+        FacesContext context = FacesContext.getCurrentInstance();
 
-            fileInputStream = new FileInputStream("C:/opt/sigc/imagenes/".concat(nombreImagen));
-            String contentType = WebUtils.obtenerContextoExterno().getMimeType(nombreImagen);
-            StreamedContent archivoDescarga = new DefaultStreamedContent(fileInputStream, contentType);
-            
-            Integer tamanio = fileInputStream.available();
-            FileChannel fileChannel =  fileInputStream.getChannel();
-            
-            InputStream is = new BufferedInputStream(new FileInputStream("/opt/sigc/imagenes/".concat(nombreImagen)));
-            BufferedImage img = ImageIO.read(is);
-            ImageIO.write(img, contentType, bos);            
-            return new DefaultStreamedContent(new ByteArrayInputStream(bos.toByteArray()), contentType);
+        if (context.getCurrentPhaseId() == PhaseId.RENDER_RESPONSE) {
+            return new DefaultStreamedContent();
+        } else {
+			ByteArrayOutputStream bos = new ByteArrayOutputStream();
+			BufferedImage img = ImageIO.read(context.getExternalContext()
+					.getResourceAsStream("imagenes/IMG_B03009_1.jpg"));
+			int w = img.getWidth(null);
+			int h = img.getHeight(null);
 
-            //return archivoDescarga;
-        } catch (FileNotFoundException ex) {
-            LoggerNewvi.getLogNewvi(this.getClass()).error(ex, sesionBean.getSesion());
-            MensajesFaces.mensajeError(EnumNewviExcepciones.ERR205.presentarMensaje());
-        } catch (IOException ex) {
-            LoggerNewvi.getLogNewvi(this.getClass()).error(ex, sesionBean.getSesion());
-            MensajesFaces.mensajeError(EnumNewviExcepciones.ERR206.presentarMensaje());
+			// image is scaled two times at run time
+			int scale = 2;
+
+			BufferedImage bi = new BufferedImage(w * scale, h * scale,
+					BufferedImage.TYPE_INT_ARGB);
+			         Graphics g = bi.getGraphics();
+
+			g.drawImage(img, 10, 10, w * scale, h * scale, null);
+
+			ImageIO.write(bi, "png", bos);
+
+			return new DefaultStreamedContent(new ByteArrayInputStream(
+					bos.toByteArray()), "image/png");
+            /*FileInputStream fileInputStream;
+            Image image = null;
+            try {
+                ByteArrayOutputStream bos = new ByteArrayOutputStream();
+
+                //fileInputStream = new FileInputStream("C:/opt/sigc/imagenes/".concat(nombreImagen));
+                fileInputStream = new FileInputStream("/opt/sigc/imagenes/IMG_B03009_1.jpg");
+                String contentType = WebUtils.obtenerContextoExterno().getMimeType("/opt/sigc/imagenes/IMG_B03009_1.jpg");
+                StreamedContent archivoDescarga = new DefaultStreamedContent(fileInputStream, contentType);
+
+                Integer tamanio = fileInputStream.available();
+                FileChannel fileChannel = fileInputStream.getChannel();
+
+                InputStream is = new BufferedInputStream(new FileInputStream("/opt/sigc/imagenes/IMG_B03009_1.jpg"));
+                BufferedImage img = ImageIO.read(is);
+                ImageIO.write(img, contentType, bos);
+                return new DefaultStreamedContent(new ByteArrayInputStream(bos.toByteArray()), contentType);
+
+                //return archivoDescarga;
+            } catch (FileNotFoundException ex) {
+                LoggerNewvi.getLogNewvi(this.getClass()).error(ex, sesionBean.getSesion());
+                MensajesFaces.mensajeError(EnumNewviExcepciones.ERR205.presentarMensaje());
+            } catch (IOException ex) {
+                LoggerNewvi.getLogNewvi(this.getClass()).error(ex, sesionBean.getSesion());
+                MensajesFaces.mensajeError(EnumNewviExcepciones.ERR206.presentarMensaje());
+            }
+            return new DefaultStreamedContent();*/
+
         }
-        return null;
+
     }
 
 }
