@@ -233,8 +233,10 @@
                                     <div style="font-size:1.2em;font-weight:bold;">Fotografías</div>
                                     <p:separator />
 
-                                    <p:galleria value="#{fichaCatastralBB.listaFotosJpg}" var="image" panelWidth="500" panelHeight="313" showCaption="true">
-                                        <p:graphicImage value="#{sesionBean.obtenerImagen(image)}" title="#{image}" width="500" height="313"/>
+                                    <p:galleria value="#{fichaCatastralBB.listaFotosJpg}" var="image" panelWidth="500" panelHeight="313" showCaption="false">
+                                        <p:graphicImage value="#{sesionBean.obtenerImagen()}" width="500" height="313">
+                                            <f:param name="imagen" value="#{image}"/>
+                                        </p:graphicImage>
                                     </p:galleria>
                                     <br/>
                                     <div style="font-size:1.2em;font-weight:bold;">Colindantes</div>
@@ -963,8 +965,10 @@
                                     <div style="font-size:1.2em;font-weight:bold;">Fotografías</div>
                                     <p:separator />
 
-                                    <p:galleria value="#{fichaCatastralBB.listaFotosJpg}" var="image" panelWidth="500" panelHeight="313" showCaption="true">
-                                        <p:graphicImage value="#{sesionBean.obtenerImagen(image)}" title="#{image}" width="500" height="313"/>
+                                    <p:galleria value="#{fichaCatastralBB.listaFotosJpg}" var="archivoImagen" panelWidth="500" panelHeight="313" showCaption="false">
+                                        <p:graphicImage value="#{sesionBean.obtenerImagen()}" width="500" height="313">
+                                            <f:param name="imagen" value="#{archivoImagen}"/>
+                                        </p:graphicImage>
                                     </p:galleria>
 
                                     <br/>

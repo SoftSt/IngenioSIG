@@ -94,7 +94,6 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
     private Boolean esPantallaEditable;
     private Boolean esPantallaNueva;
     private String direccionVisorPredios;
-    private String rutaFotografias;
 
     public Boolean getEsPantallaNueva() {
         return esPantallaNueva;
@@ -340,10 +339,6 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
         return direccionVisorPredios;
     }
 
-    public String getRutaFotografias() {
-        return rutaFotografias;
-    }
-
     @PostConstruct
     public void init() {
         this.predio = new Predios();
@@ -434,7 +429,6 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
             calcularAvaluo();
             PresentacionFichaCatastral cat = new PresentacionFichaCatastral(this.predio);
             this.direccionVisorPredios = parametrosServicio.obtenerParametroPorNombre(EnumParametroSistema.DIRECCION_VISOR_PREDIOS, sesionBean.getSesion()).getValor();
-            this.rutaFotografias = parametrosServicio.obtenerParametroPorNombre(EnumParametroSistema.DIRECCION_IMAGEN_PREDIO, sesionBean.getSesion()).getValor();
         } catch (NewviExcepcion e) {
             MensajesFaces.mensajeError(e.getMessage());
         } catch (Exception e) {
@@ -447,20 +441,22 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
                 EnumEtiquetas.FICHA_CATASTRAL_EDITAR_DESCRIPCION);
     }
 
-    private void construirImagenes(List<Fotos> imagenes) {
-        for (Fotos fotos : imagenes) {
-            listaFotosJpg.add(fotos.getDirFotos().trim() + ".JPG");
-        }
-    }
-
     private void listarFotosPorPredio(Integer idPredio) {
-        listaFotosPorPredio = catastroServicio.consultarFotosPorPredio(idPredio);
-        if (!listaFotosPorPredio.isEmpty()) {
-            construirImagenes(listaFotosPorPredio);
-        } else {
+        listaFotosJpg = new ArrayList<>();
+        List<Fotos> imagenes = catastroServicio.consultarFotosPorPredio(idPredio);
+        try {
+            String rutaFotografias = parametrosServicio.obtenerParametroPorNombre(EnumParametroSistema.DIRECCION_IMAGEN_PREDIO, sesionBean.getSesion()).getValor().concat("/");
+            if (imagenes.isEmpty()) {
+                listaFotosJpg.add("vacio.jpg");
+            } else {
+                imagenes.forEach((imagen) -> {
+                    listaFotosJpg.add(rutaFotografias.concat(imagen.getDirFotos().trim()).concat(".JPG"));
+                });
+            }
+        } catch (NewviExcepcion e) {
+            MensajesFaces.mensajeError(e.getMessage());
             listaFotosJpg.add("vacio.jpg");
         }
-
     }
 
     private void seleccionarPredioPorCodigo(Integer idPredio) throws NewviExcepcion {
