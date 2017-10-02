@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="1190" pageHeight="842" orientation="Landscape" columnWidth="1150" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" isIgnorePagination="true" uuid="240fd7c8-daae-4d60-869c-ac6eb700ef02">
 	<property name="ireport.zoom" value="1.0980750000000004"/>
-	<property name="ireport.x" value="2"/>
+	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<style name="table">
 		<box>
@@ -27,6 +27,8 @@
 	<parameter name="NOMBRE_MUNICIPIO" class="java.lang.String"/>
 	<parameter name="NOMBRE_MODULO" class="java.lang.String"/>
 	<parameter name="TITULO_REPORTE" class="java.lang.String"/>
+	<parameter name="IMAGEN_LOGO_MUNICIPIO_1" class="java.lang.String"/>
+	<parameter name="IMAGEN_LOGO_MUNICIPIO_2" class="java.lang.String"/>
 	<field name="nombreCodigoCatastral" class="java.lang.String"/>
 	<field name="propietario" class="java.lang.String"/>
 	<field name="ciRuc" class="java.lang.String"/>
@@ -106,10 +108,6 @@
 					<bottomPen lineWidth="1.0"/>
 					<rightPen lineWidth="1.0"/>
 				</box>
-				<image scaleImage="FillFrame" onErrorType="Blank">
-					<reportElement x="1" y="1" width="72" height="72" uuid="c0b3f813-ad9c-4b01-a458-60ca4d5a3352"/>
-					<imageExpression><![CDATA[$P{RUTA_IMAGENES}+"logo.png"]]></imageExpression>
-				</image>
 				<textField pattern="dd/MM/yy">
 					<reportElement x="533" y="55" width="421" height="20" uuid="b710b06c-7ca6-4f48-bf3b-b591acb0174f"/>
 					<textElement verticalAlignment="Top">
@@ -124,10 +122,6 @@
 					</textElement>
 					<text><![CDATA[AL  ]]></text>
 				</staticText>
-				<image scaleImage="FillFrame" onErrorType="Blank">
-					<reportElement x="1077" y="1" width="72" height="72" uuid="a7461d10-c26a-418d-9116-647621f89687"/>
-					<imageExpression><![CDATA[$P{RUTA_IMAGENES}+"logo1.png"]]></imageExpression>
-				</image>
 				<textField>
 					<reportElement x="183" y="0" width="771" height="17" uuid="cc306249-cb11-46e8-8a6d-b1fbab649e55"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
@@ -149,6 +143,14 @@
 					</textElement>
 					<textFieldExpression><![CDATA[$P{TITULO_REPORTE}]]></textFieldExpression>
 				</textField>
+				<image scaleImage="RetainShape" hAlign="Center" vAlign="Middle" onErrorType="Blank">
+					<reportElement x="51" y="11" width="80" height="50" uuid="69344e73-1e57-4528-91f9-1d598de9bf0b"/>
+					<imageExpression><![CDATA[$P{IMAGEN_LOGO_MUNICIPIO_1}]]></imageExpression>
+				</image>
+				<image scaleImage="RetainShape" hAlign="Center" vAlign="Middle" onErrorType="Blank">
+					<reportElement x="1015" y="11" width="80" height="50" uuid="b9c0e281-28a5-4059-bdb7-ae66136a1c82"/>
+					<imageExpression><![CDATA[$P{IMAGEN_LOGO_MUNICIPIO_2}]]></imageExpression>
+				</image>
 			</frame>
 		</band>
 	</pageHeader>

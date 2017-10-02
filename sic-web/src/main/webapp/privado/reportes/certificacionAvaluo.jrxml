@@ -7,6 +7,7 @@
 	<parameter name="NOMBRE_MUNICIPIO" class="java.lang.String"/>
 	<parameter name="NOMBRE_MODULO" class="java.lang.String"/>
 	<parameter name="TITULO_REPORTE" class="java.lang.String"/>
+	<parameter name="IMAGEN_LOGO_MUNICIPIO_1" class="java.lang.String"/>
 	<field name="nomCodigocatastral" class="java.lang.String"/>
 	<field name="nomApellidos" class="java.lang.String"/>
 	<field name="nomNombres" class="java.lang.String"/>
@@ -21,10 +22,6 @@
 	</background>
 	<pageHeader>
 		<band height="82" splitType="Stretch">
-			<image>
-				<reportElement x="0" y="0" width="98" height="50" uuid="7fa97f3b-05b1-484b-be26-f1dacf8878f4"/>
-				<imageExpression><![CDATA[$P{RUTA_IMAGENES}+"logo2.png"]]></imageExpression>
-			</image>
 			<line>
 				<reportElement x="10" y="60" width="535" height="1" uuid="a5223eb5-abb8-491e-8c79-71a53e894140"/>
 			</line>
@@ -66,6 +63,10 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$P{TITULO_REPORTE}]]></textFieldExpression>
 			</textField>
+			<image scaleImage="RetainShape" hAlign="Center" vAlign="Middle" onErrorType="Blank">
+				<reportElement x="10" y="5" width="80" height="50" uuid="03da1770-2471-4e38-9f4d-5e3956fce340"/>
+				<imageExpression><![CDATA[$P{IMAGEN_LOGO_MUNICIPIO_1}]]></imageExpression>
+			</image>
 		</band>
 	</pageHeader>
 	<columnHeader>

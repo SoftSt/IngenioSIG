@@ -29,6 +29,8 @@
 	<parameter name="RUTA_IMAGENES" class="java.lang.String"/>
 	<parameter name="NOMBRE_MUNICIPIO" class="java.lang.String"/>
 	<parameter name="NOMBRE_MODULO" class="java.lang.String"/>
+	<parameter name="IMAGEN_LOGO_MUNICIPIO_1" class="java.lang.String"/>
+	<parameter name="IMAGEN_LOGO_MUNICIPIO_2" class="java.lang.String"/>
 	<field name="nombreCodigoCatastral" class="java.lang.String"/>
 	<field name="propietario" class="java.lang.String"/>
 	<field name="ciRuc" class="java.lang.String"/>
@@ -88,49 +90,49 @@
 					<bottomPen lineWidth="1.0"/>
 					<rightPen lineWidth="1.0"/>
 				</box>
-				<image scaleImage="FillFrame" onErrorType="Blank">
-					<reportElement x="1" y="1" width="72" height="72" uuid="c0b3f813-ad9c-4b01-a458-60ca4d5a3352"/>
-					<imageExpression><![CDATA[$P{RUTA_IMAGENES}+"logo.png"]]></imageExpression>
-				</image>
 				<staticText>
-					<reportElement x="73" y="55" width="350" height="20" uuid="51d68e3c-0f44-43fe-8e22-96de7d25aeac"/>
+					<reportElement x="110" y="55" width="313" height="20" uuid="51d68e3c-0f44-43fe-8e22-96de7d25aeac"/>
 					<textElement textAlignment="Right">
 						<font fontName="SansSerif" size="11" isBold="true"/>
 					</textElement>
 					<text><![CDATA[AL  ]]></text>
 				</staticText>
 				<textField pattern="dd/MM/yy">
-					<reportElement x="423" y="55" width="306" height="20" uuid="8bc847b4-aa43-4b9d-ae8e-82789d64c206"/>
+					<reportElement x="423" y="55" width="270" height="20" uuid="8bc847b4-aa43-4b9d-ae8e-82789d64c206"/>
 					<textElement verticalAlignment="Top">
 						<font fontName="SansSerif" size="11" isBold="true"/>
 					</textElement>
 					<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
 				</textField>
-				<image scaleImage="FillFrame" onErrorType="Blank">
-					<reportElement x="729" y="1" width="72" height="72" uuid="7109c97d-d7f2-4437-b13e-967d2482ce26"/>
-					<imageExpression><![CDATA[$P{RUTA_IMAGENES}+"logo1.png"]]></imageExpression>
-				</image>
 				<textField>
-					<reportElement x="73" y="2" width="656" height="17" uuid="b17cedb4-f07b-4815-8182-c8d7318d9dd7"/>
+					<reportElement x="110" y="2" width="583" height="17" uuid="b17cedb4-f07b-4815-8182-c8d7318d9dd7"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font size="13" isBold="true"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$P{NOMBRE_MUNICIPIO}]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement x="73" y="19" width="656" height="17" uuid="5a6961ad-7fd6-43ee-9b4d-5ff2eb5bea6f"/>
+					<reportElement x="110" y="19" width="583" height="17" uuid="5a6961ad-7fd6-43ee-9b4d-5ff2eb5bea6f"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font size="11" isBold="true"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$P{NOMBRE_MODULO}]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement x="73" y="36" width="656" height="13" uuid="418e92ad-dffd-4b35-aef1-110615a8d04d"/>
+					<reportElement x="110" y="36" width="583" height="13" uuid="418e92ad-dffd-4b35-aef1-110615a8d04d"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font isBold="true"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$P{TITULO_REPORTE}]]></textFieldExpression>
 				</textField>
+				<image scaleImage="RetainShape" hAlign="Center" vAlign="Middle" onErrorType="Blank">
+					<reportElement x="15" y="12" width="80" height="50" uuid="c26d7245-4a53-4bc0-8119-821942b215bf"/>
+					<imageExpression><![CDATA[$P{IMAGEN_LOGO_MUNICIPIO_1}]]></imageExpression>
+				</image>
+				<image scaleImage="RetainShape" hAlign="Center" vAlign="Middle" onErrorType="Blank">
+					<reportElement x="704" y="12" width="80" height="50" uuid="0f849bf7-447f-4068-ace0-9bd3eaa9cac6"/>
+					<imageExpression><![CDATA[$P{IMAGEN_LOGO_MUNICIPIO_2}]]></imageExpression>
+				</image>
 			</frame>
 		</band>
 	</pageHeader>
