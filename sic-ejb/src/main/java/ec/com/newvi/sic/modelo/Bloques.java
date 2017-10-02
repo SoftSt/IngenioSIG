@@ -222,7 +222,7 @@ public class Bloques implements Serializable {
     }
     
     public Boolean esBloqueValido() {
-        return (!ComunUtil.esNulo(this.codBloques));
+        return (!ComunUtil.esNulo(this.bloEstado));
     }
 
     @XmlTransient

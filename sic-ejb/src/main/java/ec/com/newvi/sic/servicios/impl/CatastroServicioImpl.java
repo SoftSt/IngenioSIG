@@ -462,11 +462,11 @@ public class CatastroServicioImpl implements CatastroServicio {
         //Detalle de construccion Extras
         listaDetallesConstruccion.add(generarElementoArbolAvaluo(EnumCaracteristicasAvaluo.DETALLE_EXTRAS.getTitulo(), null, null, listaDetallesExtras));
         //Detalle de construccion Valoración Metro
-        listaDetallesConstruccion.add(generarElementoArbolAvaluo(EnumCaracteristicasAvaluo.DETALLE_VALORACION_METRO.getTitulo(), (((coeficienteEstructura.multiply(v1)).add(coeficienteAcabado.multiply(v2)).add(coeficienteExtras.multiply(v3))).multiply(valorDepreciacion)).toString(), null, null));
+        listaDetallesConstruccion.add(generarElementoArbolAvaluo(EnumCaracteristicasAvaluo.DETALLE_VALORACION_METRO.getTitulo(), (((coeficienteEstructura.multiply(v1)).add(coeficienteAcabado.multiply(v2)).add(coeficienteExtras.multiply(v3))).multiply(valorDepreciacion)).setScale(2, BigDecimal.ROUND_UP).toString(), null, null));
         //Detalle de construccion Total Valoración
-        listaDetallesConstruccion.add(generarElementoArbolAvaluo(EnumCaracteristicasAvaluo.DETALLE_VALORACION.getTitulo(), costoPiso.toString(), null, null));
+        listaDetallesConstruccion.add(generarElementoArbolAvaluo(EnumCaracteristicasAvaluo.DETALLE_VALORACION.getTitulo(), costoPiso.setScale(2, BigDecimal.ROUND_UP).toString(), null, null));
         //Detalle de construccion Suma Factores
-        listaDetallesConstruccion.add(generarElementoArbolAvaluo(EnumCaracteristicasAvaluo.DETALLE_FACTORES.getTitulo(), (coeficienteEstructura.add(coeficienteAcabado).add(coeficienteExtras)).toString(), null, null));
+        listaDetallesConstruccion.add(generarElementoArbolAvaluo(EnumCaracteristicasAvaluo.DETALLE_FACTORES.getTitulo(), (coeficienteEstructura.add(coeficienteAcabado).add(coeficienteExtras)).setScale(2, BigDecimal.ROUND_UP).toString(), null, null));
         // Ubica valor de calculos en la tabla de pisos
 
         return listaDetallesConstruccion;
@@ -485,7 +485,7 @@ public class CatastroServicioImpl implements CatastroServicio {
             }
         });
         
-        listaDetallesPiso.add(generarElementoArbolAvaluo("Promedio general " + elementoCalculo.toLowerCase(), null, coeficiente.toString(), null));
+        listaDetallesPiso.add(generarElementoArbolAvaluo("Promedio general " + elementoCalculo.toLowerCase(), null, coeficiente.setScale(2, BigDecimal.ROUND_UP).toString(), null));
         listaDetallesPiso.add(generarElementoArbolAvaluo(EnumCaracteristicasAvaluo.DETALLE_COSTO_METRO_REFERENCIAL.getTitulo(), costoMetroReferencial.toString(), null, null));
 
         return listaDetallesPiso;
@@ -598,6 +598,14 @@ public class CatastroServicioImpl implements CatastroServicio {
         List<Dominios> listaDominios = obtenerDominiosPorCodigoYCalculo(dominios, codigo, calculo);
         return obtenerSumaCoeficientes(listaDominios);
     }
+    public String quitarDecimales(BigDecimal valor){
+        String valorARedondear = valor.setScale(2, BigDecimal.ROUND_UP).toString();
+        if((valorARedondear.substring(valorARedondear.indexOf("."), valorARedondear.length())).length() == 2){
+            valorARedondear = valorARedondear.concat("0");
+        }
+        
+        return valorARedondear;
+    }
 
     @Override
     public List<AvaluoDto> obtenerAvaluoPredio(Predios predio, List<Dominios> dominios, SesionDto sesion) throws NewviExcepcion {
@@ -653,14 +661,14 @@ public class CatastroServicioImpl implements CatastroServicio {
         if (ba) {
             basura = BigDecimal.ZERO;
         }
-        nodo.add(generarElementoArbolAvaluo("Area", area.setScale(2, BigDecimal.ROUND_UP).toString(), null, null));
+        nodo.add(generarElementoArbolAvaluo("Area", quitarDecimales(area), null, null));
         nodo.add(generarElementoArbolAvaluo("Frente", frente.setScale(2, BigDecimal.ROUND_UP).toString(), null, null));
-        nodo.add(generarElementoArbolAvaluo("Fondo relativo", fondo.setScale(2, BigDecimal.ROUND_UP).toString(), null, null));
-        nodo.add(generarElementoArbolAvaluo("Factor frente fondo", coff.toString(), null, null));
-        nodo.add(generarElementoArbolAvaluo("Topografía", cot.toString(), null, null));
-        nodo.add(generarElementoArbolAvaluo("Erosión", cero.toString(), null, null));
-        nodo.add(generarElementoArbolAvaluo("Forma", cofo.toString(), null, null));
-        nodo.add(generarElementoArbolAvaluo("Ubicación", cubi.toString(), null, null));
+        nodo.add(generarElementoArbolAvaluo("Fondo relativo", quitarDecimales(fondo), null, null));
+        nodo.add(generarElementoArbolAvaluo("Factor frente fondo", quitarDecimales(coff), null, null));
+        nodo.add(generarElementoArbolAvaluo("Topografía", quitarDecimales(cot), null, null));
+        nodo.add(generarElementoArbolAvaluo("Erosión", quitarDecimales(cero), null, null));
+        nodo.add(generarElementoArbolAvaluo("Forma", quitarDecimales(cofo), null, null));
+        nodo.add(generarElementoArbolAvaluo("Ubicación", quitarDecimales(cubi), null, null));
         nodo.add(generarElementoArbolAvaluo("Promedio de factores", promedioFactores.setScale(2, BigDecimal.ROUND_UP).toString(), null, null));
         nodo.add(generarElementoArbolAvaluo("Precio base en M2 en la zona " + zona + " sector " + sector, vterreno.setScale(2, BigDecimal.ROUND_UP).toString(), null, null));
 
@@ -831,7 +839,7 @@ public class CatastroServicioImpl implements CatastroServicio {
     private AvaluoDto generarNodoDetalle(PisoDetalle pisoDetalle, String elementoCalculo, List<Dominios> dominios) {
         //BigDecimal coeficiente = parametrosServicio.obtenerCoeficienteDetallePiso(pisoDetalle, elementoCalculo);
         BigDecimal coeficiente = obtenerCoeficienteDetallePiso(pisoDetalle, elementoCalculo, dominios);
-        return generarElementoArbolAvaluo(pisoDetalle.getSubgrupo(), pisoDetalle.getDescripcion(), coeficiente.toString(), null);
+        return generarElementoArbolAvaluo(pisoDetalle.getSubgrupo(), pisoDetalle.getDescripcion(), coeficiente.setScale(2, BigDecimal.ROUND_UP).toString(), null);
     }
 
     @Override

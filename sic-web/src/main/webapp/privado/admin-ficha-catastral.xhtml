@@ -218,6 +218,9 @@
                                     <h:outputLabel for="valAreaFrente" value="Frente principal" style="font-weight: bold;"/>
                                     <p:inputNumber id="valAreaFrente" value="#{fichaCatastralBB.predio.valAreaFrente}" label="Frente principal" size="50"/>
                                     <p:message for="valAreaFrente" display="tooltip"/>
+                                    <h:outputLabel for="valAreaFondo" value="Fondo relativo" style="font-weight: bold;"/>
+                                    <p:inputNumber id="valAreaFondo" value="#{fichaCatastralBB.predio.valAreaFondo}" label="Fondo relativo" size="50"/>
+                                    <p:message for="valAreaFondo" display="tooltip"/>
                                     <h:outputLabel for="valAreaConstruccion" value="Área de construcción" style="font-weight: bold;"/>
                                     <p:inputNumber id="valAreaConstruccion" value="#{fichaCatastralBB.predio.valAreaConstruccion}" label="Fondo Relativo" size="50"/>
                                     <p:message for="valAreaConstruccion" display="tooltip"/>
@@ -652,11 +655,11 @@
                                             <h:outputText value="#{avaluo.descripcion}"/>
                                         </p:column>
 
-                                        <p:column headerText="Valor" style="text-align: center">
+                                        <p:column headerText="Valor" style="text-align: right">
                                             <h:outputText value="#{avaluo.valor}"/>
                                         </p:column>
 
-                                        <p:column headerText="Factor" style="text-align: center">
+                                        <p:column headerText="Factor" style="text-align: right">
                                             <h:outputText value="#{avaluo.factor}"/>
                                         </p:column>
 
@@ -950,6 +953,9 @@
                                     <h:outputLabel for="valAreaFrente" value="Frente principal" style="font-weight: bold;"/>
                                     <p:inputNumber id="valAreaFrente" value="#{fichaCatastralBB.predio.valAreaFrente}" label="Frente principal" size="50"/>
                                     <p:message for="valAreaFrente" display="tooltip"/>
+                                    <h:outputLabel for="valAreaFondo" value="Fondo relativo" style="font-weight: bold;"/>
+                                    <p:inputNumber id="valAreaFondo" value="#{fichaCatastralBB.predio.valAreaFondo}" label="Fondo relativo" size="50"/>
+                                    <p:message for="valAreaFondo" display="tooltip"/>
                                     <h:outputLabel for="valAreaConstruccion" value="Área de construcción" style="font-weight: bold;"/>
                                     <p:inputNumber id="valAreaConstruccion" value="#{fichaCatastralBB.predio.valAreaConstruccion}" label="Fondo Relativo" size="50"/>
                                     <p:message for="valAreaConstruccion" display="tooltip"/>
