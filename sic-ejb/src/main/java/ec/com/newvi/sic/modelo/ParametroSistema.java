@@ -5,8 +5,8 @@
  */
 package ec.com.newvi.sic.modelo;
 
-import ec.com.newvi.sic.enums.EnumGrupoParametroSistema;
 import ec.com.newvi.sic.enums.EnumParametroSistema;
+import ec.com.newvi.sic.enums.EnumParametroSistema.EnumGrupoParametroSistema;
 import ec.com.newvi.sic.util.ComunUtil;
 import java.io.Serializable;
 import java.util.Date;
@@ -165,5 +165,10 @@ public class ParametroSistema implements Serializable {
     
     public Boolean esParametroSistemaValido() {
         return (!ComunUtil.esNulo(this.parametro) && !ComunUtil.esNulo(this.grupo) );
+    }
+    
+    public void actualizarDatosPorTipoParametro() {
+        this.grupo = this.parametro.getGrupoParametro();
+        this.descripcion = this.parametro.getDescripcionParametro();
     }
 }

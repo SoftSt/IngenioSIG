@@ -4,7 +4,6 @@
  */
 package ec.com.newvi.sic.web.backingbean;
 
-import ec.com.newvi.sic.enums.EnumGrupoParametroSistema;
 import ec.com.newvi.sic.enums.EnumNewviExcepciones;
 import ec.com.newvi.sic.enums.EnumParametroSistema;
 import ec.com.newvi.sic.modelo.ParametroSistema;
@@ -21,6 +20,8 @@ import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import org.primefaces.context.RequestContext;
+import org.primefaces.event.FileUploadEvent;
+import org.primefaces.model.UploadedFile;
 
 /**
  *
@@ -35,7 +36,9 @@ public class ParametrosSistemaBB extends AdminSistemaBB {
     private EnumPantallaMantenimiento pantallaActual;
     private ParametroSistema parametroSeleccionado;
     private EnumParametroSistema[] listaSeleccionParametros;
-    private EnumGrupoParametroSistema[] listaSeleccionGrupoParametros;
+    private UploadedFile imagenCargada;
+    private Boolean esParametroDeImagen;
+    private Boolean esCargaDeImagen;
 
     public List<ParametroSistema> getListaParametros() {
         return listaParametros;
@@ -73,18 +76,33 @@ public class ParametrosSistemaBB extends AdminSistemaBB {
         return listaSeleccionParametros;
     }
 
-    public EnumGrupoParametroSistema[] getListaSeleccionGrupoParametros() {
-        return listaSeleccionGrupoParametros;
+    public UploadedFile getImagenCargada() {
+        return imagenCargada;
+    }
+
+    public void setImagenCargada(UploadedFile imagenCargada) {
+        this.imagenCargada = imagenCargada;
+    }
+
+    public Boolean getEsParametroDeImagen() {
+        return esParametroDeImagen;
+    }
+
+    public Boolean getEsCargaDeImagen() {
+        return esCargaDeImagen;
+    }
+
+    public void setEsCargaDeImagen(Boolean esCargaDeImagen) {
+        this.esCargaDeImagen = esCargaDeImagen;
     }
 
     @PostConstruct
     public void init() {
         obtenerFuncionalidadActual(EnumFuncionalidad.PARAMETROS_DEL_SISTEMA);
         RequestContext.getCurrentInstance().update("formCabecera");
-        
+
         actualizarListadoParametros();
         listaSeleccionParametros = EnumParametroSistema.values();
-        listaSeleccionGrupoParametros = EnumGrupoParametroSistema.values();
 
         conmutarPantalla(EnumPantallaMantenimiento.PANTALLA_LISTADO);
         establecerTitulo(EnumEtiquetas.PARAMETROS_SISTEMA_LISTA_TITULO,
@@ -117,6 +135,8 @@ public class ParametrosSistemaBB extends AdminSistemaBB {
     }
 
     public void crearNuevoParametroSistema() {
+        esParametroDeImagen = false;
+        esCargaDeImagen = false;
         this.parametroSeleccionado = new ParametroSistema();
         conmutarPantalla(EnumPantallaMantenimiento.PANTALLA_EDICION);
         establecerTitulo(EnumEtiquetas.PARAMETROS_SISTEMA_NUEVO_TITULO,
@@ -127,6 +147,8 @@ public class ParametrosSistemaBB extends AdminSistemaBB {
     public void seleccionarParametroSistema(Integer idUsuario) {
         try {
             this.seleccionarParametroSistemaPorCodigo(idUsuario);
+            esParametroDeImagen = EnumParametroSistema.EnumTipoParametro.IMAGEN.equals(parametroSeleccionado.getParametro().getTipoParametro());
+            esCargaDeImagen = false;
         } catch (NewviExcepcion e) {
             MensajesFaces.mensajeError(e.getMessage());
         } catch (Exception e) {
@@ -188,4 +210,33 @@ public class ParametrosSistemaBB extends AdminSistemaBB {
                 EnumEtiquetas.PARAMETROS_SISTEMA_LISTA_ICONO,
                 EnumEtiquetas.PARAMETROS_SISTEMA_LISTA_DESCRIPCION);
     }
+
+    public void cargarImagen(FileUploadEvent event) {
+        this.imagenCargada = event.getFile();
+        if (!ComunUtil.esNulo(this.imagenCargada)) {
+            try {
+                String nombreArchivoGuardado = parametrosServicio.guardarImagenParametroSistema(parametroSeleccionado, this.imagenCargada.getContents(), sesionBean.getSesion());
+                MensajesFaces.mensajeInformacion("La imagen ".concat(nombreArchivoGuardado).concat(" se ha almacenado correctamente. "));
+                this.parametroSeleccionado.setValor(nombreArchivoGuardado);
+                this.esCargaDeImagen = false;
+            } catch (NewviExcepcion e) {
+                LoggerNewvi.getLogNewvi(this.getClass()).error(e, sesionBean.getSesion());
+                MensajesFaces.mensajeError("Ocurrió un error al intentar cargar la imagen. ".concat(e.getMessage()));
+            }
+        } else {
+            LoggerNewvi.getLogNewvi(this.getClass()).error(EnumNewviExcepciones.ERR010.presentarMensajeCodigo(), sesionBean.getSesion());
+            MensajesFaces.mensajeError(EnumNewviExcepciones.ERR010.presentarMensajeCodigo());
+        }
+    }
+
+    public void alCambiarParametro() {
+        this.parametroSeleccionado.setValor(parametroSeleccionado.getParametro().getValorPorDefecto());
+        esParametroDeImagen = EnumParametroSistema.EnumTipoParametro.IMAGEN.equals(parametroSeleccionado.getParametro().getTipoParametro());
+        esCargaDeImagen = false;
+    }
+    
+    public void iniciarCargaDeImagen() {
+        this.esCargaDeImagen = true;
+    }
+
 }

@@ -6,7 +6,7 @@
 package ec.com.newvi.sic.dao;
 
 import ec.com.newvi.sic.dto.SesionDto;
-import ec.com.newvi.sic.enums.EnumGrupoParametroSistema;
+import ec.com.newvi.sic.enums.EnumParametroSistema.EnumGrupoParametroSistema;
 import ec.com.newvi.sic.enums.EnumNewviExcepciones;
 import ec.com.newvi.sic.enums.EnumParametroSistema;
 import ec.com.newvi.sic.modelo.ParametroSistema;

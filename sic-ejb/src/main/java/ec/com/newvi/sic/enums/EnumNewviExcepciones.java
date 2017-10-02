@@ -29,6 +29,7 @@ public enum EnumNewviExcepciones {
     ERR204("ERR204", "Entidad inexistente.", "No existe una entidad con el código presentado. Puede deberse a un error en la base de datos. Contacte con el administrador."),
     ERR205("ERR205", "Archivo no encontrado.", "No se ha encontrado el archivo con el nombre indicado, verifique que el archivo se encuentre en la carpeta."),
     ERR206("ERR206", "Archivo no pudo ser leído.", "No se pudo leer el archivo con el nombre indicado, verifique que el archivo no tenga errores."),
+    ERR207("ERR207", "Archivo no pudo ser guardado.", "No se pudo guardar el archivo con el nombre indicado, verifique que el archivo no tenga errores o que la ubicación exista dentro del sistema."),
     // 251 al 300 excepciones de validación
     ERR251("ERR251", "Correo electrónico no válido.", "El correo electrónico no es correcto. Registre un correo electrónico con el formato ejemplo@ejemplo.com"),
     

@@ -90,23 +90,35 @@
                             <p:selectOneMenu value="#{parametrosSistemaBB.parametroSeleccionado.parametro}" id="parametro" label="Nombre del Parámetro" required="true">
                                 <f:selectItem itemLabel="Seleccione uno" itemValue="" />
                                 <f:selectItems var="enumParametro" value="#{parametrosSistemaBB.listaSeleccionParametros}" itemLabel="#{enumParametro}" itemValue="#{enumParametro}"  />
+                                <p:ajax listener="#{parametrosSistemaBB.alCambiarParametro}" update="opDetalleParametroSistema" />
                             </p:selectOneMenu>
                             <p:message for="parametro" display="tooltip"/>
 
-                            <h:outputLabel for="descripcionParametro" value="Descripción" style="font-weight: bold;"/>
-                            <p:inputText id="descripcionParametro" value="#{parametrosSistemaBB.parametroSeleccionado.descripcion}" label="Descripción" required="true" size="100"/>
-                            <p:message for="descripcionParametro" display="tooltip"/>
+                            <h:outputLabel value="Descripción" style="font-weight: bold;"/>
+                            <h:outputLabel value="#{parametrosSistemaBB.parametroSeleccionado.descripcion}"/>
 
                             <h:outputLabel for="valorParametro" value="Valor" style="font-weight: bold;"/>
                             <p:inputText id="valorParametro" value="#{parametrosSistemaBB.parametroSeleccionado.valor}" label="Valor" required="true" size="100"/>
                             <p:message for="valorParametro" display="tooltip"/>
 
-                            <h:outputLabel for="grupoParametro" value="Grupo" style="font-weight: bold;"/>
-                            <p:selectOneMenu value="#{parametrosSistemaBB.parametroSeleccionado.grupo}" id="grupoParametro" label="Grupo del Parámetro" required="true">
-                                <f:selectItem itemLabel="Seleccione uno" itemValue="" />
-                                <f:selectItems var="enumGrupoParametro" value="#{parametrosSistemaBB.listaSeleccionGrupoParametros}" itemLabel="#{enumGrupoParametro}" itemValue="#{enumGrupoParametro}"  />
-                            </p:selectOneMenu>
-                            <p:message for="grupoParametro" display="tooltip"/>
+                            <h:outputLabel value="Grupo" style="font-weight: bold;"/>
+                            <h:outputLabel value="#{parametrosSistemaBB.parametroSeleccionado.grupo}"/>
+
+                            <h:outputLabel value="Imagen" style="font-weight: bold;" rendered="#{parametrosSistemaBB.esParametroDeImagen}"/>
+                            <p:graphicImage value="#{sesionBean.obtenerImagen()}" 
+                                            rendered="#{parametrosSistemaBB.esParametroDeImagen and !parametrosSistemaBB.esCargaDeImagen}">
+                                <f:param name="imagen" value="#{parametrosSistemaBB.parametroSeleccionado.valor}"/>
+                            </p:graphicImage>
+
+                            <p:commandButton actionListener="#{parametrosSistemaBB.iniciarCargaDeImagen()}" 
+                                             update="grupoParametrosSistema" icon="fa fa-check"
+                                             rendered="#{parametrosSistemaBB.esParametroDeImagen and !parametrosSistemaBB.esCargaDeImagen}"
+                                             value="Cargar nueva imagen">
+                            </p:commandButton>
+                            <p:fileUpload fileUploadListener="#{parametrosSistemaBB.cargarImagen}" mode="advanced"
+                                          rendered="#{parametrosSistemaBB.esParametroDeImagen and parametrosSistemaBB.esCargaDeImagen}"
+                                          update="grupoParametrosSistema" 
+                                          sizeLimit="100000" allowTypes="/(\.|\/)(png)$/" />
 
                         </h:panelGrid>
                         <h:panelGrid columns="4">

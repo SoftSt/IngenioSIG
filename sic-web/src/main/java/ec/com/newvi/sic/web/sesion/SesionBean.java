@@ -35,7 +35,7 @@ public class SesionBean implements Serializable {
 
     private static final String SESION_IP = "sesionIp";
     private static final String SESION_LOCALHOST = "sesionLocalhost";
-    
+
     @EJB
     private SeguridadesServicio seguridadesServicio;
 
@@ -122,9 +122,9 @@ public class SesionBean implements Serializable {
                 FileInputStream archivoFotografia = new FileInputStream(direccionImagen);
                 StreamedContent contenidoFotografia = new DefaultStreamedContent(archivoFotografia, contentType);
                 return contenidoFotografia;
-            } catch (FileNotFoundException ex) {
+            } catch (FileNotFoundException | NullPointerException ex) {
                 LoggerNewvi.getLogNewvi(this.getClass()).error(ex, this.getSesion());
-                MensajesFaces.mensajeError(EnumNewviExcepciones.ERR205.presentarMensaje());
+                return new DefaultStreamedContent();
             }
         }
         return new DefaultStreamedContent();

@@ -34,12 +34,16 @@ public abstract class AdminSistemaBB extends SistemaBB {
         String rutaImagenReporte = "";
         String nombreSistema = "";
         String nombreMunicipio = "";
+        String imagenLogoMunicipio1 = "";
+        String imagenLogoMunicipio2 = "";
         String nombreUsuario = "";
         try {
             rutaReporte = parametrosServicio.obtenerParametroPorNombre(EnumParametroSistema.RUTA_UBICACION_REPORTES, sesionBean.getSesion()).getValor();
             rutaImagenReporte = parametrosServicio.obtenerParametroPorNombre(EnumParametroSistema.RUTA_UBICACION_IMAGENES_REPORTE, sesionBean.getSesion()).getValor();
             nombreSistema = parametrosServicio.obtenerParametroPorNombre(EnumParametroSistema.NOMBRE_SISTEMA, sesionBean.getSesion()).getValor();
             nombreMunicipio = parametrosServicio.obtenerParametroPorNombre(EnumParametroSistema.NOMBRE_COMPLETO_MUNICIPIO, sesionBean.getSesion()).getValor();
+            imagenLogoMunicipio1 = parametrosServicio.obtenerParametroPorNombre(EnumParametroSistema.IMAGEN_LOGO_MUNICIPIO_1, sesionBean.getSesion()).getValor();
+            imagenLogoMunicipio2 = parametrosServicio.obtenerParametroPorNombre(EnumParametroSistema.IMAGEN_LOGO_MUNICIPIO_2, sesionBean.getSesion()).getValor();
             nombreUsuario = sesionBean.getSesion().getUsuarioRegistrado().getUsuUsuario();
         } catch (NewviExcepcion ex) {
             LoggerNewvi.getLogNewvi(this.getClass()).error(ex, sesionBean.getSesion());
@@ -50,6 +54,8 @@ public abstract class AdminSistemaBB extends SistemaBB {
         params.put(EnumParametrosReporte.NOMBRE_SISTEMA.getNombre(), nombreSistema);
         params.put(EnumParametrosReporte.NOMBRE_MUNICIPIO.getNombre(), nombreMunicipio);
         params.put(EnumParametrosReporte.NOMBRE_USUARIO.getNombre(), nombreUsuario);
+        params.put(EnumParametrosReporte.IMAGEN_LOGO_MUNICIPIO_1.getNombre(), imagenLogoMunicipio1);
+        params.put(EnumParametrosReporte.IMAGEN_LOGO_MUNICIPIO_2.getNombre(), imagenLogoMunicipio2);
         params.put(EnumParametrosReporte.RUTA_IMAGENES_REPORTES.getNombre(), rutaImagenReporte);
         return params;
     }

@@ -12,7 +12,7 @@ import ec.com.newvi.sic.dao.ReporteFacade;
 import ec.com.newvi.sic.dto.DominioDto;
 import ec.com.newvi.sic.enums.EnumEstadoRegistro;
 import ec.com.newvi.sic.dto.SesionDto;
-import ec.com.newvi.sic.enums.EnumGrupoParametroSistema;
+import ec.com.newvi.sic.enums.EnumParametroSistema.EnumGrupoParametroSistema;
 import ec.com.newvi.sic.enums.EnumNewviExcepciones;
 import ec.com.newvi.sic.enums.EnumParametroSistema;
 import ec.com.newvi.sic.enums.EnumReporte;
@@ -26,6 +26,7 @@ import ec.com.newvi.sic.modelo.Reporte;
 import ec.com.newvi.sic.modelo.Terreno;
 import ec.com.newvi.sic.servicios.ParametrosServicio;
 import ec.com.newvi.sic.util.ComunUtil;
+import ec.com.newvi.sic.util.UtilArchivos;
 import ec.com.newvi.sic.util.excepciones.NewviExcepcion;
 import ec.com.newvi.sic.util.logs.LoggerNewvi;
 import java.math.BigDecimal;
@@ -55,26 +56,27 @@ public class ParametrosServicioImpl implements ParametrosServicio {
     private ParametroSistemaFacade parametroSistemaFacade;
 
     /*---------------------------------------------------- Parámetros del Sistema ----------------------------------------------------*/
-
     @Override
     public String generarNuevoParametroSistema(ParametroSistema nuevoParametroSistema, SesionDto sesion) throws NewviExcepcion {
+
+        nuevoParametroSistema.actualizarDatosPorTipoParametro();
+
         // Validar que los datos no sean incorrectos
         LoggerNewvi.getLogNewvi(this.getClass()).debug("Validando parámetro del sistema...", sesion);
         if (!nuevoParametroSistema.esParametroSistemaValido()) {
             throw new NewviExcepcion(EnumNewviExcepciones.ERR301);
         }
-        // Crear el usuario
+        // Crear el parametro
         LoggerNewvi.getLogNewvi(this.getClass()).debug("Creando parámetro del sistema...", sesion);
-        
+
         Date fechaIngreso = Calendar.getInstance().getTime();
-        
+
         //Registramos la auditoria de ingreso
         nuevoParametroSistema.setAudIngIp(sesion.getDireccionIP());
         nuevoParametroSistema.setAudIngUsu(sesion.getUsuarioRegistrado().getUsuUsuario().trim());
-        
+
         nuevoParametroSistema.setAudIngFec(fechaIngreso);
-        
-        
+
         parametroSistemaFacade.create(nuevoParametroSistema);
         // Si todo marcha bien enviar nombre de usuario
         return nuevoParametroSistema.getParametro().name();
@@ -82,6 +84,9 @@ public class ParametrosServicioImpl implements ParametrosServicio {
 
     @Override
     public String actualizarParametroSistema(ParametroSistema parametroSistema, SesionDto sesion) throws NewviExcepcion {
+
+        parametroSistema.actualizarDatosPorTipoParametro();
+
         // Validar que los datos no sean incorrectos
         LoggerNewvi.getLogNewvi(this.getClass()).debug("Validando parámetro del sistema...", sesion);
         if (!parametroSistema.esParametroSistemaValido()) {
@@ -89,16 +94,24 @@ public class ParametrosServicioImpl implements ParametrosServicio {
         }
         // Acturlizar el parámetro
         LoggerNewvi.getLogNewvi(this.getClass()).debug("Editando parámetro del sistema...", sesion);
-        
+
         //Registramos la auditoria de modificacion
         parametroSistema.setAudModIp(sesion.getDireccionIP());
         parametroSistema.setAudModUsu(sesion.getUsuarioRegistrado().getUsuPalabraclave().trim());
         Date fechaModificacion = Calendar.getInstance().getTime();
         parametroSistema.setAudModFec(fechaModificacion);
-        
+
         parametroSistemaFacade.edit(parametroSistema);
         // Si todo marcha bien enviar nombre de usuario
         return parametroSistema.getParametro().name();
+    }
+
+    @Override
+    public String guardarImagenParametroSistema(ParametroSistema parametroSistema, byte[] imagenEnBytes, SesionDto sesion) throws NewviExcepcion {
+        String nombreArchivo = reemplazarValoresParametros(parametroSistema, sesion);
+        String direccionArchivo = nombreArchivo.substring(0, nombreArchivo.lastIndexOf("/"));
+        nombreArchivo = nombreArchivo.substring(nombreArchivo.lastIndexOf("/") + 1, nombreArchivo.length());
+        return UtilArchivos.almacenarArchivoEnServidor(nombreArchivo, direccionArchivo, imagenEnBytes);
     }
 
     @Override
@@ -124,7 +137,23 @@ public class ParametrosServicioImpl implements ParametrosServicio {
     public ParametroSistema obtenerParametroPorNombre(EnumParametroSistema parametro, SesionDto sesion) throws NewviExcepcion {
         return parametroSistemaFacade.obtenerParametroPorNombre(parametro, sesion);
     }
-    
+
+    private String reemplazarValoresParametros(ParametroSistema parametro, SesionDto sesion) throws NewviExcepcion {
+        String valorParametro = parametro.getValor();
+        String valorReemplazado = valorParametro;
+        try {
+            String parametroAReemplazar = valorParametro.substring(valorParametro.indexOf("[") + 1, valorParametro.indexOf("]"));
+            if (!ComunUtil.esCadenaVacia(parametroAReemplazar)) {
+                EnumParametroSistema parametroSistemaReemplazo = EnumParametroSistema.valueOf(parametroAReemplazar);
+                String valorParametroAReemplazar = obtenerParametroPorNombre(parametroSistemaReemplazo, sesion).getValor();
+                valorReemplazado = valorParametro.replace("[".concat(parametroAReemplazar).concat("]"), valorParametroAReemplazar);
+            }
+        } catch (StringIndexOutOfBoundsException ex) {
+            LoggerNewvi.getLogNewvi(this.getClass()).warn("No se pudo encontrar el parámetro a ser reemplazado. Omitiendo. :".concat(ex.getMessage()), sesion);
+        }
+        return valorReemplazado;
+    }
+
     /*------------------------------------------------------------Dominios------------------------------------------------------------*/
     @Override
     public String generaNuevoDominio(Dominios nuevoDominio, SesionDto sesion) throws NewviExcepcion {
@@ -279,7 +308,7 @@ public class ParametrosServicioImpl implements ParametrosServicio {
         }
         return totalCoeficiente;
     }
-    
+
     @Override
     public List<ConstantesImpuestos> obtenerConstantesImpuestosPorTipo(String stsTipo) {
         return constantesFacade.obtenerConstantesImpuestosPorTipo(stsTipo);
@@ -345,18 +374,17 @@ public class ParametrosServicioImpl implements ParametrosServicio {
     public List<ConstantesImpuestos> consultarConstantesImpuestos() {
         return constantesFacade.buscarConstantesImpuestos();
     }
+
     @Override
-    public String eliminarConstanteImpuesto (ConstantesImpuestos constantesImpuestos , SesionDto sesion) throws NewviExcepcion{
+    public String eliminarConstanteImpuesto(ConstantesImpuestos constantesImpuestos, SesionDto sesion) throws NewviExcepcion {
         constantesImpuestos.setconImpuestoEstado(EnumEstadoRegistro.E);
         return actualizarConstanteImpuesto(constantesImpuestos, sesion);
     }
-    
-    /*------------------------------------------------------------Reportes------------------------------------------------------------*/
 
+    /*------------------------------------------------------------Reportes------------------------------------------------------------*/
     @Override
     public Reporte obtenerReporte(EnumReporte nombreReporte, SesionDto sesion) throws NewviExcepcion {
         return reporteFacade.obtenerReportePorNombre(nombreReporte, sesion);
     }
-    
-    
+
 }

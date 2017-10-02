@@ -7,7 +7,7 @@ package ec.com.newvi.sic.servicios;
 
 import ec.com.newvi.sic.dto.DominioDto;
 import ec.com.newvi.sic.dto.SesionDto;
-import ec.com.newvi.sic.enums.EnumGrupoParametroSistema;
+import ec.com.newvi.sic.enums.EnumParametroSistema.EnumGrupoParametroSistema;
 import ec.com.newvi.sic.enums.EnumParametroSistema;
 import ec.com.newvi.sic.enums.EnumReporte;
 import ec.com.newvi.sic.modelo.ConstantesImpuestos;
@@ -32,8 +32,6 @@ import javax.ejb.Local;
 public interface ParametrosServicio {
 
     /*----------------------------------------------------- Parametros del Sistema ----------------------------------------------------*/
-    
-    
     /**
      * Genera un nuevo parámetro del sistema, de acuerdo a un objeto entregado.
      *
@@ -43,7 +41,7 @@ public interface ParametrosServicio {
      * @throws NewviExcepcion
      */
     public String generarNuevoParametroSistema(ParametroSistema nuevoParametroSistema, SesionDto sesion) throws NewviExcepcion;
-    
+
     /**
      * Actualiza un parámetro existente.
      *
@@ -53,7 +51,19 @@ public interface ParametrosServicio {
      * @throws NewviExcepcion
      */
     public String actualizarParametroSistema(ParametroSistema parametroSistema, SesionDto sesion) throws NewviExcepcion;
-    
+
+    /**
+     * Guarda una imagen dado el flujo de bytes en una ubicación específica,
+     * dado el parámetro creado/modificado
+     *
+     * @param parametroSistema El parámetro del sistema que contiene la dirección en donde se almacenará la imagen.
+     * @param imagenEnBytes El stream de la imagen a guardar.
+     * @param sesion Sesión que realiza la operación.
+     * @return Nombre del archivo guardado.
+     * @throws NewviExcepcion
+     */
+    public String guardarImagenParametroSistema(ParametroSistema parametroSistema, byte[] imagenEnBytes, SesionDto sesion) throws NewviExcepcion;
+
     /**
      * Devuelve un parámetro dado una id
      *
@@ -62,7 +72,7 @@ public interface ParametrosServicio {
      * @throws NewviExcepcion
      */
     public ParametroSistema seleccionarParametroSistema(Integer codParametro) throws NewviExcepcion;
-    
+
     /**
      * Obtiene el listado de parámetros registrados en el sistema.
      *
@@ -84,18 +94,18 @@ public interface ParametrosServicio {
      * @throws NewviExcepcion
      */
     public List<ParametroSistema> obtenerListaParametrosSistemaPorTipo(EnumGrupoParametroSistema grupo, SesionDto sesion) throws NewviExcepcion;
-    
+
     /**
      * Obtiene un paraámetro dado
+     *
      * @param parametro Enumerado del parámetro a buscar
      * @param sesion Sesión del usuario que busca el parámetro
      * @return Parámetro encontrado en base de datos
-     * @throws NewviExcepcion 
+     * @throws NewviExcepcion
      */
     public ParametroSistema obtenerParametroPorNombre(EnumParametroSistema parametro, SesionDto sesion) throws NewviExcepcion;
 
     /*----------------------------------------------------- Dominios ----------------------------------------------------*/
-
     /**
      * Generar un nuevo dominio, de acuerdo a un objeto entregado.
      *

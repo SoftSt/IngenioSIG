@@ -447,7 +447,7 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
         listaFotosJpg = new ArrayList<>();
         List<Fotos> imagenes = catastroServicio.consultarFotosPorPredio(idPredio);
         try {
-            String rutaFotografias = parametrosServicio.obtenerParametroPorNombre(EnumParametroSistema.DIRECCION_IMAGEN_PREDIO, sesionBean.getSesion()).getValor().concat("/");
+            String rutaFotografias = parametrosServicio.obtenerParametroPorNombre(EnumParametroSistema.DIRECCION_IMAGENES_PREDIO, sesionBean.getSesion()).getValor().concat("/");
             if (imagenes.isEmpty()) {
                 listaFotosJpg.add("vacio.jpg");
             } else {
