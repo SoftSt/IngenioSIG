@@ -7,7 +7,9 @@ package ec.com.newvi.sic.web.sesion;
 
 import ec.com.newvi.sic.dto.SesionDto;
 import ec.com.newvi.sic.enums.EnumNewviExcepciones;
+import ec.com.newvi.sic.enums.EnumParametroSistema;
 import ec.com.newvi.sic.modelo.Usuarios;
+import ec.com.newvi.sic.servicios.ParametrosServicio;
 import ec.com.newvi.sic.servicios.SeguridadesServicio;
 import ec.com.newvi.sic.util.ComunUtil;
 import ec.com.newvi.sic.util.excepciones.NewviExcepcion;
@@ -19,6 +21,7 @@ import java.io.FileNotFoundException;
 import java.io.Serializable;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
@@ -38,6 +41,9 @@ public class SesionBean implements Serializable {
 
     @EJB
     private SeguridadesServicio seguridadesServicio;
+
+    @EJB
+    private ParametrosServicio parametrosServicio;
 
     private String nombreUsuario;
     private String ipUsuario;

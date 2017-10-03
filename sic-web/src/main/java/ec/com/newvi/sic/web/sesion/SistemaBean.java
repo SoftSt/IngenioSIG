@@ -29,27 +29,30 @@ public class SistemaBean implements Serializable {
     protected ParametrosServicio parametrosServicio;
     
     private String nombreSistema;
+    private String tituloSistema;
     private Funcionalidades funcionalidadActual;
 
     public String getNombreSistema() {
         return nombreSistema;
     }
 
-    public void setNombreSistema(String nombreSistema) {
-        this.nombreSistema = nombreSistema;
-    }
-
     public void setFuncionalidadActual(Funcionalidades funcionalidadActual) {
         this.funcionalidadActual = funcionalidadActual;
     }
-    
+
+    public String getTituloSistema() {
+        return tituloSistema;
+    }
+
     @PostConstruct
     public void actualizarParametrosSistema() {
         try {
-            this.nombreSistema = parametrosServicio.obtenerParametroPorNombre(EnumParametroSistema.TITULO_SISTEMA, null).getValor();
+            this.nombreSistema = parametrosServicio.obtenerParametroPorNombre(EnumParametroSistema.NOMBRE_SISTEMA, null).getValor();
+            this.tituloSistema = parametrosServicio.obtenerParametroPorNombre(EnumParametroSistema.TITULO_SISTEMA, null).getValor();
         } catch (NewviExcepcion ex) {
             LoggerNewvi.getLogNewvi(this.getClass()).error(EnumNewviExcepciones.ERR455.presentarMensajeCodigo(), ex, null);
-            this.nombreSistema = "";
+            this.nombreSistema = EnumParametroSistema.NOMBRE_SISTEMA.getValorPorDefecto();
+            this.tituloSistema = EnumParametroSistema.TITULO_SISTEMA.getValorPorDefecto();
         }
     }
     

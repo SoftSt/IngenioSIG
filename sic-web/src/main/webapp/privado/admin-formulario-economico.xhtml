@@ -61,21 +61,21 @@
                                              id="imprimirNotificacionAvaluo"
                                              update="grupoFormularioEconomico"
                                              onclick="PrimeFaces.monitorDownload(start, stop);">
-                                <p:fileDownload value="#{formularioEconomicoBB.imprimir(0)}" />
+                                <p:fileDownload value="#{formularioEconomicoBB.imprimir('NOTIFICACION_AVALUO')}" />
                             </p:commandButton>
                             <p:commandButton icon="fa fa-print" 
                                              value="Cerfiticación Avalúo" 
                                              id="imprimirCerfiticacionAvaluo"
                                              update="grupoFormularioEconomico"
                                              onclick="PrimeFaces.monitorDownload(start, stop);">
-                                <p:fileDownload value="#{formularioEconomicoBB.imprimir(1)}" />
+                                <p:fileDownload value="#{formularioEconomicoBB.imprimir('CERTIFICACION_AVALUO')}" />
                             </p:commandButton>
                             <p:commandButton icon="fa fa-print" 
                                              value="Título Credito" 
                                              id="imprimirTituloCredito"
                                              update="grupoFormularioEconomico"
                                              onclick="PrimeFaces.monitorDownload(start, stop);">
-                                <p:fileDownload value="#{formularioEconomicoBB.imprimir(2)}" />
+                                <p:fileDownload value="#{formularioEconomicoBB.imprimir('TITULO_CREDITO')}" />
                             </p:commandButton>
                         </h:panelGrid>
                     </p:dialog>                   

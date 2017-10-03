@@ -4,6 +4,8 @@
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="RUTA_IMAGENES" class="java.lang.String"/>
+	<parameter name="IMAGEN_LOGO_MUNICIPIO_1" class="java.lang.String"/>
+	<parameter name="IMAGEN_LOGO_MUNICIPIO_2" class="java.lang.String"/>
 	<field name="field1" class="java.lang.String"/>
 	<field name="nomCodigocatastral" class="java.lang.String"/>
 	<field name="nomApellidos" class="java.lang.String"/>
@@ -28,10 +30,6 @@
 	</background>
 	<pageHeader>
 		<band height="82" splitType="Stretch">
-			<image>
-				<reportElement x="0" y="0" width="98" height="50" uuid="d5a26de6-40bd-47e2-8b62-2e94b8491fe2"/>
-				<imageExpression><![CDATA[$P{RUTA_IMAGENES}+"logo2.png"]]></imageExpression>
-			</image>
 			<staticText>
 				<reportElement x="98" y="10" width="457" height="20" uuid="df53dff6-6eff-4516-aa21-38faf6405d9d"/>
 				<textElement textAlignment="Center">
@@ -73,6 +71,10 @@
 				</textElement>
 				<text><![CDATA[TITULO Nro.]]></text>
 			</staticText>
+			<image scaleImage="RetainShape" hAlign="Center" vAlign="Middle" onErrorType="Blank">
+				<reportElement x="9" y="5" width="80" height="50" uuid="81d164ab-415c-45e2-bc27-fac1a195dd4c"/>
+				<imageExpression><![CDATA[$P{IMAGEN_LOGO_MUNICIPIO_1}]]></imageExpression>
+			</image>
 		</band>
 	</pageHeader>
 	<columnHeader>
