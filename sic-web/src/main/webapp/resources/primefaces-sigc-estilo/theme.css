@@ -329,12 +329,13 @@ a,
 .ui-icon-triangle-1-n { background-position: 16px 16px; }
 .ui-icon-triangle-1-ne { background-position: -16px -16px; }
 .ui-icon-triangle-1-e:before { background: none; font-family: FontAwesome; content: "\f0da"; }
-.ui-icon-triangle-1-e { background-position: 16px 16px; }
+.ui-icon-triangle-1-e { background-position: 16px 16px; margin-top: 0.1em; margin-left: 0.25em}
 .ui-icon-triangle-1-se { background-position: -48px -16px; }
 .ui-icon-triangle-1-s:before { background: none; font-family: FontAwesome; content: "\f0dd"; }
 .ui-icon-triangle-1-s { background-position: 16px 16px; margin-top: 0.1em; margin-left: 0.25em}
 .ui-icon-triangle-1-sw { background-position: -80px -16px; }
-.ui-icon-triangle-1-w { background-position: -96px -16px; }
+.ui-icon-triangle-1-w:before { background: none; font-family: FontAwesome; content: "\f0d9"; }
+.ui-icon-triangle-1-w { background-position: 16px 16px; margin-top: 0.1em; margin-left: 0.25em}
 .ui-icon-triangle-1-nw { background-position: -112px -16px; }
 .ui-icon-triangle-2-n-s:before { background: none; font-family: FontAwesome; content: "\f0dc"; }
 .ui-icon-triangle-2-n-s { background-position: 16px 16px; }
@@ -384,7 +385,8 @@ a,
 .ui-icon-arrowrefresh-1-e { background-position: -160px -64px; }
 .ui-icon-arrowrefresh-1-s { background-position: -176px -64px; }
 .ui-icon-arrow-4 { background-position: 0 -80px; }
-.ui-icon-arrow-4-diag { background-position: -16px -80px; }
+.ui-icon-arrow-4-diag:before { background: none; font-family: FontAwesome; content: "\f0b2"; }
+.ui-icon-arrow-4-diag { background-position: 16px 16px; margin-top: 0.1em; margin-left: 0.25em}
 .ui-icon-extlink { background-position: -32px -80px; }
 .ui-icon-newwin { background-position: -48px -80px; }
 .ui-icon-refresh { background-position: -64px -80px; }
@@ -790,4 +792,24 @@ a,
 
 .ui-messages-close .ui-icon-close {
     margin: 0 0 0 -15px;
+}
+
+.ui-layout-unit .ui-layout-unit-header .ui-state-default {
+    background: none !important;
+    text-indent: 0 !important;
+    position: absolute !important;
+    left: 90% !important;
+    color: rgba(0, 0, 0, 0.54) !important;
+}
+
+.ui-layout-toggler .ui-layout-unit-expand-icon .ui-icon {
+    background: none !important;
+    text-indent: 0 !important;
+    position: absolute !important;
+    margin-left: 0 !important;
+    color: rgba(0, 0, 0, 0.54) !important;
+}
+
+.ui-layout-resizer-closed, .ui-layout-toggler-closed{
+    font-size: 1em !important;
 }

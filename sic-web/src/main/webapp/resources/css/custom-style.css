@@ -17,14 +17,20 @@ body {
 }
 
 .cabecera {
-    background: #186ba0;
-    color: #fff;
-    height: 35px;
-    position: relative;
-    padding-top: 15px;
-    padding-left: 15px;
-    padding-right: 15px;
-    padding-bottom: 10px;
+    background: #186ba0 !important;
+    color: #fff !important;
+    padding: 0 !important;
+    border: 0 !important;
+}
+
+.cabecera .ui-widget-content{
+    background: #186ba0 !important;
+    color: #fff !important;
+    position: relative !important;
+    padding-top: 15px !important;
+    padding-left: 15px !important;
+    padding-right: 15px !important;
+    padding-bottom: 10px !important;
 }
 
 .marca {
@@ -52,16 +58,20 @@ body {
 }
 
 .menu-izquierda {
+    padding: 0 !important;
+    border: 0 !important;
+}
+
+.menu-izquierda .ui-layout-unit-header{
+    border-top: 1px solid #d6d6d6 !important;
     border-right: 1px solid #d6d6d6 !important;
-    width: 260px;
-    position: relative;
-    float: left;
-    background: #fff;
-    height: -moz-calc(100% - 60px);
-    height: -webkit-calc(100% - 60px);
-    height: calc(100% - 60px);
-    display: block;
-    overflow-y: auto;
+    border-left: 1px solid #d6d6d6 !important;
+    border-bottom: 0 !important;
+}
+
+.menu-izquierda .ui-layout-unit-content{
+    padding: 0 !important;
+    border-right: 1px solid #d6d6d6 !important;
 }
 
 .principal {
