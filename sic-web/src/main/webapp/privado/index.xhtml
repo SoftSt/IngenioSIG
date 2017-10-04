@@ -6,18 +6,16 @@
                 template="/WEB-INF/templates/default.xhtml"
                 xmlns:p="http://primefaces.org/ui">
     <ui:define name="content">
-        <p:panel>
-            <div class="div-mensaje-web">
-                <div class="texto">
-                    <div class="logo">
-                        <h:outputText styleClass="fa fa-sun-o"/>
-                    </div>
-                    <h1 style="text-align: center;">
-                        <h:outputText value=" Hola #{sesionBean.usuarioRegistrado.usuNombres} "/>
-                    </h1>
-                    <h:outputText value="Inicia con el panel izquierdo."/>
+        <div class="div-mensaje-web">
+            <div class="texto">
+                <div class="logo">
+                    <h:outputText styleClass="fa fa-sun-o"/>
                 </div>
+                <h1 style="text-align: center;">
+                    <h:outputText value=" Hola #{sesionBean.usuarioRegistrado.usuNombres} "/>
+                </h1>
+                <h:outputText value="Inicia con el panel izquierdo."/>
             </div>
-        </p:panel>
+        </div>
     </ui:define>
 </ui:composition>

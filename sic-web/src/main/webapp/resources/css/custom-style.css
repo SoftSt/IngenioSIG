@@ -57,7 +57,7 @@ body {
     right: 20px;
 }
 
-.menu-izquierda {
+.menu-izquierda, .principal {
     padding: 0 !important;
     border: 0 !important;
 }
@@ -69,30 +69,12 @@ body {
     border-bottom: 0 !important;
 }
 
-.menu-izquierda .ui-layout-unit-content{
+.menu-izquierda .ui-layout-unit-content, .principal .ui-layout-unit-content {
     padding: 0 !important;
+}
+
+.menu-izquierda .ui-layout-unit-content {
     border-right: 1px solid #d6d6d6 !important;
-}
-
-.principal {
-    position: relative;
-    float: left;
-    height: -moz-calc(100% - 60px);
-    height: -webkit-calc(100% - 60px);
-    height: calc(100% - 60px);
-    display: block;
-    overflow-y: auto;
-    overflow-x: auto;
-}
-
-.principal-privado {
-    width: -moz-calc(100% - 262px);
-    width: -webkit-calc(100% - 262px);
-    width: calc(100% - 262px);
-}
-
-.principal-publico {
-    width: 100%;
 }
 
 .div-boton-sesion {

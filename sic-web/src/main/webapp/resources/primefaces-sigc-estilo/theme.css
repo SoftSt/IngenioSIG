@@ -657,7 +657,7 @@ a,
     background: #fafafa !important;
 }
 
-.ui-panelmenu .ui-panelmenu-header a {
+.ui-panelmenu .ui-panelmenu-header a, .ui-layout-unit-header {
     padding: 16px 0.5em 14px 24px !important;
 }
 
@@ -665,7 +665,7 @@ a,
     padding: 16px 0.5em 14px 60px !important;
 }
 
-.ui-menuitem-text {
+.ui-menuitem-text, ui-layout-unit-header-title {
     margin-left: 20px;
 }
 
@@ -810,6 +810,6 @@ a,
     color: rgba(0, 0, 0, 0.54) !important;
 }
 
-.ui-layout-resizer-closed, .ui-layout-toggler-closed{
+.ui-layout-resizer-closed, .ui-layout-toggler-closed {
     font-size: 1em !important;
 }
