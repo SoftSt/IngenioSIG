@@ -227,7 +227,7 @@ public class PisoDetalle implements Serializable {
         return "ec.com.newvi.sic.modelo.Pisos[ codPisos=" + codPisoDetalle + " ]";
     }
     public Boolean esDetallePisoValido() {
-        return (!ComunUtil.esNulo(this.codPisoDetalle));
+        return (!ComunUtil.esNulo(this.estado));
     }
     
 

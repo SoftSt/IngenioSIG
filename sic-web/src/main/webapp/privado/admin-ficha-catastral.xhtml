@@ -143,10 +143,10 @@
                                         <p:inputMask id="codDPA" value="#{fichaCatastralBB.predio.codDpa}" mask="999999" size="8"><p:ajax event="keyup" listener="#{fichaCatastralBB.actualizarCodigoCatastral()}" update="codCatastral" /></p:inputMask>
                                         <p:inputMask id="codZona" value="#{fichaCatastralBB.predio.codZona}" mask="99" size="4"><p:ajax event="keyup" listener="#{fichaCatastralBB.actualizarCodigoCatastral()}" update="codCatastral" /></p:inputMask>
                                         <p:inputMask id="codSector" value="#{fichaCatastralBB.predio.codSector}" mask="99" size="4"><p:ajax event="keyup" listener="#{fichaCatastralBB.actualizarCodigoCatastral()}" update="codCatastral" /></p:inputMask>
-                                        <p:inputMask id="codManzana" value="#{fichaCatastralBB.predio.codManzana}" mask="99" size="4"><p:ajax event="keyup" listener="#{fichaCatastralBB.actualizarCodigoCatastral()}" update="codCatastral" /></p:inputMask>
+                                        <p:inputMask id="codManzana" value="#{fichaCatastralBB.predio.codManzana}" mask="999" size="4"><p:ajax event="keyup" listener="#{fichaCatastralBB.actualizarCodigoCatastral()}" update="codCatastral" /></p:inputMask>
                                         <p:inputMask id="codPredio" value="#{fichaCatastralBB.predio.codPredio}" mask="9999" size="6"><p:ajax event="keyup" listener="#{fichaCatastralBB.actualizarCodigoCatastral()}" update="codCatastral" /></p:inputMask>
                                         <p:inputMask id="codRegTenencia" value="#{fichaCatastralBB.predio.codRegimentenencia}" mask="99" size="6"><p:ajax event="keyup" listener="#{fichaCatastralBB.actualizarCodigoCatastral()}" update="codCatastral" /></p:inputMask>
-                                        <p:inputMask id="codHorizontal" value="#{fichaCatastralBB.predio.codHorizontal}" mask="99" size="6"><p:ajax event="keyup" listener="#{fichaCatastralBB.actualizarCodigoCatastral()}" update="codCatastral" /></p:inputMask>
+                                        <p:inputMask id="codHorizontal" value="#{fichaCatastralBB.predio.codHorizontal}" mask="999" size="6"><p:ajax event="keyup" listener="#{fichaCatastralBB.actualizarCodigoCatastral()}" update="codCatastral" /></p:inputMask>
 
                                         <h:outputLabel for="codDPA" value="Código nacional" style="font-size:0.7em;" />
                                         <h:outputLabel for="codZona" value="Zona" style="font-size:0.7em;" />

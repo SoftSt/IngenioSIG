@@ -10,6 +10,7 @@ import ec.com.newvi.sic.dao.BloquesFacade;
 import ec.com.newvi.sic.dao.DetallesAvaluoFacade;
 import ec.com.newvi.sic.dao.FechaAvaluoFacade;
 import ec.com.newvi.sic.dao.FotosFacade;
+import ec.com.newvi.sic.dao.LogPredioFacade;
 import ec.com.newvi.sic.dao.PisosDetalleFacade;
 import ec.com.newvi.sic.dao.PisosFacade;
 import ec.com.newvi.sic.dao.PrediosFacade;
@@ -26,6 +27,7 @@ import ec.com.newvi.sic.modelo.DetallesAvaluo;
 import ec.com.newvi.sic.modelo.Dominios;
 import ec.com.newvi.sic.modelo.FechaAvaluo;
 import ec.com.newvi.sic.modelo.Fotos;
+import ec.com.newvi.sic.modelo.LogPredio;
 import ec.com.newvi.sic.modelo.PisoDetalle;
 import ec.com.newvi.sic.modelo.Pisos;
 import ec.com.newvi.sic.modelo.Predios;
@@ -38,6 +40,8 @@ import ec.com.newvi.sic.util.logs.LoggerNewvi;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.MathContext;
@@ -46,6 +50,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.security.PermitAll;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -78,6 +84,9 @@ public class CatastroServicioImpl implements CatastroServicio {
     AvaluoFacade avaluoFacade;
     @EJB
     DetallesAvaluoFacade detallesAvaluoFacade;
+    @EJB
+    LogPredioFacade logPredioFacade;
+
 
     /*------------------------------------------------------------Predios------------------------------------------------------------*/
     @Override
@@ -105,6 +114,7 @@ public class CatastroServicioImpl implements CatastroServicio {
 
     @Override
     public String actualizarPredio(Predios predio, SesionDto sesion) throws NewviExcepcion {
+        generarLogPredio(predio);
         // Validar que los datos no sean incorrectos
         LoggerNewvi.getLogNewvi(this.getClass()).debug("Validando predio...", sesion);
         if (!predio.esPredioValido()) {
@@ -227,21 +237,21 @@ public class CatastroServicioImpl implements CatastroServicio {
         }
         return totalValor;
     }
-    
-    public List<Dominios> buscarDominiosPorEstadoReparacion(List<Dominios> dominios, String domiDescripcion, String domiCalculo){
-        List<Dominios> listaDominios= new ArrayList<>();
+
+    public List<Dominios> buscarDominiosPorEstadoReparacion(List<Dominios> dominios, String domiDescripcion, String domiCalculo) {
+        List<Dominios> listaDominios = new ArrayList<>();
         for (Dominios nuevoDominio : dominios) {
-            if(nuevoDominio.getDomiDescripcion().contains(domiDescripcion.trim())&&
-                    nuevoDominio.getDomiCalculo().contains(domiCalculo.trim())){
+            if (nuevoDominio.getDomiDescripcion().contains(domiDescripcion.trim())
+                    && nuevoDominio.getDomiCalculo().contains(domiCalculo.trim())) {
                 listaDominios.add(nuevoDominio);
             }
         }
         return listaDominios;
     }
-    
+
     public BigDecimal obtenerValorDepreciacion(BigDecimal dominio, String domiDescripcion, List<Dominios> dominios) {
         //for (Dominios objetoDominio : dominiosFacade.buscarDominiosPorEstadoReparacion(domiDescripcion)) {
-        for (Dominios objetoDominio : buscarDominiosPorEstadoReparacion(dominios,domiDescripcion, "ESTADO DE REPARACION")) {
+        for (Dominios objetoDominio : buscarDominiosPorEstadoReparacion(dominios, domiDescripcion, "ESTADO DE REPARACION")) {
             if ((BigDecimal.valueOf(objetoDominio.getDomiMinimo()).compareTo(dominio) <= 0)
                     && (BigDecimal.valueOf(objetoDominio.getDomiMaximo()).compareTo(dominio) >= 0)) {
                 return BigDecimal.valueOf(objetoDominio.getDomiCoefic());
@@ -260,7 +270,7 @@ public class CatastroServicioImpl implements CatastroServicio {
         List<AvaluoDto> listaCaracteristicasPisosDto = new ArrayList<>();
         //Factor de depreciación de inmueble por piso y depreciacion
         //valorDepreciacion = parametrosServicio.obtenerValorDepreciacion(edad, estado);
-        valorDepreciacion = obtenerValorDepreciacion(edad, estado,dominios);
+        valorDepreciacion = obtenerValorDepreciacion(edad, estado, dominios);
         List<AvaluoDto> listaDetallesPiso = obtenerListaDetallesPiso(piso, valorDepreciacion, promedioFactores, dominios, sesion);
         BigDecimal valorPiso = obtenerElementoAvaluoPorDescripcion(listaDetallesPiso, EnumCaracteristicasAvaluo.DETALLE_VALORACION.getTitulo());
         listaCaracteristicasPisosDto.add(generarElementoArbolAvaluo(EnumCaracteristicasAvaluo.PISO_CODIGO.getTitulo(), piso.getCodPisos().toString(), null, null));
@@ -395,6 +405,27 @@ public class CatastroServicioImpl implements CatastroServicio {
         return pisoDetalle.getCodigo();
     }
 
+    @Override
+    public String generarNuevoPisoDetalle(PisoDetalle nuevoPisoDetalle, SesionDto sesion) throws NewviExcepcion {
+        // Validar que los datos no sean incorrectos
+        LoggerNewvi.getLogNewvi(this.getClass()).debug("Validando detalle piso...", sesion);
+        if (!nuevoPisoDetalle.esDetallePisoValido()) {
+            throw new NewviExcepcion(EnumNewviExcepciones.ERR343);
+        }
+        // Crear el piso
+        LoggerNewvi.getLogNewvi(this.getClass()).debug("Creando detalle piso...", sesion);
+
+        //Registramos la auditoria de ingreso
+        Date fechaIngreso = Calendar.getInstance().getTime();
+        nuevoPisoDetalle.setAudIngIp(sesion.getDireccionIP());
+        nuevoPisoDetalle.setAudIngUsu(sesion.getUsuarioRegistrado().getUsuPalabraclave().trim());
+        nuevoPisoDetalle.setAudIngFec(fechaIngreso);
+
+        pisosDetalleFacade.create(nuevoPisoDetalle);
+        // Si todo marcha bien enviar nombre del piso
+        return nuevoPisoDetalle.getCodPisoDetalle().toString();
+    }
+
     private BigDecimal obtenerTotalCoeficienteDominiosPorCodigo(String codigo, List<Dominios> dominios) {
         BigDecimal totalCoeficiente = BigDecimal.ZERO;
         for (Dominios dominio : dominios) {
@@ -478,13 +509,13 @@ public class CatastroServicioImpl implements CatastroServicio {
         BigDecimal costoMetroReferencial = obtenerTotalCoeficienteDominiosPorCodigo(codigoDominio, dominios);
 
         piso.getDetalles().forEach((pisoDetalle) -> {
-            AvaluoDto nuevoDetalle = generarNodoDetalle(pisoDetalle, elementoCalculo,dominios);
+            AvaluoDto nuevoDetalle = generarNodoDetalle(pisoDetalle, elementoCalculo, dominios);
             BigDecimal coeficienteObtenido = new BigDecimal(nuevoDetalle.getFactor());
             if (BigDecimal.ZERO.compareTo(coeficienteObtenido) != 0) {
                 listaDetallesPiso.add(nuevoDetalle);
             }
         });
-        
+
         listaDetallesPiso.add(generarElementoArbolAvaluo("Promedio general " + elementoCalculo.toLowerCase(), null, coeficiente.setScale(2, BigDecimal.ROUND_UP).toString(), null));
         listaDetallesPiso.add(generarElementoArbolAvaluo(EnumCaracteristicasAvaluo.DETALLE_COSTO_METRO_REFERENCIAL.getTitulo(), costoMetroReferencial.toString(), null, null));
 
@@ -598,12 +629,13 @@ public class CatastroServicioImpl implements CatastroServicio {
         List<Dominios> listaDominios = obtenerDominiosPorCodigoYCalculo(dominios, codigo, calculo);
         return obtenerSumaCoeficientes(listaDominios);
     }
-    public String quitarDecimales(BigDecimal valor){
+
+    public String quitarDecimales(BigDecimal valor) {
         String valorARedondear = valor.setScale(2, BigDecimal.ROUND_UP).toString();
-        if((valorARedondear.substring(valorARedondear.indexOf("."), valorARedondear.length())).length() == 2){
+        if ((valorARedondear.substring(valorARedondear.indexOf("."), valorARedondear.length())).length() == 2) {
             valorARedondear = valorARedondear.concat("0");
         }
-        
+
         return valorARedondear;
     }
 
@@ -951,11 +983,11 @@ public class CatastroServicioImpl implements CatastroServicio {
 
         return detallesAvaluoFacade.buscarHijosDetallesAvaluo(detallesAvaluo);
     }
-    
-    public List<AvaluoDto> obtenerHijos(List<AvaluoDto> nodo){
+
+    public List<AvaluoDto> obtenerHijos(List<AvaluoDto> nodo) {
         List<AvaluoDto> hijos = new ArrayList<>();
         for (AvaluoDto avaluoDto : nodo) {
-            hijos =avaluoDto.getHijos();
+            hijos = avaluoDto.getHijos();
         }
         return hijos;
     }
@@ -979,18 +1011,86 @@ public class CatastroServicioImpl implements CatastroServicio {
     public void eliminarDetallesPorPredio(Predios predio) {
         detallesAvaluoFacade.eliminarDetallesPorPredio(predio);
     }
-    
-    public Integer obtenerCodigoPadre(Predios predio, SesionDto sesion) throws NewviExcepcion{
+
+    public Integer obtenerCodigoPadre(Predios predio, SesionDto sesion) throws NewviExcepcion {
         eliminarDetallesPorPredio(predio);
         generarNodos(generarElementoArbolAvaluo("Arbol Avaluo", null, null, null), 0, "Nodo", sesion, predio);
         return (detallesAvaluoFacade.buscarPadre(predio, "Nodo")).getDavalId();
     }
+
     @Override
-    public void registrarArbol(List<AvaluoDto> nodo, Predios predio, SesionDto sesion) throws NewviExcepcion{
+    public void registrarArbol(List<AvaluoDto> nodo, Predios predio, SesionDto sesion) throws NewviExcepcion {
         Integer padre = obtenerCodigoPadre(predio, sesion);
         for (AvaluoDto avaluoDto : nodo) {
             generarNodos(avaluoDto, padre, "SubNodo", sesion, predio);
         }
+    }
+
+    @Override
+    public String generarNuevoLogPredio(LogPredio nuevoLogPredio, SesionDto sesion) throws NewviExcepcion {
+        // Validar que los datos no sean incorrectos
+        LoggerNewvi.getLogNewvi(this.getClass()).debug("Validando logPredio...", sesion);
+        if (!nuevoLogPredio.esLogPredioValido()) {
+            throw new NewviExcepcion(EnumNewviExcepciones.ERR338);
+        }
+        // Crear el logPredio
+        LoggerNewvi.getLogNewvi(this.getClass()).debug("Creando logPredio...", sesion);
+
+        /*Registramos la auditoria de ingreso
+        Date fechaIngreso = Calendar.getInstance().getTime();
+        nuevoLogPredio.setAudIngIp(sesion.getDireccionIP());
+        nuevoLogPredio.setAudIngUsu(sesion.getUsuarioRegistrado().getUsuPalabraclave().trim());
+        nuevoLogPredio.setAudIngFec(fechaIngreso);*/
+        logPredioFacade.create(nuevoLogPredio);
+        // Si todo marcha bien enviar nombre del logPredio
+        return nuevoLogPredio.getCodUsu();
+    }
+
+    @Override
+    public String actualizarLogPredio(LogPredio logPredio, SesionDto sesion) throws NewviExcepcion {
+        // Validar que los datos no sean incorrectos
+        LoggerNewvi.getLogNewvi(this.getClass()).debug("Validando logPredio...", sesion);
+        if (!logPredio.esLogPredioValido()) {
+            throw new NewviExcepcion(EnumNewviExcepciones.ERR338);
+        }
+        // Editar la logPredio
+        LoggerNewvi.getLogNewvi(this.getClass()).debug("Editando logPredio...", sesion);
+
+        /*Registramos la auditoria de modificacion
+        Date fechaModificacion = Calendar.getInstance().getTime();
+        predio.setAudModIp(sesion.getDireccionIP());
+        predio.setAudModUsu(sesion.getUsuarioRegistrado().getUsuPalabraclave().trim());
+        predio.setAudModFec(fechaModificacion);*/
+        logPredioFacade.edit(logPredio);
+
+        // Si todo marcha bien enviar nombre de la logPredio
+        return logPredio.getCodUsu();
+    }
+
+    @Override
+    public LogPredio seleccionarLogPredio(Integer codLogPredio) throws NewviExcepcion {
+        if (ComunUtil.esNumeroPositivo(codLogPredio)) {
+            return logPredioFacade.find(codLogPredio);
+        } else {
+            throw new NewviExcepcion(EnumNewviExcepciones.ERR011);
+        }
+    }
+
+    @Override
+    public List<LogPredio> consultarLogPredio() {
+        return logPredioFacade.buscarLogPredio();
+    }
+
+    @Override
+    public String eliminarLogPredio(LogPredio logPredio, SesionDto sesion) throws NewviExcepcion {
+        logPredio.setLogEstado(EnumEstadoRegistro.A);
+        return actualizarLogPredio(logPredio, sesion);
+    }
+    
+
+    private void generarLogPredio(Predios predio) throws NewviExcepcion {
+        String prueba =predio.esPredioIgual(predio, seleccionarPredio(predio.getCodCatastral()));
+        prueba = prueba.trim();
     }
 
 }

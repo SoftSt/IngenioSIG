@@ -13,6 +13,7 @@ import ec.com.newvi.sic.modelo.DetallesAvaluo;
 import ec.com.newvi.sic.modelo.Dominios;
 import ec.com.newvi.sic.modelo.FechaAvaluo;
 import ec.com.newvi.sic.modelo.Fotos;
+import ec.com.newvi.sic.modelo.LogPredio;
 import ec.com.newvi.sic.modelo.PisoDetalle;
 import ec.com.newvi.sic.modelo.Pisos;
 import ec.com.newvi.sic.modelo.Predios;
@@ -225,7 +226,7 @@ public interface CatastroServicio {
 
     /*------------------------------------------------------------PisoDetalle------------------------------------------------------------*/
     /**
-     * Actualiza un Piso existente.
+     * Actualiza el detalle de piso existente.
      *
      * @param pisoDetalle El detalle del piso a actualizar
      * @param sesion Sesion que realiza la operación
@@ -233,6 +234,14 @@ public interface CatastroServicio {
      * @throws NewviExcepcion
      */
     public String actualizarPisoDetalle(PisoDetalle pisoDetalle, SesionDto sesion) throws NewviExcepcion;
+    /**
+     * Generar un nuevo piso detalle
+     * @param nuevoPisoDetalle nuevo detalle del piso
+     * @param sesion Sesion que realiza la operación
+     * @return Nombre del detalle del piso actualizado
+     * @throws NewviExcepcion
+     */
+    public String generarNuevoPisoDetalle(PisoDetalle nuevoPisoDetalle, SesionDto sesion) throws NewviExcepcion;
 
     /*------------------------------------------------------------Terreno------------------------------------------------------------*/
     /**
@@ -432,4 +441,41 @@ public interface CatastroServicio {
      */
     public void eliminarDetallesPorPredio(Predios predio);
     
+    /*------------------------------------------------------------LogPredio------------------------------------------------------------*/
+    /**
+     * Genera un nuevo Predio, de acuerdo a un objeto entregado.
+     * @param nuevoLogPredio El nuevo LogPredio a ser ingresado
+     * @param sesion que realiza la operación
+     * @return Nombre del nuevo Predio.
+     * @throws NewviExcepcion
+     */
+    public String generarNuevoLogPredio(LogPredio nuevoLogPredio, SesionDto sesion) throws NewviExcepcion;
+    /**
+     * 
+     * @param logPredio actualza el logPredio existente
+     * @param sesion que realiza la operación
+     * @return Nombre del predio actualizado
+     * @throws NewviExcepcion
+     */
+    public String actualizarLogPredio(LogPredio logPredio, SesionDto sesion) throws NewviExcepcion;
+    /**
+     * Devuelve un logPredio dado por un id
+     * @param  codLogPredio, código del logPredio a obtener
+     * @return logPredio
+     * @throws NewviExcepcion
+     */
+    public LogPredio seleccionarLogPredio(Integer codLogPredio) throws NewviExcepcion;
+    /**
+     * Lista todos los LogPredios
+     * @return lista de logPredio
+     */
+    public List<LogPredio> consultarLogPredio();
+    /**
+     * Elimina el logPredio dado
+     * @param logPredio el logPredio a eliminar
+     * @param sesion que realiza la operación
+     * @return Nombre del logPredio eliminado
+     * @throws NewviExcepcion 
+     */
+    public String eliminarLogPredio(LogPredio logPredio, SesionDto sesion) throws NewviExcepcion;
 }

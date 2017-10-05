@@ -385,6 +385,7 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
             insertarPredio();
         } else {
             try {
+                
                 catastroServicio.actualizarPredio(this.predio, sesionBean.getSesion());
                 actualizarListadoPredios();
                 LoggerNewvi.getLogNewvi(this.getClass()).info(EnumNewviExcepciones.INF352.presentarMensaje(), sesionBean.getSesion());
@@ -706,7 +707,7 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
         }
     }
 
-    public void agregarDetallePiso(NodeSelectEvent event) {
+    public void agregarDetallePiso(NodeSelectEvent event) throws NewviExcepcion {
         PisoDetalle pisoDetalle = new PisoDetalle();
         Dominios hijo = ((DominioDto) event.getTreeNode().getData()).getDominio();
 
@@ -719,9 +720,10 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
             pisoDetalle.setPiso(pisoSeleccionado);
             pisoDetalle.setCodigo(hijo.getDomiCodigo());
             pisoDetalle.setEstado(EnumEstadoRegistro.A);
-            
+            Collection<PisoDetalle> coleccion = pisoSeleccionado.getDetalles();
+            catastroServicio.generarNuevoPisoDetalle(pisoDetalle, sesionBean.getSesion());
             pisoSeleccionado.getDetalles().add(pisoDetalle);
-            actualizarPisoIngresado(pisoSeleccionado);
+            //actualizarPisoIngresado(pisoSeleccionado);
 
             try {
                 actualizarElementosPredio();

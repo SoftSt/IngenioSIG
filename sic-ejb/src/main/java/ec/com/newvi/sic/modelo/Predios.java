@@ -6,11 +6,21 @@
 package ec.com.newvi.sic.modelo;
 
 import ec.com.newvi.sic.enums.EnumEstadoRegistro;
+import ec.com.newvi.sic.enums.EnumNewviExcepciones;
+import ec.com.newvi.sic.servicios.CatastroServicio;
 import ec.com.newvi.sic.util.ComunUtil;
+import ec.com.newvi.sic.util.excepciones.NewviExcepcion;
 import java.io.Serializable;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -67,13 +77,13 @@ public class Predios implements Serializable {
     private Collection<Avaluo> avaluoCollection;
 
     private static final long serialVersionUID = -1L;
-    
+
     @Id
     @SequenceGenerator(name = "PREDIO_CODIGO_GENERATOR", initialValue = 1, allocationSize = 1, sequenceName = "cat_cat_predios_cod_catastral_seq", schema = "public")
     @GeneratedValue(generator = "PREDIO_CODIGO_GENERATOR")
     @Column(name = "cod_catastral")
     private Integer codCatastral;
-    
+
     @Size(max = 25)
     @Column(name = "sts_tipo")
     private String stsTipo;
@@ -153,31 +163,31 @@ public class Predios implements Serializable {
     @Column(name = "nom_intervenido")
     private String nomIntervenido;
     @Column(name = "val_areafrente")
-    private BigDecimal valAreaFrente;    
+    private BigDecimal valAreaFrente;
     @Column(name = "val_areafondo")
-    private BigDecimal valAreaFondo;    
+    private BigDecimal valAreaFondo;
     @Column(name = "val_areaconstruccion")
     private BigDecimal valAreaConstruccion;
     @Column(name = "val_areapredio")
-    private BigDecimal valAreaPredio;    
+    private BigDecimal valAreaPredio;
     @Column(name = "val_edifica")
-    private BigDecimal valEdifica;    
+    private BigDecimal valEdifica;
     @Column(name = "val_predio")
-    private BigDecimal valPredio;    
+    private BigDecimal valPredio;
     @Column(name = "val_cem")
-    private BigDecimal valCem;    
+    private BigDecimal valCem;
     @Column(name = "val_bomberos")
-    private BigDecimal valBomberos;    
+    private BigDecimal valBomberos;
     @Column(name = "val_emision")
-    private BigDecimal valEmision;    
+    private BigDecimal valEmision;
     @Column(name = "val_basura")
-    private BigDecimal valBasura;    
+    private BigDecimal valBasura;
     @Column(name = "val_ambientales")
-    private BigDecimal valAmbientales;    
+    private BigDecimal valAmbientales;
     @Column(name = "val_impuesto")
-    private BigDecimal valImpuesto;    
+    private BigDecimal valImpuesto;
     @Column(name = "val_imppredial")
-    private BigDecimal valImppredial;    
+    private BigDecimal valImppredial;
     @Size(max = 50)
     @Column(name = "aud_ing_usu")
     private String audIngUsu;
@@ -195,20 +205,20 @@ public class Predios implements Serializable {
     private Date audModFec;
     @Size(max = 30)
     @Column(name = "aud_mod_ip")
-    private String audModIp;    
-    
+    private String audModIp;
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "codCatastral", fetch = FetchType.LAZY)
     private Collection<Terreno> caracteristicasTerreno;
-    
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "codCatastral", fetch = FetchType.LAZY)
     private Collection<Servicios> servicios;
-    
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "codCatastral", fetch = FetchType.LAZY)
     private Collection<Bloques> bloques;
-    
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "codCatastral", fetch = FetchType.LAZY)
     private Collection<Propiedad> historicoPropiedad;
-    
+
     public Predios() {
     }
 
@@ -455,7 +465,7 @@ public class Predios implements Serializable {
     public void setValImppredial(BigDecimal valImppredial) {
         this.valImppredial = valImppredial;
     }
-    
+
     public String getTxtNorte() {
         return txtNorte;
     }
@@ -542,8 +552,8 @@ public class Predios implements Serializable {
 
     public void setValAreaFondo(BigDecimal valAreaFondo) {
         this.valAreaFondo = valAreaFondo;
-    } 
-    
+    }
+
     public EnumEstadoRegistro getCatEstado() {
         return catEstado;
     }
@@ -615,7 +625,7 @@ public class Predios implements Serializable {
     public void setServicios(Collection<Servicios> servicios) {
         this.servicios = servicios;
     }
-    
+
     public Collection<Bloques> getBloques() {
         return bloques;
     }
@@ -660,7 +670,7 @@ public class Predios implements Serializable {
     public Boolean esPredioValido() {
         return (!ComunUtil.esNulo(this.catEstado));
     }
-    
+
     public void actualizarCodigoPredio() {
         this.nomCodigocatastral = this.codDpa.concat(this.codZona).concat(this.codSector).concat(this.codManzana).concat(this.codPredio).concat(this.codRegimentenencia).concat(this.codHorizontal);
     }
@@ -729,8 +739,6 @@ public class Predios implements Serializable {
         this.txtObservacion = txtObservacion;
     }
 
-    
-
     public Collection<Avaluo> getAvaluoCollection() {
         return avaluoCollection;
     }
@@ -745,6 +753,86 @@ public class Predios implements Serializable {
 
     public void setDetallesAvaluoCollection(Collection<DetallesAvaluo> detallesAvaluoCollection) {
         this.detallesAvaluoCollection = detallesAvaluoCollection;
+    }
+
+    private String generarGetter(String atributo) {
+        return "get".concat(atributo.substring(0, 1).toUpperCase().concat(atributo.substring(1, atributo.length())));
+    }
+
+    private Boolean esColeccion(String atributo) {
+        return atributo.contains("Collection");
+    }
+
+    public List<Method> filtrarMetodos(Method[] listaMetodos) {
+        List<Method> listaMetodosFiltrada = new ArrayList<>();
+        for (Method metodo : listaMetodos) {
+            if (metodo.getName().startsWith("get")) {
+                listaMetodosFiltrada.add(metodo);
+            }
+        }
+        return listaMetodosFiltrada;
+    }
+
+    public Object buscarAtributo(String nombreMetodo, String nombreMetodoBuscado, Object objetoAVerificar, Method metodo) throws NewviExcepcion {
+        if (nombreMetodo.equals(generarGetter(nombreMetodoBuscado))) {
+            try {
+                return metodo.invoke(objetoAVerificar);
+            } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
+                throw new NewviExcepcion(EnumNewviExcepciones.ERR020, ex);
+            }
+        }
+        return null;
+    }
+
+    public Boolean esAtributoNulo(Object atributo) {
+        return ComunUtil.esNulo(atributo);
+    }
+
+    public String retornarAtributo(Object objetoAVerificar, String nombreMetodoBuscado) throws NewviExcepcion {
+        Object atributo = null;
+        for (Method metodo : filtrarMetodos(objetoAVerificar.getClass().getMethods())) {
+            String nombreMetodo = metodo.getName();
+            if (nombreMetodo.startsWith("get") && (metodo.getName().length() == (nombreMetodoBuscado.length() + 3))) {
+                atributo = buscarAtributo(nombreMetodo, nombreMetodoBuscado, objetoAVerificar, metodo);
+                if (!esAtributoNulo(atributo)) {
+                    return atributo.toString();
+                }
+            }
+        }
+        return null;
+    }
+
+    public String generarLog(Object objetoBase, Object objetoAverificar, String nombreMetodoBuscado) throws NewviExcepcion {
+        String log = "";
+        String objetoBaseGenerado = retornarAtributo(objetoBase, nombreMetodoBuscado);
+        String objetoAverificarGenerado = retornarAtributo(objetoAverificar, nombreMetodoBuscado);
+        
+        if (!ComunUtil.esNulo(objetoBaseGenerado) || !ComunUtil.esNulo(objetoAverificarGenerado)) {
+            if (!objetoBaseGenerado.contains(objetoAverificarGenerado)) {
+                log = "\nExistió un cambio en el atributo '" + nombreMetodoBuscado+"' de '"+objetoBaseGenerado.trim()+"' a '"+objetoAverificarGenerado.trim()+"'";
+                //log = String.format("\nExistió un cambio en el atributo {0} de {1} a {2}",nombreMetodoBuscado,objetoBaseGenerado.trim(),objetoAverificarGenerado.trim());
+            }
+        }
+
+        return log;
+    }
+
+    public String esPredioIgual(Object objetoAVerificar, Object objetoBase) throws NewviExcepcion {
+        //Object objetoBase = catastroServicio.seleccionarPredio(((Predios) objetoAVerificar).getCodCatastral());
+        String log = "";
+        Class claseObjeto = objetoAVerificar.getClass();
+        Field[] metodosClase = claseObjeto.getDeclaredFields();
+        String nombreMetodoBuscado = "";
+        for (Field metodo : metodosClase) {
+            nombreMetodoBuscado = metodo.getName();
+            if (!esColeccion(metodo.getType().getName())) {
+                /*if(!(ComunUtil.esNulo(retornarAtributo(objetoBase, nombreMetodoBuscado)).equals(ComunUtil.esNulo(retornarAtributo(objetoAVerificar, nombreMetodoBuscado))))){
+                    log+=("\nExistió un cambio en el objeto: "+objetoBase.getClass().getName());
+                }*/
+                log += generarLog(objetoBase, objetoAVerificar,nombreMetodoBuscado);
+            }
+        }
+        return log;
     }
 
 }
