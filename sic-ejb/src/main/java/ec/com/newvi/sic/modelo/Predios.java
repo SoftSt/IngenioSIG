@@ -794,8 +794,12 @@ public class Predios implements Serializable {
             String nombreMetodo = metodo.getName();
             if (nombreMetodo.startsWith("get") && (metodo.getName().length() == (nombreMetodoBuscado.length() + 3))) {
                 atributo = buscarAtributo(nombreMetodo, nombreMetodoBuscado, objetoAVerificar, metodo);
-                if (!esAtributoNulo(atributo)) {
-                    return atributo.toString();
+                if (!ComunUtil.esNulo(atributo)) {
+                    if (!(atributo.getClass().getName()).contains("BigDecimal")) {
+                        return atributo.toString();
+                    } else {
+                        return ((BigDecimal) atributo).setScale(3, BigDecimal.ROUND_HALF_UP).toString();
+                    }
                 }
             }
         }
@@ -806,10 +810,10 @@ public class Predios implements Serializable {
         String log = "";
         String objetoBaseGenerado = retornarAtributo(objetoBase, nombreMetodoBuscado);
         String objetoAverificarGenerado = retornarAtributo(objetoAverificar, nombreMetodoBuscado);
-        
+
         if (!ComunUtil.esNulo(objetoBaseGenerado) || !ComunUtil.esNulo(objetoAverificarGenerado)) {
             if (!objetoBaseGenerado.contains(objetoAverificarGenerado)) {
-                log = "\nExistió un cambio en el atributo '" + nombreMetodoBuscado+"' de '"+objetoBaseGenerado.trim()+"' a '"+objetoAverificarGenerado.trim()+"'";
+                log = "\nExistió un cambio en el atributo '" + nombreMetodoBuscado + "' de '" + objetoBaseGenerado.trim() + "' a '" + objetoAverificarGenerado.trim() + "'";
                 //log = String.format("\nExistió un cambio en el atributo {0} de {1} a {2}",nombreMetodoBuscado,objetoBaseGenerado.trim(),objetoAverificarGenerado.trim());
             }
         }
@@ -818,7 +822,6 @@ public class Predios implements Serializable {
     }
 
     public String esPredioIgual(Object objetoAVerificar, Object objetoBase) throws NewviExcepcion {
-        //Object objetoBase = catastroServicio.seleccionarPredio(((Predios) objetoAVerificar).getCodCatastral());
         String log = "";
         Class claseObjeto = objetoAVerificar.getClass();
         Field[] metodosClase = claseObjeto.getDeclaredFields();
@@ -826,10 +829,7 @@ public class Predios implements Serializable {
         for (Field metodo : metodosClase) {
             nombreMetodoBuscado = metodo.getName();
             if (!esColeccion(metodo.getType().getName())) {
-                /*if(!(ComunUtil.esNulo(retornarAtributo(objetoBase, nombreMetodoBuscado)).equals(ComunUtil.esNulo(retornarAtributo(objetoAVerificar, nombreMetodoBuscado))))){
-                    log+=("\nExistió un cambio en el objeto: "+objetoBase.getClass().getName());
-                }*/
-                log += generarLog(objetoBase, objetoAVerificar,nombreMetodoBuscado);
+                log += generarLog(objetoBase, objetoAVerificar, nombreMetodoBuscado);
             }
         }
         return log;
