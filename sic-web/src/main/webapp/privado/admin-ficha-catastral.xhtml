@@ -400,8 +400,8 @@
                                                  emptyMessage="No se han encontrado resultados" 
                                                  paginatorPosition="bottom">
 
-                                        <p:column headerText="Código" sortBy="#{descripcionTerreno.stsCodigo}" width="60">
-                                            <h:outputText value="#{descripcionTerreno.stsCodigo}" />
+                                        <p:column headerText="Grupo" sortBy="#{descripcionTerreno.stsGrupo}">
+                                            <h:outputText value="#{descripcionTerreno.stsGrupo}" />
                                         </p:column>
 
                                         <p:column headerText="Característica" sortBy="#{descripcionTerreno.stsSubgrupo}">
@@ -436,10 +436,6 @@
                                                  paginatorPosition="bottom">
 
                                         <p:ajax event="rowEdit" listener="#{fichaCatastralBB.actualizarServicioIngresado}" update="listaServiciosBasicos"/>
-
-                                        <p:column headerText="Código" sortBy="#{servicios.codServicios}" width="20">
-                                            <h:outputText value="#{servicios.codServicios}" />
-                                        </p:column>
 
                                         <p:column headerText="Grupo" sortBy="#{servicios.stsGrupo}" width="40">
                                             <h:outputText value="#{servicios.stsGrupo}" />
@@ -705,7 +701,7 @@
                     </p:outputPanel>
                 </h:form>
 
-                <p:dialog header="Agregar nuevos servicios" widgetVar="dlgServicios" modal="true" showEffect="fade" hideEffect="fade" resizable="false" closable="true" width="550" height="400">
+                <p:dialog header="Agregar nuevos servicios" widgetVar="dlgServicios" appendTo="@(body)" modal="true" showEffect="fade" hideEffect="fade" resizable="false" closable="true" width="550" height="400">
                     <p:treeTable value="#{fichaCatastralBB.listaArbolServicios}"
                                  id="listaArbolServicios" var="servicio"
                                  selectionMode="single" selection="#{fichaCatastralBB.servicioSeleccionado}" >
@@ -718,7 +714,7 @@
 
                     </p:treeTable>
                 </p:dialog>
-                <p:dialog header="Agregar detalles al piso" widgetVar="dlgDetallePiso" modal="true" showEffect="fade" hideEffect="fade" resizable="false" closable="true" width="550" height="400">
+                <p:dialog header="Agregar detalles al piso" widgetVar="dlgDetallePiso" appendTo="@(body)" modal="true" showEffect="fade" hideEffect="fade" resizable="false" closable="true" width="550" height="400">
                     <p:growl id="messages" showDetail="true" escape="false"/>
                     <p:treeTable value="#{fichaCatastralBB.listaArbolPisosDetalle}"
                                  id="listaArbolPisosDetalle" var="dominio"
@@ -731,7 +727,7 @@
                         </p:column>            
                     </p:treeTable>
                 </p:dialog>
-                <p:dialog header="Edición de Propiedad" widgetVar="dlgPropiedad" modal="true" showEffect="fade" hideEffect="fade" resizable="false" closable="true" width="550" height="400">
+                <p:dialog header="Edición de Propiedad" widgetVar="dlgPropiedad" appendTo="@(body)" modal="true" showEffect="fade" hideEffect="fade" resizable="false" closable="true" width="550" height="400">
                     <h:form id="dialogPropiedad">
                         <p:growl id="messagesw" showDetail="true" escape="false"/>
                         <div style="font-size:1.2em;font-weight:bold;">Tenencia</div>                                    
@@ -837,7 +833,7 @@
                     </h:form>
                 </p:dialog>
 
-                <p:dialog header="Agregar nuevos descripcion al terreno" widgetVar="dlgDescripcionTerreno" modal="true" showEffect="fade" hideEffect="fade" resizable="false" closable="true" width="550" height="400">
+                <p:dialog header="Agregar nuevos descripcion al terreno" widgetVar="dlgDescripcionTerreno" appendTo="@(body)" modal="true" showEffect="fade" hideEffect="fade" resizable="false" closable="true" width="550" height="400">
                     <p:treeTable value="#{fichaCatastralBB.listaArbolDescripcionTerreno}"
                                  id="listaArbolDescripcionTerreno" var="descripcionTerreno"
                                  selectionMode="single" selection="#{fichaCatastralBB.descripcionTerrenoSeleccionado}" >
@@ -1055,10 +1051,6 @@
                                                  paginatorPosition="bottom">
 
                                         <p:ajax event="rowEdit" listener="#{fichaCatastralBB.actualizarServicioIngresado}" update="listaServiciosBasicos"/>
-
-                                        <p:column headerText="Código" sortBy="#{servicios.codServicios}" width="20">
-                                            <h:outputText value="#{servicios.codServicios}" />
-                                        </p:column>
 
                                         <p:column headerText="Grupo" sortBy="#{servicios.stsGrupo}" width="40">
                                             <h:outputText value="#{servicios.stsGrupo}" />

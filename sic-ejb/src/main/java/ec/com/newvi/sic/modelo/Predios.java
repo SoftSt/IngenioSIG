@@ -23,6 +23,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -45,6 +46,7 @@ import javax.validation.constraints.Size;
 
 public class Predios implements Serializable {
 
+    @ElementCollection
     @OneToMany(mappedBy = "codCatastral")
     private Collection<DetallesAvaluo> detallesAvaluoCollection;
 
@@ -207,15 +209,16 @@ public class Predios implements Serializable {
     @Column(name = "aud_mod_ip")
     private String audModIp;
 
+    @ElementCollection
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "codCatastral", fetch = FetchType.LAZY)
     private Collection<Terreno> caracteristicasTerreno;
-
+    @ElementCollection
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "codCatastral", fetch = FetchType.LAZY)
     private Collection<Servicios> servicios;
-
+    @ElementCollection
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "codCatastral", fetch = FetchType.LAZY)
     private Collection<Bloques> bloques;
-
+    @ElementCollection
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "codCatastral", fetch = FetchType.LAZY)
     private Collection<Propiedad> historicoPropiedad;
 
@@ -788,7 +791,7 @@ public class Predios implements Serializable {
         return ComunUtil.esNulo(atributo);
     }
 
-    public String retornarAtributo(Object objetoAVerificar, String nombreMetodoBuscado) throws NewviExcepcion {
+    public Object retornarAtributo(Object objetoAVerificar, String nombreMetodoBuscado) throws NewviExcepcion {
         Object atributo = null;
         for (Method metodo : filtrarMetodos(objetoAVerificar.getClass().getMethods())) {
             String nombreMetodo = metodo.getName();
@@ -796,9 +799,9 @@ public class Predios implements Serializable {
                 atributo = buscarAtributo(nombreMetodo, nombreMetodoBuscado, objetoAVerificar, metodo);
                 if (!ComunUtil.esNulo(atributo)) {
                     if (!(atributo.getClass().getName()).contains("BigDecimal")) {
-                        return atributo.toString();
+                        return atributo;
                     } else {
-                        return ((BigDecimal) atributo).setScale(3, BigDecimal.ROUND_HALF_UP).toString();
+                        return ((BigDecimal) atributo).setScale(2, BigDecimal.ROUND_HALF_UP);
                     }
                 }
             }
@@ -808,12 +811,12 @@ public class Predios implements Serializable {
 
     public String generarLog(Object objetoBase, Object objetoAverificar, String nombreMetodoBuscado) throws NewviExcepcion {
         String log = "";
-        String objetoBaseGenerado = retornarAtributo(objetoBase, nombreMetodoBuscado);
-        String objetoAverificarGenerado = retornarAtributo(objetoAverificar, nombreMetodoBuscado);
+        Object objetoBaseGenerado = retornarAtributo(objetoBase, nombreMetodoBuscado);
+        Object objetoAverificarGenerado = retornarAtributo(objetoAverificar, nombreMetodoBuscado);
 
         if (!ComunUtil.esNulo(objetoBaseGenerado) || !ComunUtil.esNulo(objetoAverificarGenerado)) {
-            if (!objetoBaseGenerado.contains(objetoAverificarGenerado)) {
-                log = "\nExistió un cambio en el atributo '" + nombreMetodoBuscado + "' de '" + objetoBaseGenerado.trim() + "' a '" + objetoAverificarGenerado.trim() + "'";
+            if (!objetoBaseGenerado.toString().contains(objetoAverificarGenerado.toString())) {
+                log = "\nExistió un cambio en el atributo '" + nombreMetodoBuscado + "' de '" + objetoBaseGenerado.toString().trim() + "' a '" + objetoAverificarGenerado.toString().trim() + "'";
                 //log = String.format("\nExistió un cambio en el atributo {0} de {1} a {2}",nombreMetodoBuscado,objetoBaseGenerado.trim(),objetoAverificarGenerado.trim());
             }
         }
@@ -830,6 +833,14 @@ public class Predios implements Serializable {
             nombreMetodoBuscado = metodo.getName();
             if (!esColeccion(metodo.getType().getName())) {
                 log += generarLog(objetoBase, objetoAVerificar, nombreMetodoBuscado);
+            } else {
+                Object prueba = retornarAtributo(objetoAVerificar, nombreMetodoBuscado);
+
+                for (Object objeto : (List) prueba) {
+                    String a = objeto.getClass().getName();
+                    a.trim();
+                }
+
             }
         }
         return log;

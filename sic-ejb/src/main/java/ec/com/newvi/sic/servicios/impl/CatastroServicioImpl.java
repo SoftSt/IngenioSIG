@@ -114,7 +114,7 @@ public class CatastroServicioImpl implements CatastroServicio {
 
     @Override
     public String actualizarPredio(Predios predio, SesionDto sesion) throws NewviExcepcion {
-        generarLogPredio(predio);
+        //generarLogPredio(predio);
         // Validar que los datos no sean incorrectos
         LoggerNewvi.getLogNewvi(this.getClass()).debug("Validando predio...", sesion);
         if (!predio.esPredioValido()) {
@@ -1086,11 +1086,15 @@ public class CatastroServicioImpl implements CatastroServicio {
         logPredio.setLogEstado(EnumEstadoRegistro.A);
         return actualizarLogPredio(logPredio, sesion);
     }
-    
 
-    private void generarLogPredio(Predios predio) throws NewviExcepcion {
-        String prueba =predio.esPredioIgual(predio, seleccionarPredio(predio.getCodCatastral()));
-        prueba = prueba.trim();
+    @Override
+    public String generarLogPredio(Predios predio) throws NewviExcepcion {
+        String log = predio.esPredioIgual(predio, seleccionarPredio(predio.getCodCatastral()));
+        if (!ComunUtil.esCadenaVacia(log)) {
+            return log.replaceAll("^\\s*","");
+        }
+        else
+            return "No existen cambios en el predio";
     }
 
 }

@@ -80,6 +80,13 @@ public interface CatastroServicio {
      * @throws NewviExcepcion
      */
     public String eliminarPredio(Predios predio, SesionDto sesion) throws NewviExcepcion;
+    /**
+     * Genera un log con las acciones realizadas en el predio
+     * @param predio El predio a verificar
+     * @return El log del predio
+     * @throws NewviExcepcion 
+     */
+    public String generarLogPredio(Predios predio) throws NewviExcepcion;
 
     /*------------------------------------------------------------Bloques------------------------------------------------------------*/
     /**

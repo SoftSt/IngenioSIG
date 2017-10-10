@@ -9,6 +9,7 @@ import ec.com.newvi.sic.dto.AvaluoDto;
 import ec.com.newvi.sic.dto.DominioDto;
 import ec.com.newvi.sic.dto.FichaCatastralDto;
 import ec.com.newvi.sic.dto.PresentacionFichaCatastral;
+import ec.com.newvi.sic.dto.SesionDto;
 import ec.com.newvi.sic.enums.EnumEstadoPisoDetalle;
 import ec.com.newvi.sic.enums.EnumEstadoRegistro;
 import ec.com.newvi.sic.enums.EnumNewviExcepciones;
@@ -24,6 +25,7 @@ import ec.com.newvi.sic.modelo.Bloques;
 import ec.com.newvi.sic.modelo.DetallesAvaluo;
 import ec.com.newvi.sic.modelo.Dominios;
 import ec.com.newvi.sic.modelo.Fotos;
+import ec.com.newvi.sic.modelo.LogPredio;
 import ec.com.newvi.sic.modelo.ModeloPredioLazy;
 import ec.com.newvi.sic.modelo.PisoDetalle;
 import ec.com.newvi.sic.modelo.Pisos;
@@ -41,8 +43,12 @@ import ec.com.newvi.sic.web.utils.ValidacionUtils;
 import ec.com.newvi.sic.web.utils.WebUtils;
 import java.util.AbstractCollection;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
@@ -380,12 +386,32 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
         }
     }
 
+    private void generarLogPredio(Predios predio, String log, SesionDto sesion) {
+        LogPredio logPredio = new LogPredio();
+        Date fecha = Calendar.getInstance().getTime();
+        
+        logPredio.setCodCatastral(predio);
+        logPredio.setTxtLog(log);
+        logPredio.setCodUsu(sesion.getNombreEquipo());
+        logPredio.setNomIp(sesion.getDireccionIP());
+        logPredio.setFecLog(fecha);
+        logPredio.setLogEstado(EnumEstadoRegistro.A);
+
+        try {
+            catastroServicio.generarNuevoLogPredio(logPredio, sesion);
+        } catch (NewviExcepcion e) {
+            LoggerNewvi.getLogNewvi(this.getClass()).error(e, sesionBean.getSesion());
+            MensajesFaces.mensajeError(e.getMessage());
+        }
+    }
+
     public void actualizarPredio() {
         if (!ComunUtil.esNumeroPositivo(this.predio.getCodCatastral())) {
             insertarPredio();
         } else {
             try {
-                
+
+                generarLogPredio(predio, catastroServicio.generarLogPredio(this.predio), sesionBean.getSesion());
                 catastroServicio.actualizarPredio(this.predio, sesionBean.getSesion());
                 actualizarListadoPredios();
                 LoggerNewvi.getLogNewvi(this.getClass()).info(EnumNewviExcepciones.INF352.presentarMensaje(), sesionBean.getSesion());
@@ -612,15 +638,24 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
     }
 
     public void agregarPisoBloqueSeleccionado(Pisos piso, Integer codBloque) throws NewviExcepcion {
+        Integer numPisos;
         for (Bloques bloque : this.predio.getBloques()) {
             if (bloque.getCodBloques().equals(codBloque)) {
                 piso.setCodBloques(bloque);
+                String txtNPisos = bloque.getValNropisos();
+                if (!ComunUtil.esNulo(txtNPisos)) {
+                    numPisos = (Integer.valueOf(txtNPisos));
+                } else {
+                    numPisos = 0;
+                }
+                bloque.setValNropisos((++(numPisos)).toString());
                 catastroServicio.generarNuevoPiso(piso, sesionBean.getSesion());
+                catastroServicio.actualizarBloque(bloque, sesionBean.getSesion());
                 //catastroServicio.actualizarBloque(bloque, sesionBean.getSesion());
                 Collection<Pisos> coleccion = bloque.getPisosCollection();
                 if (!ComunUtil.esNulo(coleccion)) {
                     bloque.getPisosCollection().add(piso);
-                }else{
+                } else {
                     //coleccion.add(piso);
                     List<Pisos> listaPisosColeccion = new ArrayList<>();
                     listaPisosColeccion.add(piso);
@@ -707,6 +742,30 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
         }
     }
 
+    public void registrarDetallesPiso(Pisos piso, PisoDetalle detalle) throws NewviExcepcion {
+        for (Bloques bloque : this.predio.getBloques()) {
+            if (bloque.equals(piso.getCodBloques())) {
+                for (Pisos objetoPiso : bloque.getPisosCollection()) {
+                    if (piso.equals(objetoPiso)) {
+                        detalle.setPiso(piso);
+                        catastroServicio.generarNuevoPisoDetalle(detalle, sesionBean.getSesion());
+                        Collection<PisoDetalle> coleccion = objetoPiso.getDetalles();
+                        if (!ComunUtil.esNulo(coleccion)) {
+                            objetoPiso.getDetalles().add(detalle);
+                        } else {
+                            List<PisoDetalle> listaDetalles = new ArrayList<>();
+                            listaDetalles.add(detalle);
+                            objetoPiso.setDetalles(listaDetalles);
+                        }
+                        break;
+
+                    }
+                }
+            }
+        }
+
+    }
+
     public void agregarDetallePiso(NodeSelectEvent event) throws NewviExcepcion {
         PisoDetalle pisoDetalle = new PisoDetalle();
         Dominios hijo = ((DominioDto) event.getTreeNode().getData()).getDominio();
@@ -717,14 +776,9 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
             pisoDetalle.setGrupo(hijo.getDomiGrupos());
             pisoDetalle.setSubgrupo(padre.getDomiDescripcion());
             pisoDetalle.setDescripcion(hijo.getDomiDescripcion());
-            pisoDetalle.setPiso(pisoSeleccionado);
             pisoDetalle.setCodigo(hijo.getDomiCodigo());
             pisoDetalle.setEstado(EnumEstadoRegistro.A);
-            Collection<PisoDetalle> coleccion = pisoSeleccionado.getDetalles();
-            catastroServicio.generarNuevoPisoDetalle(pisoDetalle, sesionBean.getSesion());
-            pisoSeleccionado.getDetalles().add(pisoDetalle);
-            //actualizarPisoIngresado(pisoSeleccionado);
-
+            registrarDetallesPiso(pisoSeleccionado, pisoDetalle);
             try {
                 actualizarElementosPredio();
                 LoggerNewvi.getLogNewvi(this.getClass()).info(EnumNewviExcepciones.INF356.presentarMensaje(), sesionBean.getSesion());
@@ -830,18 +884,8 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
 
     public void calcularAvaluo() throws NewviExcepcion {
         this.nodo = catastroServicio.obtenerAvaluoPredio(this.predio, parametrosServicio.consultarDominios(), sesionBean.getSesion());
-        //catastroServicio.obtenerAvaluoPredio(this.predio, sesionBean.getSesion());
-        //generarArbolAvaluo(catastroServicio.listarAvaluoDto("Nodo", predio));
-
-        //List<AvaluoDto> calculoAvaluo = catastroServicio.obtenerAvaluoPredio(this.predio, parametrosServicio.consultarDominios(), sesionBean.getSesion());
         catastroServicio.registrarArbol(this.nodo, this.predio, sesionBean.getSesion());
-        //List<AvaluoDto> arbol = catastroServicio.listarAvaluoDto("Nodo", this.predio);
         generarArbolAvaluo(catastroServicio.listarAvaluoDto("Nodo", this.predio));
-
-        /*if (this.nodo != null) {
-            generarArbolAvaluo(this.nodo);
-        }*/
-        //catastroServicio.listarAvaluoDto("Nodo", predio);
     }
 
     public DefaultStreamedContent imprimir(EnumReporte tipoReporte) {
