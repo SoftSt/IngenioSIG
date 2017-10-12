@@ -34,7 +34,7 @@ public class GeoPredioFacade extends AbstractFacade<GeoPredio, Integer> implemen
         Query q = this.getEntityManager().createNativeQuery("SELECT ST_AsText(ST_Transform(ST_SetSRID(ST_Expand(ST_Extent(geom),5),32717),3857)) "
                 + " FROM public.he002_lote as predio "
                 + " WHERE predio.lot_codigo = :CODIGOPREDIO ");
-        q.setParameter("CODIGOPREDIO", codigoPredio.trim());
+        q.setParameter("CODIGOPREDIO", codigoPredio.trim().substring(0, 15));
         try {
             Object caja = q.getSingleResult();
             return (String) caja;

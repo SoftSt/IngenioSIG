@@ -1064,5 +1064,9 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
     public void eliminarBloque(Integer codServicio) {
 
     }
+    
+    public String obtenerCodigoLote() {
+        return predio.getNomCodigocatastral().trim().substring(0, 15);
+    }
 
 }
