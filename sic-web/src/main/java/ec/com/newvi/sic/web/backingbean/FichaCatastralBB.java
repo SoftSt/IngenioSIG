@@ -1078,12 +1078,46 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
         }
     }
 
-    public void eliminarBloque(Integer codServicio) {
-
+    public void eliminarBloque(Integer codBloque) {
+        for (Bloques bloque : this.predio.getBloques()) {
+            if (bloque.getCodBloques().equals(codBloque)) {
+                bloque.setBloEstado(EnumEstadoRegistro.I);
+                try {
+                    catastroServicio.actualizarPredio(this.predio, sesionBean.getSesion());
+                    LoggerNewvi.getLogNewvi(this.getClass()).info(EnumNewviExcepciones.INF372.presentarMensaje(), sesionBean.getSesion());
+                    MensajesFaces.mensajeInformacion(EnumNewviExcepciones.INF372.presentarMensaje());
+                } catch (NewviExcepcion ex) {
+                    LoggerNewvi.getLogNewvi(this.getClass()).error(ex, sesionBean.getSesion());
+                    MensajesFaces.mensajeError(ex.getMessage());
+                }
+            }
+        }
     }
 
     public String obtenerCodigoLote() {
         return predio.getNomCodigocatastral().trim().substring(0, 15);
+    }
+
+    public void eliminarPiso(Integer codPiso) {
+        try {
+            Pisos piso = catastroServicio.seleccionarPiso(codPiso);
+            for (Bloques bloque : this.predio.getBloques()) {
+                if (bloque.getCodBloques().equals(piso.getCodBloques().getCodBloques())) {
+                    for (Pisos pisoEditable : bloque.getPisosCollection()) {
+                        if (pisoEditable.getCodPisos().equals(codPiso)) {
+                            pisoEditable.setPisEstado(EnumEstadoRegistro.I);
+                            catastroServicio.actualizarPredio(this.predio, sesionBean.getSesion());
+                            LoggerNewvi.getLogNewvi(this.getClass()).info(EnumNewviExcepciones.INF373.presentarMensaje(), sesionBean.getSesion());
+                            MensajesFaces.mensajeInformacion(EnumNewviExcepciones.INF373.presentarMensaje());
+                            break;
+                        }
+                    }
+                }
+            }
+        } catch (NewviExcepcion ex) {
+            LoggerNewvi.getLogNewvi(this.getClass()).error(ex, sesionBean.getSesion());
+            MensajesFaces.mensajeError(ex.getMessage());
+        }
     }
 
 }

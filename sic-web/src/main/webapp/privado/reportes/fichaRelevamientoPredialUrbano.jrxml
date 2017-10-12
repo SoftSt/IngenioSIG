@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="1312ccb7-b94d-4126-982d-4fbcc8dc4521">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="769"/>
+	<property name="ireport.y" value="480"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -71,7 +71,7 @@
 	</style>
 	<subDataset name="dataset1" uuid="e2070edc-a9a6-406a-9f14-5b83eba20046">
 		<field name="stsCodigo" class="java.lang.String"/>
-		<field name="stsSubgrupo" class="java.lang.String"/>
+		<field name="stsSubGrupo" class="java.lang.String"/>
 		<field name="stsDescripcion" class="java.lang.String"/>
 	</subDataset>
 	<subDataset name="dataset2" uuid="c933719f-2df3-4e93-b5b0-6f601d150294">
@@ -946,7 +946,7 @@ DE REFERENCIA:
 								<textElement>
 									<font fontName="SansSerif" size="6"/>
 								</textElement>
-								<textFieldExpression><![CDATA[$F{stsSubgrupo}]]></textFieldExpression>
+								<textFieldExpression><![CDATA[$F{stsSubGrupo}]]></textFieldExpression>
 							</textField>
 							<textField isBlankWhenNull="true">
 								<reportElement x="264" y="0" width="247" height="10" uuid="9bcc6927-6c97-4d8a-b8b0-c4d2a20eef08"/>
@@ -1270,7 +1270,7 @@ DE REFERENCIA:
 					<textElement>
 						<font fontName="SansSerif" size="6" isBold="true"/>
 					</textElement>
-					<text><![CDATA[SubGrupo]]></text>
+					<text><![CDATA[Subgrupo]]></text>
 				</staticText>
 				<staticText>
 					<reportElement x="501" y="1" width="40" height="20" uuid="5c0b4080-cd08-4943-b9e9-7d0ca7cd903e"/>

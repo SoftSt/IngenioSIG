@@ -80,7 +80,7 @@
                             <p:tooltip id="toolTipAdd" for="generarFormulario" value="Generar Reportes" showEffect="fade" hideEffect="fade" position="bottom"/>
                         </p:column>
                     </p:dataTable>
-                    <p:dialog header="Seleccionar Formulario Económico" widgetVar="wgSeleccionFormulario" 
+                    <p:dialog header="Seleccionar Formulario Económico" appendTo="@(body)" widgetVar="wgSeleccionFormulario" 
                               modal="true" height="100">
                         <p><h:outputText value="Seleccione el tipo de formulario económico que necesita" /></p>
                         <h:panelGrid columns="3">

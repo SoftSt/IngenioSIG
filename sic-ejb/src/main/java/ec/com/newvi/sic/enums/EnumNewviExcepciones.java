@@ -107,6 +107,8 @@ public enum EnumNewviExcepciones {
     INF369("INF369", "Predio eliminado.", "El predio se ha eliminado correctamente de la contribución."),
     INF370("INF370", "Predios eliminados.", "Los predios se ha eliminado correctamente de la contribución."),
     INF371("INF371", "Servicio eliminado.", "El servicio se ha eliminado correctamente."),
+    INF372("INF372", "Bloque eliminado.", "El bloque se ha eliminado correctamente."),
+    INF373("INF373", "Piso eliminado.", "El piso se ha eliminado correctamente."),
     // 400 al 450 excepciones de impresión
     ERR400("ERR400", "Error al acceder al reporte", "No se pudo acceder al archivo de reporte. Por favor, compruebe que existe en la carpeta del servidor."),
     ERR401("ERR401", "Error al interpretar el reporte", "El reporte generado no está correctamente formado. Revise los archivos de LOG o contacte con el administrador."),
