@@ -13,7 +13,7 @@ public enum EnumNewviExcepciones {
     // 0 al 100 excepciones comunes
     ERR000("ERR000", "Error desconocido.", "Ocurrió un error desconocido. Concacte con el administrador."),
     ERR001("ERR001", "Error de conversión.", "No se pudo realizar la conversión, debido a incompatibilidades."),
-    ERR010("ERR010", "Valor nulo.", "Se intentó acceder a un objeto/valor en nulo."),
+    ERR010("ERR010", "Valor nulo.", "Se intentó acceder a un objeto/valor en nulo. Posiblemente el elemento no ha sido inicializado todavía."),
     ERR011("ERR011", "Valor negativo.", "El valor entregado no es positivo."),
     ERR012("ERR012", "Texto en blanco.", "Los datos enviados están en blanco. Por favor, enviar datos correctos."),
     ERR020("ERR020", "Error al acceder a una función.", "Se ha intentado acceder a una función no existente."),
@@ -119,7 +119,8 @@ public enum EnumNewviExcepciones {
     ERR453("ERR453", "Parámetro no registrado.", "No se pudo generar el parámetro."),
     INF454("INF454", "Parámetro editado.", "El parámetro se ha editado correctamente."),
     ERR455("ERR455", "Parámetro no encontrado.", "El parámetro buscado no se ha encontrado."),
-
+    // 501 al 600 excepciones de catastro
+    ERR501("ERR501", "Propietario no encontrado.", "No se pudo encontrar un propietario al predio seleccionado. Registre la propiedad correspondiente."),
     ;
     
     private final String codigoExcepcion;

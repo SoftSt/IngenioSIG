@@ -42,20 +42,16 @@ import ec.com.newvi.sic.web.enums.EnumEtiquetas;
 import ec.com.newvi.sic.web.enums.EnumPantallaMantenimiento;
 import ec.com.newvi.sic.web.utils.ValidacionUtils;
 import ec.com.newvi.sic.web.utils.WebUtils;
-import java.util.AbstractCollection;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
-import org.geotools.filter.function.math.PiFunction;
 import org.primefaces.event.NodeSelectEvent;
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.DefaultTreeNode;
@@ -457,16 +453,16 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
     }
 
     public void seleccionarPredio(Integer idPredio) {
+        this.seleccionarPredioPorCodigo(idPredio);
+        calcularAvaluo();
         try {
-            this.seleccionarPredioPorCodigo(idPredio);
-            calcularAvaluo();
-            PresentacionFichaCatastral cat = new PresentacionFichaCatastral(this.predio);
             this.direccionVisorPredios = parametrosServicio.obtenerParametroPorNombre(EnumParametroSistema.DIRECCION_VISOR_PREDIOS, sesionBean.getSesion()).getValor();
         } catch (NewviExcepcion e) {
+            LoggerNewvi.getLogNewvi(this.getClass()).error(e, sesionBean.getSesion());
             MensajesFaces.mensajeError(e.getMessage());
         } catch (Exception e) {
             LoggerNewvi.getLogNewvi(this.getClass()).error(EnumNewviExcepciones.ERR000.presentarMensajeCodigo(), e, sesionBean.getSesion());
-            MensajesFaces.mensajeError(EnumNewviExcepciones.ERR000.presentarMensajeCodigo());
+            MensajesFaces.mensajeError(e.getMessage());
         }
         conmutarPantalla(EnumPantallaMantenimiento.PANTALLA_EDICION);
         establecerTitulo(EnumEtiquetas.FICHA_CATASTRAL_EDITAR_TITULO,
@@ -492,16 +488,26 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
         }
     }
 
-    private void seleccionarPredioPorCodigo(Integer idPredio) throws NewviExcepcion {
-        this.predio = catastroServicio.seleccionarPredio(idPredio);
-        //this.predio.setCodManzana(this.predio.getCodManzana().trim());
-        for (FichaCatastralDto fichasCatrastrales : listaFichas) {
-            if (fichasCatrastrales.getPredio().getCodCatastral().equals(idPredio)) {
-                propiedad = fichasCatrastrales.getPropiedad();
+    private void seleccionarPredioPorCodigo(Integer idPredio) {
+        try {
+            this.predio = catastroServicio.seleccionarPredio(idPredio);
+            //this.predio.setCodManzana(this.predio.getCodManzana().trim());
+            for (FichaCatastralDto fichasCatrastrales : listaFichas) {
+                if (fichasCatrastrales.getPredio().getCodCatastral().equals(idPredio)) {
+                    propiedad = fichasCatrastrales.getPropiedad();
+                }
             }
-        }
+            this.propiedadActual = contribuyentesServicio.consultarUltimoPropiedad(this.predio);
 
-        this.propiedadActual = contribuyentesServicio.consultarUltimoPropiedad(this.predio);
+        } catch (NewviExcepcion e) {
+            LoggerNewvi.getLogNewvi(this.getClass()).error(e, sesionBean.getSesion());
+            MensajesFaces.mensajeError(e.getMessage());
+            this.propiedadActual = new Propiedad();
+        } catch (Exception e) {
+            LoggerNewvi.getLogNewvi(this.getClass()).error(EnumNewviExcepciones.ERR000.presentarMensajeCodigo(), e, sesionBean.getSesion());
+            MensajesFaces.mensajeError(e.getMessage());
+            this.propiedadActual = new Propiedad();
+        }
 
         listarFotosPorPredio(this.predio.getCodCatastral());
     }
@@ -945,10 +951,18 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
         WebUtils.obtenerContextoPeticion().execute("PF('dlgPropiedad').close()");
     }
 
-    public void calcularAvaluo() throws NewviExcepcion {
-        this.nodo = catastroServicio.obtenerAvaluoPredio(this.predio, parametrosServicio.consultarDominios(), sesionBean.getSesion());
-        catastroServicio.registrarArbol(this.nodo, this.predio, sesionBean.getSesion());
-        generarArbolAvaluo(catastroServicio.listarAvaluoDto("Nodo", this.predio));
+    public void calcularAvaluo() {
+        try {
+            this.nodo = catastroServicio.obtenerAvaluoPredio(this.predio, parametrosServicio.consultarDominios(), sesionBean.getSesion());
+            catastroServicio.registrarArbol(this.nodo, this.predio, sesionBean.getSesion());
+            generarArbolAvaluo(catastroServicio.listarAvaluoDto("Nodo", this.predio));
+        } catch (NewviExcepcion e) {
+            LoggerNewvi.getLogNewvi(this.getClass()).error(EnumNewviExcepciones.ERR010.presentarMensajeCodigo(), e, sesionBean.getSesion());
+            MensajesFaces.mensajeError(e.getMessage());
+        } catch (Exception e) {
+            LoggerNewvi.getLogNewvi(this.getClass()).error(EnumNewviExcepciones.ERR000.presentarMensajeCodigo(), e, sesionBean.getSesion());
+            MensajesFaces.mensajeError(EnumNewviExcepciones.ERR000.presentarMensajeCodigo());
+        }
     }
 
     public DefaultStreamedContent imprimir(EnumReporte tipoReporte) {
@@ -1067,7 +1081,7 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
     public void eliminarBloque(Integer codServicio) {
 
     }
-    
+
     public String obtenerCodigoLote() {
         return predio.getNomCodigocatastral().trim().substring(0, 15);
     }

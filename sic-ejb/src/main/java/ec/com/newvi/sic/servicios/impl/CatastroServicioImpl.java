@@ -656,9 +656,18 @@ public class CatastroServicioImpl implements CatastroServicio {
         BigDecimal coff, vterreno, valor_terreno, valPredio, basura;
         BigDecimal promedioFactores = BigDecimal.ZERO;
         BigDecimal div = new BigDecimal(5);
-        BigDecimal frente = predio.getValAreaFrente();
-        BigDecimal fondo = predio.getValAreaFondo();
-        BigDecimal area = predio.getValAreaPredio();
+        BigDecimal frente = BigDecimal.ZERO;
+        if (!ComunUtil.esNulo(predio.getValAreaFrente())) {
+            frente = predio.getValAreaPredio();
+        }
+        BigDecimal fondo = BigDecimal.ZERO;
+        if (!ComunUtil.esNulo(predio.getValAreaFondo())) {
+            fondo = predio.getValAreaFondo();
+        }
+        BigDecimal area = BigDecimal.ZERO;
+        if (!ComunUtil.esNulo(predio.getValAreaPredio())) {
+            area = predio.getValAreaPredio();
+        }
         BigDecimal areaConstruccion = BigDecimal.ZERO;
         BigDecimal valorEdificacion = BigDecimal.ZERO;
 
@@ -673,7 +682,7 @@ public class CatastroServicioImpl implements CatastroServicio {
         // Coeficinte de Ubicacion
         BigDecimal cubi = obtenerCoeficienteTerreno(predio, dominios, "OCUPACION");
 
-        if (frente.compareTo(BigDecimal.ZERO) == 0) {
+        if (ComunUtil.esNulo(frente) || frente.compareTo(BigDecimal.ZERO) == 0) {
             coff = BigDecimal.ZERO;
         } else {
             coff = obtenerValoracionFondoRelativo(area, frente, dominios);
@@ -708,12 +717,15 @@ public class CatastroServicioImpl implements CatastroServicio {
         nodo.add(generarElementoArbolAvaluo("Promedio de factores", promedioFactores.setScale(2, BigDecimal.ROUND_UP).toString(), null, null));
         nodo.add(generarElementoArbolAvaluo("Precio base en M2 en la zona " + zona + " sector " + sector, vterreno.setScale(2, BigDecimal.ROUND_UP).toString(), null, null));
 
-        for (Bloques bloque : predio.getBloques()) {
-            List<AvaluoDto> listaAvaluoBloque = obtenerAvaluoBloque(bloque, promedioFactores, dominios, sesion);
-            nodo.add(generarElementoArbolAvaluo("Bloque: " + bloque.getNomBloque(), null, null, listaAvaluoBloque));
-            nodo.add(generarElementoArbolAvaluo("Costo Total bloque", obtenerElementoAvaluoPorDescripcion(listaAvaluoBloque, EnumCaracteristicasAvaluo.BLOQUE_VALORACION.getTitulo()).setScale(2, BigDecimal.ROUND_UP).toString(), null, null));
-            valorEdificacion = valorEdificacion.add(obtenerElementoAvaluoPorDescripcion(listaAvaluoBloque, EnumCaracteristicasAvaluo.BLOQUE_VALORACION.getTitulo()));
-            areaConstruccion = areaConstruccion.add(obtenerElementoAvaluoPorDescripcion(listaAvaluoBloque, EnumCaracteristicasAvaluo.BLOQUE_AREA.getTitulo()));
+        List<AvaluoDto> listaAvaluoBloque = new ArrayList<>();
+        if (!ComunUtil.esNulo(predio.getBloques())) {
+            for (Bloques bloque : predio.getBloques()) {
+                listaAvaluoBloque = obtenerAvaluoBloque(bloque, promedioFactores, dominios, sesion);
+                nodo.add(generarElementoArbolAvaluo("Bloque: " + bloque.getNomBloque(), null, null, listaAvaluoBloque));
+                nodo.add(generarElementoArbolAvaluo("Costo Total bloque", obtenerElementoAvaluoPorDescripcion(listaAvaluoBloque, EnumCaracteristicasAvaluo.BLOQUE_VALORACION.getTitulo()).setScale(2, BigDecimal.ROUND_UP).toString(), null, null));
+                valorEdificacion = valorEdificacion.add(obtenerElementoAvaluoPorDescripcion(listaAvaluoBloque, EnumCaracteristicasAvaluo.BLOQUE_VALORACION.getTitulo()));
+                areaConstruccion = areaConstruccion.add(obtenerElementoAvaluoPorDescripcion(listaAvaluoBloque, EnumCaracteristicasAvaluo.BLOQUE_AREA.getTitulo()));
+            }
         }
 
         //Actualiza Valoración de Terreno y Contrucción
@@ -1095,33 +1107,34 @@ public class CatastroServicioImpl implements CatastroServicio {
     public String generarLogPredio(Predios predio) throws NewviExcepcion {
         String log = predio.esPredioIgual(predio, seleccionarPredio(predio.getCodCatastral()));
         if (!ComunUtil.esCadenaVacia(log)) {
-            return log.replaceAll("^\\s*","");
-        }
-        else
+            return log.replaceAll("^\\s*", "");
+        } else {
             return "No existen cambios en el predio";
+        }
     }
-    
+
     @Override
-    public String generarLogServicios(Servicios servicio)throws NewviExcepcion{
-        Servicios servicioBase =  seleccionarServicio(servicio.getCodServicios());
+    public String generarLogServicios(Servicios servicio) throws NewviExcepcion {
+        Servicios servicioBase = seleccionarServicio(servicio.getCodServicios());
         String log = servicio.esObjetoIgual(servicio, servicioBase);
         if (!ComunUtil.esCadenaVacia(log)) {
-            return log.replaceAll("^\\s*","");
-        }
-        else
+            return log.replaceAll("^\\s*", "");
+        } else {
             return "";
+        }
     }
-    
+
     @Override
-    public Servicios seleccionarServicio(Integer codServicio) throws NewviExcepcion{
+    public Servicios seleccionarServicio(Integer codServicio) throws NewviExcepcion {
         if (ComunUtil.esNumeroPositivo(codServicio)) {
             return servicioFacade.find(codServicio);
         } else {
             throw new NewviExcepcion(EnumNewviExcepciones.ERR011);
         }
     }
+
     @Override
-    public String actualizarServicio(Servicios servicio, SesionDto sesion) throws NewviExcepcion{
+    public String actualizarServicio(Servicios servicio, SesionDto sesion) throws NewviExcepcion {
         // Validar que los datos no sean incorrectos
         LoggerNewvi.getLogNewvi(this.getClass()).debug("Validando servicio...", sesion);
         if (!servicio.esServicioValido()) {
@@ -1141,10 +1154,10 @@ public class CatastroServicioImpl implements CatastroServicio {
         // Si todo marcha bien enviar nombre del servicio
         return servicio.getCodServicios().toString();
     }
-    
+
     @Override
-    public String generarNuevoServicio(Servicios nuevoServicio, SesionDto sesion) throws NewviExcepcion{
-    // Validar que los datos no sean incorrectos
+    public String generarNuevoServicio(Servicios nuevoServicio, SesionDto sesion) throws NewviExcepcion {
+        // Validar que los datos no sean incorrectos
         LoggerNewvi.getLogNewvi(this.getClass()).debug("Validando predio...", sesion);
         if (!nuevoServicio.esServicioValido()) {
             throw new NewviExcepcion(EnumNewviExcepciones.ERR365);

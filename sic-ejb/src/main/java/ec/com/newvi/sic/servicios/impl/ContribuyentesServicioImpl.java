@@ -179,9 +179,9 @@ public class ContribuyentesServicioImpl implements ContribuyentesServicio {
                     return propiedad;
                 }
             }
-            throw new NewviExcepcion(EnumNewviExcepciones.ERR202);
+            throw new NewviExcepcion(EnumNewviExcepciones.ERR501);
         } catch (EntityNotFoundException e) {
-            throw new NewviExcepcion(EnumNewviExcepciones.ERR204, e);
+            throw new NewviExcepcion(EnumNewviExcepciones.ERR501, e);
         }
     }
 }
