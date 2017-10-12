@@ -9,11 +9,14 @@ import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
 import ec.com.newvi.sic.dto.SesionDto;
 import ec.com.newvi.sic.geo.dao.GeoPredioFacade;
+import ec.com.newvi.sic.geo.modelo.GeoPredio;
 import ec.com.newvi.sic.geo.servicios.GeoCatastroServicio;
 import ec.com.newvi.sic.geo.utils.UtilGeografico;
 import ec.com.newvi.sic.modelo.Predios;
 import ec.com.newvi.sic.util.excepciones.NewviExcepcion;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 import javax.annotation.security.PermitAll;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -45,4 +48,17 @@ public class GeoCatastroServicioImpl implements GeoCatastroServicio {
         return UtilGeografico.obtenerGeometriaDeTexto(wktPredio);
     }
 
+    @Override
+    public List<GeoPredio> obtenerListadoGeoPrediosHuerfanos(List<Predios> prediosRegistrados, SesionDto sesion) throws NewviExcepcion {
+        return geoPredioFacade.obtenerListadoPrediosHuerfanos(obtenerCodigosPredios(prediosRegistrados), sesion);
+    }
+    
+    private List<String> obtenerCodigosPredios(List<Predios> prediosRegistrados) {
+        List<String> listaCodigosPredios = new ArrayList<>();
+        prediosRegistrados.forEach((predioRegistrado) -> {
+            listaCodigosPredios.add(predioRegistrado.getNomCodigocatastral());
+        });
+        return listaCodigosPredios;
+    }
+    
 }

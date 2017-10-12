@@ -27,9 +27,9 @@ body {
     background: #186ba0 !important;
     color: #fff !important;
     position: relative !important;
-    padding-top: 15px !important;
-    padding-left: 15px !important;
-    padding-right: 15px !important;
+    padding-top: 10px !important;
+    padding-left: 10px !important;
+    padding-right: 10px !important;
     padding-bottom: 10px !important;
 }
 
@@ -39,17 +39,16 @@ body {
 }
 
 .titulo {
-    font-size: 1.4em !important;
+    font-size: 1.2em !important;
     float: left;
 }
 
 .subtitulo {
-    padding-top: 5px;
+    padding-top: 3px;
     font-size: 1em !important;
     float: left;
     padding-left: 5px;
     padding-right: 5px;
-    padding-top: 5px;
 }
 
 .info-usuario {
@@ -79,7 +78,7 @@ body {
 
 .div-boton-sesion {
     float: left;
-    margin-top: -2px;
+    margin-top: -5px;
 }
 
 .div-mensaje-web { 
@@ -100,4 +99,14 @@ body {
     text-align: center;
     font-size: 4em;
     width: 100%;
+}
+
+
+.ui-layout-north {
+    z-index:20 !important;
+    overflow:visible !important;
+}
+
+.ui-layout-north .ui-layout-unit-content {
+    overflow:visible !important;
 }

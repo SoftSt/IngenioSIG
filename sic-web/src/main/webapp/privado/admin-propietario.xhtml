@@ -24,7 +24,7 @@
                         <p:commandButton value="Nuevo Propietario" icon="fa fa-plus" 
                                          update="messages grupoPropietario"
                                          id="ingresarPropietario"
-                                         actionListener="#{propiedadBB.crearNuevoPropietario()}">
+                                         actionListener="#{propiedadBB.crearNuevoPropiedad()}">
                             <p:ajax update="toolTipInsert" process="@this" />  
                         </p:commandButton>
                         <p:tooltip id="toolTipInsert" for="ingresarPropietario" value="Ingresar un nuevo propietario" showEffect="fade" hideEffect="fade" position="bottom"/>
@@ -33,17 +33,25 @@
 
 
                     <p:dataTable id="listaPropietario" var="propietario" widgetVar="listaPropietarioTabla"
-                                 value="#{propiedadBB.listaPropietarios}" rowKey="#{propietario.propietario}" filteredValue="#{propiedadBB.listaPropietariosFiltrados}"
+                                 value="#{propiedadBB.listaPropiedad}" rowKey="#{propietario.propiedad}" filteredValue="#{propiedadBB.listaPropiedadFiltrados}"
                                  paginator="true" rows="5" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" 
                                  rowsPerPageTemplate="5,10,15" 
                                  emptyMessage="No se han encontrado resultados" 
                                  paginatorPosition="bottom">
 
 
-                        <p:column headerText="id" sortBy="#{propietario.propietario}">
-                            <h:outputText value="#{propietario.propietario}" />
+                        <p:column headerText="id" sortBy="#{propietario.propiedad}" visible="false">
+                            <h:outputText value="#{propietario.propiedad}" />
                         </p:column>
                         
+                        <p:column headerText="Propietario" sortBy="#{propietario.propiedad.nomApellidos} #{propietario.propiedad.nomNombres}">
+                            <h:outputText value="#{propietario.propiedad.nomApellidos} #{propietario.propiedad.nomNombres}" />
+                        </p:column>
+
+                        <p:column headerText="Predio" sortBy="#{propietario.codCatastral.nomCodigocatastral}">
+                            <h:outputText value="#{propietario.codCatastral.nomCodigocatastral}" />
+                        </p:column>
+
                         <p:column headerText="Tenencia" sortBy="#{propietario.stsTenencia}">
                             <h:outputText value="#{propietario.stsTenencia.toString()}" />
                         </p:column>
@@ -61,7 +69,7 @@
                         </p:column>
 
                         <p:column width="80">
-                            <p:commandButton actionListener="#{propiedadBB.eliminarPropietario(propietario.propietario)}" 
+                            <p:commandButton actionListener="#{propiedadBB.eliminarPropiedad(propietario.propiedad)}" 
                                              icon="fa fa-trash"
                                              id="eliminarPropietario"
                                              update="listaPropietario :formularioListaPropietario:growl :formularioListaPropietario:messages" >
@@ -71,7 +79,7 @@
                             <p:tooltip id="toolTipDelete" for="eliminarPropietario" value="Eliminar Propietario" showEffect="fade" hideEffect="fade" position="bottom"/>
 
                             <p:commandButton process="listaPropietario" 
-                                             actionListener="#{propiedadBB.seleccionarPropietario(propietario.propietario)}"
+                                             actionListener="#{propiedadBB.seleccionarPropiedad(propietario.propiedad)}"
                                              icon="fa fa-edit"
                                              id="editarPropietario"
                                              update="grupoPropietario">
@@ -88,8 +96,8 @@
                 </h:form>
             </p:panel>
 
-            <p:panel id="panelPropietario" rendered="#{propiedadBB.esPantallaActual('PANTALLA_EDICION')}">
-                <h:form id="formularioPropietario" >
+            <p:panel id="panelPropiedad" rendered="#{propiedadBB.esPantallaActual('PANTALLA_EDICION')}">
+                <h:form id="formularioPropiedad" >
                     <p>
                         <h2>
                             <h:outputText styleClass="#{propiedadBB.iconoPantalla.textoEtiqueta}"/>
@@ -99,46 +107,46 @@
                     <p>#{propiedadBB.descripcionPantalla.textoEtiqueta}</p>
                     <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
                     <p:tooltip />
-                    <p:outputPanel id="opDetallePropietario">
+                    <p:outputPanel id="opDetallePropiedad">
                         <h:panelGrid columns="1">
 
                             <h:outputLabel for="stsTenencia" value="Tenencia" style="font-weight: bold;"/>
-                            <p:selectOneMenu id="stsTenencia" value="#{propiedadBB.propietario.stsTenencia}" required="true" style="width:125px">
+                            <p:selectOneMenu id="stsTenencia" value="#{propiedadBB.propiedad.stsTenencia}" required="true" style="width:125px">
                                 <f:selectItem itemLabel="Seleccione la tenencia..." itemValue="null" />
                                 <f:selectItems value="#{propiedadBB.listaTipoTenencia}" var="tipoTenencia" itemValue="#{tipoTenencia}" itemLabel="#{tipoTenencia.stsTenencia}"/>
                             </p:selectOneMenu>
                             <p:message for="stsTenencia" display="tooltip"/>
 
                             <h:outputLabel for="stsTransferenciadominio" value="Traslado de dominio" style="font-weight: bold;"/>
-                            <p:selectOneMenu id="stsTransferenciadominio" value="#{propiedadBB.propietario.stsTransferenciadominio}" required="true" style="width:125px">
+                            <p:selectOneMenu id="stsTransferenciadominio" value="#{propiedadBB.propiedad.stsTransferenciadominio}" required="true" style="width:125px">
                                 <f:selectItem itemLabel="Seleccione el traslado..." itemValue="null" />
                                 <f:selectItems value="#{propiedadBB.listaTipoTraslacion}" var="tipoTraslacion" itemValue="#{tipoTraslacion}" itemLabel="#{tipoTraslacion.stsTransferenciadominio}"/>
                             </p:selectOneMenu>
                             <p:message for="stsTransferenciadominio" display="tooltip"/>
 
                             <h:outputLabel for="stsSituacion" value="Situación Actual" style="font-weight: bold;"/>
-                            <p:selectOneMenu id="stsSituacion" value="#{propiedadBB.propietario.stsSituacion}" required="true" style="width:125px" >
+                            <p:selectOneMenu id="stsSituacion" value="#{propiedadBB.propiedad.stsSituacion}" required="true" style="width:125px" >
                                 <f:selectItem itemLabel="Seleccione el situacion actual..." itemValue="null" />
                                 <f:selectItems value="#{propiedadBB.listaTipoSitActual}" var="tipoSitActual" itemValue="#{tipoSitActual}" itemLabel="#{tipoSitActual.stsSituacion}"/>
                             </p:selectOneMenu>
                             <p:message for="stsSituacion" display="tooltip"/>
 
                             <h:outputLabel for="stsEscritura" value="Tiene Escritura" style="font-weight: bold;"/>
-                            <p:selectOneMenu id="stsEscritura" value="#{propiedadBB.propietario.stsEscritura}" required="true" style="width:125px" >
+                            <p:selectOneMenu id="stsEscritura" value="#{propiedadBB.propiedad.stsEscritura}" required="true" style="width:125px" >
                                 <f:selectItems value="#{propiedadBB.listaTipoEscritura}" var="tipoEscritura" itemValue="#{tipoEscritura}" itemLabel="#{tipoEscritura.stsEscritura}"/>
                             </p:selectOneMenu>
                             <p:message for="stsEscritura" display="tooltip"/>
 
                         </h:panelGrid>
                         <h:panelGrid columns="4">
-                            <p:commandButton actionListener="#{propiedadBB.actualizarPropietario()}" 
-                                             update="grupoPropietario" 
-                                             id="guardarPropietario"
+                            <p:commandButton actionListener="#{propiedadBB.actualizarPropiedad()}" 
+                                             update="grupoPropiedad" 
+                                             id="guardarPropiedad"
                                              icon="fa fa-check" 
                                              value="Guardar">
                                 <p:ajax update="toolTipSave" process="@this" /> 
                             </p:commandButton>
-                            <p:tooltip id="toolTipSave" for="guardarPropietario" value="Guardar cambios en el propietario" showEffect="fade" hideEffect="fade" position="bottom"/>
+                            <p:tooltip id="toolTipSave" for="guardarPropiedad" value="Guardar cambios en la propiedad" showEffect="fade" hideEffect="fade" position="bottom"/>
 
                             <p:commandButton icon="fa fa-close" 
                                              id="cancelar"

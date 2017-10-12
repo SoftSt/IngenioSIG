@@ -5,6 +5,7 @@
  */
 package ec.com.newvi.sic.geo.modelo;
 
+import com.vividsolutions.jts.geom.Polygon;
 import ec.com.newvi.sic.geo.enums.EnumTipoPredio;
 import java.io.Serializable;
 import javax.persistence.Column;
@@ -16,7 +17,6 @@ import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
-import org.postgresql.geometric.PGpolygon;
 
 /**
  *
@@ -34,6 +34,26 @@ public class GeoPredio implements Serializable {
     @Column(name = "gid")
     private Integer gId;
     
+    @Size(max = 6)
+    @Column(name = "dpa_codigo")
+    private String codigoDPA;
+
+    @Size(max = 2)
+    @Column(name = "zon_codigo")
+    private String codigoZona;
+    
+    @Size(max = 2)
+    @Column(name = "sec_codigo")
+    private String codigoSector;
+    
+    @Size(max = 2)
+    @Column(name = "man_codigo")
+    private String codigoManzana;
+    
+    @Size(max = 4)
+    @Column(name = "lot_numero")
+    private String numeroLote;
+    
     @Size(max = 24)
     @Column(name = "lot_codigo")
     private String codigoPredio;
@@ -42,8 +62,8 @@ public class GeoPredio implements Serializable {
     @Column(name = "lot_regim")
     private EnumTipoPredio tipoPredio;
     
-    @Column(name = "geom")
-    private PGpolygon geom;
+    /*@Column(name = "geom")
+    private Polygon geom;*/
 
     public Integer getgId() {
         return gId;
@@ -51,6 +71,46 @@ public class GeoPredio implements Serializable {
 
     public void setgId(Integer gId) {
         this.gId = gId;
+    }
+
+    public String getCodigoDPA() {
+        return codigoDPA;
+    }
+
+    public void setCodigoDPA(String codigoDPA) {
+        this.codigoDPA = codigoDPA;
+    }
+
+    public String getCodigoZona() {
+        return codigoZona;
+    }
+
+    public void setCodigoZona(String codigoZona) {
+        this.codigoZona = codigoZona;
+    }
+
+    public String getCodigoSector() {
+        return codigoSector;
+    }
+
+    public void setCodigoSector(String codigoSector) {
+        this.codigoSector = codigoSector;
+    }
+
+    public String getCodigoManzana() {
+        return codigoManzana;
+    }
+
+    public void setCodigoManzana(String codigoManzana) {
+        this.codigoManzana = codigoManzana;
+    }
+
+    public String getNumeroLote() {
+        return numeroLote;
+    }
+
+    public void setNumeroLote(String numeroLote) {
+        this.numeroLote = numeroLote;
     }
 
     public String getCodigoPredio() {
@@ -69,12 +129,12 @@ public class GeoPredio implements Serializable {
         this.tipoPredio = tipoPredio;
     }
 
-    public PGpolygon getGeom() {
+/*    public Polygon getGeom() {
         return geom;
     }
 
-    public void setGeom(PGpolygon geom) {
+    public void setGeom(Polygon geom) {
         this.geom = geom;
     }
-    
+*/    
 }

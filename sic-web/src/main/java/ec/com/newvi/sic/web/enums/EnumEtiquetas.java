@@ -113,12 +113,12 @@ public enum EnumEtiquetas {
     PISOS_EDITAR_TITULO("Editar Piso"),
     PISOS_EDITAR_ICONO("fa fa-edit"),
     PISOS_EDITAR_DESCRIPCION("Edición de Pisos seleccionado."),
-    PROPIETARIO_LISTA_TITULO("Propietario"),
+    PROPIETARIO_LISTA_TITULO("Tenencia"),
     PROPIETARIO_LISTA_ICONO("fa fa-home"),
-    PROPIETARIO_LISTA_DESCRIPCION("Gestión de propietarios."),
-    PROPIETARIO_NUEVO_TITULO("Nueva Propietario"),
+    PROPIETARIO_LISTA_DESCRIPCION("Gestión de Tenencia."),
+    PROPIETARIO_NUEVO_TITULO("Nuevo cambio de dominio"),
     PROPIETARIO_NUEVO_ICONO("fa fa-plus"),
-    PROPIETARIO_NUEVO_DESCRIPCION("Creación de nuevo Propietario."),
+    PROPIETARIO_NUEVO_DESCRIPCION("Creación de nuevo cambio de dominio."),
     PROPIETARIO_EDITAR_TITULO("Editar Propietario"),
     PROPIETARIO_EDITAR_ICONO("fa fa-edit"),
     PROPIETARIO_EDITAR_DESCRIPCION("Edición de Propietario seleccionado."),
@@ -145,7 +145,18 @@ public enum EnumEtiquetas {
     PARAMETROS_SISTEMA_NUEVO_DESCRIPCION("Creación de nuevo Parametro del Sistema."),
     PARAMETROS_SISTEMA_EDITAR_TITULO("Editar Parámetro del Sistema"),
     PARAMETROS_SISTEMA_EDITAR_ICONO("fa fa-edit"),
-    PARAMETROS_SISTEMA_EDITAR_DESCRIPCION("Edición de Parámetros seleccionado.");
+    PARAMETROS_SISTEMA_EDITAR_DESCRIPCION("Edición de Parámetros seleccionado."),
+    
+    NUEVO_PREDIO_BUSQUEDA_TITULO("Búsqueda de nuevos predios"),
+    NUEVO_PREDIO_BUSQUEDA_DESCRIPCION("Búsqueda de nuevos predios generados en el sistema"),
+    NUEVO_PREDIO_BUSQUEDA_ICONO("fa fa-edit"),
+    NUEVO_PREDIO_SELECCION_TITULO("Generación de clave catastral"),
+    NUEVO_PREDIO_SELECCION_DESCRIPCION("Generación de clave catastral en los nuevos predios"),
+    NUEVO_PREDIO_SELECCION_ICONO("fa fa-edit"),
+    NUEVO_PREDIO_GENERACION_TITULO("Finalización"),
+    NUEVO_PREDIO_GENERACION_DESCRIPCION("Los nuevos predios generados ahora pueden ser editados"),
+    NUEVO_PREDIO_GENERACION_ICONO("fa fa-edit"),
+    ;
     
     private final String textoEtiqueta;
 

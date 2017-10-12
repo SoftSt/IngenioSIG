@@ -11,6 +11,7 @@ import ec.com.newvi.sic.geo.modelo.GeoPredio;
 import ec.com.newvi.sic.util.excepciones.NewviExcepcion;
 import ec.com.newvi.sic.util.logs.LoggerNewvi;
 import java.io.Serializable;
+import java.util.List;
 import javax.annotation.security.PermitAll;
 import javax.ejb.Stateless;
 import javax.persistence.NoResultException;
@@ -47,6 +48,20 @@ public class GeoPredioFacade extends AbstractFacade<GeoPredio, Integer> implemen
             throw new NewviExcepcion(EnumNewviExcepciones.ERR000, ex);
         }
 
+    }
+    
+    public List<GeoPredio> obtenerListadoPrediosHuerfanos(List<String> listaCodigosPrediosRegistrados, SesionDto sesion) throws NewviExcepcion {
+        Query q = this.getEntityManager().createQuery("SELECT geoPredioHuerfano FROM GeoPredio geoPredioHuerfano WHERE geoPredioHuerfano.codigoPredio NOT IN :PREDIOSREGISTRADOS ");
+        q.setParameter("PREDIOSREGISTRADOS", listaCodigosPrediosRegistrados);
+        try {
+            return q.getResultList();
+        } catch (NoResultException ex) {
+            LoggerNewvi.getLogNewvi(this.getClass()).error(EnumNewviExcepciones.ERR203.presentarMensajeCodigo().concat(" (").concat(ex.getMessage()).concat(")"), sesion);
+            return null;
+        } catch (Exception ex) {
+            LoggerNewvi.getLogNewvi(this.getClass()).error(ex, sesion);
+            throw new NewviExcepcion(EnumNewviExcepciones.ERR000, ex);
+        }
     }
 
 }
