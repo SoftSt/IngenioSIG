@@ -814,7 +814,7 @@ public class Predios implements Serializable {
         Object objetoBaseGenerado = retornarAtributo(objetoBase, nombreMetodoBuscado);
         Object objetoAverificarGenerado = retornarAtributo(objetoAverificar, nombreMetodoBuscado);
 
-        if (!ComunUtil.esNulo(objetoBaseGenerado) || !ComunUtil.esNulo(objetoAverificarGenerado)) {
+        if (!ComunUtil.esNulo(objetoBaseGenerado) && !ComunUtil.esNulo(objetoAverificarGenerado)) {
             if (!objetoBaseGenerado.toString().contains(objetoAverificarGenerado.toString())) {
                 log = "\nExistió un cambio en el atributo '" + nombreMetodoBuscado + "' de '" + objetoBaseGenerado.toString().trim() + "' a '" + objetoAverificarGenerado.toString().trim() + "'";
                 //log = String.format("\nExistió un cambio en el atributo {0} de {1} a {2}",nombreMetodoBuscado,objetoBaseGenerado.trim(),objetoAverificarGenerado.trim());
