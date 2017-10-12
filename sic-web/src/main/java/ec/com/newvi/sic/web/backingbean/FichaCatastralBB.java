@@ -716,12 +716,12 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
             MensajesFaces.mensajeError(e.getMessage());
         }
     }
-    
-    public void generarLogServicio(Predios predio) throws NewviExcepcion{
+
+    public void generarLogServicio(Predios predio) throws NewviExcepcion {
         for (Servicios servicio : predio.getServicios()) {
             String logServicio = catastroServicio.generarLogServicios(servicio);
             if (!ComunUtil.esCadenaVacia(logServicio)) {
-                generarLogPredio(predio, logServicio,sesionBean.getSesion(), EnumAcciones.Edicion_Servicio);
+                generarLogPredio(predio, logServicio, sesionBean.getSesion(), EnumAcciones.Edicion_Servicio);
             }
         }
     }
@@ -852,7 +852,7 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
                 + "\ndel subgrupo '" + detalles.getSubgrupo() + "' "
                 + "\ncon su descripción '" + detalles.getDescripcion() + "' "
                 + "\ndel piso '" + codPiso + "' y del bloque '" + codBloque + "' "
-                + "\nperteneciente al predio '" + predio.getCodCatastral()+"' ";
+                + "\nperteneciente al predio '" + predio.getCodCatastral() + "' ";
     }
 
     public void agregarServicio(NodeSelectEvent event) {
@@ -903,6 +903,7 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
             this.predio.getCaracteristicasTerreno().add(terreno);
 
             try {
+                catastroServicio.generarNuevoTerreno(terreno, sesionBean.getSesion());
                 generarLogPredio(this.predio, generarLogDescripcionTerreno(terreno, this.predio), sesionBean.getSesion(), EnumAcciones.Agregacion_Descripcion_Terreno);
                 actualizarElementosPredio();
                 LoggerNewvi.getLogNewvi(this.getClass()).info(EnumNewviExcepciones.INF360.presentarMensaje(), sesionBean.getSesion());
@@ -1027,6 +1028,39 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
         listaTraslacion = EnumTraslacion.values();
         listaSituacionActual = EnumSitActual.values();
         listaEstadoEscritura = EnumSiNo.values();
+    }
+
+    public void eliminarTerreno(Integer codTerreno) {
+        for (Terreno terreno : this.predio.getCaracteristicasTerreno()) {
+            if (terreno.getCodTerrenodetalle().equals(codTerreno)) {
+                terreno.setTerEstado(EnumEstadoRegistro.I);
+                try {
+                    catastroServicio.actualizarPredio(this.predio, sesionBean.getSesion());
+                } catch (NewviExcepcion ex) {
+                    LoggerNewvi.getLogNewvi(this.getClass()).error(ex, sesionBean.getSesion());
+                    MensajesFaces.mensajeError(ex.getMessage());
+                }
+            }
+        }
+
+    }
+
+    public void eliminarServicio(Integer codServicio) {
+        for (Servicios servicio : this.predio.getServicios()) {
+            if (servicio.getCodServicios().equals(codServicio)) {
+                servicio.setSerEstado(EnumEstadoRegistro.I);
+                try {
+                    catastroServicio.actualizarPredio(this.predio, sesionBean.getSesion());
+                } catch (NewviExcepcion ex) {
+                    LoggerNewvi.getLogNewvi(this.getClass()).error(ex, sesionBean.getSesion());
+                    MensajesFaces.mensajeError(ex.getMessage());
+                }
+            }
+        }
+    }
+
+    public void eliminarBloque(Integer codServicio) {
+
     }
 
 }

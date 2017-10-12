@@ -394,7 +394,7 @@
                                     <p:tooltip id="toolTipInsertDescripcion" for="nuevaDescripcionTerreno" value="Agregar nuevo descripcion de terreno" showEffect="fade" hideEffect="fade" position="bottom"/>
 
                                     <p:dataTable id="listaDescripcionTerreno" var="descripcionTerreno" widgetVar="listaDescripcionTerrenoTabla"
-                                                 value="#{fichaCatastralBB.predio.caracteristicasTerreno}" rowKey="#{descripcionTerreno.codTerrenodetalle}" 
+                                                 value="#{fichaCatastralBB.predio.caracteristicasTerrenoActivas}" rowKey="#{descripcionTerreno.codTerrenodetalle}" 
                                                  paginator="true" rows="10" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" 
                                                  rowsPerPageTemplate="10,15,20" 
                                                  emptyMessage="No se han encontrado resultados" 
@@ -410,6 +410,17 @@
 
                                         <p:column headerText="Detalle" sortBy="#{descripcionTerreno.stsDescripcion}">
                                             <h:outputText value="#{descripcionTerreno.stsDescripcion}" />
+                                        </p:column>
+
+                                        <p:column headerText="Eliminar" width="80">
+                                            <p:commandButton actionListener="#{fichaCatastralBB.eliminarTerreno(descripcionTerreno.codTerrenodetalle)}" 
+                                                             icon="fa fa-trash"
+                                                             id="eliminarTerreno"
+                                                             update="grupoFichaCatastral">
+                                                             <p:confirm header="Eliminar Terreno" message="¿Está seguro?" icon="ui-icon-alert" />
+                                                <p:ajax update="toolTipDeleteTerreno" process="@this" /> 
+                                            </p:commandButton>
+                                            <p:tooltip id="toolTipDeleteTerreno" for="eliminarTerreno" value="Eliminar Terreno" showEffect="fade" hideEffect="fade" position="bottom"/>
                                         </p:column>
 
                                     </p:dataTable>
@@ -429,7 +440,7 @@
 
 
                                     <p:dataTable id="listaServiciosBasicos" var="servicios" editable="true" widgetVar="listaSeviciosBasicosTabla"
-                                                 value="#{fichaCatastralBB.predio.servicios}" rowKey="#{servicios.codServicios}" filteredValue=""
+                                                 value="#{fichaCatastralBB.predio.servicosActivos}" rowKey="#{servicios.codServicios}" filteredValue=""
                                                  paginator="true" rows="10" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" 
                                                  rowsPerPageTemplate="10,15,20" 
                                                  emptyMessage="No se han encontrado resultados" 
@@ -473,6 +484,17 @@
                                         <p:column headerText="Opciones" width="18">
                                             <p:rowEditor/>
                                         </p:column>
+
+                                        <p:column headerText="Eliminar" width="80">
+                                            <p:commandButton actionListener="#{fichaCatastralBB.eliminarServicio(servicios.codServicios)}" 
+                                                             icon="fa fa-trash"
+                                                             id="eliminarServicio"
+                                                             update="grupoFichaCatastral">
+                                                             <p:confirm header="Eliminar Servicio" message="¿Está seguro?" icon="ui-icon-alert" />
+                                                <p:ajax update="toolTipDeleteServicio" process="@this" /> 
+                                            </p:commandButton>
+                                            <p:tooltip id="toolTipDeleteServicio" for="eliminarServicio" value="Eliminar Servicio" showEffect="fade" hideEffect="fade" position="bottom"/>
+                                        </p:column>
                                     </p:dataTable>
 
                                     <br/>
@@ -491,7 +513,7 @@
 
 
                                     <p:dataTable id="listaInformacionBloques" var="bloque" editable="true" widgetVar="listaInformacionBloquesTabla"
-                                                 value="#{fichaCatastralBB.predio.bloques}" rowKey="#{bloque.codBloques}"
+                                                 value="#{fichaCatastralBB.predio.bloquesActivos}" rowKey="#{bloque.codBloques}"
                                                  emptyMessage="No se han encontrado resultados">
                                         <p:ajax event="rowEdit" listener="#{fichaCatastralBB.actualizarBloqueIngresado}" update="listaInformacionBloques"/>
 
@@ -511,6 +533,18 @@
                                         <p:column headerText="Opciones" width="60">
                                             <p:rowEditor/>
                                         </p:column>
+                                        
+                                        <p:column headerText="Eliminar" width="80">
+                                            <p:commandButton actionListener="#{fichaCatastralBB.eliminarBloque(bloque.codBloques)}" 
+                                                             icon="fa fa-trash"
+                                                             id="eliminarBloque"
+                                                             update="grupoFichaCatastral">
+                                                             <p:confirm header="Eliminar Bloque" message="¿Está seguro?" icon="ui-icon-alert" />
+                                                <p:ajax update="toolTipDeleteBloque" process="@this" /> 
+                                            </p:commandButton>
+                                            <p:tooltip id="toolTipDeleteBloque" for="eliminarBloque" value="Eliminar Bloque" showEffect="fade" hideEffect="fade" position="bottom"/>
+                                        </p:column>
+                                        
                                         <p:rowExpansion>
                                             <p style="font-weight:bold;">Información de Pisos</p>
 
@@ -975,7 +1009,7 @@
 
                                 </h:panelGrid>
                             </p:tab>
-                            
+
                             <p:tab title="Terreno, Construcción y Servicios">
                                 <h:panelGrid >
                                     <br/>

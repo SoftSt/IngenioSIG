@@ -517,4 +517,12 @@ public interface CatastroServicio {
      * @throws NewviExcepcion
      */
     public String generarLogServicios(Servicios servicio) throws NewviExcepcion;
+    /**
+     * Actualiza el servicio indicado
+     * @param servicio entidad a ser actualizada
+     * @param sesion Sesion que realiza la operación
+     * @return codigo del servicio actualizado
+     * @throws NewviExcepcion 
+     */
+    public String actualizarServicio(Servicios servicio, SesionDto sesion) throws NewviExcepcion;
 }

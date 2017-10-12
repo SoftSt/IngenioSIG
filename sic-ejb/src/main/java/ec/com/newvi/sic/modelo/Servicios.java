@@ -323,5 +323,9 @@ public class Servicios implements Serializable {
         }
         return log;
     }
+    
+    public Boolean esServicioValido() {
+        return (!ComunUtil.esNulo(this.serEstado));
+    }
 
 }

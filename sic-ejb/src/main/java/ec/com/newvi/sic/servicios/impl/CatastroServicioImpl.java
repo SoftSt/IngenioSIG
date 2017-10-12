@@ -1120,5 +1120,26 @@ public class CatastroServicioImpl implements CatastroServicio {
             throw new NewviExcepcion(EnumNewviExcepciones.ERR011);
         }
     }
+    @Override
+    public String actualizarServicio(Servicios servicio, SesionDto sesion) throws NewviExcepcion{
+        // Validar que los datos no sean incorrectos
+        LoggerNewvi.getLogNewvi(this.getClass()).debug("Validando servicio...", sesion);
+        if (!servicio.esServicioValido()) {
+            throw new NewviExcepcion(EnumNewviExcepciones.ERR365);
+        }
+        // Editar la servicio
+        LoggerNewvi.getLogNewvi(this.getClass()).debug("Editando servicio...", sesion);
+
+        //Registramos la auditoria de modificacion
+        Date fechaModificacion = Calendar.getInstance().getTime();
+        servicio.setAudModIp(sesion.getDireccionIP());
+        servicio.setAudModUsu(sesion.getUsuarioRegistrado().getUsuPalabraclave().trim());
+        servicio.setAudModFec(fechaModificacion);
+
+        servicioFacade.edit(servicio);
+
+        // Si todo marcha bien enviar nombre del servicio
+        return servicio.getCodServicios().toString();
+    }
 
 }

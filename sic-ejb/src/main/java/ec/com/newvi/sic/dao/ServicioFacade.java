@@ -5,10 +5,14 @@
  */
 package ec.com.newvi.sic.dao;
 
+import ec.com.newvi.sic.enums.EnumEstadoRegistro;
+import ec.com.newvi.sic.modelo.Predios;
 import ec.com.newvi.sic.modelo.Servicios;
 import java.io.Serializable;
+import java.util.List;
 import javax.annotation.security.PermitAll;
 import javax.ejb.Stateless;
+import javax.persistence.Query;
 
 /**
  *
@@ -22,7 +26,5 @@ public class ServicioFacade extends AbstractFacade<Servicios, Integer> implement
     public ServicioFacade() {
         super(Servicios.class, Integer.class);
     }
-    
-    
     
 }

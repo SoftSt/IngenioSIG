@@ -209,15 +209,15 @@ public class Predios implements Serializable {
     @Column(name = "aud_mod_ip")
     private String audModIp;
 
-    @ElementCollection
+    //@ElementCollection
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "codCatastral", fetch = FetchType.LAZY)
-    private Collection<Terreno> caracteristicasTerreno;
-    @ElementCollection
+    private List<Terreno> caracteristicasTerreno;
+    //@ElementCollection
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "codCatastral", fetch = FetchType.LAZY)
-    private Collection<Servicios> servicios;
-    @ElementCollection
+    private List<Servicios> servicios;
+    //@ElementCollection
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "codCatastral", fetch = FetchType.LAZY)
-    private Collection<Bloques> bloques;
+    private List<Bloques> bloques;
     @ElementCollection
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "codCatastral", fetch = FetchType.LAZY)
     private Collection<Propiedad> historicoPropiedad;
@@ -617,7 +617,7 @@ public class Predios implements Serializable {
         return caracteristicasTerreno;
     }
 
-    public void setCaracteristicasTerreno(Collection<Terreno> caracteristicasTerreno) {
+    public void setCaracteristicasTerreno(List<Terreno> caracteristicasTerreno) {
         this.caracteristicasTerreno = caracteristicasTerreno;
     }
 
@@ -625,7 +625,7 @@ public class Predios implements Serializable {
         return servicios;
     }
 
-    public void setServicios(Collection<Servicios> servicios) {
+    public void setServicios(List<Servicios> servicios) {
         this.servicios = servicios;
     }
 
@@ -633,7 +633,7 @@ public class Predios implements Serializable {
         return bloques;
     }
 
-    public void setBloques(Collection<Bloques> bloques) {
+    public void setBloques(List<Bloques> bloques) {
         this.bloques = bloques;
     }
 
@@ -844,6 +844,47 @@ public class Predios implements Serializable {
             }
         }
         return log;
+    }
+
+    public List<Terreno> getCaracteristicasTerrenoActivas() {
+        List<Terreno> caracteristicasTerrenoActivas = new ArrayList<>();
+        /*caracteristicasTerreno.stream().filter((terreno) -> (terreno.getTerEstado().equals(EnumEstadoRegistro.A))&&!ComunUtil.esNulo(terreno.getTerEstado())).forEachOrdered((terrenoActivo) -> {
+            caracteristicasTerrenoActivas.add(terrenoActivo);
+        });*/
+        for (Terreno terreno : caracteristicasTerreno) {
+            if (terreno.getTerEstado().equals(EnumEstadoRegistro.A) && !ComunUtil.esNulo(terreno.getTerEstado())) {
+                caracteristicasTerrenoActivas.add(terreno);
+            }
+        }
+        return caracteristicasTerrenoActivas;
+    }
+
+    public List<Servicios> getServicosActivos() {
+        List<Servicios> serviciosActivos = new ArrayList<>();
+        /*servicios.stream().filter((servicio) -> (servicio.getStsEstado().equals(EnumEstadoRegistro.A)) && !ComunUtil.esNulo(servicio.getStsEstado())).forEachOrdered((servicioActivo) -> {
+            serviciosActivos.add(servicioActivo);
+        });*/
+        
+        for (Servicios servicio : servicios) {
+            if (servicio.getSerEstado().equals(EnumEstadoRegistro.A) && !ComunUtil.esNulo(servicio.getStsEstado())) {
+                serviciosActivos.add(servicio);
+            }
+        }
+        return serviciosActivos;
+    }
+
+    public List<Bloques> getBloquesActivos() {
+        List<Bloques> bloquesActivos = new ArrayList<>();
+        /*bloques.stream().filter((bloque) -> (bloque.getBloEstado().equals(EnumEstadoRegistro.A)) && !ComunUtil.esNulo(bloque.getBloEstado())).forEachOrdered((bloqueActivo) -> {
+            bloquesActivos.add(bloqueActivo);
+        });*/
+        
+        for (Bloques bloque : bloques) {
+            if (bloque.getBloEstado().equals(EnumEstadoRegistro.A) && !ComunUtil.esNulo(bloque.getBloEstado())) {
+                bloquesActivos.add(bloque);
+            }
+        }
+        return bloquesActivos;
     }
 
 }
