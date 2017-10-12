@@ -848,9 +848,6 @@ public class Predios implements Serializable {
 
     public List<Terreno> getCaracteristicasTerrenoActivas() {
         List<Terreno> caracteristicasTerrenoActivas = new ArrayList<>();
-        /*caracteristicasTerreno.stream().filter((terreno) -> (terreno.getTerEstado().equals(EnumEstadoRegistro.A))&&!ComunUtil.esNulo(terreno.getTerEstado())).forEachOrdered((terrenoActivo) -> {
-            caracteristicasTerrenoActivas.add(terrenoActivo);
-        });*/
         for (Terreno terreno : caracteristicasTerreno) {
             if (terreno.getTerEstado().equals(EnumEstadoRegistro.A) && !ComunUtil.esNulo(terreno.getTerEstado())) {
                 caracteristicasTerrenoActivas.add(terreno);
@@ -861,12 +858,8 @@ public class Predios implements Serializable {
 
     public List<Servicios> getServicosActivos() {
         List<Servicios> serviciosActivos = new ArrayList<>();
-        /*servicios.stream().filter((servicio) -> (servicio.getStsEstado().equals(EnumEstadoRegistro.A)) && !ComunUtil.esNulo(servicio.getStsEstado())).forEachOrdered((servicioActivo) -> {
-            serviciosActivos.add(servicioActivo);
-        });*/
-        
         for (Servicios servicio : servicios) {
-            if (servicio.getSerEstado().equals(EnumEstadoRegistro.A) && !ComunUtil.esNulo(servicio.getStsEstado())) {
+            if (servicio.getSerEstado().equals(EnumEstadoRegistro.A) && !ComunUtil.esNulo(servicio.getSerEstado())) {
                 serviciosActivos.add(servicio);
             }
         }
@@ -875,9 +868,6 @@ public class Predios implements Serializable {
 
     public List<Bloques> getBloquesActivos() {
         List<Bloques> bloquesActivos = new ArrayList<>();
-        /*bloques.stream().filter((bloque) -> (bloque.getBloEstado().equals(EnumEstadoRegistro.A)) && !ComunUtil.esNulo(bloque.getBloEstado())).forEachOrdered((bloqueActivo) -> {
-            bloquesActivos.add(bloqueActivo);
-        });*/
         
         for (Bloques bloque : bloques) {
             if (bloque.getBloEstado().equals(EnumEstadoRegistro.A) && !ComunUtil.esNulo(bloque.getBloEstado())) {

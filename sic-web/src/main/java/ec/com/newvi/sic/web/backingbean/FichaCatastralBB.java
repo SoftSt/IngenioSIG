@@ -872,6 +872,7 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
             this.predio.getServicios().add(servicio);
 
             try {
+                catastroServicio.generarNuevoServicio(servicio, sesionBean.getSesion());
                 generarLogPredio(this.predio, generarLogServicio(servicio, this.predio), sesionBean.getSesion(), EnumAcciones.Agregacion_Servicio);
                 actualizarElementosPredio();
                 LoggerNewvi.getLogNewvi(this.getClass()).info(EnumNewviExcepciones.INF358.presentarMensaje(), sesionBean.getSesion());
@@ -1052,6 +1053,8 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
             if (servicio.getCodServicios().equals(codServicio)) {
                 servicio.setSerEstado(EnumEstadoRegistro.I);
                 try {
+                    LoggerNewvi.getLogNewvi(this.getClass()).info(EnumNewviExcepciones.INF371.presentarMensaje(), sesionBean.getSesion());
+                    MensajesFaces.mensajeInformacion(EnumNewviExcepciones.INF371.presentarMensaje());
                     catastroServicio.actualizarPredio(this.predio, sesionBean.getSesion());
                 } catch (NewviExcepcion ex) {
                     LoggerNewvi.getLogNewvi(this.getClass()).error(ex, sesionBean.getSesion());

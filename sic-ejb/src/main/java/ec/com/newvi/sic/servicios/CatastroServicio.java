@@ -525,4 +525,12 @@ public interface CatastroServicio {
      * @throws NewviExcepcion 
      */
     public String actualizarServicio(Servicios servicio, SesionDto sesion) throws NewviExcepcion;
+    /**
+     * Se agregará un nuevo servicio
+     * @param nuevoServicio servicio a ser agregado
+     * @param sesion Sesion que realiza la operación
+     * @return codigo del servicio agregado
+     * @throws NewviExcepcion 
+     */
+    public String generarNuevoServicio(Servicios nuevoServicio, SesionDto sesion) throws NewviExcepcion;
 }
