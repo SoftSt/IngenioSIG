@@ -222,7 +222,7 @@ public class Terreno implements Serializable {
     }
     
     public Boolean esTerrenoValido() {
-        return (!ComunUtil.esNulo(this.codTerrenodetalle));
+        return (!ComunUtil.esNulo(this.terEstado));
     }
     
 }

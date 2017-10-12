@@ -1036,6 +1036,8 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
                 terreno.setTerEstado(EnumEstadoRegistro.I);
                 try {
                     catastroServicio.actualizarPredio(this.predio, sesionBean.getSesion());
+                    LoggerNewvi.getLogNewvi(this.getClass()).info(EnumNewviExcepciones.INF362.presentarMensaje(), sesionBean.getSesion());
+                    MensajesFaces.mensajeInformacion(EnumNewviExcepciones.INF362.presentarMensaje());
                 } catch (NewviExcepcion ex) {
                     LoggerNewvi.getLogNewvi(this.getClass()).error(ex, sesionBean.getSesion());
                     MensajesFaces.mensajeError(ex.getMessage());
