@@ -404,8 +404,8 @@
                                             <h:outputText value="#{descripcionTerreno.stsGrupo}" />
                                         </p:column>
 
-                                        <p:column headerText="Característica" sortBy="#{descripcionTerreno.stsSubgrupo}">
-                                            <h:outputText value="#{descripcionTerreno.stsSubgrupo}" />
+                                        <p:column headerText="Característica" sortBy="#{descripcionTerreno.stsSubGrupo}">
+                                            <h:outputText value="#{descripcionTerreno.stsSubGrupo}" />
                                         </p:column>
 
                                         <p:column headerText="Detalle" sortBy="#{descripcionTerreno.stsDescripcion}">
@@ -449,19 +449,6 @@
                                             <h:outputText value="#{servicios.stsDescripcion}" />
                                         </p:column>
 
-                                        <!--<p:column headerText="Medidor" sortBy="#{servicios.nomMedidor}">
-                                            <h:outputText value="#{servicios.nomMedidor}" />
-                                        </p:column>-->
-
-                                        <!--<p:column headerText="Estado" sortBy="#{servicios.stsEstado}">
-                                            <h:outputText value="#{servicios.stsEstado}" />
-                                        </p:column>-->
-
-                                        <!--<p:column headerText="# Medidores" sortBy="#{servicios.numMedidores}">
-                                            <h:outputText value="#{servicios.numMedidores}" />
-                                        </p:column>-->
-
-
                                         <p:column headerText="Medidor" class="column-title-left" sortBy="#{servicios.nomMedidor}" width="35">
                                             <p:cellEditor>
                                                 <f:facet name="output"><h:outputText value="#{servicios.nomMedidor}" /></f:facet>
@@ -486,9 +473,6 @@
                                         <p:column headerText="Opciones" width="18">
                                             <p:rowEditor/>
                                         </p:column>
-
-
-
                                     </p:dataTable>
 
                                     <br/>
@@ -1019,8 +1003,8 @@
                                             <h:outputText value="#{descripcionTerreno.stsCodigo}" />
                                         </p:column>
 
-                                        <p:column headerText="Característica" sortBy="#{descripcionTerreno.stsSubgrupo}">
-                                            <h:outputText value="#{descripcionTerreno.stsSubgrupo}" />
+                                        <p:column headerText="Característica" sortBy="#{descripcionTerreno.stsSubGrupo}">
+                                            <h:outputText value="#{descripcionTerreno.stsSubGrupo}" />
                                         </p:column>
 
                                         <p:column headerText="Detalle" sortBy="#{descripcionTerreno.stsDescripcion}">
@@ -1211,10 +1195,6 @@
                                                                  emptyMessage="No se han encontrado resultados">
 
                                                         <p:ajax event="rowEdit" listener="#{fichaCatastralBB.actualizarDetallePisoIngresado(elementosConstruccion)}" update="listaElementosConstruccion"/>
-
-                                                        <p:column headerText="Código" class="column-title-left" sortBy="#{elementosConstruccion.codigo}" width="60">
-                                                            <h:outputText value="#{elementosConstruccion.codigo}" />
-                                                        </p:column>
 
                                                         <p:column headerText="Grupo" class="column-title-left" sortBy="#{elementosConstruccion.grupo}" width="60">
                                                             <h:outputText value="#{elementosConstruccion.grupo}" />

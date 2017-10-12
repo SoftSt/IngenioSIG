@@ -10,6 +10,7 @@ import ec.com.newvi.sic.dto.DominioDto;
 import ec.com.newvi.sic.dto.FichaCatastralDto;
 import ec.com.newvi.sic.dto.PresentacionFichaCatastral;
 import ec.com.newvi.sic.dto.SesionDto;
+import ec.com.newvi.sic.enums.EnumAcciones;
 import ec.com.newvi.sic.enums.EnumEstadoPisoDetalle;
 import ec.com.newvi.sic.enums.EnumEstadoRegistro;
 import ec.com.newvi.sic.enums.EnumNewviExcepciones;
@@ -54,6 +55,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
+import org.geotools.filter.function.math.PiFunction;
 import org.primefaces.event.NodeSelectEvent;
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.DefaultTreeNode;
@@ -386,16 +388,17 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
         }
     }
 
-    private void generarLogPredio(Predios predio, String log, SesionDto sesion) {
+    private void generarLogPredio(Predios predio, String log, SesionDto sesion, EnumAcciones accion) {
         LogPredio logPredio = new LogPredio();
         Date fecha = Calendar.getInstance().getTime();
-        
+
         logPredio.setCodCatastral(predio);
         logPredio.setTxtLog(log);
         logPredio.setCodUsu(sesion.getNombreEquipo());
         logPredio.setNomIp(sesion.getDireccionIP());
         logPredio.setFecLog(fecha);
         logPredio.setLogEstado(EnumEstadoRegistro.A);
+        logPredio.setLogAccion(accion);
 
         try {
             catastroServicio.generarNuevoLogPredio(logPredio, sesion);
@@ -411,7 +414,7 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
         } else {
             try {
 
-                generarLogPredio(predio, catastroServicio.generarLogPredio(this.predio), sesionBean.getSesion());
+                generarLogPredio(predio, catastroServicio.generarLogPredio(this.predio), sesionBean.getSesion(), EnumAcciones.Edicion_General);
                 catastroServicio.actualizarPredio(this.predio, sesionBean.getSesion());
                 actualizarListadoPredios();
                 LoggerNewvi.getLogNewvi(this.getClass()).info(EnumNewviExcepciones.INF352.presentarMensaje(), sesionBean.getSesion());
@@ -614,15 +617,20 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
         catastroServicio.actualizarPredio(this.predio, sesionBean.getSesion());
     }
 
+    public String generarLogAdicionBloques(String codBloque, Predios predio) {
+        return "Se agregó el bloque '" + codBloque + "' del predio '" + predio.getCodCatastral().toString();
+    }
+
     public void agregarNuevoBloque() throws NewviExcepcion {
         Bloques bloque = new Bloques();
         bloque.setCodCatastral(this.predio);
         bloque.setNomBloque("Nuevo");
         bloque.setBloEstado(EnumEstadoRegistro.A);
-        catastroServicio.generarNuevoBloque(bloque, sesionBean.getSesion());
+        String logBloque = generarLogAdicionBloques(catastroServicio.generarNuevoBloque(bloque, sesionBean.getSesion()), this.predio);
         this.predio.getBloques().add(bloque);
 
         try {
+            generarLogPredio(this.predio, logBloque, sesionBean.getSesion(), EnumAcciones.Agregacion_Bloques);
             actualizarElementosPredio();
             WebUtils.obtenerContextoPeticion().reset("formularioFichaCatastral:opDetalleFichaCatastral");
             LoggerNewvi.getLogNewvi(this.getClass()).info(EnumNewviExcepciones.INF354.presentarMensaje(), sesionBean.getSesion());
@@ -637,6 +645,12 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
 
     }
 
+    public String generarLogAdicionPiso(String codPiso, String codBloque, Predios predio) {
+        return "Se agregó el piso '" + codPiso + "'"
+                + "/n que pertenece al bloque '" + codBloque + "'"
+                + "/n del predio '" + predio.getCodCatastral().toString() + "'";
+    }
+
     public void agregarPisoBloqueSeleccionado(Pisos piso, Integer codBloque) throws NewviExcepcion {
         Integer numPisos;
         for (Bloques bloque : this.predio.getBloques()) {
@@ -649,7 +663,9 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
                     numPisos = 0;
                 }
                 bloque.setValNropisos((++(numPisos)).toString());
-                catastroServicio.generarNuevoPiso(piso, sesionBean.getSesion());
+                String codPiso = catastroServicio.generarNuevoPiso(piso, sesionBean.getSesion());
+                String logPiso = generarLogAdicionPiso(codPiso, bloque.getCodBloques().toString(), this.predio);
+                generarLogPredio(this.predio, logPiso, sesionBean.getSesion(), EnumAcciones.Agregacion_Pisos);
                 catastroServicio.actualizarBloque(bloque, sesionBean.getSesion());
                 //catastroServicio.actualizarBloque(bloque, sesionBean.getSesion());
                 Collection<Pisos> coleccion = bloque.getPisosCollection();
@@ -699,9 +715,19 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
             MensajesFaces.mensajeError(e.getMessage());
         }
     }
+    
+    public void generarLogServicio(Predios predio) throws NewviExcepcion{
+        for (Servicios servicio : predio.getServicios()) {
+            String logServicio = catastroServicio.generarLogServicios(servicio);
+            if (!ComunUtil.esCadenaVacia(logServicio)) {
+                generarLogPredio(predio, logServicio,sesionBean.getSesion(), EnumAcciones.Edicion_Servicio);
+            }
+        }
+    }
 
     public void actualizarServicioIngresado() {
         try {
+            //generarLogServicio(this.predio);
             catastroServicio.actualizarPredio(this.predio, sesionBean.getSesion());
             LoggerNewvi.getLogNewvi(this.getClass()).info(EnumNewviExcepciones.INF361.presentarMensaje(), sesionBean.getSesion());
             MensajesFaces.mensajeInformacion(EnumNewviExcepciones.INF361.presentarMensaje());
@@ -742,6 +768,12 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
         }
     }
 
+    public String generarLogAdicionDetallePiso(String codPiso, String codBloque, Predios predio) {
+        return "Se agregó el piso '" + codPiso + "'"
+                + "/n que pertenece al bloque '" + codBloque + "'"
+                + "/n del predio '" + predio.getCodCatastral().toString() + "'";
+    }
+
     public void registrarDetallesPiso(Pisos piso, PisoDetalle detalle) throws NewviExcepcion {
         for (Bloques bloque : this.predio.getBloques()) {
             if (bloque.equals(piso.getCodBloques())) {
@@ -749,6 +781,8 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
                     if (piso.equals(objetoPiso)) {
                         detalle.setPiso(piso);
                         catastroServicio.generarNuevoPisoDetalle(detalle, sesionBean.getSesion());
+                        String logDetallesPiso = generarLogDetallesPiso(detalle, piso.getCodPisos().toString(), bloque.getCodBloques().toString(), predio);
+                        generarLogPredio(this.predio, logDetallesPiso, sesionBean.getSesion(), EnumAcciones.Agregacion_Detalles_Pisos);
                         Collection<PisoDetalle> coleccion = objetoPiso.getDetalles();
                         if (!ComunUtil.esNulo(coleccion)) {
                             objetoPiso.getDetalles().add(detalle);
@@ -798,6 +832,28 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
         WebUtils.obtenerContextoPeticion().execute("PF('dlgDetallePiso').show()");
     }
 
+    public String generarLogServicio(Servicios servicio, Predios predio) {
+        return "Se agregó el servicio perteneciente a '" + servicio.getStsGrupo().trim() + "' "
+                + "\ndel subgrupo '" + servicio.getStsSubGrupo() + "' "
+                + "\ncon su descripción '" + servicio.getStsDescripcion() + "'"
+                + "\ndel predio '" + predio.getCodCatastral() + "' ";
+    }
+
+    public String generarLogDescripcionTerreno(Terreno terreno, Predios predio) {
+        return "Se agregó la descripción perteneciente a '" + terreno.getStsGrupo().trim() + "' "
+                + "\ndel subgrupo '" + terreno.getStsSubGrupo() + "' "
+                + "\ncon su descripción '" + terreno.getStsDescripcion() + "' "
+                + "\ndel predio '" + predio.getCodCatastral() + "' ";
+    }
+
+    public String generarLogDetallesPiso(PisoDetalle detalles, String codPiso, String codBloque, Predios predio) {
+        return "Se agregó el detalle perteneciente a '" + detalles.getGrupo().trim() + "' "
+                + "\ndel subgrupo '" + detalles.getSubgrupo() + "' "
+                + "\ncon su descripción '" + detalles.getDescripcion() + "' "
+                + "\ndel piso '" + codPiso + "' y del bloque '" + codBloque + "' "
+                + "\nperteneciente al predio '" + predio.getCodCatastral()+"' ";
+    }
+
     public void agregarServicio(NodeSelectEvent event) {
         Servicios servicio = new Servicios();
         Dominios hijo = ((DominioDto) event.getTreeNode().getData()).getDominio();
@@ -811,9 +867,11 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
             servicio.setCodCatastral(this.predio);
             servicio.setStsCodigo(hijo.getDomiCodigo());
             servicio.setSerEstado(EnumEstadoRegistro.A);
+
             this.predio.getServicios().add(servicio);
 
             try {
+                generarLogPredio(this.predio, generarLogServicio(servicio, this.predio), sesionBean.getSesion(), EnumAcciones.Agregacion_Servicio);
                 actualizarElementosPredio();
                 LoggerNewvi.getLogNewvi(this.getClass()).info(EnumNewviExcepciones.INF358.presentarMensaje(), sesionBean.getSesion());
                 MensajesFaces.mensajeInformacion(EnumNewviExcepciones.INF358.presentarMensaje());
@@ -831,11 +889,12 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
         Terreno terreno = new Terreno();
         Dominios hijo = ((DominioDto) event.getTreeNode().getData()).getDominio();
 
+        //generarLogPredio(this.predio, EnumAcciones.Agregacion_Descripcion_Terreno.getAccion(), sesionBean.getSesion());
         EnumRelacionDominios nodo = hijo.getDomiRelacion();
         if (!nodo.equals(EnumRelacionDominios.SubNodo) && !nodo.equals(EnumRelacionDominios.Nodo)) {
             Dominios padre = ((DominioDto) event.getTreeNode().getParent().getData()).getDominio();
             terreno.setStsGrupo(hijo.getDomiGrupos());
-            terreno.setStsSubgrupo(padre.getDomiDescripcion());
+            terreno.setStsSubGrupo(padre.getDomiDescripcion());
             terreno.setStsDescripcion(hijo.getDomiDescripcion());
             terreno.setCodCatastral(this.predio);
             terreno.setTerEstado(EnumEstadoRegistro.A);
@@ -843,6 +902,7 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
             this.predio.getCaracteristicasTerreno().add(terreno);
 
             try {
+                generarLogPredio(this.predio, generarLogDescripcionTerreno(terreno, this.predio), sesionBean.getSesion(), EnumAcciones.Agregacion_Descripcion_Terreno);
                 actualizarElementosPredio();
                 LoggerNewvi.getLogNewvi(this.getClass()).info(EnumNewviExcepciones.INF360.presentarMensaje(), sesionBean.getSesion());
                 MensajesFaces.mensajeInformacion(EnumNewviExcepciones.INF360.presentarMensaje());

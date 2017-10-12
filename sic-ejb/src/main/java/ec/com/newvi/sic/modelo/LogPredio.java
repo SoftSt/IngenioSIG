@@ -5,6 +5,7 @@
  */
 package ec.com.newvi.sic.modelo;
 
+import ec.com.newvi.sic.enums.EnumAcciones;
 import ec.com.newvi.sic.enums.EnumEstadoRegistro;
 import ec.com.newvi.sic.util.ComunUtil;
 import java.io.Serializable;
@@ -52,6 +53,9 @@ public class LogPredio implements Serializable{
     @Size(max=10485760)
     @Column(name = "txt_log")
     private String txtLog;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "log_accion")
+    private EnumAcciones logAccion;
     @Enumerated(EnumType.STRING)
     @Column(name = "log_estado")
     private EnumEstadoRegistro logEstado;
@@ -118,7 +122,14 @@ public class LogPredio implements Serializable{
     public void setLogEstado(EnumEstadoRegistro logEstado) {
         this.logEstado = logEstado;
     }
-    
+
+    public EnumAcciones getLogAccion() {
+        return logAccion;
+    }
+
+    public void setLogAccion(EnumAcciones logAccion) {
+        this.logAccion = logAccion;
+    }
     
     @Override
     public int hashCode() {

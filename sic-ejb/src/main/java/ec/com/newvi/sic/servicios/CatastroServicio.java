@@ -17,6 +17,7 @@ import ec.com.newvi.sic.modelo.LogPredio;
 import ec.com.newvi.sic.modelo.PisoDetalle;
 import ec.com.newvi.sic.modelo.Pisos;
 import ec.com.newvi.sic.modelo.Predios;
+import ec.com.newvi.sic.modelo.Servicios;
 import ec.com.newvi.sic.modelo.Terreno;
 import ec.com.newvi.sic.util.excepciones.NewviExcepcion;
 import java.io.InputStream;
@@ -80,11 +81,13 @@ public interface CatastroServicio {
      * @throws NewviExcepcion
      */
     public String eliminarPredio(Predios predio, SesionDto sesion) throws NewviExcepcion;
+
     /**
      * Genera un log con las acciones realizadas en el predio
+     *
      * @param predio El predio a verificar
      * @return El log del predio
-     * @throws NewviExcepcion 
+     * @throws NewviExcepcion
      */
     public String generarLogPredio(Predios predio) throws NewviExcepcion;
 
@@ -155,7 +158,7 @@ public interface CatastroServicio {
      * @return Objeto AvaluoDto que contiene el avalúo del bloque
      * @throws NewviExcepcion
      */
-    public List<AvaluoDto> obtenerAvaluoBloque(Bloques bloque, BigDecimal promedioFactores,List<Dominios> dominios, SesionDto sesion) throws NewviExcepcion;
+    public List<AvaluoDto> obtenerAvaluoBloque(Bloques bloque, BigDecimal promedioFactores, List<Dominios> dominios, SesionDto sesion) throws NewviExcepcion;
 
     /*------------------------------------------------------------Pisos------------------------------------------------------------*/
     /**
@@ -241,8 +244,10 @@ public interface CatastroServicio {
      * @throws NewviExcepcion
      */
     public String actualizarPisoDetalle(PisoDetalle pisoDetalle, SesionDto sesion) throws NewviExcepcion;
+
     /**
      * Generar un nuevo piso detalle
+     *
      * @param nuevoPisoDetalle nuevo detalle del piso
      * @param sesion Sesion que realiza la operación
      * @return Nombre del detalle del piso actualizado
@@ -307,7 +312,6 @@ public interface CatastroServicio {
     public List<Fotos> consultarFotosPorPredio(int codCatastral);
 
     /*------------------------------------------------------------Avalúos------------------------------------------------------------*/
-
     /**
      * Devuelve el avalúo del predio, dado un predio.
      *
@@ -327,15 +331,16 @@ public interface CatastroServicio {
      * @throws NewviExcepcion
      */
     //public void obtenerSimulacionAvaluoPredio(Predios predio, SesionDto sesion) throws NewviExcepcion;
-    
     /**
      * Almacena el arbol en la tabla cat_cat_detallesAvaluo
-     * @param nodo lista de nodos a registrar 
+     *
+     * @param nodo lista de nodos a registrar
      * @param predio dato para el registro
-     * @param sesion quien realiza la acción 
-     * @throws NewviExcepcion 
+     * @param sesion quien realiza la acción
+     * @throws NewviExcepcion
      */
     public void registrarArbol(List<AvaluoDto> nodo, Predios predio, SesionDto sesion) throws NewviExcepcion;
+
     /*------------------------------------------------------------FechaAvaluo------------------------------------------------------------*/
     /**
      * Genera una nueva FechaAvaluo
@@ -447,42 +452,69 @@ public interface CatastroServicio {
      * @param predio parametro para borrar
      */
     public void eliminarDetallesPorPredio(Predios predio);
-    
+
     /*------------------------------------------------------------LogPredio------------------------------------------------------------*/
     /**
      * Genera un nuevo Predio, de acuerdo a un objeto entregado.
+     *
      * @param nuevoLogPredio El nuevo LogPredio a ser ingresado
      * @param sesion que realiza la operación
      * @return Nombre del nuevo Predio.
      * @throws NewviExcepcion
      */
     public String generarNuevoLogPredio(LogPredio nuevoLogPredio, SesionDto sesion) throws NewviExcepcion;
+
     /**
-     * 
+     *
      * @param logPredio actualza el logPredio existente
      * @param sesion que realiza la operación
      * @return Nombre del predio actualizado
      * @throws NewviExcepcion
      */
     public String actualizarLogPredio(LogPredio logPredio, SesionDto sesion) throws NewviExcepcion;
+
     /**
      * Devuelve un logPredio dado por un id
-     * @param  codLogPredio, código del logPredio a obtener
+     *
+     * @param codLogPredio, código del logPredio a obtener
      * @return logPredio
      * @throws NewviExcepcion
      */
     public LogPredio seleccionarLogPredio(Integer codLogPredio) throws NewviExcepcion;
+
     /**
      * Lista todos los LogPredios
+     *
      * @return lista de logPredio
      */
     public List<LogPredio> consultarLogPredio();
+
     /**
      * Elimina el logPredio dado
+     *
      * @param logPredio el logPredio a eliminar
      * @param sesion que realiza la operación
      * @return Nombre del logPredio eliminado
-     * @throws NewviExcepcion 
+     * @throws NewviExcepcion
      */
     public String eliminarLogPredio(LogPredio logPredio, SesionDto sesion) throws NewviExcepcion;
+
+    /*------------------------------------------------------------Servicios------------------------------------------------------------*/
+    /**
+     * Devuelve un servicio dado por un id
+     *
+     * @param codServicio codigo del servicio a ser buscado
+     * @return servicio
+     * @throws NewviExcepcion
+     */
+    public Servicios seleccionarServicio(Integer codServicio) throws NewviExcepcion;
+
+    /**
+     * Genera un log con las acciones realizadas en el servicio
+     *
+     * @param servicio El servicioa verificar
+     * @return El log del predio
+     * @throws NewviExcepcion
+     */
+    public String generarLogServicios(Servicios servicio) throws NewviExcepcion;
 }

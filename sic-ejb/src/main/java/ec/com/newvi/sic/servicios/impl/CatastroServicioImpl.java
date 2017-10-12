@@ -14,6 +14,7 @@ import ec.com.newvi.sic.dao.LogPredioFacade;
 import ec.com.newvi.sic.dao.PisosDetalleFacade;
 import ec.com.newvi.sic.dao.PisosFacade;
 import ec.com.newvi.sic.dao.PrediosFacade;
+import ec.com.newvi.sic.dao.ServicioFacade;
 import ec.com.newvi.sic.dao.TerrenoFacade;
 import ec.com.newvi.sic.dto.AvaluoDto;
 import ec.com.newvi.sic.dto.SesionDto;
@@ -31,6 +32,7 @@ import ec.com.newvi.sic.modelo.LogPredio;
 import ec.com.newvi.sic.modelo.PisoDetalle;
 import ec.com.newvi.sic.modelo.Pisos;
 import ec.com.newvi.sic.modelo.Predios;
+import ec.com.newvi.sic.modelo.Servicios;
 import ec.com.newvi.sic.modelo.Terreno;
 import ec.com.newvi.sic.servicios.CatastroServicio;
 import ec.com.newvi.sic.servicios.ParametrosServicio;
@@ -86,6 +88,8 @@ public class CatastroServicioImpl implements CatastroServicio {
     DetallesAvaluoFacade detallesAvaluoFacade;
     @EJB
     LogPredioFacade logPredioFacade;
+    @EJB
+    ServicioFacade servicioFacade;
 
 
     /*------------------------------------------------------------Predios------------------------------------------------------------*/
@@ -177,7 +181,7 @@ public class CatastroServicioImpl implements CatastroServicio {
 
         bloquesFacade.create(nuevoBloque);
         // Si todo marcha bien enviar nombre del bloque
-        return nuevoBloque.getNomBloque();
+        return nuevoBloque.getCodBloques().toString();
 
     }
 
@@ -328,7 +332,7 @@ public class CatastroServicioImpl implements CatastroServicio {
 
         pisosFacade.create(nuevoPiso);
         // Si todo marcha bien enviar nombre del piso
-        return nuevoPiso.getNomPiso();
+        return nuevoPiso.getCodPisos().toString();
 
     }
 
@@ -1095,6 +1099,26 @@ public class CatastroServicioImpl implements CatastroServicio {
         }
         else
             return "No existen cambios en el predio";
+    }
+    
+    @Override
+    public String generarLogServicios(Servicios servicio)throws NewviExcepcion{
+        Servicios servicioBase =  seleccionarServicio(servicio.getCodServicios());
+        String log = servicio.esObjetoIgual(servicio, servicioBase);
+        if (!ComunUtil.esCadenaVacia(log)) {
+            return log.replaceAll("^\\s*","");
+        }
+        else
+            return "";
+    }
+    
+    @Override
+    public Servicios seleccionarServicio(Integer codServicio) throws NewviExcepcion{
+        if (ComunUtil.esNumeroPositivo(codServicio)) {
+            return servicioFacade.find(codServicio);
+        } else {
+            throw new NewviExcepcion(EnumNewviExcepciones.ERR011);
+        }
     }
 
 }

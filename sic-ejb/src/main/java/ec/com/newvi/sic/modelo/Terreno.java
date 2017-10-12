@@ -46,7 +46,7 @@ public class Terreno implements Serializable {
     private String stsGrupo;
     @Size(max = 100)
     @Column(name = "sts_subgrupo")
-    private String stsSubgrupo;
+    private String stsSubGrupo;
     @Size(max = 100)
     @Column(name = "sts_descripcion")
     private String stsDescripcion;
@@ -108,12 +108,12 @@ public class Terreno implements Serializable {
         this.stsGrupo = stsGrupo;
     }
 
-    public String getStsSubgrupo() {
-        return stsSubgrupo;
+    public String getStsSubGrupo() {
+        return stsSubGrupo;
     }
 
-    public void setStsSubgrupo(String stsSubgrupo) {
-        this.stsSubgrupo = stsSubgrupo;
+    public void setStsSubGrupo(String stsSubGrupo) {
+        this.stsSubGrupo = stsSubGrupo;
     }
 
     public String getStsDescripcion() {
