@@ -9,10 +9,11 @@ import ec.com.newvi.sic.enums.EnumEstadoRegistro;
 import ec.com.newvi.sic.util.ComunUtil;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
-import javax.persistence.Basic;
+import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -20,12 +21,9 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
@@ -39,7 +37,6 @@ import javax.validation.constraints.Size;
  */
 @Entity
 @Table(name = "cat_cat_pisos")
-
 
 public class Pisos implements Serializable {
 
@@ -100,9 +97,9 @@ public class Pisos implements Serializable {
     @JoinColumn(name = "cod_bloques", referencedColumnName = "cod_bloques")
     @ManyToOne
     private Bloques codBloques;
-    
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "piso", fetch = FetchType.LAZY)
-    private Collection<PisoDetalle> detalles;
+    private List<PisoDetalle> detalles;
 
     public Pisos() {
     }
@@ -279,14 +276,14 @@ public class Pisos implements Serializable {
         this.codBloques = codBloques;
     }
 
-    public Collection<PisoDetalle> getDetalles() {
+    public List<PisoDetalle> getDetalles() {
         return detalles;
     }
 
-    public void setDetalles(Collection<PisoDetalle> detalles) {
+    public void setDetalles(List<PisoDetalle> detalles) {
         this.detalles = detalles;
     }
-    
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -311,19 +308,34 @@ public class Pisos implements Serializable {
     public String toString() {
         return "ec.com.newvi.sic.modelo.Pisos[ codPisos=" + codPisos + " ]";
     }
+
     public Boolean esPisoValido() {
         //return (!ComunUtil.esNulo(this.pisEstado));
-        boolean retorno= false;
-        if(!(ComunUtil.esNulo(this.codPisos))||!(ComunUtil.esNulo(this.pisEstado)))
-        {
+        boolean retorno = false;
+        if (!(ComunUtil.esNulo(this.codPisos)) || !(ComunUtil.esNulo(this.pisEstado))) {
             retorno = true;
         }
         return retorno;
     }
-    
+
     public Integer obtenerEdadPiso() {
         Calendar cal = Calendar.getInstance();
-        return cal.get(Calendar.YEAR) - this.getValAnioconstruccion() + 1;
-    } 
+        if (!ComunUtil.esNulo(this.getValAnioconstruccion())) {
+            return cal.get(Calendar.YEAR) - this.getValAnioconstruccion() + 1;
+        }else{
+            return 0;
+        }
+    }
     
+    public List<PisoDetalle> getDetallesPisosActivos() {
+        List<PisoDetalle> detallesActivos = new ArrayList<>();
+        
+        for (PisoDetalle detallePiso : detalles) {
+            if (!ComunUtil.esNulo(detallePiso.getEstado()) && detallePiso.getEstado().equals(EnumEstadoRegistro.A)) {
+                detallesActivos.add(detallePiso);
+            }
+        }
+        return detallesActivos;
+    }
+
 }

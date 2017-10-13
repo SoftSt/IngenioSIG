@@ -254,6 +254,13 @@ public interface CatastroServicio {
      * @throws NewviExcepcion
      */
     public String generarNuevoPisoDetalle(PisoDetalle nuevoPisoDetalle, SesionDto sesion) throws NewviExcepcion;
+    /**
+     * Devuelve un detalle de piso dado por id
+     * @param codDetallePiso codigo del detalle de piso 
+     * @return PisoDetalle
+     * @throws NewviExcepcion 
+     */
+    public PisoDetalle seleccionarDetallePiso(Integer codDetallePiso) throws NewviExcepcion;
 
     /*------------------------------------------------------------Terreno------------------------------------------------------------*/
     /**

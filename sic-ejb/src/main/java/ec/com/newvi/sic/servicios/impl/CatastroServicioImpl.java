@@ -526,6 +526,15 @@ public class CatastroServicioImpl implements CatastroServicio {
         return listaDetallesPiso;
     }
 
+    @Override
+    public PisoDetalle seleccionarDetallePiso(Integer codDetallePiso) throws NewviExcepcion {
+        if (ComunUtil.esNumeroPositivo(codDetallePiso)) {
+            return pisosDetalleFacade.find(codDetallePiso);
+        } else {
+            throw new NewviExcepcion(EnumNewviExcepciones.ERR011);
+        }
+    }
+
     /*------------------------------------------------------------Terreno------------------------------------------------------------*/
     @Override
     public String generarNuevoTerreno(Terreno nuevoTerreno, SesionDto sesion) throws NewviExcepcion {

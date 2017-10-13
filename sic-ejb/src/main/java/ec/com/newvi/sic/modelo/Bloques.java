@@ -9,8 +9,10 @@ import ec.com.newvi.sic.enums.EnumEstadoRegistro;
 import ec.com.newvi.sic.util.ComunUtil;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -37,7 +39,7 @@ import javax.xml.bind.annotation.XmlTransient;
 public class Bloques implements Serializable {
 
     @OneToMany(mappedBy = "codBloques")
-    private Collection<Pisos> pisosCollection;
+    private List<Pisos> pisosCollection;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -222,12 +224,23 @@ public class Bloques implements Serializable {
     }
 
     @XmlTransient
-    public Collection<Pisos> getPisosCollection() {
+    public List<Pisos> getPisosCollection() {
         return pisosCollection;
     }
 
-    public void setPisosCollection(Collection<Pisos> pisosCollection) {
+    public void setPisosCollection(List<Pisos> pisosCollection) {
         this.pisosCollection = pisosCollection;
+    }
+    
+    public List<Pisos> getPisosActivos() {
+        List<Pisos> pisosActivos = new ArrayList<>();
+        
+        for (Pisos piso : pisosCollection) {
+            if (!ComunUtil.esNulo(piso.getPisEstado()) && piso.getPisEstado().equals(EnumEstadoRegistro.A)) {
+                pisosActivos.add(piso);
+            }
+        }
+        return pisosActivos;
     }
 
     

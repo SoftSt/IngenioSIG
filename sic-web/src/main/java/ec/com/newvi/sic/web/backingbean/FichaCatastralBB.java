@@ -47,6 +47,8 @@ import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
@@ -1101,19 +1103,23 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
     public void eliminarPiso(Integer codPiso) {
         try {
             Pisos piso = catastroServicio.seleccionarPiso(codPiso);
-            for (Bloques bloque : this.predio.getBloques()) {
-                if (bloque.getCodBloques().equals(piso.getCodBloques().getCodBloques())) {
-                    for (Pisos pisoEditable : bloque.getPisosCollection()) {
-                        if (pisoEditable.getCodPisos().equals(codPiso)) {
-                            pisoEditable.setPisEstado(EnumEstadoRegistro.I);
-                            catastroServicio.actualizarPredio(this.predio, sesionBean.getSesion());
-                            LoggerNewvi.getLogNewvi(this.getClass()).info(EnumNewviExcepciones.INF373.presentarMensaje(), sesionBean.getSesion());
-                            MensajesFaces.mensajeInformacion(EnumNewviExcepciones.INF373.presentarMensaje());
-                            break;
-                        }
-                    }
-                }
-            }
+            piso.setPisEstado(EnumEstadoRegistro.I);
+            catastroServicio.actualizarPiso(piso, sesionBean.getSesion());
+            LoggerNewvi.getLogNewvi(this.getClass()).info(EnumNewviExcepciones.INF373.presentarMensaje(), sesionBean.getSesion());
+            MensajesFaces.mensajeInformacion(EnumNewviExcepciones.INF373.presentarMensaje());
+        } catch (NewviExcepcion ex) {
+            LoggerNewvi.getLogNewvi(this.getClass()).error(ex, sesionBean.getSesion());
+            MensajesFaces.mensajeError(ex.getMessage());
+        }
+    }
+
+    public void eliminarDetallePiso(Integer codDetallePiso) {
+        try {
+            PisoDetalle detalle = catastroServicio.seleccionarDetallePiso(codDetallePiso);
+            detalle.setEstado(EnumEstadoRegistro.I);
+            catastroServicio.actualizarPisoDetalle(detalle, sesionBean.getSesion());
+            LoggerNewvi.getLogNewvi(this.getClass()).info(EnumNewviExcepciones.INF374.presentarMensaje(), sesionBean.getSesion());
+                                MensajesFaces.mensajeInformacion(EnumNewviExcepciones.INF374.presentarMensaje());
         } catch (NewviExcepcion ex) {
             LoggerNewvi.getLogNewvi(this.getClass()).error(ex, sesionBean.getSesion());
             MensajesFaces.mensajeError(ex.getMessage());
