@@ -7,18 +7,24 @@ package ec.com.newvi.sic.web.backingbean;
 
 import ec.com.newvi.componente.reporte.ReporteGenerador;
 import ec.com.newvi.sic.dto.CaracteristicasEdificacionesDto;
+import ec.com.newvi.sic.dto.FichaCatastralDto;
 import ec.com.newvi.sic.dto.PresentacionFichaCatastralDto;
 import ec.com.newvi.sic.dto.TablaCatastralDto;
+import ec.com.newvi.sic.enums.EnumNewviExcepciones;
 import ec.com.newvi.sic.enums.EnumParametroSistema;
 import ec.com.newvi.sic.enums.EnumReporte;
 import ec.com.newvi.sic.geo.servicios.GeoCatastroServicio;
 import ec.com.newvi.sic.modelo.Avaluo;
+import ec.com.newvi.sic.modelo.ModeloPredioLazy;
 import ec.com.newvi.sic.modelo.Predios;
+import ec.com.newvi.sic.modelo.Propiedad;
 import ec.com.newvi.sic.servicios.CatastroServicio;
 import ec.com.newvi.sic.servicios.ContribuyentesServicio;
 import ec.com.newvi.sic.util.excepciones.NewviExcepcion;
 import ec.com.newvi.sic.util.logs.LoggerNewvi;
 import ec.com.newvi.sic.web.MensajesFaces;
+import ec.com.newvi.sic.web.enums.EnumEtiquetas;
+import ec.com.newvi.sic.web.enums.EnumPantallaMantenimiento;
 import ec.com.newvi.sic.web.enums.EnumParametrosReporte;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -27,6 +33,7 @@ import java.util.List;
 import java.util.Map;
 import javax.ejb.EJB;
 import org.primefaces.model.DefaultStreamedContent;
+import org.primefaces.model.LazyDataModel;
 
 /**
  *
@@ -41,6 +48,10 @@ public abstract class AdminFichaCatastralBB extends AdminSistemaBB {
     @EJB
     protected GeoCatastroServicio geoCatastroServicio;
 
+    protected List<FichaCatastralDto> listaFichas;
+    protected List<FichaCatastralDto> listaFichasFiltradas;
+    protected LazyDataModel<FichaCatastralDto> listaFichasLazy;
+
     protected Predios predio;
 
     public Predios getPredio() {
@@ -49,6 +60,55 @@ public abstract class AdminFichaCatastralBB extends AdminSistemaBB {
 
     public void setPredio(Predios predio) {
         this.predio = predio;
+    }
+
+    public LazyDataModel<FichaCatastralDto> getListaFichasLazy() {
+        return listaFichasLazy;
+    }
+
+    public void setListaFichasLazy(LazyDataModel<FichaCatastralDto> listaFichasLazy) {
+        this.listaFichasLazy = listaFichasLazy;
+    }
+
+    public List<FichaCatastralDto> getListaFichas() {
+        return listaFichas;
+    }
+
+    public void setListaFichas(List<FichaCatastralDto> listaFichas) {
+        this.listaFichas = listaFichas;
+    }
+
+    public List<FichaCatastralDto> getListaFichasFiltradas() {
+        return listaFichasFiltradas;
+    }
+
+    public void setListaFichasFiltradas(List<FichaCatastralDto> listaFichasFiltradas) {
+        this.listaFichasFiltradas = listaFichasFiltradas;
+    }
+
+    protected void actualizarListadoPredios() {
+        List<Predios> listaPredios = catastroServicio.consultarPredios();
+        listaFichas = new ArrayList<>();
+        listaPredios.forEach((elementoPredio) -> {
+            listaFichas.add(new FichaCatastralDto(elementoPredio));
+        });
+        listaFichasLazy = new ModeloPredioLazy(listaFichas);
+    }
+
+    protected void seleccionarPredioPorCodigo(Integer idPredio) throws NewviExcepcion {
+        this.predio = catastroServicio.seleccionarPredio(idPredio);
+    }
+
+    public void seleccionarPredio(Integer idPredio) {
+        try {
+            this.seleccionarPredioPorCodigo(idPredio);
+        } catch (NewviExcepcion e) {
+            LoggerNewvi.getLogNewvi(this.getClass()).error(e, sesionBean.getSesion());
+            MensajesFaces.mensajeError(e.getMessage());
+        } catch (Exception e) {
+            LoggerNewvi.getLogNewvi(this.getClass()).error(EnumNewviExcepciones.ERR000.presentarMensajeCodigo(), e, sesionBean.getSesion());
+            MensajesFaces.mensajeError(e.getMessage());
+        }
     }
 
     public List<Avaluo> generarListaAvaluo() {
@@ -95,7 +155,7 @@ public abstract class AdminFichaCatastralBB extends AdminSistemaBB {
         try {
             List datosImpresion;
             datosImpresion = obtenerListadoAvaluos(generarListaAvaluo());
-            
+
             Class claseImpresion = TablaCatastralDto.class;
             //BloqueDto bloques;
             CaracteristicasEdificacionesDto bloques;
@@ -118,12 +178,12 @@ public abstract class AdminFichaCatastralBB extends AdminSistemaBB {
 
                 parametrosReporte.put(EnumParametrosReporte.NOMBRE_MODULO.getNombre(), "CATASTRO PREDIAL URBANO");
                 parametrosReporte.put(EnumParametrosReporte.TITULO_REPORTE.getNombre(), "FICHA DE RELEVAMIENTO PREDIAL URBANO");
-                
+
                 parametrosReporte.put(EnumParametrosReporte.DESCRIPCION_TERRENO.getNombre(), ((PresentacionFichaCatastralDto) datosImpresion.get(0)).getListaDescripcionTerreno());
                 parametrosReporte.put(EnumParametrosReporte.INFRAESTRUCTURA_SERVICIOS.getNombre(), ((PresentacionFichaCatastralDto) datosImpresion.get(0)).getListaServicios());
                 parametrosReporte.put(EnumParametrosReporte.CARACTERISTICAS_EDIFICACION.getNombre(), ((PresentacionFichaCatastralDto) datosImpresion.get(0)).getListaBloques());
                 parametrosReporte.put(EnumParametrosReporte.PISO.getNombre(), bloques.getListadetallesPisoDtoD());
-                
+
                 parametrosReporte.put(EnumParametrosReporte.IMAGEN_DELIMITACION_PREDIO.getNombre(), parametrosServicio.obtenerParametroPorNombre(EnumParametroSistema.DIRECCION_SERVICIO_IMAGEN_PREDIO, sesionBean.getSesion()).getValor().concat(geoCatastroServicio.obtenerBordesPredio(predio, BigDecimal.valueOf(95), BigDecimal.valueOf(533), sesionBean.getSesion())));
             }
 

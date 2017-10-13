@@ -71,8 +71,6 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
 
     private Propiedad propiedadActual;
     private Propiedad propiedad;
-    private List<FichaCatastralDto> listaFichas;
-    private List<FichaCatastralDto> listaFichasFiltradas;
     private AvaluoDto raiz;
     private List<AvaluoDto> nodo;
     private List<DetallesAvaluo> nodoFinal;
@@ -94,7 +92,6 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
     private EnumTraslacion[] listaTraslacion;
     private EnumSitActual[] listaSituacionActual;
     private EnumSiNo[] listaEstadoEscritura;
-    private LazyDataModel<FichaCatastralDto> listaFichasLazy;
     private Boolean esPantallaEdicion;
     private Boolean esPantallaEliminacion;
     private Boolean esPantallaFormularios;
@@ -149,30 +146,6 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
 
     public void setEsPantallaEdicion(Boolean esPantallaEdicion) {
         this.esPantallaEdicion = esPantallaEdicion;
-    }
-
-    public LazyDataModel<FichaCatastralDto> getListaFichasLazy() {
-        return listaFichasLazy;
-    }
-
-    public void setListaFichasLazy(LazyDataModel<FichaCatastralDto> listaFichasLazy) {
-        this.listaFichasLazy = listaFichasLazy;
-    }
-
-    public List<FichaCatastralDto> getListaFichas() {
-        return listaFichas;
-    }
-
-    public void setListaFichas(List<FichaCatastralDto> listaFichas) {
-        this.listaFichas = listaFichas;
-    }
-
-    public List<FichaCatastralDto> getListaFichasFiltradas() {
-        return listaFichasFiltradas;
-    }
-
-    public void setListaFichasFiltradas(List<FichaCatastralDto> listaFichasFiltradas) {
-        this.listaFichasFiltradas = listaFichasFiltradas;
     }
 
     public EnumPantallaMantenimiento getPantallaActual() {
@@ -354,15 +327,6 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
         seleccionPantallas();
     }
 
-    private void actualizarListadoPredios() {
-        List<Predios> listaPredios = catastroServicio.consultarPredios();
-        listaFichas = new ArrayList<>();
-        listaPredios.forEach((elementoPredio) -> {
-            listaFichas.add(new FichaCatastralDto(elementoPredio));
-        });
-        listaFichasLazy = new ModeloPredioLazy(listaFichas);
-    }
-
     public void crearNuevoPredio() {
 
         this.predio = new Predios();
@@ -454,6 +418,7 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
 
     }
 
+    @Override
     public void seleccionarPredio(Integer idPredio) {
         this.seleccionarPredioPorCodigo(idPredio);
         calcularAvaluo();
@@ -490,9 +455,10 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
         }
     }
 
-    private void seleccionarPredioPorCodigo(Integer idPredio) {
+    @Override
+    protected void seleccionarPredioPorCodigo(Integer idPredio) {
         try {
-            this.predio = catastroServicio.seleccionarPredio(idPredio);
+            super.seleccionarPredioPorCodigo(idPredio);
             //this.predio.setCodManzana(this.predio.getCodManzana().trim());
             for (FichaCatastralDto fichasCatrastrales : listaFichas) {
                 if (fichasCatrastrales.getPredio().getCodCatastral().equals(idPredio)) {

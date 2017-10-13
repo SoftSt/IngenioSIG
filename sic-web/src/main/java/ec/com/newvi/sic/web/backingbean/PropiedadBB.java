@@ -30,7 +30,7 @@ import javax.faces.bean.ViewScoped;
  */
 @ManagedBean
 @ViewScoped
-public class PropiedadBB extends AdminContribuyentesBB {
+public class PropiedadBB extends AdminFichaCatastralBB {
 
     private Propiedad propiedad;
     private List<Propiedad> listaPropiedad;
@@ -104,12 +104,11 @@ public class PropiedadBB extends AdminContribuyentesBB {
     public void setListaTipoEscritura(EnumSiNo[] listaTipoEscritura) {
         this.listaTipoEscritura = listaTipoEscritura;
     }
-    
 
     @PostConstruct
     public void init() {
         this.propiedad = new Propiedad();
-        actualizarListadoPropiedad();
+        actualizarListadoPredios();
         listaTipoTenencia = EnumTenencia.values();
         listaTipoTraslacion = EnumTraslacion.values();
         listaTipoEscritura = EnumSiNo.values();
@@ -118,10 +117,6 @@ public class PropiedadBB extends AdminContribuyentesBB {
         establecerTitulo(EnumEtiquetas.PROPIETARIO_LISTA_TITULO,
                 EnumEtiquetas.PROPIETARIO_LISTA_ICONO,
                 EnumEtiquetas.PROPIETARIO_LISTA_DESCRIPCION);
-    }
-
-    private void actualizarListadoPropiedad() {
-        listaPropiedad = contribuyentesServicio.consultarPropiedad();
     }
 
     public void crearNuevoPropiedad() {
@@ -136,7 +131,7 @@ public class PropiedadBB extends AdminContribuyentesBB {
     public void insertarPropiedad() {
         try {
             contribuyentesServicio.generarNuevoPropiedad(propiedad, sesionBean.getSesion());
-            actualizarListadoPropiedad();
+            actualizarListadoPredios();
             MensajesFaces.mensajeInformacion(EnumNewviExcepciones.INF348.presentarMensaje());
         } catch (NewviExcepcion e) {
             LoggerNewvi.getLogNewvi(this.getClass()).error(e, sesionBean.getSesion());
@@ -153,7 +148,7 @@ public class PropiedadBB extends AdminContribuyentesBB {
         } else {
             try {
                 contribuyentesServicio.actualizarPropiedad(propiedad, sesionBean.getSesion());
-                actualizarListadoPropiedad();
+                actualizarListadoPredios();
                 MensajesFaces.mensajeInformacion(EnumNewviExcepciones.INF349.presentarMensaje());
             } catch (NewviExcepcion e) {
                 LoggerNewvi.getLogNewvi(this.getClass()).error(e, sesionBean.getSesion());
@@ -175,7 +170,7 @@ public class PropiedadBB extends AdminContribuyentesBB {
             if (!ComunUtil.esNulo(propiedad)) {
                 contribuyentesServicio.eliminarPropiedad(propiedad, sesionBean.getSesion());
                 MensajesFaces.mensajeInformacion(EnumNewviExcepciones.INF350.presentarMensaje());
-                actualizarListadoPropiedad();
+                actualizarListadoPredios();
 
             } else {
                 LoggerNewvi.getLogNewvi(this.getClass()).error(EnumNewviExcepciones.ERR010.presentarMensajeCodigo(), sesionBean.getSesion());

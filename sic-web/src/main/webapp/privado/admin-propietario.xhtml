@@ -32,6 +32,36 @@
                     </p>
 
 
+                    <p:dataTable id="listaFichaCatastral" var="fichaCatastral" widgetVar="listaFichaCatastralTabla"
+                                 value="#{propiedadBB.listaFichas}" rowKey="#{fichaCatastral.predio.codCatastral}" filteredValue="#{propiedadBB.listaFichasFiltradas}"
+                                 paginator="true" rows="20" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" 
+                                 rowsPerPageTemplate="10,15,20" 
+                                 emptyMessage="No se han encontrado resultados" 
+                                 paginatorPosition="bottom">
+                        <p:column headerText="Codigo" sortBy="#{fichaCatastral.predio.nomCodigocatastral}" filterBy="#{fichaCatastral.predio.nomCodigocatastral}">
+                            <h:outputText value="#{fichaCatastral.predio.nomCodigocatastral}" />
+                        </p:column>
+
+                        <p:column headerText="Propietario CI/RUC" sortBy="#{fichaCatastral.contribuyentePropiedad.codCedularuc}" filterBy="#{fichaCatastral.contribuyentePropiedad.codCedularuc}">
+                            <h:outputText value="#{fichaCatastral.contribuyentePropiedad.codCedularuc}"/>
+                        </p:column>
+
+                        <p:column headerText="Nombre Propietario" sortBy="#{fichaCatastral.contribuyentePropiedad.nomApellidos} #{fichaCatastral.contribuyentePropiedad.nomNombres}" filterBy="#{fichaCatastral.contribuyentePropiedad.nomApellidos} #{fichaCatastral.contribuyentePropiedad.nomNombres}" >
+                            <h:outputText value="#{fichaCatastral.contribuyentePropiedad.nomApellidos} #{fichaCatastral.contribuyentePropiedad.nomNombres}"/>
+                        </p:column>
+
+                        <p:column headerText="Seleccionar" width="80" rendered="#{fichaCatastralBB.esPantallaEdicion}">
+                            <p:commandButton process="listaFichaCatastral" 
+                                             actionListener="#{propiedadBB.seleccionarPredio(fichaCatastral.predio.codCatastral)}"
+                                             icon="fa fa-edit"
+                                             id="seleccionarFichaCatastral"
+                                             update="listaPropietario">
+                                <p:ajax update="toolTipEdit" process="@this" /> 
+                            </p:commandButton>
+                            <p:tooltip id="toolTipEdit" for="seleccionar FichaCatastral" value="Seleccionar predio" showEffect="fade" hideEffect="fade" position="bottom"/>
+                        </p:column>
+                    </p:dataTable>
+                    
                     <p:dataTable id="listaPropietario" var="propietario" widgetVar="listaPropietarioTabla"
                                  value="#{propiedadBB.listaPropiedad}" rowKey="#{propietario.propiedad}" filteredValue="#{propiedadBB.listaPropiedadFiltrados}"
                                  paginator="true" rows="5" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" 
