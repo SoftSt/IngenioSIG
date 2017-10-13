@@ -849,7 +849,7 @@ public class Predios implements Serializable {
     public List<Terreno> getCaracteristicasTerrenoActivas() {
         List<Terreno> caracteristicasTerrenoActivas = new ArrayList<>();
         for (Terreno terreno : caracteristicasTerreno) {
-            if (terreno.getTerEstado().equals(EnumEstadoRegistro.A) && !ComunUtil.esNulo(terreno.getTerEstado())) {
+            if (!ComunUtil.esNulo(terreno.getTerEstado()) && terreno.getTerEstado().equals(EnumEstadoRegistro.A)) {
                 caracteristicasTerrenoActivas.add(terreno);
             }
         }
@@ -859,7 +859,7 @@ public class Predios implements Serializable {
     public List<Servicios> getServicosActivos() {
         List<Servicios> serviciosActivos = new ArrayList<>();
         for (Servicios servicio : servicios) {
-            if (servicio.getSerEstado().equals(EnumEstadoRegistro.A) && !ComunUtil.esNulo(servicio.getSerEstado())) {
+            if (!ComunUtil.esNulo(servicio.getSerEstado()) && servicio.getSerEstado().equals(EnumEstadoRegistro.A)) {
                 serviciosActivos.add(servicio);
             }
         }
@@ -870,7 +870,7 @@ public class Predios implements Serializable {
         List<Bloques> bloquesActivos = new ArrayList<>();
         
         for (Bloques bloque : bloques) {
-            if (bloque.getBloEstado().equals(EnumEstadoRegistro.A) && !ComunUtil.esNulo(bloque.getBloEstado())) {
+            if (!ComunUtil.esNulo(bloque.getBloEstado()) && bloque.getBloEstado().equals(EnumEstadoRegistro.A)) {
                 bloquesActivos.add(bloque);
             }
         }
