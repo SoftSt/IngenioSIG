@@ -31,29 +31,10 @@ import javax.faces.context.FacesContext;
 @ManagedBean
 @ViewScoped
 
-public class ContribuyentesBB extends AdminContribuyentesBB {
+public class ContribuyentesBB extends AdminFichaCatastralBB {
 
-    private Contribuyentes contribuyente;
-    private List<Contribuyentes> listaContribuyentes;
-    private List<Contribuyentes> listaContribuyentesFiltrado;
     private EnumPantallaMantenimiento pantallaActual;
     private EnumTipoPersoneria[] listaTipoPersoneria; 
-
-    public Contribuyentes getContribuyente() {
-        return contribuyente;
-    }
-
-    public void setContribuyente(Contribuyentes contribuyente) {
-        this.contribuyente = contribuyente;
-    }
-
-    public List<Contribuyentes> getListaContribuyentes() {
-        return listaContribuyentes;
-    }
-
-    public void setListaContribuyentes(List<Contribuyentes> listaContribuyentes) {
-        this.listaContribuyentes = listaContribuyentes;
-    }
 
     public EnumPantallaMantenimiento getPantallaActual() {
         return pantallaActual;
@@ -63,14 +44,6 @@ public class ContribuyentesBB extends AdminContribuyentesBB {
         this.pantallaActual = pantallaActual;
     }
 
-    public List<Contribuyentes> getlistaContribuyentesFiltrado() {
-        return listaContribuyentesFiltrado;
-    }
-
-    public void setlistaContribuyentesFiltrado(List<Contribuyentes> listaContribuyentesFiltrado) {
-        this.listaContribuyentesFiltrado = listaContribuyentesFiltrado;
-    }
-
     public EnumTipoPersoneria[] getListaTipoPersoneria() {
         return listaTipoPersoneria;
     }
@@ -78,8 +51,6 @@ public class ContribuyentesBB extends AdminContribuyentesBB {
     public void setListaTipoPersoneria(EnumTipoPersoneria[] listaTipoPersoneria) {
         this.listaTipoPersoneria = listaTipoPersoneria;
     }
-    
-    
 
     @PostConstruct
     public void init() {
@@ -90,10 +61,6 @@ public class ContribuyentesBB extends AdminContribuyentesBB {
         establecerTitulo(EnumEtiquetas.CONTRIBUYENTES_LISTA_TITULO,
                 EnumEtiquetas.CONTRIBUYENTES_LISTA_ICONO,
                 EnumEtiquetas.CONTRIBUYENTES_LISTA_DESCRIPCION);
-    }
-
-    private void actualizarListadoContribuyentes() {
-        listaContribuyentes = contribuyentesServicio.consultarContribuyentes();
     }
 
     public void crearNuevoContribuyente() {
@@ -165,23 +132,13 @@ public class ContribuyentesBB extends AdminContribuyentesBB {
 
     }
 
+    @Override
     public void seleccionarContribuyente(Integer idContribuyente) {
-        try {
-            this.seleccionarContribuyentePorCodigo(idContribuyente);
-        } catch (NewviExcepcion e) {
-            MensajesFaces.mensajeError(e.getMessage());
-        } catch (Exception e) {
-            LoggerNewvi.getLogNewvi(this.getClass()).error(EnumNewviExcepciones.ERR000.presentarMensajeCodigo(), e, sesionBean.getSesion());
-            MensajesFaces.mensajeError(EnumNewviExcepciones.ERR000.presentarMensajeCodigo());
-        }
+        super.seleccionarContribuyente(idContribuyente);
         conmutarPantalla(EnumPantallaMantenimiento.PANTALLA_EDICION);
         establecerTitulo(EnumEtiquetas.CONTRIBUYENTES_EDITAR_TITULO,
                 EnumEtiquetas.CONTRIBUYENTES_EDITAR_ICONO,
                 EnumEtiquetas.CONTRIBUYENTES_EDITAR_DESCRIPCION);
-    }
-
-    private void seleccionarContribuyentePorCodigo(Integer idContribuyente) throws NewviExcepcion {
-        this.contribuyente = contribuyentesServicio.seleccionarContribuyente(idContribuyente);
     }
 
     public void cancelarEdicion() {

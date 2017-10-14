@@ -70,7 +70,6 @@ import org.primefaces.model.TreeNode;
 public class FichaCatastralBB extends AdminFichaCatastralBB {
 
     private Propiedad propiedadActual;
-    private Propiedad propiedad;
     private AvaluoDto raiz;
     private List<AvaluoDto> nodo;
     private List<DetallesAvaluo> nodoFinal;
@@ -170,14 +169,6 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
 
     public void setPropiedadActual(Propiedad propiedadActual) {
         this.propiedadActual = propiedadActual;
-    }
-
-    public Propiedad getPropiedad() {
-        return propiedad;
-    }
-
-    public void setPropiedad(Propiedad propiedad) {
-        this.propiedad = propiedad;
     }
 
     public TreeNode getListaArbolServicios() {
@@ -459,35 +450,16 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
     protected void seleccionarPredioPorCodigo(Integer idPredio) {
         try {
             super.seleccionarPredioPorCodigo(idPredio);
-            //this.predio.setCodManzana(this.predio.getCodManzana().trim());
-            for (FichaCatastralDto fichasCatrastrales : listaFichas) {
-                if (fichasCatrastrales.getPredio().getCodCatastral().equals(idPredio)) {
-                    propiedad = fichasCatrastrales.getPropiedad();
-                }
-            }
-            this.propiedadActual = contribuyentesServicio.consultarUltimoPropiedad(this.predio);
-
+            FichaCatastralDto fichaCatastralActual = new FichaCatastralDto(this.predio);
+            propiedadActual = fichaCatastralActual.getPropiedad();
         } catch (NewviExcepcion e) {
             LoggerNewvi.getLogNewvi(this.getClass()).error(e, sesionBean.getSesion());
             MensajesFaces.mensajeError(e.getMessage());
-            this.propiedadActual = new Propiedad();
         } catch (Exception e) {
             LoggerNewvi.getLogNewvi(this.getClass()).error(EnumNewviExcepciones.ERR000.presentarMensajeCodigo(), e, sesionBean.getSesion());
             MensajesFaces.mensajeError(e.getMessage());
-            this.propiedadActual = new Propiedad();
         }
-
         listarFotosPorPredio(this.predio.getCodCatastral());
-    }
-
-    public Propiedad obtenerPropiedad(Predios predioConsulta) {
-        try {
-            return contribuyentesServicio.consultarUltimoPropiedad(predioConsulta);
-        } catch (NewviExcepcion e) {
-            LoggerNewvi.getLogNewvi(this.getClass()).error(e, sesionBean.getSesion());
-            MensajesFaces.mensajeError(e.getMessage());
-            return null;
-        }
     }
 
     public void cancelarEdicion() {
@@ -903,7 +875,7 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
 
     public void actualizarPropiedad(int cod_propiedad) {
         try {
-            contribuyentesServicio.actualizarPropiedad(this.propiedad, sesionBean.getSesion());
+            contribuyentesServicio.actualizarPropiedad(this.propiedadActual, sesionBean.getSesion());
             LoggerNewvi.getLogNewvi(this.getClass()).info(EnumNewviExcepciones.INF359.presentarMensaje(), sesionBean.getSesion());
             MensajesFaces.mensajeInformacion(EnumNewviExcepciones.INF359.presentarMensaje());
         } catch (NewviExcepcion e) {
@@ -1085,7 +1057,7 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
             detalle.setEstado(EnumEstadoRegistro.I);
             catastroServicio.actualizarPisoDetalle(detalle, sesionBean.getSesion());
             LoggerNewvi.getLogNewvi(this.getClass()).info(EnumNewviExcepciones.INF374.presentarMensaje(), sesionBean.getSesion());
-                                MensajesFaces.mensajeInformacion(EnumNewviExcepciones.INF374.presentarMensaje());
+            MensajesFaces.mensajeInformacion(EnumNewviExcepciones.INF374.presentarMensaje());
         } catch (NewviExcepcion ex) {
             LoggerNewvi.getLogNewvi(this.getClass()).error(ex, sesionBean.getSesion());
             MensajesFaces.mensajeError(ex.getMessage());

@@ -15,6 +15,7 @@ import ec.com.newvi.sic.enums.EnumParametroSistema;
 import ec.com.newvi.sic.enums.EnumReporte;
 import ec.com.newvi.sic.geo.servicios.GeoCatastroServicio;
 import ec.com.newvi.sic.modelo.Avaluo;
+import ec.com.newvi.sic.modelo.Contribuyentes;
 import ec.com.newvi.sic.modelo.ModeloPredioLazy;
 import ec.com.newvi.sic.modelo.Predios;
 import ec.com.newvi.sic.modelo.Propiedad;
@@ -52,7 +53,11 @@ public abstract class AdminFichaCatastralBB extends AdminSistemaBB {
     protected List<FichaCatastralDto> listaFichasFiltradas;
     protected LazyDataModel<FichaCatastralDto> listaFichasLazy;
 
+    protected List<Contribuyentes> listaContribuyentes;
+    protected List<Contribuyentes> listaContribuyentesFiltrado;
+    
     protected Predios predio;
+    protected Contribuyentes contribuyente;
 
     public Predios getPredio() {
         return predio;
@@ -60,6 +65,14 @@ public abstract class AdminFichaCatastralBB extends AdminSistemaBB {
 
     public void setPredio(Predios predio) {
         this.predio = predio;
+    }
+
+    public Contribuyentes getContribuyente() {
+        return contribuyente;
+    }
+
+    public void setContribuyente(Contribuyentes contribuyente) {
+        this.contribuyente = contribuyente;
     }
 
     public LazyDataModel<FichaCatastralDto> getListaFichasLazy() {
@@ -86,6 +99,22 @@ public abstract class AdminFichaCatastralBB extends AdminSistemaBB {
         this.listaFichasFiltradas = listaFichasFiltradas;
     }
 
+    public List<Contribuyentes> getListaContribuyentes() {
+        return listaContribuyentes;
+    }
+
+    public void setListaContribuyentes(List<Contribuyentes> listaContribuyentes) {
+        this.listaContribuyentes = listaContribuyentes;
+    }
+
+    public List<Contribuyentes> getlistaContribuyentesFiltrado() {
+        return listaContribuyentesFiltrado;
+    }
+
+    public void setlistaContribuyentesFiltrado(List<Contribuyentes> listaContribuyentesFiltrado) {
+        this.listaContribuyentesFiltrado = listaContribuyentesFiltrado;
+    }
+
     protected void actualizarListadoPredios() {
         List<Predios> listaPredios = catastroServicio.consultarPredios();
         listaFichas = new ArrayList<>();
@@ -95,13 +124,33 @@ public abstract class AdminFichaCatastralBB extends AdminSistemaBB {
         listaFichasLazy = new ModeloPredioLazy(listaFichas);
     }
 
+    protected void actualizarListadoContribuyentes() {
+        listaContribuyentes = contribuyentesServicio.consultarContribuyentes();
+    }
+
     protected void seleccionarPredioPorCodigo(Integer idPredio) throws NewviExcepcion {
         this.predio = catastroServicio.seleccionarPredio(idPredio);
+    }
+
+    protected void seleccionarContribuyentePorCodigo(Integer idContribuyente) throws NewviExcepcion {
+        this.contribuyente = contribuyentesServicio.seleccionarContribuyente(idContribuyente);
     }
 
     public void seleccionarPredio(Integer idPredio) {
         try {
             this.seleccionarPredioPorCodigo(idPredio);
+        } catch (NewviExcepcion e) {
+            LoggerNewvi.getLogNewvi(this.getClass()).error(e, sesionBean.getSesion());
+            MensajesFaces.mensajeError(e.getMessage());
+        } catch (Exception e) {
+            LoggerNewvi.getLogNewvi(this.getClass()).error(EnumNewviExcepciones.ERR000.presentarMensajeCodigo(), e, sesionBean.getSesion());
+            MensajesFaces.mensajeError(e.getMessage());
+        }
+    }
+    
+    public void seleccionarContribuyente(Integer idContribuyente) {
+        try {
+            this.seleccionarContribuyentePorCodigo(idContribuyente);
         } catch (NewviExcepcion e) {
             LoggerNewvi.getLogNewvi(this.getClass()).error(e, sesionBean.getSesion());
             MensajesFaces.mensajeError(e.getMessage());

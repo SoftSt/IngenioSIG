@@ -11,6 +11,7 @@ import ec.com.newvi.sic.enums.EnumSiNo;
 import ec.com.newvi.sic.enums.EnumSitActual;
 import ec.com.newvi.sic.enums.EnumTenencia;
 import ec.com.newvi.sic.enums.EnumTraslacion;
+import ec.com.newvi.sic.modelo.Contribuyentes;
 import ec.com.newvi.sic.modelo.Propiedad;
 import ec.com.newvi.sic.util.ComunUtil;
 import ec.com.newvi.sic.util.excepciones.NewviExcepcion;
@@ -122,6 +123,8 @@ public class PropiedadBB extends AdminFichaCatastralBB {
     public void crearNuevoPropiedad() {
         this.propiedad = new Propiedad();
         this.propiedad.setProEstado(EnumEstadoRegistro.A);
+        this.propiedad.setPropiedad(contribuyente);
+        this.propiedad.setCodCatastral(predio);
         conmutarPantalla(EnumPantallaMantenimiento.PANTALLA_EDICION);
         establecerTitulo(EnumEtiquetas.PROPIETARIO_NUEVO_TITULO,
                 EnumEtiquetas.PROPIETARIO_NUEVO_ICONO,
@@ -186,6 +189,28 @@ public class PropiedadBB extends AdminFichaCatastralBB {
 
     }
 
+    @Override
+    public void seleccionarPredio(Integer idPredio) {
+        super.seleccionarPredio(idPredio);
+        this.listaPropiedad = (List) predio.getHistoricoPropiedad();
+        conmutarPantalla(EnumPantallaMantenimiento.PANTALLA_EDICION);
+        establecerTitulo(EnumEtiquetas.PROPIETARIO_EDITAR_TITULO,
+                EnumEtiquetas.PROPIETARIO_EDITAR_ICONO,
+                EnumEtiquetas.PROPIETARIO_EDITAR_DESCRIPCION);
+    }
+    
+    public void seleccionarPredioParaNuevaPropiedad(Integer idPredio) {
+        super.seleccionarPredio(idPredio);
+        this.listaPropiedad = (List) predio.getHistoricoPropiedad();
+        this.actualizarListadoContribuyentes();
+        WebUtils.obtenerContextoPeticion().execute("PF('dlgContribuyente').show()");
+    }
+    
+    public void seleccionarContribuyenteParaNuevaPropiedad(Integer idContribuyente) {
+        this.seleccionarContribuyente(idContribuyente);
+        this.crearNuevoPropiedad();
+    }
+        
     public void seleccionarPropiedad(Integer idPropiedad) {
         try {
             this.seleccionarPropiedadPorCodigo(idPropiedad);
