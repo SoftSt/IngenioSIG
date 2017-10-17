@@ -13,10 +13,12 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -38,7 +40,8 @@ import javax.xml.bind.annotation.XmlTransient;
 
 public class Bloques implements Serializable {
 
-    @OneToMany(mappedBy = "codBloques")
+    //@OneToMany(mappedBy = "codBloques")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "codBloques", fetch = FetchType.LAZY)
     private List<Pisos> pisosCollection;
 
     private static final long serialVersionUID = 1L;
@@ -234,14 +237,26 @@ public class Bloques implements Serializable {
     
     public List<Pisos> getPisosActivos() {
         List<Pisos> pisosActivos = new ArrayList<>();
-        
-        for (Pisos piso : pisosCollection) {
-            if (!ComunUtil.esNulo(piso.getPisEstado()) && piso.getPisEstado().equals(EnumEstadoRegistro.A)) {
-                pisosActivos.add(piso);
+        if(!ComunUtil.esNulo(pisosCollection)){
+            for (Pisos piso : pisosCollection) {
+                if (!ComunUtil.esNulo(piso.getPisEstado()) && piso.getPisEstado().equals(EnumEstadoRegistro.A)) {
+                    pisosActivos.add(piso);
+                }
             }
         }
         return pisosActivos;
     }
+    public Bloques eliminarHijos(){
+        if(!ComunUtil.esNulo(this.pisosCollection)){
+            for (Pisos piso : this.pisosCollection) {
+                piso.setPisEstado(EnumEstadoRegistro.I);
+                piso.eliminarHijos();
+            }
+        }
+        return this;
+    }
+    
+    
 
     
 }

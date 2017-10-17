@@ -23,5 +23,22 @@
             </p:layoutUnit>
 
         </p:layout>
+
+        <p:dialog modal="true" widgetVar="statusDialog" draggable="false" closable="false" resizable="false">
+
+        </p:dialog>
+        <script type="text/javascript">
+            function start() {
+                PF('statusDialog').show();
+            }
+
+            function stop() {
+                PF('statusDialog').hide();
+            }
+
+            
+        </script>
+
     </h:body>
+
 </html>

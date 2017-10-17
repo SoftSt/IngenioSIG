@@ -8,7 +8,6 @@ package ec.com.newvi.sic.web.backingbean;
 import ec.com.newvi.sic.dto.AvaluoDto;
 import ec.com.newvi.sic.dto.DominioDto;
 import ec.com.newvi.sic.dto.FichaCatastralDto;
-import ec.com.newvi.sic.dto.PresentacionFichaCatastral;
 import ec.com.newvi.sic.dto.SesionDto;
 import ec.com.newvi.sic.enums.EnumAcciones;
 import ec.com.newvi.sic.enums.EnumEstadoPisoDetalle;
@@ -572,6 +571,7 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
         Bloques bloque = new Bloques();
         bloque.setCodCatastral(this.predio);
         bloque.setNomBloque("Nuevo");
+        bloque.setValNropisos("0");
         bloque.setBloEstado(EnumEstadoRegistro.A);
         String logBloque = generarLogAdicionBloques(catastroServicio.generarNuevoBloque(bloque, sesionBean.getSesion()), this.predio);
         this.predio.getBloques().add(bloque);
@@ -605,7 +605,7 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
                 piso.setCodBloques(bloque);
                 String txtNPisos = bloque.getValNropisos();
                 if (!ComunUtil.esNulo(txtNPisos)) {
-                    numPisos = (Integer.valueOf(txtNPisos));
+                    numPisos = (Integer.valueOf(txtNPisos.trim()));
                 } else {
                     numPisos = 0;
                 }
@@ -1022,6 +1022,7 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
         for (Bloques bloque : this.predio.getBloques()) {
             if (bloque.getCodBloques().equals(codBloque)) {
                 bloque.setBloEstado(EnumEstadoRegistro.I);
+                bloque.eliminarHijos();
                 try {
                     catastroServicio.actualizarPredio(this.predio, sesionBean.getSesion());
                     LoggerNewvi.getLogNewvi(this.getClass()).info(EnumNewviExcepciones.INF372.presentarMensaje(), sesionBean.getSesion());
@@ -1041,10 +1042,24 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
     public void eliminarPiso(Integer codPiso) {
         try {
             Pisos piso = catastroServicio.seleccionarPiso(codPiso);
-            piso.setPisEstado(EnumEstadoRegistro.I);
-            catastroServicio.actualizarPiso(piso, sesionBean.getSesion());
-            LoggerNewvi.getLogNewvi(this.getClass()).info(EnumNewviExcepciones.INF373.presentarMensaje(), sesionBean.getSesion());
-            MensajesFaces.mensajeInformacion(EnumNewviExcepciones.INF373.presentarMensaje());
+            for (Bloques bloque : this.predio.getBloques()) {
+                if (bloque.getCodBloques().equals(piso.getCodBloques().getCodBloques())) {
+                    for (Pisos pisoEditable : bloque.getPisosCollection()) {
+                        if (pisoEditable.getCodPisos().equals(codPiso)) {
+                            Integer numPisos =Integer.valueOf(bloque.getValNropisos().trim());
+                            bloque.setValNropisos((--numPisos).toString()) ;
+                            pisoEditable.setPisEstado(EnumEstadoRegistro.I);
+                            pisoEditable.eliminarHijos();
+                            catastroServicio.actualizarPiso(pisoEditable, sesionBean.getSesion());
+                            catastroServicio.actualizarBloque(bloque, sesionBean.getSesion());
+                            catastroServicio.actualizarPredio(this.predio, sesionBean.getSesion());
+                            LoggerNewvi.getLogNewvi(this.getClass()).info(EnumNewviExcepciones.INF373.presentarMensaje(), sesionBean.getSesion());
+                            MensajesFaces.mensajeInformacion(EnumNewviExcepciones.INF373.presentarMensaje());
+                            break;
+                        }
+                    }
+                }
+            }
         } catch (NewviExcepcion ex) {
             LoggerNewvi.getLogNewvi(this.getClass()).error(ex, sesionBean.getSesion());
             MensajesFaces.mensajeError(ex.getMessage());
@@ -1053,11 +1068,25 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
 
     public void eliminarDetallePiso(Integer codDetallePiso) {
         try {
-            PisoDetalle detalle = catastroServicio.seleccionarDetallePiso(codDetallePiso);
-            detalle.setEstado(EnumEstadoRegistro.I);
-            catastroServicio.actualizarPisoDetalle(detalle, sesionBean.getSesion());
-            LoggerNewvi.getLogNewvi(this.getClass()).info(EnumNewviExcepciones.INF374.presentarMensaje(), sesionBean.getSesion());
-            MensajesFaces.mensajeInformacion(EnumNewviExcepciones.INF374.presentarMensaje());
+            Pisos pisoBuscado = catastroServicio.seleccionarPiso(catastroServicio.seleccionarDetallePiso(codDetallePiso).getPiso().getCodPisos());
+            for (Bloques bloque : this.predio.getBloques()) {
+                if (bloque.getCodBloques().equals(pisoBuscado.getCodBloques().getCodBloques())) {
+                    for (Pisos piso : bloque.getPisosCollection()) {
+                        if (piso.getCodPisos().equals(pisoBuscado.getCodPisos())) {
+                            for (PisoDetalle detalle : piso.getDetalles()) {
+                                Integer codDetalleActual = detalle.getCodPisoDetalle();
+                                if(codDetalleActual.equals(codDetallePiso));
+                                detalle.setEstado(EnumEstadoRegistro.I);
+                                catastroServicio.actualizarPisoDetalle(detalle, sesionBean.getSesion());
+                                catastroServicio.actualizarPredio(this.predio, sesionBean.getSesion());
+                                LoggerNewvi.getLogNewvi(this.getClass()).info(EnumNewviExcepciones.INF374.presentarMensaje(), sesionBean.getSesion());
+                                MensajesFaces.mensajeInformacion(EnumNewviExcepciones.INF374.presentarMensaje());
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
         } catch (NewviExcepcion ex) {
             LoggerNewvi.getLogNewvi(this.getClass()).error(ex, sesionBean.getSesion());
             MensajesFaces.mensajeError(ex.getMessage());

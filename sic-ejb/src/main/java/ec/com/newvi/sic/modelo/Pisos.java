@@ -322,20 +322,31 @@ public class Pisos implements Serializable {
         Calendar cal = Calendar.getInstance();
         if (!ComunUtil.esNulo(this.getValAnioconstruccion())) {
             return cal.get(Calendar.YEAR) - this.getValAnioconstruccion() + 1;
-        }else{
+        } else {
             return 0;
         }
     }
-    
+
     public List<PisoDetalle> getDetallesPisosActivos() {
         List<PisoDetalle> detallesActivos = new ArrayList<>();
-        
-        for (PisoDetalle detallePiso : detalles) {
-            if (!ComunUtil.esNulo(detallePiso.getEstado()) && detallePiso.getEstado().equals(EnumEstadoRegistro.A)) {
-                detallesActivos.add(detallePiso);
+        if (!ComunUtil.esNulo(detalles)) {
+            for (PisoDetalle detallePiso : detalles) {
+                if (!ComunUtil.esNulo(detallePiso.getEstado()) && detallePiso.getEstado().equals(EnumEstadoRegistro.A)) {
+                    detallesActivos.add(detallePiso);
+                }
             }
         }
+
         return detallesActivos;
+    }
+    
+    public Pisos eliminarHijos(){
+        if(!ComunUtil.esNulo(detalles)){
+            for (PisoDetalle detalle : detalles) {
+                detalle.setEstado(EnumEstadoRegistro.I);
+            }
+        }
+        return this;
     }
 
 }

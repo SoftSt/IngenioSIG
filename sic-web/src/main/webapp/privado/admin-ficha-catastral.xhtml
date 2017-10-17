@@ -70,42 +70,50 @@
                             <p:tooltip id="toolTipEdit" for="editarFichaCatastral" value="Editar FichaCatastral" showEffect="fade" hideEffect="fade" position="bottom"/>
                         </p:column>
                         <p:column headerText="Generar" width="80" rendered="#{fichaCatastralBB.esPantallaFormularios}">
+                            <p:remoteCommand name="rc" actionListener="#{fichaCatastralBB.abrirDialogImpresionFormulario(fichaCatastral.predio.codCatastral)}"/>
                             <p:commandButton process="listaFichaCatastral" 
-                                             actionListener="#{fichaCatastralBB.abrirDialogImpresionFormulario(fichaCatastral.predio.codCatastral)}"
                                              icon="fa fa-angle-double-right"
-                                             id="generarFormulario"
-                                             update="grupoFichaCatastral">
-                                <p:ajax update="toolTipAdd" process="@this" /> 
+                                             actionListener="#{fichaCatastralBB.abrirDialogImpresionFormulario(fichaCatastral.predio.codCatastral)}"
+                                             id="generarFormulario">
+
                             </p:commandButton>
                             <p:tooltip id="toolTipAdd" for="generarFormulario" value="Generar Reportes" showEffect="fade" hideEffect="fade" position="bottom"/>
                         </p:column>
                     </p:dataTable>
-                    <p:dialog header="Seleccionar Formulario Económico" appendTo="@(body)" widgetVar="wgSeleccionFormulario" 
-                              modal="true" height="100">
-                        <p><h:outputText value="Seleccione el tipo de formulario económico que necesita" /></p>
-                        <h:panelGrid columns="3">
-                            <p:commandButton icon="fa fa-print" 
-                                             value="Notificación Avalúo" 
-                                             id="imprimirNotificacionAvaluo"
-                                             update="grupoFichaCatastral"
-                                             onclick="PrimeFaces.monitorDownload(start, stop);">
-                                <p:fileDownload value="#{fichaCatastralBB.imprimir('NOTIFICACION_AVALUO')}" />
-                            </p:commandButton>
-                            <p:commandButton icon="fa fa-print" 
-                                             value="Cerfiticación Avalúo" 
-                                             id="imprimirCerfiticacionAvaluo"
-                                             update="grupoFichaCatastral"
-                                             onclick="PrimeFaces.monitorDownload(start, stop);">
-                                <p:fileDownload value="#{fichaCatastralBB.imprimir('CERTIFICACION_AVALUO')}" />
-                            </p:commandButton>
-                            <p:commandButton icon="fa fa-print" 
-                                             value="Título Credito" 
-                                             id="imprimirTituloCredito"
-                                             update="grupoFichaCatastral"
-                                             onclick="PrimeFaces.monitorDownload(start, stop);">
-                                <p:fileDownload value="#{fichaCatastralBB.imprimir('TITULO_CREDITO')}" />
-                            </p:commandButton>
-                        </h:panelGrid>
+
+                    <p:dialog header="Seleccionar Formulario Económico" widgetVar="wgSeleccionFormulario"
+                              modal="true"  hideEffect="explode" onShow="ovBodyHidden();" onHide="ovBodyAuto();" height="100">
+                        <h:form id="formulacioDialog">
+                            <p><h:outputText value="Seleccione el tipo de formulario económico que necesita" /></p>
+                            <h:panelGrid columns="3">
+
+                                <p:commandButton icon="fa fa-print" 
+                                                 value="Notificación Avalúo" 
+                                                 id="imprimirNotificacionAvaluo"
+                                                 ajax="false"
+                                                 update="grupoFichaCatastral"
+                                                 onclick="PrimeFaces.monitorDownload(start, stop);">
+                                    <p:fileDownload value="#{fichaCatastralBB.imprimir('NOTIFICACION_AVALUO')}" />
+                                </p:commandButton>
+
+                                <p:commandButton icon="fa fa-print" 
+                                                 value="Cerfiticación Avalúo" 
+                                                 id="imprimirCerfiticacionAvaluo"
+                                                 ajax="false"
+                                                 update="grupoFichaCatastral"
+                                                 onclick="PrimeFaces.monitorDownload(start, stop);">
+                                    <p:fileDownload value="#{fichaCatastralBB.imprimir('CERTIFICACION_AVALUO')}" />
+                                </p:commandButton>
+                                <p:commandButton icon="fa fa-print" 
+                                                 value="Título Credito"
+                                                 id="imprimirTituloCredito"
+                                                 ajax="false"
+                                                 update="grupoFichaCatastral"
+                                                 onclick="PrimeFaces.monitorDownload(start, stop);">
+                                    <p:fileDownload value="#{fichaCatastralBB.imprimir('TITULO_CREDITO')}" />
+                                </p:commandButton>
+                            </h:panelGrid>
+                        </h:form>
                     </p:dialog>
                     <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
                         <p:commandButton value="Si" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
@@ -620,7 +628,7 @@
                                                     <p:tooltip id="toolTipInsertDetalle" for="nuevoDetalle" value="Agregar nuevo detalle" showEffect="fade" hideEffect="fade" position="bottom"/>
 
                                                     <p:dataTable id="listaElementosConstruccion" editable="true" var="elementosConstruccion" scrollable="true" scrollHeight="250" widgetVar="listaElementosConstruccionTabla"
-                                                                 value="#{piso.detallesPisosActivos}" rowKey="#{elementosConstruccion.codPisoDetalle}" filteredValue=""
+                                                                 value="#{piso.detallesPisosActivos}" rowKey="#{elementosConstruccion.codPisoDetalle}"
                                                                  emptyMessage="No se han encontrado resultados">
 
                                                         <p:ajax event="rowEdit" listener="#{fichaCatastralBB.actualizarDetallePisoIngresado(elementosConstruccion)}" update="listaElementosConstruccion"/>
@@ -727,6 +735,7 @@
                             <p:commandButton icon="fa fa-print" 
                                              value="Imprimir" 
                                              id="imprimir"
+                                             ajax="false"
                                              update="grupoFichaCatastral"
                                              onclick="PrimeFaces.monitorDownload(start, stop);">
                                 <p:fileDownload value="#{fichaCatastralBB.imprimir('FICHA_RELEVAMIENTO_PREDIAL_URBANO')}" />
@@ -1291,6 +1300,7 @@
                     </p:outputPanel>
 
                 </h:form>
+
             </p:panel>
 
         </h:panelGroup>

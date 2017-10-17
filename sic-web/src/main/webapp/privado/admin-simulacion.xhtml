@@ -85,7 +85,7 @@
 
 
                     </p:outputPanel>
-                    <p:dialog header="Seleccionar Impresión" widgetVar="wgSeleccionImpresion" 
+                    <p:dialog header="Seleccionar Impresión" appendTo="@(body)" widgetVar="wgSeleccionImpresion" 
                               modal="true" height="100">
                         <p><h:outputText value="Seleccione el tipo de impresión que necesita" /></p>
                         <h:panelGrid columns="2">
@@ -93,6 +93,7 @@
                                              value="Condensado" 
                                              id="imprimirCondensado"
                                              update="grupoAvaluos"
+                                             ajax="false"
                                              onclick="PrimeFaces.monitorDownload(start, stop);">
                                 <p:fileDownload value="#{avaluoBB.imprimir('TABLA_CATASTRAL_URBANA_CONDENSADA')}" />
                             </p:commandButton>
@@ -107,7 +108,7 @@
                     </p:dialog>   
                 </h:form>
 
-                <p:dialog header="Cálculo de Avalúos" id="generarSim" widgetVar="dlgSimulacion" modal="true" height="300" width="400">
+                <p:dialog header="Cálculo de Avalúos" id="generarSim" widgetVar="dlgSimulacion" appendTo="@(body)" modal="true" height="300" width="400">
                     <h:form id="formCalculoAvaluo">
 
                         <p><h:outputText value="Para iniciar, de clic en el botón a continuación"></h:outputText></p>
@@ -145,7 +146,6 @@
                         background-image:none; 
                     }
                 </style>
-
             </p:panel>
         </h:panelGroup>
     </ui:define>

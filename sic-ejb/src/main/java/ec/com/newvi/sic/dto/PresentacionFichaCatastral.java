@@ -11,7 +11,6 @@ import ec.com.newvi.sic.modelo.Pisos;
 import ec.com.newvi.sic.modelo.Predios;
 import ec.com.newvi.sic.modelo.Servicios;
 import ec.com.newvi.sic.modelo.Terreno;
-import java.util.ArrayList;
 import java.util.List;
 
 /**

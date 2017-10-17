@@ -865,7 +865,7 @@ public class Predios implements Serializable {
 
     public List<Bloques> getBloquesActivos() {
         List<Bloques> bloquesActivos = new ArrayList<>();
-        
+
         for (Bloques bloque : bloques) {
             if (!ComunUtil.esNulo(bloque.getBloEstado()) && bloque.getBloEstado().equals(EnumEstadoRegistro.A)) {
                 bloquesActivos.add(bloque);

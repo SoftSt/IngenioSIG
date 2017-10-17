@@ -295,10 +295,12 @@ public class CatastroServicioImpl implements CatastroServicio {
         List<AvaluoDto> listaPisosDto = new ArrayList<>();
         List<AvaluoDto> listaCaracteristicasPisosDto;
         for (Pisos piso : bloque.getPisosCollection()) {
-            listaCaracteristicasPisosDto = obtenerAvaluoPisos(piso, promedioFactores, dominios, sesion);
-            areaBloque = areaBloque.add(obtenerElementoAvaluoPorDescripcion(listaCaracteristicasPisosDto, EnumCaracteristicasAvaluo.PISO_AREA.getTitulo()));
-            costoBloque = costoBloque.add(obtenerElementoAvaluoPorDescripcion(listaCaracteristicasPisosDto, EnumCaracteristicasAvaluo.PISO_VALORACION.getTitulo()));
-            listaPisosDto.add(generarElementoArbolAvaluo("Piso: " + piso.getNomPiso(), null, null, listaCaracteristicasPisosDto));
+            if (piso.getPisEstado().equals(EnumEstadoRegistro.A)) {
+                listaCaracteristicasPisosDto = obtenerAvaluoPisos(piso, promedioFactores, dominios, sesion);
+                areaBloque = areaBloque.add(obtenerElementoAvaluoPorDescripcion(listaCaracteristicasPisosDto, EnumCaracteristicasAvaluo.PISO_AREA.getTitulo()));
+                costoBloque = costoBloque.add(obtenerElementoAvaluoPorDescripcion(listaCaracteristicasPisosDto, EnumCaracteristicasAvaluo.PISO_VALORACION.getTitulo()));
+                listaPisosDto.add(generarElementoArbolAvaluo("Piso: " + piso.getNomPiso(), null, null, listaCaracteristicasPisosDto));
+            }
         }
         listaPisosDto.add(generarElementoArbolAvaluo(EnumCaracteristicasAvaluo.BLOQUE_VALORACION.getTitulo(), costoBloque.toString(), null, null));
         listaPisosDto.add(generarElementoArbolAvaluo(EnumCaracteristicasAvaluo.BLOQUE_AREA.getTitulo(), areaBloque.toString(), null, null));
@@ -443,7 +445,9 @@ public class CatastroServicioImpl implements CatastroServicio {
     private BigDecimal obtenerCoeficienteConstruccion(Pisos piso, String domiCalculo, List<Dominios> dominios) {
         BigDecimal totalDetalleConstruccion = BigDecimal.ZERO;
         for (PisoDetalle detalle : piso.getDetalles()) {
-            totalDetalleConstruccion = totalDetalleConstruccion.add(obtenerCoeficienteDetallePiso(detalle, domiCalculo, dominios));
+            if (detalle.getEstado().equals(EnumEstadoRegistro.A)) {
+                totalDetalleConstruccion = totalDetalleConstruccion.add(obtenerCoeficienteDetallePiso(detalle, domiCalculo, dominios));
+            }
         }
         return totalDetalleConstruccion;
     }
@@ -513,10 +517,12 @@ public class CatastroServicioImpl implements CatastroServicio {
         BigDecimal costoMetroReferencial = obtenerTotalCoeficienteDominiosPorCodigo(codigoDominio, dominios);
 
         piso.getDetalles().forEach((pisoDetalle) -> {
-            AvaluoDto nuevoDetalle = generarNodoDetalle(pisoDetalle, elementoCalculo, dominios);
-            BigDecimal coeficienteObtenido = new BigDecimal(nuevoDetalle.getFactor());
-            if (BigDecimal.ZERO.compareTo(coeficienteObtenido) != 0) {
-                listaDetallesPiso.add(nuevoDetalle);
+            if (pisoDetalle.getEstado().equals(EnumEstadoRegistro.A)) {
+                AvaluoDto nuevoDetalle = generarNodoDetalle(pisoDetalle, elementoCalculo, dominios);
+                BigDecimal coeficienteObtenido = new BigDecimal(nuevoDetalle.getFactor());
+                if (BigDecimal.ZERO.compareTo(coeficienteObtenido) != 0) {
+                    listaDetallesPiso.add(nuevoDetalle);
+                }
             }
         });
 
@@ -729,11 +735,13 @@ public class CatastroServicioImpl implements CatastroServicio {
         List<AvaluoDto> listaAvaluoBloque = new ArrayList<>();
         if (!ComunUtil.esNulo(predio.getBloques())) {
             for (Bloques bloque : predio.getBloques()) {
-                listaAvaluoBloque = obtenerAvaluoBloque(bloque, promedioFactores, dominios, sesion);
-                nodo.add(generarElementoArbolAvaluo("Bloque: " + bloque.getNomBloque(), null, null, listaAvaluoBloque));
-                nodo.add(generarElementoArbolAvaluo("Costo Total bloque", obtenerElementoAvaluoPorDescripcion(listaAvaluoBloque, EnumCaracteristicasAvaluo.BLOQUE_VALORACION.getTitulo()).setScale(2, BigDecimal.ROUND_UP).toString(), null, null));
-                valorEdificacion = valorEdificacion.add(obtenerElementoAvaluoPorDescripcion(listaAvaluoBloque, EnumCaracteristicasAvaluo.BLOQUE_VALORACION.getTitulo()));
-                areaConstruccion = areaConstruccion.add(obtenerElementoAvaluoPorDescripcion(listaAvaluoBloque, EnumCaracteristicasAvaluo.BLOQUE_AREA.getTitulo()));
+                if (bloque.getBloEstado().equals(EnumEstadoRegistro.A)) {
+                    listaAvaluoBloque = obtenerAvaluoBloque(bloque, promedioFactores, dominios, sesion);
+                    nodo.add(generarElementoArbolAvaluo("Bloque: " + bloque.getNomBloque(), null, null, listaAvaluoBloque));
+                    nodo.add(generarElementoArbolAvaluo("Costo Total bloque", obtenerElementoAvaluoPorDescripcion(listaAvaluoBloque, EnumCaracteristicasAvaluo.BLOQUE_VALORACION.getTitulo()).setScale(2, BigDecimal.ROUND_UP).toString(), null, null));
+                    valorEdificacion = valorEdificacion.add(obtenerElementoAvaluoPorDescripcion(listaAvaluoBloque, EnumCaracteristicasAvaluo.BLOQUE_VALORACION.getTitulo()));
+                    areaConstruccion = areaConstruccion.add(obtenerElementoAvaluoPorDescripcion(listaAvaluoBloque, EnumCaracteristicasAvaluo.BLOQUE_AREA.getTitulo()));
+                }
             }
         }
 
