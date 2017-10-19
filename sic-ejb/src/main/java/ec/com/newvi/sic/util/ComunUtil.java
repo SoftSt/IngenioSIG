@@ -8,6 +8,11 @@ package ec.com.newvi.sic.util;
 import ec.com.newvi.sic.enums.EnumNewviExcepciones;
 import ec.com.newvi.sic.util.excepciones.NewviExcepcion;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  *
@@ -45,5 +50,33 @@ public class ComunUtil {
         } else {
             throw new NewviExcepcion(EnumNewviExcepciones.ERR012);
         }
+    }
+
+    public static String generarFormatoMoneda(BigDecimal valor, String formato) throws NewviExcepcion {
+        DecimalFormat formatoMoneda = new DecimalFormat(formato);
+        try {
+            return formatoMoneda.format(valor.setScale(2, RoundingMode.HALF_UP));
+        } catch (IllegalArgumentException ex) {
+            throw new NewviExcepcion(EnumNewviExcepciones.ERR208, ex);
+        }
+    }
+
+    public static String reemplazarTokens(String text,
+            Map<String, String> replacements) {
+        Pattern pattern = Pattern.compile("\\[(.+?)\\]");
+        Matcher matcher = pattern.matcher(text);
+        StringBuffer buffer = new StringBuffer();
+
+        while (matcher.find()) {
+            String replacement = replacements.get(matcher.group(1));
+            if (replacement != null) {
+                // matcher.appendReplacement(buffer, replacement);
+                // see comment 
+                matcher.appendReplacement(buffer, "");
+                buffer.append(replacement);
+            }
+        }
+        matcher.appendTail(buffer);
+        return buffer.toString();
     }
 }

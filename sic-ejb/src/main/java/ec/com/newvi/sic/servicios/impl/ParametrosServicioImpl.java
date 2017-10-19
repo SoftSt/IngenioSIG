@@ -33,7 +33,9 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.annotation.security.PermitAll;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -135,7 +137,14 @@ public class ParametrosServicioImpl implements ParametrosServicio {
 
     @Override
     public ParametroSistema obtenerParametroPorNombre(EnumParametroSistema parametro, SesionDto sesion) throws NewviExcepcion {
-        return parametroSistemaFacade.obtenerParametroPorNombre(parametro, sesion);
+        try {
+            return parametroSistemaFacade.obtenerParametroPorNombre(parametro, sesion);
+        } catch (NewviExcepcion ex) {
+            LoggerNewvi.getLogNewvi(this.getClass()).error(ex, sesion);
+            Map<String, String> paramError = new HashMap<>();
+            paramError.put("parametro", parametro.getNombreParametro());
+            throw new NewviExcepcion(EnumNewviExcepciones.ERR455, paramError, ex);
+        }
     }
 
     private String reemplazarValoresParametros(ParametroSistema parametro, SesionDto sesion) throws NewviExcepcion {

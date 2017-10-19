@@ -30,6 +30,7 @@ public enum EnumNewviExcepciones {
     ERR205("ERR205", "Archivo no encontrado.", "No se ha encontrado el archivo con el nombre indicado, verifique que el archivo se encuentre en la carpeta."),
     ERR206("ERR206", "Archivo no pudo ser leído.", "No se pudo leer el archivo con el nombre indicado, verifique que el archivo no tenga errores."),
     ERR207("ERR207", "Archivo no pudo ser guardado.", "No se pudo guardar el archivo con el nombre indicado, verifique que el archivo no tenga errores o que la ubicación exista dentro del sistema."),
+    ERR208("ERR208", "Formato no válido.", "El formato para transformación de valores numéricos a texto no es válido. Por favor verifique en los parámetros del sistema."),
     // 251 al 300 excepciones de validación
     ERR251("ERR251", "Correo electrónico no válido.", "El correo electrónico no es correcto. Registre un correo electrónico con el formato ejemplo@ejemplo.com"),
     
@@ -121,7 +122,7 @@ public enum EnumNewviExcepciones {
     INF452("INF452", "Parámetro ingresado.", "El parámetro se ha registrado correctamente."),
     ERR453("ERR453", "Parámetro no registrado.", "No se pudo generar el parámetro."),
     INF454("INF454", "Parámetro editado.", "El parámetro se ha editado correctamente."),
-    ERR455("ERR455", "Parámetro no encontrado.", "El parámetro buscado no se ha encontrado."),
+    ERR455("ERR455", "Parámetro no encontrado.", "El parámetro [parametro] no se ha encontrado. Compruebe que este parámetro haya sido registrado."),
     // 501 al 600 excepciones de catastro
     ERR501("ERR501", "Propietario no encontrado.", "No se pudo encontrar un propietario al predio seleccionado. Registre la propiedad correspondiente."),
     ;

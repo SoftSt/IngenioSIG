@@ -6,6 +6,9 @@
 package ec.com.newvi.sic.util.excepciones;
 
 import ec.com.newvi.sic.enums.EnumNewviExcepciones;
+import ec.com.newvi.sic.util.ComunUtil;
+import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -35,4 +38,7 @@ public class NewviExcepcion extends Exception {
         super(excepcion.presentarMensajeCodigo(), causa);
     }
     
+    public NewviExcepcion(EnumNewviExcepciones excepcion, Map<String, String> variables, Throwable causa) {
+        super(ComunUtil.reemplazarTokens(excepcion.presentarMensajeCodigo(), variables), causa);
+    }
 }

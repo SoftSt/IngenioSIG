@@ -21,6 +21,7 @@ import ec.com.newvi.sic.dto.SesionDto;
 import ec.com.newvi.sic.enums.EnumCaracteristicasAvaluo;
 import ec.com.newvi.sic.enums.EnumEstadoRegistro;
 import ec.com.newvi.sic.enums.EnumNewviExcepciones;
+import ec.com.newvi.sic.enums.EnumParametroSistema;
 import ec.com.newvi.sic.modelo.Avaluo;
 import ec.com.newvi.sic.modelo.Bloques;
 import ec.com.newvi.sic.modelo.ConstantesImpuestos;
@@ -444,12 +445,18 @@ public class CatastroServicioImpl implements CatastroServicio {
 
     private BigDecimal obtenerCoeficienteConstruccion(Pisos piso, String domiCalculo, List<Dominios> dominios) {
         BigDecimal totalDetalleConstruccion = BigDecimal.ZERO;
+        BigDecimal promedioCoeficientes = BigDecimal.ZERO;
+        Integer totalCoeficientesConstruccion = 0;
         for (PisoDetalle detalle : piso.getDetalles()) {
             if (detalle.getEstado().equals(EnumEstadoRegistro.A)) {
                 totalDetalleConstruccion = totalDetalleConstruccion.add(obtenerCoeficienteDetallePiso(detalle, domiCalculo, dominios));
+                totalCoeficientesConstruccion++;
             }
         }
-        return totalDetalleConstruccion;
+        if (totalCoeficientesConstruccion.compareTo(0) != 0) {
+            promedioCoeficientes = totalDetalleConstruccion.divide(new BigDecimal(totalCoeficientesConstruccion), 12, RoundingMode.CEILING);
+        }
+        return promedioCoeficientes;
     }
 
     private BigDecimal obtenerCoeficienteDetallePiso(PisoDetalle detalle, String domiCalculo, List<Dominios> dominios) {
@@ -484,7 +491,8 @@ public class CatastroServicioImpl implements CatastroServicio {
         // Factos de costos del pios es igual a la suma de los factores por el área menos la depreciación del bien por edad y estado
         BigDecimal sumaFactores = areaPiso.multiply((coeficienteEstructura.multiply(v1)).add(coeficienteAcabado.multiply(v2)).add(coeficienteExtras.multiply(v3)));
         BigDecimal depreciacion = sumaFactores.multiply(valorDepreciacion);
-        BigDecimal costoPiso = sumaFactores.subtract(depreciacion);
+        //BigDecimal costoPiso = sumaFactores.subtract(depreciacion);
+        BigDecimal costoPiso = depreciacion;
 
         //TODO Aplicar actualizacion al final
         /*piso.setValFactordepreciacion(valorDepreciacion);
@@ -652,7 +660,7 @@ public class CatastroServicioImpl implements CatastroServicio {
     public String quitarDecimales(BigDecimal valor) {
         String valorARedondear = valor.setScale(2, BigDecimal.ROUND_UP).toString();
         if ((valorARedondear.substring(valorARedondear.indexOf("."), valorARedondear.length())).length() == 2) {
-            valorARedondear = valorARedondear.concat("0");
+            valorARedondear = valorARedondear.concat("00");
         }
 
         return valorARedondear;
@@ -660,7 +668,9 @@ public class CatastroServicioImpl implements CatastroServicio {
 
     @Override
     public List<AvaluoDto> obtenerAvaluoPredio(Predios predio, List<Dominios> dominios, SesionDto sesion) throws NewviExcepcion {
-        //public void obtenerAvaluoPredio(Predios predio, SesionDto sesion) throws NewviExcepcion {
+
+        String formatoMonedaSistema = parametrosServicio.obtenerParametroPorNombre(EnumParametroSistema.FORMATO_MONEDAS, sesion).getValor();
+
         List<AvaluoDto> nodo = new ArrayList<>();
         List<AvaluoDto> nodoAlterno = new ArrayList<>();
         Integer codigo = predio.getCodCatastral();
@@ -668,7 +678,7 @@ public class CatastroServicioImpl implements CatastroServicio {
         String sector = predio.getCodSector();
         String consulta;
         Boolean ba;
-        BigDecimal coff, vterreno, valor_terreno, valPredio, basura;
+        BigDecimal coff, vterreno, valorTerreno, valPredio, basura;
         BigDecimal promedioFactores = BigDecimal.ZERO;
         BigDecimal div = new BigDecimal(5);
         BigDecimal frente = BigDecimal.ZERO;
@@ -709,8 +719,8 @@ public class CatastroServicioImpl implements CatastroServicio {
         consulta = "20" + zona + sector;
         //vterreno = parametrosServicio.obtenerValorPorCodigoCalculo(consulta, "ZONAS VALORADAS M2");
         vterreno = obtenerValorPorCodigoCalculo(dominios, consulta, "ZONAS VALORADAS M2");
-        valor_terreno = (promedioFactores.multiply(area)).multiply(vterreno);
-        predio.setValTerreno(valor_terreno);
+        valorTerreno = (promedioFactores.multiply(area)).multiply(vterreno);
+        predio.setValTerreno(valorTerreno);
         //actualizarPredio(predio, sesion);
 
         // Ubica Valor recoleccion de basura segun Zona mirar domi_calculo = TASA RECOLECCIÓN DE BASURA            
@@ -738,7 +748,7 @@ public class CatastroServicioImpl implements CatastroServicio {
                 if (bloque.getBloEstado().equals(EnumEstadoRegistro.A)) {
                     listaAvaluoBloque = obtenerAvaluoBloque(bloque, promedioFactores, dominios, sesion);
                     nodo.add(generarElementoArbolAvaluo("Bloque: " + bloque.getNomBloque(), null, null, listaAvaluoBloque));
-                    nodo.add(generarElementoArbolAvaluo("Costo Total bloque", obtenerElementoAvaluoPorDescripcion(listaAvaluoBloque, EnumCaracteristicasAvaluo.BLOQUE_VALORACION.getTitulo()).setScale(2, BigDecimal.ROUND_UP).toString(), null, null));
+                    nodo.add(generarElementoArbolAvaluo("Costo Total bloque", ComunUtil.generarFormatoMoneda(obtenerElementoAvaluoPorDescripcion(listaAvaluoBloque, EnumCaracteristicasAvaluo.BLOQUE_VALORACION.getTitulo()), formatoMonedaSistema), null, null));
                     valorEdificacion = valorEdificacion.add(obtenerElementoAvaluoPorDescripcion(listaAvaluoBloque, EnumCaracteristicasAvaluo.BLOQUE_VALORACION.getTitulo()));
                     areaConstruccion = areaConstruccion.add(obtenerElementoAvaluoPorDescripcion(listaAvaluoBloque, EnumCaracteristicasAvaluo.BLOQUE_AREA.getTitulo()));
                 }
@@ -746,15 +756,15 @@ public class CatastroServicioImpl implements CatastroServicio {
         }
 
         //Actualiza Valoración de Terreno y Contrucción
-        valPredio = valor_terreno.add(valorEdificacion);
+        valPredio = valorTerreno.add(valorEdificacion);
         predio.setValEdifica(valorEdificacion);
         predio.setValAreaConstruccion(areaConstruccion);
         predio.setValPredio(valPredio);
         //actualizarPredio(predio, sesion);
 
-        nodo.add(generarElementoArbolAvaluo("Valor del terreno", valor_terreno.setScale(2, BigDecimal.ROUND_UP).toString(), null, null));
-        nodo.add(generarElementoArbolAvaluo("Valor de la edificacion", valorEdificacion.setScale(2, BigDecimal.ROUND_UP).toString(), null, null));
-        nodo.add(generarElementoArbolAvaluo("Valor del predio", valPredio.setScale(2, BigDecimal.ROUND_UP).toString(), null, null));
+        nodo.add(generarElementoArbolAvaluo("Valor del terreno", ComunUtil.generarFormatoMoneda(valorTerreno, formatoMonedaSistema), null, null));
+        nodo.add(generarElementoArbolAvaluo("Valor de la edificacion", ComunUtil.generarFormatoMoneda(valorEdificacion, formatoMonedaSistema), null, null));
+        nodo.add(generarElementoArbolAvaluo("Valor del predio", ComunUtil.generarFormatoMoneda(valPredio, formatoMonedaSistema), null, null));
 
         //nodoAlterno = generarImpuestoPredial(predio, basura, sesion, padre);
         nodoAlterno = generarImpuestoPredial(predio, valPredio, basura, sesion);

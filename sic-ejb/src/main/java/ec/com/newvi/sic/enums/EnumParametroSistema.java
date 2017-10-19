@@ -22,6 +22,7 @@ public enum EnumParametroSistema {
     RUTA_UBICACION_IMAGENES_REPORTE("RUTA_UBICACION_IMAGENES_REPORTE", "Ruta de ubicación de imágenes de los reportes del sistema", "/opt/sigc/reportes/", EnumGrupoParametroSistema.DATOS_SISTEMA, EnumTipoParametro.VALOR),
     IMAGEN_LOGO_MUNICIPIO_1("IMAGEN_LOGO_MUNICIPIO_1", "Ubicación de la imagen del primer logo del municipio", "[DIRECCION_IMAGENES_SISTEMA]/logo_1.png", EnumGrupoParametroSistema.DATOS_SISTEMA, EnumTipoParametro.IMAGEN),
     IMAGEN_LOGO_MUNICIPIO_2("IMAGEN_LOGO_MUNICIPIO_2", "Ubicación de la imagen del segundo logo del municipio", "[DIRECCION_IMAGENES_SISTEMA]/logo_2.png", EnumGrupoParametroSistema.DATOS_SISTEMA, EnumTipoParametro.IMAGEN),
+    FORMATO_MONEDAS("FORMATO_MONEDAS", "Formato para la representación de las monedas en el sistema.", "$ ###,###.00", EnumGrupoParametroSistema.DATOS_SISTEMA, EnumTipoParametro.VALOR),
     
     // MUNICIPIO
     NOMBRE_COMPLETO_MUNICIPIO("NOMBRE_COMPLETO_MUNICIPIO", "Nombre completo del municipio", "[Municipio]", EnumGrupoParametroSistema.DATOS_MUNICIPIO, EnumTipoParametro.VALOR),
