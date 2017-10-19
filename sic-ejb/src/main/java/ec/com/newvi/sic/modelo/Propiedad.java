@@ -13,6 +13,7 @@ import ec.com.newvi.sic.enums.EnumTraslacion;
 import ec.com.newvi.sic.util.ComunUtil;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Collection;
 import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -22,6 +23,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -38,6 +40,9 @@ import org.hibernate.annotations.NotFoundAction;
 @Table(name = "cat_ciu_propietario", schema = "public")
 
 public class Propiedad implements Serializable {
+
+    @OneToMany(mappedBy = "codPropietarios")
+    private Collection<Titulos> titulosCollection;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -356,6 +361,17 @@ public class Propiedad implements Serializable {
     
     public Boolean esPropiedadValido() {
         return (!ComunUtil.esNulo(this.proEstado));
+    }
+
+    public Propiedad() {
+    }
+
+    public Collection<Titulos> getTitulosCollection() {
+        return titulosCollection;
+    }
+
+    public void setTitulosCollection(Collection<Titulos> titulosCollection) {
+        this.titulosCollection = titulosCollection;
     }
 
 }

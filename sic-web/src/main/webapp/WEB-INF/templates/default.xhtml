@@ -25,7 +25,7 @@
         </p:layout>
 
         <p:dialog modal="true" widgetVar="statusDialog" draggable="false" closable="false" resizable="false">
-
+            <p:graphicImage name="/privado/imagenes/loading.gif" />
         </p:dialog>
         <script type="text/javascript">
             function start() {
@@ -35,8 +35,6 @@
             function stop() {
                 PF('statusDialog').hide();
             }
-
-            
         </script>
 
     </h:body>
