@@ -56,11 +56,15 @@
                             <h:outputText value="#{constanteImpuestos.valServiciosadministrativos}" />
                         </p:column>
                         
-                        <p:column headerText="Cem" sortBy="#{constanteImpuestos.valCem}">
-                            <h:outputText value="#{constanteImpuestos.valCem}" />
+                        <p:column headerText="Tasa Solar No Edificado" sortBy="#{constanteImpuestos.valNoedifica}">
+                            <h:outputText value="#{constanteImpuestos.valNoedifica}" />
                         </p:column>
                         
-                        <p:column headerText="Tasa aplicada" sortBy="#{constanteImpuestos.valTasaaplicada}">
+                        <p:column headerText="Tasa Construcciones Obsoletas" sortBy="#{constanteImpuestos.valConstrucion}">
+                            <h:outputText value="#{constanteImpuestos.valConstrucion}" />
+                        </p:column>
+                        
+                        <p:column headerText="Tasa Impuesto Predial" sortBy="#{constanteImpuestos.valTasaaplicada}">
                             <h:outputText value="#{constanteImpuestos.valTasaaplicada}" />
                         </p:column>
                         
@@ -111,12 +115,11 @@
                         <h:panelGrid columns="1">
 
                             <h:outputLabel value="Tasa Bomberos" style="font-weight: bold;"/>
-                            <p:inputText id="valBomberos" value="#{constantesImpuestoBB.constantesImpuestos.valBomberos}" label="Tasa bomberos" size="50" required="true">
-                            </p:inputText>
+                            <p:inputNumber id="valBomberos" value="#{constantesImpuestoBB.constantesImpuestos.valBomberos}" label="Tasa bomberos" size="50" required="true" decimalPlaces="8"/>
                             <p:message for="valBomberos" display="tooltip"/>
 
                             <h:outputLabel value="Servicios Administrativos" style="font-weight: bold;"/>
-                            <p:inputNumber id="valServiciosadministrativos" value="#{constantesImpuestoBB.constantesImpuestos.valServiciosadministrativos}" size="50" label="Servicios Administrativos"/>
+                            <p:inputNumber id="valServiciosadministrativos" value="#{constantesImpuestoBB.constantesImpuestos.valServiciosadministrativos}" size="50" label="Servicios Administrativos" decimalPlaces="8"/>
                             <p:message for="valServiciosadministrativos" display="tooltip"/>
 
 
@@ -124,12 +127,20 @@
                             <p:inputNumber id="valCem" value="#{constantesImpuestoBB.constantesImpuestos.valCem}" label="Valor cem" size="50"/>
                             <p:message for="valCem" display="tooltip"/>
 
-                            <h:outputLabel value="Tasa aplicada" style="font-weight: bold;"/>
-                            <p:inputNumber id="valTasaaplicada" value="#{constantesImpuestoBB.constantesImpuestos.valTasaaplicada}" label="Tasa aplicada" size="50"/>
+                            <h:outputLabel value="Tasa Impuesto Predial" style="font-weight: bold;"/>
+                            <p:inputNumber id="valTasaaplicada" value="#{constantesImpuestoBB.constantesImpuestos.valTasaaplicada}" label="Tasa Impuesto Predial" size="50" decimalPlaces="8"/>
                             <p:message for="valTasaaplicada" display="tooltip"/>
 
-                            <h:outputLabel value="Tasa aplicada" style="font-weight: bold;"/>
-                            <p:inputNumber id="valAmbientales" value="#{constantesImpuestoBB.constantesImpuestos.valAmbientales}" label="Tasa aplicada" size="50"/>
+                            <h:outputLabel value="Tasa Solar No Edificado" style="font-weight: bold;"/>
+                            <p:inputNumber id="valNoedifica" value="#{constantesImpuestoBB.constantesImpuestos.valNoedifica}" label="Tasa Solar No Edificado" size="50" decimalPlaces="8"/>
+                            <p:message for="valNoedifica" display="tooltip"/>
+
+                            <h:outputLabel value="Tasa Edificación Obsoleta" style="font-weight: bold;"/>
+                            <p:inputNumber id="valConstrucion" value="#{constantesImpuestoBB.constantesImpuestos.valConstrucion}" label="Tasa Edificación Obsoleta" size="50" decimalPlaces="8"/>
+                            <p:message for="valConstrucion" display="tooltip"/>
+
+                            <h:outputLabel value="Tasa Impuesto Ambiental" style="font-weight: bold;"/>
+                            <p:inputNumber id="valAmbientales" value="#{constantesImpuestoBB.constantesImpuestos.valAmbientales}" label="Tasa Impuesto Ambiental" size="50" decimalPlaces="8"/>
                             <p:message for="valAmbientales" display="tooltip"/>
                             
                         </h:panelGrid>

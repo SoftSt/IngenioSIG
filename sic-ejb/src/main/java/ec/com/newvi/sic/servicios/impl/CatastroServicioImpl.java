@@ -52,7 +52,9 @@ import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.security.PermitAll;
@@ -462,9 +464,9 @@ public class CatastroServicioImpl implements CatastroServicio {
     private BigDecimal obtenerCoeficienteDetallePiso(PisoDetalle detalle, String domiCalculo, List<Dominios> dominios) {
         BigDecimal totalDetalle = BigDecimal.ZERO;
         for (Dominios dominio : dominios) {
-            if (dominio.getDomiCodigo().contains(detalle.getCodigo().trim())
-                    && dominio.getDomiGrupos().contains("DESCRIPCION EDIFICACION")
-                    && dominio.getDomiCalculo().contains(domiCalculo)) {
+            if (!ComunUtil.esNulo(dominio.getDomiCodigo()) && dominio.getDomiCodigo().contains(detalle.getCodigo().trim())
+                    && !ComunUtil.esNulo(dominio.getDomiGrupos()) && dominio.getDomiGrupos().contains("DESCRIPCION EDIFICACION")
+                    && !ComunUtil.esNulo(dominio.getDomiCalculo()) && dominio.getDomiCalculo().contains(domiCalculo)) {
                 totalDetalle = totalDetalle.add(BigDecimal.valueOf(dominio.getDomiCoefic()));
             }
         }
@@ -642,14 +644,20 @@ public class CatastroServicioImpl implements CatastroServicio {
     public BigDecimal obtenerCoeficienteTerreno(Predios predio, List<Dominios> dominios, String domiCalculo) {
         List<Dominios> listaDominiosTerreno;
         BigDecimal totalCoeficienteCalculo = BigDecimal.ZERO;
+        BigDecimal promedioCoeficientes = BigDecimal.ZERO;
+        Integer totalCoeficientesTerreno = 0;
         for (Terreno terreno : predio.getCaracteristicasTerreno()) {
             //listaDominiosTerreno = dominiosFacade.buscarDominiosPorCodigoYCalculo(terreno.getStsCodigo(), domiCalculo);
             listaDominiosTerreno = obtenerDominiosPorCodigoYCalculo(dominios, terreno.getStsCodigo().trim(), domiCalculo);
             for (Dominios dominio : listaDominiosTerreno) {
                 totalCoeficienteCalculo = totalCoeficienteCalculo.add(BigDecimal.valueOf(dominio.getDomiCoefic()));
+                totalCoeficientesTerreno++;
             }
         }
-        return totalCoeficienteCalculo;
+        if (totalCoeficientesTerreno.compareTo(0) != 0) {
+            promedioCoeficientes = totalCoeficienteCalculo.divide(new BigDecimal(totalCoeficientesTerreno), 12, RoundingMode.CEILING);
+        }
+        return promedioCoeficientes;
     }
 
     public BigDecimal obtenerValorPorCodigoCalculo(List<Dominios> dominios, String codigo, String calculo) {
@@ -673,34 +681,23 @@ public class CatastroServicioImpl implements CatastroServicio {
 
         List<AvaluoDto> nodo = new ArrayList<>();
         List<AvaluoDto> nodoAlterno = new ArrayList<>();
-        Integer codigo = predio.getCodCatastral();
         String zona = predio.getCodZona();
         String sector = predio.getCodSector();
         String consulta;
-        Boolean ba;
-        BigDecimal coff, vterreno, valorTerreno, valPredio, basura;
+        BigDecimal coff, vterreno, valorTerreno, valPredio;
         BigDecimal promedioFactores = BigDecimal.ZERO;
         BigDecimal div = new BigDecimal(5);
-        BigDecimal frente = BigDecimal.ZERO;
-        if (!ComunUtil.esNulo(predio.getValAreaFrente())) {
-            frente = predio.getValAreaPredio();
-        }
-        BigDecimal fondo = BigDecimal.ZERO;
-        if (!ComunUtil.esNulo(predio.getValAreaFondo())) {
-            fondo = predio.getValAreaFondo();
-        }
-        BigDecimal area = BigDecimal.ZERO;
-        if (!ComunUtil.esNulo(predio.getValAreaPredio())) {
-            area = predio.getValAreaPredio();
-        }
+        BigDecimal frente = !ComunUtil.esNulo(predio.getValAreaFrente())? predio.getValAreaFrente() : BigDecimal.ZERO;
+        BigDecimal fondo = !ComunUtil.esNulo(predio.getValAreaFondo())? predio.getValAreaFondo() : BigDecimal.ZERO;
+        BigDecimal area = !ComunUtil.esNulo(predio.getValAreaPredio())? predio.getValAreaPredio() : BigDecimal.ZERO;
         BigDecimal areaConstruccion = BigDecimal.ZERO;
         BigDecimal valorEdificacion = BigDecimal.ZERO;
 
+        Map<String, Boolean> listaImpuestos = new HashMap<>();
+
         // Coeficiente de Topografía COT
-        //BigDecimal cot = parametrosServicio.obtenerCoeficienteTerreno(predio, "TOPOGRAFIA");
         BigDecimal cot = obtenerCoeficienteTerreno(predio, dominios, "TOPOGRAFIA");
         // Coeficinte de Erosion
-        //BigDecimal cero = parametrosServicio.obtenerCoeficienteTerreno(predio, "LOCALIZACION");
         BigDecimal cero = obtenerCoeficienteTerreno(predio, dominios, "LOCALIZACION");
         // Coeficinte de forma COFO
         BigDecimal cofo = obtenerCoeficienteTerreno(predio, dominios, "FORMA");
@@ -723,14 +720,6 @@ public class CatastroServicioImpl implements CatastroServicio {
         predio.setValTerreno(valorTerreno);
         //actualizarPredio(predio, sesion);
 
-        // Ubica Valor recoleccion de basura segun Zona mirar domi_calculo = TASA RECOLECCIÓN DE BASURA            
-        consulta = "60" + zona;
-        //basura = parametrosServicio.obtenerValorPorCodigoCalculo(consulta, "TASA RECOLECCIÓN DE BASURA");
-        basura = obtenerValorPorCodigoCalculo(dominios, consulta, "TASA RECOLECCIÓN DE BASURA");
-        ba = parametrosServicio.tieneBasura(codigo);
-        if (ba) {
-            basura = BigDecimal.ZERO;
-        }
         nodo.add(generarElementoArbolAvaluo("Area", quitarDecimales(area), null, null));
         nodo.add(generarElementoArbolAvaluo("Frente", frente.setScale(2, BigDecimal.ROUND_UP).toString(), null, null));
         nodo.add(generarElementoArbolAvaluo("Fondo relativo", quitarDecimales(fondo), null, null));
@@ -755,6 +744,13 @@ public class CatastroServicioImpl implements CatastroServicio {
             }
         }
 
+        if (ComunUtil.esNulo(predio.getBloques())
+                || predio.getBloques().isEmpty()) {
+            listaImpuestos.put("IMPUESTO_SOLAR_NO_EDIFICADO", true);
+        } else {
+            listaImpuestos.put("IMPUESTO_SOLAR_NO_EDIFICADO", false);
+        }
+
         //Actualiza Valoración de Terreno y Contrucción
         valPredio = valorTerreno.add(valorEdificacion);
         predio.setValEdifica(valorEdificacion);
@@ -767,7 +763,7 @@ public class CatastroServicioImpl implements CatastroServicio {
         nodo.add(generarElementoArbolAvaluo("Valor del predio", ComunUtil.generarFormatoMoneda(valPredio, formatoMonedaSistema), null, null));
 
         //nodoAlterno = generarImpuestoPredial(predio, basura, sesion, padre);
-        nodoAlterno = generarImpuestoPredial(predio, valPredio, basura, sesion);
+        nodoAlterno = generarImpuestoPredial(predio, valPredio, listaImpuestos, sesion);
         for (AvaluoDto nuevoNodo : nodoAlterno) {
             nodo.add(nuevoNodo);
         }
@@ -829,46 +825,51 @@ public class CatastroServicioImpl implements CatastroServicio {
     }
 
     //private List<AvaluoDto> generarImpuestoPredial(Predios predio, BigDecimal basura, SesionDto sesion, Integer padre) throws NewviExcepcion {
-    private List<AvaluoDto> generarImpuestoPredial(Predios predio, BigDecimal avaluo, BigDecimal basura, SesionDto sesion) throws NewviExcepcion {
+    private List<AvaluoDto> generarImpuestoPredial(Predios predio, BigDecimal avaluo, Map<String, Boolean> listaImpuestos, SesionDto sesion) throws NewviExcepcion {
         List<AvaluoDto> nodoAlterno = new ArrayList<>();
         List<AvaluoDto> listaOtrosRubros = new ArrayList<>();
 
-        BigDecimal c1 = BigDecimal.ZERO;
-        BigDecimal c2 = BigDecimal.ZERO;
-        BigDecimal c3 = BigDecimal.ZERO;
-        BigDecimal c4 = BigDecimal.ZERO;
-        BigDecimal c5 = BigDecimal.ZERO;
-        BigDecimal c6 = BigDecimal.ZERO;
+        BigDecimal tasaImpuestoBomberos = BigDecimal.ZERO;
+        BigDecimal valorServiciosAdministrativos = BigDecimal.ZERO;
+        BigDecimal valorContribucionEspecialMejoras = BigDecimal.ZERO;
+        BigDecimal tasaImpuestoPredial = BigDecimal.ZERO;
+        BigDecimal tasaSolarNoEdificado = BigDecimal.ZERO;
+        BigDecimal valorSolarNoEdificado = BigDecimal.ZERO;
+        BigDecimal valorServiciosAmbientales = BigDecimal.ZERO;
         BigDecimal aPagar = BigDecimal.ZERO;
         BigDecimal valPredio = avaluo;
 
         // Constantes catastro urbano
         List<ConstantesImpuestos> constantesImpuestos = parametrosServicio.obtenerConstantesImpuestosPorTipo("URBANO");
         for (ConstantesImpuestos constantesImpuesto : constantesImpuestos) {
-            c1 = constantesImpuesto.getValBomberos();
-            c2 = constantesImpuesto.getValServiciosadministrativos();
-            c3 = constantesImpuesto.getValCem();
-            c4 = constantesImpuesto.getValBasura();
-            c5 = constantesImpuesto.getValTasaaplicada();
-            c6 = constantesImpuesto.getValAmbientales();
+            tasaImpuestoBomberos = constantesImpuesto.getValBomberos();
+            valorServiciosAdministrativos = constantesImpuesto.getValServiciosadministrativos();
+            valorContribucionEspecialMejoras = constantesImpuesto.getValCem();
+            tasaImpuestoPredial = constantesImpuesto.getValTasaaplicada();
+            tasaSolarNoEdificado = constantesImpuesto.getValNoedifica();
+            valorServiciosAmbientales = constantesImpuesto.getValAmbientales();
         }
 
-        aPagar = ((valPredio.multiply(c5)).add(c2)).add(c3).add(c6).add((valPredio.multiply(c1)).multiply(c5)).add(basura);
+        aPagar = ((valPredio.multiply(tasaImpuestoPredial)).add(valorServiciosAdministrativos)).add(valorContribucionEspecialMejoras).add(valorServiciosAmbientales).add(valPredio.multiply(tasaImpuestoBomberos));
         // Actualiza otros valores calculados
-        predio.setValCem(c3);
-        predio.setValBomberos((valPredio.multiply(c1)).multiply(c5));
-        predio.setValEmision(c2);
-        predio.setValBasura(basura);
-        predio.setValAmbientales(c6);
-        predio.setValImpuesto(valPredio.multiply(c5));
+        predio.setValCem(valorContribucionEspecialMejoras);
+        predio.setValBomberos(valPredio.multiply(tasaImpuestoBomberos));
+        predio.setValEmision(valorServiciosAdministrativos);
+        if (listaImpuestos.get("IMPUESTO_SOLAR_NO_EDIFICADO")) {
+            // [TODO] Colocar un campo de Impuesto a Solar No edificado en Catastro.
+            valorSolarNoEdificado = valPredio.multiply(tasaSolarNoEdificado);
+            aPagar = aPagar.add(valorSolarNoEdificado);
+        }
+        predio.setValAmbientales(valorServiciosAmbientales);
+        predio.setValImpuesto(valPredio.multiply(tasaImpuestoPredial));
         predio.setValImppredial(aPagar);
 
         //actualizarPredio(predio, sesion);
         listaOtrosRubros.add(generarElementoArbolAvaluo("Bomberos", predio.getValBomberos().setScale(2, BigDecimal.ROUND_UP).toString(), null, null));
-        listaOtrosRubros.add(generarElementoArbolAvaluo("Costo emisión", predio.getValEmision().setScale(2, BigDecimal.ROUND_UP).toString(), null, null));
+        listaOtrosRubros.add(generarElementoArbolAvaluo("Servicios administrativos", predio.getValEmision().setScale(2, BigDecimal.ROUND_UP).toString(), null, null));
         listaOtrosRubros.add(generarElementoArbolAvaluo("CEM", predio.getValCem().setScale(2, BigDecimal.ROUND_UP).toString(), null, null));
         listaOtrosRubros.add(generarElementoArbolAvaluo("Servicios ambientales", predio.getValAmbientales().setScale(2, BigDecimal.ROUND_UP).toString(), null, null));
-        listaOtrosRubros.add(generarElementoArbolAvaluo("Tasa recolección basura", predio.getValBasura().setScale(2, BigDecimal.ROUND_UP).toString(), null, null));
+        listaOtrosRubros.add(generarElementoArbolAvaluo("Solar no edificado", valorSolarNoEdificado.setScale(2, BigDecimal.ROUND_UP).toString(), null, null));
 
         nodoAlterno.add(generarElementoArbolAvaluo("Impuesto predial", predio.getValImpuesto().setScale(2, BigDecimal.ROUND_UP).toString(), null, null));
         nodoAlterno.add(generarElementoArbolAvaluo("OTROS RUBROS", null, null, listaOtrosRubros));

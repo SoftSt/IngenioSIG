@@ -204,6 +204,7 @@ public abstract class AdminFichaCatastralBB extends AdminSistemaBB {
         try {
             List datosImpresion;
             datosImpresion = obtenerListadoAvaluos(generarListaAvaluo());
+            ReporteGenerador.FormatoReporte formatoReporte = ReporteGenerador.FormatoReporte.PDF;
 
             Class claseImpresion = TablaCatastralDto.class;
             //BloqueDto bloques;
@@ -215,6 +216,7 @@ public abstract class AdminFichaCatastralBB extends AdminSistemaBB {
             if (EnumReporte.TABLA_CATASTRAL_URBANA.equals(tipoReporte)) {
                 parametrosReporte.put(EnumParametrosReporte.NOMBRE_MODULO.getNombre(), "CATASTRO PREDIAL URBANO");
                 parametrosReporte.put("TITULO_REPORTE", "TABLA CATASTRAL URBANA");
+                formatoReporte = ReporteGenerador.FormatoReporte.XLSX;
             }
             if (EnumReporte.TABLA_CATASTRAL_URBANA_CONDENSADA.equals(tipoReporte)) {
                 parametrosReporte.put(EnumParametrosReporte.NOMBRE_MODULO.getNombre(), "CATASTRO PREDIAL URBANO");
@@ -253,7 +255,7 @@ public abstract class AdminFichaCatastralBB extends AdminSistemaBB {
             paramRepA.put("tablaCatastral", claseImpresion);
             paramRepA.put("reporTablaCatastral", List.class);
 
-            return generarReporte(tipoReporte, datosImpresion, paramRepA, xPath, parametrosReporte, ReporteGenerador.FormatoReporte.PDF);
+            return generarReporte(tipoReporte, datosImpresion, paramRepA, xPath, parametrosReporte, formatoReporte);
 
         } catch (NewviExcepcion ex) {
             LoggerNewvi.getLogNewvi(this.getClass()).error(ex, sesionBean.getSesion());
