@@ -8,6 +8,7 @@ package ec.com.newvi.sic.web.backingbean;
 import ec.com.newvi.sic.dto.AvaluoDto;
 import ec.com.newvi.sic.dto.FichaCatastralDto;
 import ec.com.newvi.sic.dto.TablaCatastralDto;
+import ec.com.newvi.sic.enums.EnumCaracteristicasAvaluo;
 import ec.com.newvi.sic.enums.EnumEstadoRegistro;
 import ec.com.newvi.sic.enums.EnumNewviExcepciones;
 import ec.com.newvi.sic.enums.EnumReporte;
@@ -16,6 +17,7 @@ import ec.com.newvi.sic.modelo.Contribuyentes;
 import ec.com.newvi.sic.modelo.Dominios;
 import ec.com.newvi.sic.modelo.FechaAvaluo;
 import ec.com.newvi.sic.modelo.Predios;
+import ec.com.newvi.sic.util.ComunUtil;
 import ec.com.newvi.sic.util.excepciones.NewviExcepcion;
 import ec.com.newvi.sic.util.logs.LoggerNewvi;
 import ec.com.newvi.sic.web.MensajesFaces;
@@ -197,7 +199,7 @@ public class AvaluoBB extends AdminFichaCatastralBB {
         for (Predios predioACalcular : listaPredios) {
             List<AvaluoDto> calculoAvaluo = catastroServicio.obtenerAvaluoPredio(predioACalcular, dominios, sesionBean.getSesion());
             catastroServicio.registrarArbol(calculoAvaluo, predioACalcular, sesionBean.getSesion());
-            generarElementoAvaluo(calculoAvaluo);
+            //generarElementoAvaluo(calculoAvaluo);
             LoggerNewvi.getLogNewvi(this.getClass()).info(predioACalcular.getCodCatastral(), sesionBean.getSesion());
             if (this.progreso <= 100) {
                 if ((cont++ % (listaPredios.size() / 100)) == 0) {
@@ -234,7 +236,7 @@ public class AvaluoBB extends AdminFichaCatastralBB {
                 avaluo.setValTerreno(predioACalcular.getValTerreno());
                 avaluo.setValPredio(predioACalcular.getValPredio());
                 avaluo.setValImpuesto(predioACalcular.getValImppredial());
-                avaluo.setValAreapredio(predioACalcular.getValAreaPredio());
+                avaluo.setValAreapredio(predioACalcular.getValImppredial());
                 avaluo.setValEdifica(predioACalcular.getValEdifica());
                 avaluo.setValAreaconstruccion(predioACalcular.getValAreaConstruccion());
                 avaluo.setValBomberos(predioACalcular.getValBomberos());
@@ -334,16 +336,22 @@ public class AvaluoBB extends AdminFichaCatastralBB {
         return metodosBuscado;
     }
 
-    public void generarElementoAvaluo(List<AvaluoDto> AvaluoCalculado) {
+    public void generarElementoAvaluo(List<AvaluoDto> AvaluoCalculado) throws NewviExcepcion {
         Avaluo avaluo = new Avaluo();
         Class claseAvaluo = avaluo.getClass();
         String nombreMetodoBuscado = "";
+        EnumCaracteristicasAvaluo [] caracteristicasAvaluo = EnumCaracteristicasAvaluo.values();
         //Field[] metodosClase = claseAvaluo.getDeclaredFields();
         List<Field> metodosClase = filtrarFieldDecimales(claseAvaluo.getDeclaredFields());
         for (Field metodo : metodosClase) {
             nombreMetodoBuscado = metodo.getName();
-            String a = nombreMetodoBuscado;
-            String b = a.trim();
+            for (EnumCaracteristicasAvaluo caracteristica : caracteristicasAvaluo) {
+                if(!ComunUtil.esNulo(caracteristica.getCampo()) &&caracteristica.getCampo().equals(nombreMetodoBuscado)){
+                    BigDecimal prueba = catastroServicio.obtenerElementoAvaluoPorDescripcion(AvaluoCalculado, caracteristica.getTitulo());
+                    prueba.add(BigDecimal.ZERO);
+                }else if (caracteristica.getCampo().equals("Tiene hijos")){
+                }
+            }
         }
     }
 

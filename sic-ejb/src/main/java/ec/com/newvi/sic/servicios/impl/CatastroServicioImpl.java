@@ -234,7 +234,8 @@ public class CatastroServicioImpl implements CatastroServicio {
         return bloquesFacade.buscarBloquesPorCodigoCatastral(codCatastral);
     }
 
-    private BigDecimal obtenerElementoAvaluoPorDescripcion(List<AvaluoDto> listaElementos, String descripcion) throws NewviExcepcion {
+    @Override
+    public BigDecimal obtenerElementoAvaluoPorDescripcion(List<AvaluoDto> listaElementos, String descripcion) throws NewviExcepcion {
         BigDecimal totalValor = BigDecimal.ZERO;
         for (AvaluoDto elemento : listaElementos) {
             if (elemento.getDescripcion().contains(descripcion)) {
