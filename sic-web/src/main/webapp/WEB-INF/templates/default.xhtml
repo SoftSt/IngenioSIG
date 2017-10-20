@@ -24,9 +24,13 @@
 
         </p:layout>
 
-        <p:dialog modal="true" widgetVar="statusDialog" draggable="false" closable="false" resizable="false">
-            <p:graphicImage name="/privado/imagenes/loading.gif" />
+        <p:dialog modal="true" widgetVar="statusDialog" header="Procesando..."
+                  draggable="false" closable="false">
+            <center>
+                <h:graphicImage value="/resources/img/loading.gif"></h:graphicImage>
+            </center>
         </p:dialog>
+        
         <script type="text/javascript">
             function start() {
                 PF('statusDialog').show();
