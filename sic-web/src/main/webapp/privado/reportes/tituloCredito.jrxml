@@ -20,7 +20,7 @@
 	<field name="valCem" class="java.lang.String"/>
 	<field name="valBomberos" class="java.lang.String"/>
 	<field name="valEmision" class="java.lang.String"/>
-	<field name="valBasura" class="java.lang.String"/>
+	<field name="valNoEdificacion" class="java.lang.String"/>
 	<field name="valAmbientales" class="java.lang.String"/>
 	<field name="valImpuesto" class="java.lang.String"/>
 	<field name="valImppredial" class="java.lang.String"/>
@@ -310,7 +310,7 @@
 					<textElement textAlignment="Right">
 						<font fontName="SansSerif" size="9" isBold="false"/>
 					</textElement>
-					<text><![CDATA[Recolección de basura]]></text>
+					<text><![CDATA[Solar No Edificado]]></text>
 				</staticText>
 				<staticText>
 					<reportElement x="0" y="90" width="128" height="15" uuid="bfc562b0-5f44-4909-b605-66ed0d9542e6"/>
@@ -396,7 +396,7 @@
 					<textElement textAlignment="Right">
 						<font fontName="SansSerif" size="9"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$F{valBasura}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$F{valNoEdificacion}]]></textFieldExpression>
 				</textField>
 				<textField isBlankWhenNull="true">
 					<reportElement x="0" y="90" width="140" height="15" uuid="475b82de-2499-48f4-ad46-9bc35eca257e"/>

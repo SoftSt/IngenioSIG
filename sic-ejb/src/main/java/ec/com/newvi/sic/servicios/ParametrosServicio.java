@@ -246,14 +246,6 @@ public interface ParametrosServicio {
      */
     public BigDecimal obtenerTotalCoeficienteDominiosPorCodigo(String domiCodigo);
 
-    /**
-     * Indica si tiene basura
-     *
-     * @param codCatastral codigo del predio
-     * @return true si si tiene basura
-     */
-    public Boolean tieneBasura(Integer codCatastral);
-
     /*-----------------------------------------------------------------------Constantes Impuestos------------------------------------------------------------------------------*/
     /**
      * Devuelve una lista de constantes de impuestos

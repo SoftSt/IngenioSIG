@@ -45,7 +45,7 @@
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="contribucionEspecialMejoras" class="java.lang.String"/>
-	<field name="tasaRecoleccionBasura" class="java.lang.String"/>
+	<field name="tasaNoEdificacion" class="java.lang.String"/>
 	<field name="costoEmision" class="java.lang.String"/>
 	<field name="tasaBomberos" class="java.lang.String"/>
 	<field name="serviciosAmbientales" class="java.lang.String"/>
@@ -68,7 +68,7 @@
 		<variableExpression><![CDATA[new Double($F{contribucionEspecialMejoras})]]></variableExpression>
 	</variable>
 	<variable name="SERVICIOS" class="java.lang.Double">
-		<variableExpression><![CDATA[new Double($F{tasaRecoleccionBasura})+new Double($F{costoEmision})+ new Double($F{tasaBomberos})+ new Double($F{serviciosAmbientales})]]></variableExpression>
+		<variableExpression><![CDATA[new Double($F{tasaNoEdificacion})+new Double($F{costoEmision})+ new Double($F{tasaBomberos})+ new Double($F{serviciosAmbientales})]]></variableExpression>
 		<initialValueExpression><![CDATA[]]></initialValueExpression>
 	</variable>
 	<variable name="TOTAL" class="java.lang.Double">
@@ -243,7 +243,7 @@
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font fontName="SansSerif" size="8"/>
 					</textElement>
-					<text><![CDATA[SERVICIOS]]></text>
+					<text><![CDATA[OTROS]]></text>
 				</staticText>
 				<staticText>
 					<reportElement x="732" y="0" width="68" height="35" uuid="a754e4d1-6eef-4f01-899c-4141c022c239"/>

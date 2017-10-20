@@ -181,8 +181,8 @@ public class Predios implements Serializable {
     private BigDecimal valBomberos;
     @Column(name = "val_emision")
     private BigDecimal valEmision;
-    @Column(name = "val_basura")
-    private BigDecimal valBasura;
+    @Column(name = "val_noedifica")
+    private BigDecimal valNoEdificacion;
     @Column(name = "val_ambientales")
     private BigDecimal valAmbientales;
     @Column(name = "val_impuesto")
@@ -436,12 +436,12 @@ public class Predios implements Serializable {
         this.valEmision = valEmision;
     }
 
-    public BigDecimal getValBasura() {
-        return valBasura;
+    public BigDecimal getValNoEdificacion() {
+        return valNoEdificacion;
     }
 
-    public void setValBasura(BigDecimal valBasura) {
-        this.valBasura = valBasura;
+    public void setValNoEdificacion(BigDecimal valNoEdificacion) {
+        this.valNoEdificacion = valNoEdificacion;
     }
 
     public BigDecimal getValAmbientales() {

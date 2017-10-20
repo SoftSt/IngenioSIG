@@ -757,7 +757,6 @@ public class CatastroServicioImpl implements CatastroServicio {
         nodo.add(generarElementoArbolAvaluo(EnumCaracteristicasAvaluo.PREDIO_VALOR_EDIFICACION.getTitulo(), ComunUtil.generarFormatoMoneda(valorEdificacion, formatoMonedaSistema), null, null));
         nodo.add(generarElementoArbolAvaluo(EnumCaracteristicasAvaluo.PREDIO_VALOR_PREDIO.getTitulo(), ComunUtil.generarFormatoMoneda(valPredio, formatoMonedaSistema), null, null));
 
-        //nodoAlterno = generarImpuestoPredial(predio, basura, sesion, padre);
         nodoAlterno = generarImpuestoPredial(predio, valPredio, listaImpuestos, sesion);
         for (AvaluoDto nuevoNodo : nodoAlterno) {
             nodo.add(nuevoNodo);
@@ -766,7 +765,6 @@ public class CatastroServicioImpl implements CatastroServicio {
         return nodo;
     }
 
-    //private List<AvaluoDto> generarImpuestoPredial(Predios predio, BigDecimal basura, SesionDto sesion, Integer padre) throws NewviExcepcion {
     private List<AvaluoDto> generarImpuestoPredial(Predios predio, BigDecimal avaluo, Map<String, BigDecimal> listaImpuestos, SesionDto sesion) throws NewviExcepcion {
         List<AvaluoDto> nodoAlterno = new ArrayList<>();
         List<AvaluoDto> listaOtrosRubros = new ArrayList<>();
@@ -776,7 +774,6 @@ public class CatastroServicioImpl implements CatastroServicio {
         BigDecimal valorContribucionEspecialMejoras = BigDecimal.ZERO;
         BigDecimal tasaImpuestoPredial = BigDecimal.ZERO;
         BigDecimal tasaSolarNoEdificado = BigDecimal.ZERO;
-        BigDecimal valorSolarNoEdificado = BigDecimal.ZERO;
         BigDecimal valorServiciosAmbientales = BigDecimal.ZERO;
         BigDecimal aPagar = BigDecimal.ZERO;
         BigDecimal valPredio = avaluo;
@@ -798,9 +795,8 @@ public class CatastroServicioImpl implements CatastroServicio {
         predio.setValBomberos(valPredio.multiply(tasaImpuestoBomberos));
         predio.setValEmision(valorServiciosAdministrativos);
         if (listaImpuestos.containsKey("IMPUESTO_SOLAR_NO_EDIFICADO")) {
-            // [TODO] Colocar un campo de Impuesto a Solar No edificado en Catastro.
-            valorSolarNoEdificado = valPredio.multiply(tasaSolarNoEdificado.multiply(listaImpuestos.get("IMPUESTO_SOLAR_NO_EDIFICADO")));
-            aPagar = aPagar.add(valorSolarNoEdificado);
+            predio.setValNoEdificacion(valPredio.multiply(tasaSolarNoEdificado.multiply(listaImpuestos.get("IMPUESTO_SOLAR_NO_EDIFICADO"))));
+            aPagar = aPagar.add(predio.getValNoEdificacion());
         }
         predio.setValAmbientales(valorServiciosAmbientales);
         predio.setValImpuesto(valPredio.multiply(tasaImpuestoPredial));
@@ -811,7 +807,7 @@ public class CatastroServicioImpl implements CatastroServicio {
         listaOtrosRubros.add(generarElementoArbolAvaluo(EnumCaracteristicasAvaluo.IMPUESTOS_COSTO_EMISION.getTitulo(), predio.getValEmision().setScale(2, BigDecimal.ROUND_UP).toString(), null, null));
         listaOtrosRubros.add(generarElementoArbolAvaluo(EnumCaracteristicasAvaluo.IMPUESTOS_CEM.getTitulo(), predio.getValCem().setScale(2, BigDecimal.ROUND_UP).toString(), null, null));
         listaOtrosRubros.add(generarElementoArbolAvaluo(EnumCaracteristicasAvaluo.IMPUESTOS_SERVICIOS_AMBIENTALES.getTitulo(), predio.getValAmbientales().setScale(2, BigDecimal.ROUND_UP).toString(), null, null));
-        listaOtrosRubros.add(generarElementoArbolAvaluo(EnumCaracteristicasAvaluo.IMPUESTOS_SOLAR_NO_EDIFICADO.getTitulo(), valorSolarNoEdificado.setScale(2, BigDecimal.ROUND_UP).toString(), null, null));
+        listaOtrosRubros.add(generarElementoArbolAvaluo(EnumCaracteristicasAvaluo.IMPUESTOS_SOLAR_NO_EDIFICADO.getTitulo(), predio.getValNoEdificacion().setScale(2, BigDecimal.ROUND_UP).toString(), null, null));
 
         nodoAlterno.add(generarElementoArbolAvaluo(EnumCaracteristicasAvaluo.PREDIO_IMPUESTO_PREDIAL.getTitulo(), predio.getValImpuesto().setScale(2, BigDecimal.ROUND_UP).toString(), null, null));
         nodoAlterno.add(generarElementoArbolAvaluo(EnumCaracteristicasAvaluo.IMPUESTOS_OTROS_VALORES.getTitulo(), null, null, listaOtrosRubros));

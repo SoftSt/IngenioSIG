@@ -71,8 +71,8 @@ public class Avaluo implements Serializable {
     private BigDecimal valPredio;
     @Column(name = "val_cem")
     private BigDecimal valCem;
-    @Column(name = "val_basura")
-    private BigDecimal valBasura;
+    @Column(name = "val_noedifica")
+    private BigDecimal valNoEdificacion;
     @Column(name = "val_emision")
     private BigDecimal valEmision;
     @Column(name = "val_bomberos")
@@ -225,12 +225,12 @@ public class Avaluo implements Serializable {
         this.valImpuesto = valImpuesto;
     }
 
-    public BigDecimal getValBasura() {
-        return valBasura;
+    public BigDecimal getValNoEdificacion() {
+        return valNoEdificacion;
     }
 
-    public void setValBasura(BigDecimal valBasura) {
-        this.valBasura = valBasura;
+    public void setValNoEdificacion(BigDecimal valNoEdificacion) {
+        this.valNoEdificacion = valNoEdificacion;
     }
 
     public BigDecimal getValEmision() {

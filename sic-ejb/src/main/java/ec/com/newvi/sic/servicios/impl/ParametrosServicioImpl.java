@@ -324,11 +324,6 @@ public class ParametrosServicioImpl implements ParametrosServicio {
     }
 
     @Override
-    public Boolean tieneBasura(Integer codCatastral) {
-        return dominiosFacade.tieneBasura(codCatastral);
-    }
-
-    @Override
     public String generaNuevoConstanteImpuesto(ConstantesImpuestos nuevaConstantesImpuestos, SesionDto sesion) throws NewviExcepcion {
         // Validar que los datos no sean incorrectos
         LoggerNewvi.getLogNewvi(this.getClass()).debug("Validando constante impuesto...", sesion);

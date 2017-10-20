@@ -49,7 +49,7 @@ public class PresentacionFichaCatastralDto {
     private BigDecimal valCem;
     private BigDecimal valBomberos;
     private BigDecimal valEmision;
-    private BigDecimal valBasura;
+    private BigDecimal valNoEdificacion;
     private BigDecimal valAmbientales;
     private BigDecimal valImpuesto;
     private BigDecimal valImppredial;
@@ -253,12 +253,12 @@ public class PresentacionFichaCatastralDto {
         this.valEmision = valEmision;
     }
 
-    public BigDecimal getValBasura() {
-        return valBasura;
+    public BigDecimal getValNoEdificacion() {
+        return valNoEdificacion;
     }
 
-    public void setValBasura(BigDecimal valBasura) {
-        this.valBasura = valBasura;
+    public void setValNoEdificacion(BigDecimal valNoEdificacion) {
+        this.valNoEdificacion = valNoEdificacion;
     }
 
     public BigDecimal getValAmbientales() {
@@ -658,7 +658,7 @@ public class PresentacionFichaCatastralDto {
         this.valCem = predio.getValCem();
         this.valBomberos = predio.getValBomberos();
         this.valEmision = predio.getValEmision();
-        this.valBasura = predio.getValBasura();
+        this.valNoEdificacion = predio.getValNoEdificacion();
         this.valAmbientales = predio.getValAmbientales();
         this.valImpuesto = predio.getValImpuesto();
         this.valImppredial = predio.getValImppredial();

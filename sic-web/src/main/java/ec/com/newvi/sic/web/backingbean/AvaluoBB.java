@@ -22,6 +22,7 @@ import ec.com.newvi.sic.web.MensajesFaces;
 import ec.com.newvi.sic.web.enums.EnumEtiquetas;
 import ec.com.newvi.sic.web.enums.EnumPantallaMantenimiento;
 import java.lang.reflect.Field;
+import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -240,7 +241,7 @@ public class AvaluoBB extends AdminFichaCatastralBB {
                 avaluo.setValEmision(predioACalcular.getValEmision());
                 avaluo.setValCem(predioACalcular.getValCem());
                 avaluo.setValAmbientales(predioACalcular.getValAmbientales());
-                //avaluo.setValBasura(predioACalcular.getValBasura());
+                avaluo.setValNoEdificacion(predioACalcular.getValNoEdificacion());
                 
                 avaluo.setValImppredial(predioACalcular.getValImpuesto());
             }
@@ -365,7 +366,7 @@ public class AvaluoBB extends AdminFichaCatastralBB {
             datosAvaluo.setAreaPredio(avaluo.getValAreapredio());
             datosAvaluo.setImpuestoPredial(avaluo.getValImpuesto());
             datosAvaluo.setContribucionEspecialMejoras(avaluo.getValCem());
-            datosAvaluo.setTasaRecoleccionBasura(avaluo.getValBasura());
+            datosAvaluo.setTasaNoEdificacion(avaluo.getValNoEdificacion());
             datosAvaluo.setCostoEmision(avaluo.getValEmision());
             datosAvaluo.setTasaBomberos(avaluo.getValBomberos());
             datosAvaluo.setServiciosAmbientales(avaluo.getValAmbientales());

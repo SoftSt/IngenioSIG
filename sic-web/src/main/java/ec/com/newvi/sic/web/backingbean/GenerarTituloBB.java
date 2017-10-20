@@ -5,15 +5,12 @@
  */
 package ec.com.newvi.sic.web.backingbean;
 
-import ec.com.newvi.sic.dto.AvaluoDto;
 import ec.com.newvi.sic.dto.FichaCatastralDto;
 import ec.com.newvi.sic.dto.TablaCatastralDto;
 import ec.com.newvi.sic.enums.EnumEstadoRegistro;
 import ec.com.newvi.sic.enums.EnumNewviExcepciones;
 import ec.com.newvi.sic.enums.EnumReporte;
 import ec.com.newvi.sic.modelo.Avaluo;
-import ec.com.newvi.sic.modelo.Contribuyentes;
-import ec.com.newvi.sic.modelo.Dominios;
 import ec.com.newvi.sic.modelo.FechaAvaluo;
 import ec.com.newvi.sic.modelo.Predios;
 import ec.com.newvi.sic.util.excepciones.NewviExcepcion;
@@ -21,6 +18,7 @@ import ec.com.newvi.sic.util.logs.LoggerNewvi;
 import ec.com.newvi.sic.web.MensajesFaces;
 import ec.com.newvi.sic.web.enums.EnumEtiquetas;
 import ec.com.newvi.sic.web.enums.EnumPantallaMantenimiento;
+import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -28,11 +26,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
-import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
-import javax.faces.context.FacesContext;
-import org.primefaces.event.FlowEvent;
 import org.primefaces.model.DefaultStreamedContent;
 
 /**
@@ -203,7 +198,7 @@ public class GenerarTituloBB extends AdminFichaCatastralBB {
             datosAvaluo.setAreaPredio(avaluo.getValAreapredio());
             datosAvaluo.setImpuestoPredial(avaluo.getValImpuesto());
             datosAvaluo.setContribucionEspecialMejoras(avaluo.getValCem());
-            datosAvaluo.setTasaRecoleccionBasura(avaluo.getValBasura());
+            datosAvaluo.setTasaNoEdificacion(avaluo.getValNoEdificacion());
             datosAvaluo.setCostoEmision(avaluo.getValEmision());
             datosAvaluo.setTasaBomberos(avaluo.getValBomberos());
             datosAvaluo.setServiciosAmbientales(avaluo.getValAmbientales());

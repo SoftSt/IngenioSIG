@@ -17,7 +17,7 @@
 	<field name="nomNumero" class="java.lang.String"/>
 	<field name="impuestoPredial" class="java.lang.String"/>
 	<field name="contribucionEspecialMejoras" class="java.lang.String"/>
-	<field name="tasaRecoleccionBasura" class="java.lang.String"/>
+	<field name="tasaNoEdificacion" class="java.lang.String"/>
 	<field name="costoEmision" class="java.lang.String"/>
 	<field name="tasaBomberos" class="java.lang.String"/>
 	<field name="totalAPagar" class="java.lang.String"/>
@@ -334,7 +334,7 @@
 				<textElement textAlignment="Right">
 					<font fontName="SansSerif" size="9"/>
 				</textElement>
-				<textFieldExpression><![CDATA[]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{tasaNoEdificacion}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="435" y="135" width="120" height="15" uuid="f64947c5-a5e4-49ce-9c59-b511eb15030d"/>

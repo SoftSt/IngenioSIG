@@ -220,24 +220,4 @@ public class DominiosFacade extends AbstractFacade<Dominios, Integer> implements
 
     }
 
-    public Boolean tieneBasura(Integer codCatastral) {
-        Boolean resultado = false;
-
-        Query q = this.getEntityManager().createNativeQuery(""
-                + "select sum(B.domi_coefic)"
-                + "from cat_cat_dominios B, cat_cat_terreno A "
-                + "where A.sts_codigo = B.domi_codigo"
-                + " and A.sts_codigo = '060505' "
-                + " and cod_catastral = ?");
-
-        q.setParameter(1, codCatastral);
-
-        try {
-            BigDecimal a = new BigDecimal((q.getResultList().toString()).substring(1, 7));
-            resultado = true;
-        } catch (Exception e) {
-        }
-        return resultado;
-    }
-
 }

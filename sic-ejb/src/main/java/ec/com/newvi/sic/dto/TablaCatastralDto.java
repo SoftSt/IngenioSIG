@@ -27,7 +27,7 @@ public class TablaCatastralDto {
     private BigDecimal areaPredio; 
     private BigDecimal impuestoPredial; 
     private BigDecimal contribucionEspecialMejoras; 
-    private BigDecimal tasaRecoleccionBasura; 
+    private BigDecimal tasaNoEdificacion; 
     private BigDecimal costoEmision; 
     private BigDecimal tasaBomberos; 
     private BigDecimal serviciosAmbientales; 
@@ -147,12 +147,12 @@ public class TablaCatastralDto {
         this.contribucionEspecialMejoras = contribucionEspecialMejoras;
     }
 
-    public BigDecimal getTasaRecoleccionBasura() {
-        return tasaRecoleccionBasura;
+    public BigDecimal getTasaNoEdificacion() {
+        return tasaNoEdificacion;
     }
 
-    public void setTasaRecoleccionBasura(BigDecimal tasaRecoleccionBasura) {
-        this.tasaRecoleccionBasura = tasaRecoleccionBasura;
+    public void setTasaNoEdificacion(BigDecimal tasaNoEdificacion) {
+        this.tasaNoEdificacion = tasaNoEdificacion;
     }
 
     public BigDecimal getCostoEmision() {
