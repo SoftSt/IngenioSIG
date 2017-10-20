@@ -51,7 +51,7 @@
                         <p:column headerText="Nuevo propietario" width="80">
                             <p:commandButton process="listaFichaCatastral" 
                                              actionListener="#{propiedadBB.seleccionarPredioParaNuevaPropiedad(fichaCatastral.predio.codCatastral)}"
-                                             icon="fa fa-edit"
+                                             icon="fa fa-user-plus"
                                              id="btnNuevoPropietario"
                                              update="grupoPropietario">
                                 <p:ajax update="toolTipEdit" process="@this" /> 
