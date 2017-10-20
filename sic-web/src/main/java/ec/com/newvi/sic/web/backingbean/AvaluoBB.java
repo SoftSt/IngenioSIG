@@ -232,16 +232,17 @@ public class AvaluoBB extends AdminFichaCatastralBB {
             if (Boolean.TRUE) {
                 avaluo.setValTerreno(predioACalcular.getValTerreno());
                 avaluo.setValPredio(predioACalcular.getValPredio());
-                avaluo.setValImppredial(predioACalcular.getValImppredial());
+                avaluo.setValImpuesto(predioACalcular.getValImppredial());
                 avaluo.setValAreapredio(predioACalcular.getValAreaPredio());
-                avaluo.setValEmision(predioACalcular.getValEmision());
                 avaluo.setValEdifica(predioACalcular.getValEdifica());
-                avaluo.setValCem(predioACalcular.getValCem());
-                avaluo.setValBomberos(predioACalcular.getValBomberos());
-                avaluo.setValBasura(predioACalcular.getValBasura());
                 avaluo.setValAreaconstruccion(predioACalcular.getValAreaConstruccion());
+                avaluo.setValBomberos(predioACalcular.getValBomberos());
+                avaluo.setValEmision(predioACalcular.getValEmision());
+                avaluo.setValCem(predioACalcular.getValCem());
                 avaluo.setValAmbientales(predioACalcular.getValAmbientales());
-                avaluo.setValImpuesto(predioACalcular.getValImpuesto());
+                //avaluo.setValBasura(predioACalcular.getValBasura());
+                
+                avaluo.setValImppredial(predioACalcular.getValImpuesto());
             }
             avaluo.setCodCatastral(predioACalcular);
             avaluo.setNomCodigocatastral(predioACalcular.getNomCodigocatastral());

@@ -19,6 +19,7 @@ public enum EnumCaracteristicasAvaluo {
     PREDIO_EROSION("Erosión","S"),
     PREDIO_FORMA("Forma","S"),
     PREDIO_UBICACION("Ubicación","S"),
+    PREDIO_AREA_CONSTRUCCION("Area de contruccion","N"),
     PREDIO_PROMEDIO_FACTORES("Promedio de factores","S"),
     PREDIO_VALOR_TERRENO("Valor del terreno","S"),
     PREDIO_VALOR_EDIFICACION("Valor de la edificacion","S"),
