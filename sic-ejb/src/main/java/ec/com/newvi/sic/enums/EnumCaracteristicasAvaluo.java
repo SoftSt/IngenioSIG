@@ -52,7 +52,7 @@ public enum EnumCaracteristicasAvaluo {
     IMPUESTOS_COSTO_EMISION("Costo emisión", "S"),
     IMPUESTOS_CEM("CEM", "S"),
     IMPUESTOS_SERVICIOS_AMBIENTALES("Servicios ambientales", "S"),
-    IMPUESTOS_RECOLECION_BASURA("Tasa recolección basura", "S"),
+    IMPUESTOS_SOLAR_NO_EDIFICADO("Solar no edificado", "S"),
     IMPUESTOS_OTROS_VALORES("OTROS RUBROS", "S"),
     
     

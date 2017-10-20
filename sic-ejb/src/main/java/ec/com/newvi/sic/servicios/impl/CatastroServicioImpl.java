@@ -686,14 +686,14 @@ public class CatastroServicioImpl implements CatastroServicio {
         String consulta;
         BigDecimal coff, vterreno, valorTerreno, valPredio;
         BigDecimal promedioFactores = BigDecimal.ZERO;
-        BigDecimal div = new BigDecimal(5);
-        BigDecimal frente = !ComunUtil.esNulo(predio.getValAreaFrente())? predio.getValAreaFrente() : BigDecimal.ZERO;
-        BigDecimal fondo = !ComunUtil.esNulo(predio.getValAreaFondo())? predio.getValAreaFondo() : BigDecimal.ZERO;
-        BigDecimal area = !ComunUtil.esNulo(predio.getValAreaPredio())? predio.getValAreaPredio() : BigDecimal.ZERO;
+        BigDecimal div = new BigDecimal(4);
+        BigDecimal frente = !ComunUtil.esNulo(predio.getValAreaFrente()) ? predio.getValAreaFrente() : BigDecimal.ZERO;
+        BigDecimal fondo = !ComunUtil.esNulo(predio.getValAreaFondo()) ? predio.getValAreaFondo() : BigDecimal.ZERO;
+        BigDecimal area = !ComunUtil.esNulo(predio.getValAreaPredio()) ? predio.getValAreaPredio() : BigDecimal.ZERO;
         BigDecimal areaConstruccion = BigDecimal.ZERO;
         BigDecimal valorEdificacion = BigDecimal.ZERO;
 
-        Map<String, Boolean> listaImpuestos = new HashMap<>();
+        Map<String, BigDecimal> listaImpuestos = new HashMap<>();
 
         // Coeficiente de Topografía COT
         BigDecimal cot = obtenerCoeficienteTerreno(predio, dominios, "TOPOGRAFIA");
@@ -709,7 +709,7 @@ public class CatastroServicioImpl implements CatastroServicio {
         } else {
             coff = obtenerValoracionFondoRelativo(area, frente, dominios);
         }
-        promedioFactores = (promedioFactores.add(coff).add(cot).add(cofo).add(cero).add(cubi)).divide(div, 4, RoundingMode.CEILING);
+        promedioFactores = (promedioFactores.add(coff).add(cot).add(cofo).add(cero)).divide(div, 4, RoundingMode.CEILING);
 
         // CALCULO DEL PRECIO BASE PARA EL TERRENO
         // SE TOMA EN CUENTA UNA VALORACION POR LAS ZONAS y SECTORES DEL MUNICIPIO.
@@ -744,12 +744,7 @@ public class CatastroServicioImpl implements CatastroServicio {
             }
         }
 
-        if (ComunUtil.esNulo(predio.getBloques())
-                || predio.getBloques().isEmpty()) {
-            listaImpuestos.put("IMPUESTO_SOLAR_NO_EDIFICADO", true);
-        } else {
-            listaImpuestos.put("IMPUESTO_SOLAR_NO_EDIFICADO", false);
-        }
+        listaImpuestos.put("IMPUESTO_SOLAR_NO_EDIFICADO", cubi);
 
         //Actualiza Valoración de Terreno y Contrucción
         valPredio = valorTerreno.add(valorEdificacion);
@@ -772,7 +767,7 @@ public class CatastroServicioImpl implements CatastroServicio {
     }
 
     //private List<AvaluoDto> generarImpuestoPredial(Predios predio, BigDecimal basura, SesionDto sesion, Integer padre) throws NewviExcepcion {
-    private List<AvaluoDto> generarImpuestoPredial(Predios predio, BigDecimal avaluo, Map<String, Boolean> listaImpuestos, SesionDto sesion) throws NewviExcepcion {
+    private List<AvaluoDto> generarImpuestoPredial(Predios predio, BigDecimal avaluo, Map<String, BigDecimal> listaImpuestos, SesionDto sesion) throws NewviExcepcion {
         List<AvaluoDto> nodoAlterno = new ArrayList<>();
         List<AvaluoDto> listaOtrosRubros = new ArrayList<>();
 
@@ -802,9 +797,9 @@ public class CatastroServicioImpl implements CatastroServicio {
         predio.setValCem(valorContribucionEspecialMejoras);
         predio.setValBomberos(valPredio.multiply(tasaImpuestoBomberos));
         predio.setValEmision(valorServiciosAdministrativos);
-        if (listaImpuestos.get("IMPUESTO_SOLAR_NO_EDIFICADO")) {
+        if (listaImpuestos.containsKey("IMPUESTO_SOLAR_NO_EDIFICADO")) {
             // [TODO] Colocar un campo de Impuesto a Solar No edificado en Catastro.
-            valorSolarNoEdificado = valPredio.multiply(tasaSolarNoEdificado);
+            valorSolarNoEdificado = valPredio.multiply(tasaSolarNoEdificado.multiply(listaImpuestos.get("IMPUESTO_SOLAR_NO_EDIFICADO")));
             aPagar = aPagar.add(valorSolarNoEdificado);
         }
         predio.setValAmbientales(valorServiciosAmbientales);
@@ -816,7 +811,7 @@ public class CatastroServicioImpl implements CatastroServicio {
         listaOtrosRubros.add(generarElementoArbolAvaluo(EnumCaracteristicasAvaluo.IMPUESTOS_COSTO_EMISION.getTitulo(), predio.getValEmision().setScale(2, BigDecimal.ROUND_UP).toString(), null, null));
         listaOtrosRubros.add(generarElementoArbolAvaluo(EnumCaracteristicasAvaluo.IMPUESTOS_CEM.getTitulo(), predio.getValCem().setScale(2, BigDecimal.ROUND_UP).toString(), null, null));
         listaOtrosRubros.add(generarElementoArbolAvaluo(EnumCaracteristicasAvaluo.IMPUESTOS_SERVICIOS_AMBIENTALES.getTitulo(), predio.getValAmbientales().setScale(2, BigDecimal.ROUND_UP).toString(), null, null));
-        listaOtrosRubros.add(generarElementoArbolAvaluo(EnumCaracteristicasAvaluo.IMPUESTOS_RECOLECION_BASURA.getTitulo(), predio.getValBasura().setScale(2, BigDecimal.ROUND_UP).toString(), null, null));
+        listaOtrosRubros.add(generarElementoArbolAvaluo(EnumCaracteristicasAvaluo.IMPUESTOS_SOLAR_NO_EDIFICADO.getTitulo(), valorSolarNoEdificado.setScale(2, BigDecimal.ROUND_UP).toString(), null, null));
 
         nodoAlterno.add(generarElementoArbolAvaluo(EnumCaracteristicasAvaluo.PREDIO_IMPUESTO_PREDIAL.getTitulo(), predio.getValImpuesto().setScale(2, BigDecimal.ROUND_UP).toString(), null, null));
         nodoAlterno.add(generarElementoArbolAvaluo(EnumCaracteristicasAvaluo.IMPUESTOS_OTROS_VALORES.getTitulo(), null, null, listaOtrosRubros));
@@ -974,6 +969,7 @@ public class CatastroServicioImpl implements CatastroServicio {
 
         return detallesAvaluoFacade.buscarHijosDetallesAvaluo(detallesAvaluo);
     }
+
     private String obtenerRelacion(AvaluoDto hijo) {
         String relacion;
         if (hijo.getHijos() == null) {
@@ -1018,7 +1014,7 @@ public class CatastroServicioImpl implements CatastroServicio {
         }
         return valor;
     }
-    
+
     private Boolean esNodo(AvaluoDto nodo) {
         Boolean retorno = false;
         if (nodo.getHijos() != null) {
@@ -1026,7 +1022,7 @@ public class CatastroServicioImpl implements CatastroServicio {
         }
         return retorno;
     }
-    
+
     private void registrarNodos(AvaluoDto nodo, Integer aux, Integer codigoPadre, SesionDto sesion, Predios predio) throws NewviExcepcion {
         if (esNodo(nodo)) {
             codigoPadre = aux;
@@ -1036,7 +1032,7 @@ public class CatastroServicioImpl implements CatastroServicio {
             }
         }
     }
-    
+
     private Integer registrarDetalleAvaluo(AvaluoDto nodo, Integer codigoPadre, String relacion, SesionDto sesion, Predios predio) throws NewviExcepcion {
         DetallesAvaluo detallesAvaluo = new DetallesAvaluo();
         detallesAvaluo.setCodCatastral(predio);
@@ -1048,7 +1044,7 @@ public class CatastroServicioImpl implements CatastroServicio {
         detallesAvaluo.setDavalFactor(nodo.getFactor());
         return generarNuevoDetalleAvaluo(detallesAvaluo, sesion);
     }
-    
+
     private void generarNodos(AvaluoDto nodo, Integer codigoPadre, String relacion, SesionDto sesion, Predios predio) throws NewviExcepcion {
         int aux;
         aux = registrarDetalleAvaluo(nodo, codigoPadre, relacion, sesion, predio);
