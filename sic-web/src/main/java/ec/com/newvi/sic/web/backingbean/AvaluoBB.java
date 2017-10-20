@@ -5,8 +5,6 @@
  */
 package ec.com.newvi.sic.web.backingbean;
 
-import ec.com.newvi.componente.reporte.ConfiguracionReporte;
-import ec.com.newvi.componente.reporte.ReporteGenerador;
 import ec.com.newvi.sic.dto.AvaluoDto;
 import ec.com.newvi.sic.dto.FichaCatastralDto;
 import ec.com.newvi.sic.dto.TablaCatastralDto;
@@ -14,32 +12,22 @@ import ec.com.newvi.sic.enums.EnumEstadoRegistro;
 import ec.com.newvi.sic.enums.EnumNewviExcepciones;
 import ec.com.newvi.sic.enums.EnumReporte;
 import ec.com.newvi.sic.modelo.Avaluo;
-import ec.com.newvi.sic.modelo.Bloques;
 import ec.com.newvi.sic.modelo.Contribuyentes;
 import ec.com.newvi.sic.modelo.Dominios;
 import ec.com.newvi.sic.modelo.FechaAvaluo;
 import ec.com.newvi.sic.modelo.Predios;
-import ec.com.newvi.sic.util.ComunUtil;
 import ec.com.newvi.sic.util.excepciones.NewviExcepcion;
 import ec.com.newvi.sic.util.logs.LoggerNewvi;
 import ec.com.newvi.sic.web.MensajesFaces;
 import ec.com.newvi.sic.web.enums.EnumEtiquetas;
 import ec.com.newvi.sic.web.enums.EnumPantallaMantenimiento;
-import ec.com.newvi.sic.web.utils.WebUtils;
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.lang.reflect.Field;
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -208,7 +196,7 @@ public class AvaluoBB extends AdminFichaCatastralBB {
         for (Predios predioACalcular : listaPredios) {
             List<AvaluoDto> calculoAvaluo = catastroServicio.obtenerAvaluoPredio(predioACalcular, dominios, sesionBean.getSesion());
             catastroServicio.registrarArbol(calculoAvaluo, predioACalcular, sesionBean.getSesion());
-
+            generarElementoAvaluo(calculoAvaluo);
             LoggerNewvi.getLogNewvi(this.getClass()).info(predioACalcular.getCodCatastral(), sesionBean.getSesion());
             if (this.progreso <= 100) {
                 if ((cont++ % (listaPredios.size() / 100)) == 0) {
@@ -245,12 +233,12 @@ public class AvaluoBB extends AdminFichaCatastralBB {
                 avaluo.setValTerreno(predioACalcular.getValTerreno());
                 avaluo.setValPredio(predioACalcular.getValPredio());
                 avaluo.setValImppredial(predioACalcular.getValImppredial());
+                avaluo.setValAreapredio(predioACalcular.getValAreaPredio());
                 avaluo.setValEmision(predioACalcular.getValEmision());
                 avaluo.setValEdifica(predioACalcular.getValEdifica());
                 avaluo.setValCem(predioACalcular.getValCem());
                 avaluo.setValBomberos(predioACalcular.getValBomberos());
                 avaluo.setValBasura(predioACalcular.getValBasura());
-                avaluo.setValAreapredio(predioACalcular.getValAreaPredio());
                 avaluo.setValAreaconstruccion(predioACalcular.getValAreaConstruccion());
                 avaluo.setValAmbientales(predioACalcular.getValAmbientales());
                 avaluo.setValImpuesto(predioACalcular.getValImpuesto());
@@ -332,6 +320,29 @@ public class AvaluoBB extends AdminFichaCatastralBB {
 
     public DefaultStreamedContent imprimir(EnumReporte tipoReporte) {
         return generarReporteCatastro(tipoReporte);
+    }
+
+    public List<Field> filtrarFieldDecimales(Field[] metodosClase) {
+        List<Field> metodosBuscado = new ArrayList<>();
+        for (Field metodo : metodosClase) {
+            if (metodo.getType().getName().contains("BigDecimal")) {
+                metodosBuscado.add(metodo);
+            }
+        }
+        return metodosBuscado;
+    }
+
+    public void generarElementoAvaluo(List<AvaluoDto> AvaluoCalculado) {
+        Avaluo avaluo = new Avaluo();
+        Class claseAvaluo = avaluo.getClass();
+        String nombreMetodoBuscado = "";
+        //Field[] metodosClase = claseAvaluo.getDeclaredFields();
+        List<Field> metodosClase = filtrarFieldDecimales(claseAvaluo.getDeclaredFields());
+        for (Field metodo : metodosClase) {
+            nombreMetodoBuscado = metodo.getName();
+            String a = nombreMetodoBuscado;
+            String b = a.trim();
+        }
     }
 
     public List<TablaCatastralDto> obtenerListadoAvaluos(List<Avaluo> listaAvaluos) {

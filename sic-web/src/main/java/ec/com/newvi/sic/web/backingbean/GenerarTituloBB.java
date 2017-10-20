@@ -44,20 +44,15 @@ import org.primefaces.model.DefaultStreamedContent;
 public class GenerarTituloBB extends AdminFichaCatastralBB {
 
     private EnumPantallaMantenimiento pantallaActual;
-    private Boolean skip;
+    
     private List<Avaluo> listaAvaluos;
     private List<Avaluo> listaAvaluosFiltrados;
     private List<FechaAvaluo> listaFechaAvaluos;
-    private Integer progreso;
     private FechaAvaluo fechaAvaluoActual;
     private String fechaActualPrueba;
     private Boolean esActivo;
-    private Boolean esProcesoIniciado;
-    private Boolean esProcesoCancelado;
 
-    public Boolean getEsProcesoCancelado() {
-        return esProcesoCancelado;
-    }
+    
 
     public Boolean getEsActivo() {
         return esActivo;
@@ -65,14 +60,6 @@ public class GenerarTituloBB extends AdminFichaCatastralBB {
 
     public void setEsActivo(Boolean esActivo) {
         this.esActivo = esActivo;
-    }
-
-    public Boolean getEsProcesoIniciado() {
-        return esProcesoIniciado;
-    }
-
-    public void setEsProcesoIniciado(Boolean esProcesoIniciado) {
-        this.esProcesoIniciado = esProcesoIniciado;
     }
 
     public String getFechaActualPrueba() {
@@ -83,13 +70,7 @@ public class GenerarTituloBB extends AdminFichaCatastralBB {
         this.fechaActualPrueba = fechaActualPrueba;
     }
 
-    public Integer getProgreso() {
-        return progreso;
-    }
-
-    public void setProgreso(Integer progreso) {
-        this.progreso = progreso;
-    }
+    
 
     public List<FechaAvaluo> getListaFechaAvaluos() {
         return listaFechaAvaluos;
@@ -123,28 +104,18 @@ public class GenerarTituloBB extends AdminFichaCatastralBB {
         this.listaAvaluosFiltrados = listaAvaluosFiltrados;
     }
 
-    public Boolean getSkip() {
-        return skip;
-    }
-
-    public void setSkip(Boolean skip) {
-        this.skip = skip;
-    }
-
     @PostConstruct
     public void init() {
         this.esActivo = false;
-        this.esProcesoIniciado = false;
-        this.esProcesoCancelado = false;
-        this.progreso = 0;
+        
+        
         fechaAvaluoActual = new FechaAvaluo();
         listaAvaluos = new ArrayList<>();
         listaFechaAvaluos = new ArrayList<>();
         conmutarPantalla(EnumPantallaMantenimiento.PANTALLA_LISTADO);
-        establecerTitulo(EnumEtiquetas.SIMULACION_LISTA_TITULO,
-                EnumEtiquetas.SIMULACION_LISTA_ICONO,
-                EnumEtiquetas.SIMULACION_LISTA_DESCRIPCION);
-        this.skip = false;
+        establecerTitulo(EnumEtiquetas.GENERARION_TITULO_LISTA_TITULO,
+                EnumEtiquetas.GENERARION_TITULO_LISTA_ICONO,
+                EnumEtiquetas.GENERARION_TITULO_LISTA_DESCRIPCION);
         actualizarListadoFechaAvaluos();
         //actualizarListadoAvaluos();
 
@@ -175,100 +146,6 @@ public class GenerarTituloBB extends AdminFichaCatastralBB {
         return listaFichas;
     }
 
-    public void abrirModalEspera() throws NewviExcepcion {
-        //WebUtils.obtenerContextoPeticion().execute("PF('calcularSimulacion').disable()");
-        //generarSimulacion();
-        generarSimulacionFinal();
-    }
-
-    public void cancelarAvaluo() {
-        this.esProcesoCancelado = true;
-    }
-
-    public void generarSimulacionFinal() throws NewviExcepcion {
-        this.esProcesoIniciado = true;
-
-        List<Predios> listaPredios = catastroServicio.consultarPredios();
-        List<Dominios> dominios = parametrosServicio.consultarDominios();
-        int cont = 0;
-
-        for (Predios predioACalcular : listaPredios) {
-            List<AvaluoDto> calculoAvaluo = catastroServicio.obtenerAvaluoPredio(predioACalcular, dominios, sesionBean.getSesion());
-            catastroServicio.registrarArbol(calculoAvaluo, predioACalcular, sesionBean.getSesion());
-
-            LoggerNewvi.getLogNewvi(this.getClass()).info(predioACalcular.getCodCatastral(), sesionBean.getSesion());
-            if (this.progreso <= 100) {
-                if ((cont++ % (listaPredios.size() / 100)) == 0) {
-                    progreso++;
-                }
-            } else {
-                this.progreso = 100;
-            }
-            if (esProcesoCancelado) {
-                break;
-            }
-        }
-    }
-
-    public void generarSimulacion() throws NewviExcepcion {
-
-        this.esActivo = true;
-
-        Avaluo avaluo;
-        int cont = 0;
-
-        FechaAvaluo fecavId = generarFechaAvaluo();
-        List<FichaCatastralDto> listaFichas = generarListaFichaCatastral();
-        List<Dominios> dominios = parametrosServicio.consultarDominios();
-
-        for (FichaCatastralDto fichaDto : listaFichas) {
-            Predios predioACalcular = fichaDto.getPredio();
-            Contribuyentes contribuyente = fichaDto.getContribuyentePropiedad();
-            //List<AvaluoDto> calculoAvaluo = catastroServicio.obtenerAvaluoPredio(predio, sesionBean.obtenerSesionDto());
-            catastroServicio.obtenerAvaluoPredio(predioACalcular, dominios, sesionBean.getSesion());
-            avaluo = new Avaluo();
-            //if (!(calculoAvaluo == null)) {
-            if (Boolean.TRUE) {
-                avaluo.setValTerreno(predioACalcular.getValTerreno());
-                avaluo.setValPredio(predioACalcular.getValPredio());
-                avaluo.setValImppredial(predioACalcular.getValImppredial());
-                avaluo.setValEmision(predioACalcular.getValEmision());
-                avaluo.setValEdifica(predioACalcular.getValEdifica());
-                avaluo.setValCem(predioACalcular.getValCem());
-                avaluo.setValBomberos(predioACalcular.getValBomberos());
-                avaluo.setValBasura(predioACalcular.getValBasura());
-                avaluo.setValAreapredio(predioACalcular.getValAreaPredio());
-                avaluo.setValAreaconstruccion(predioACalcular.getValAreaConstruccion());
-                avaluo.setValAmbientales(predioACalcular.getValAmbientales());
-                avaluo.setValImpuesto(predioACalcular.getValImpuesto());
-            }
-            avaluo.setCodCatastral(predioACalcular);
-            avaluo.setNomCodigocatastral(predioACalcular.getNomCodigocatastral());
-            avaluo.setTxtDireccion(predioACalcular.getTxtDireccion());
-            avaluo.setStsBarrio(predioACalcular.getStsBarrio());
-            avaluo.setCodCedularuc(contribuyente.getCodCedularuc());
-            avaluo.setNomnomape(contribuyente.getNomNombres().trim() + " " + contribuyente.getNomApellidos().trim());
-            avaluo.setFecavId(fecavId);
-            avaluo.setAvalEstado(EnumEstadoRegistro.A);
-            catastroServicio.generarNuevoAvaluo(avaluo, sesionBean.getSesion());
-
-            //LoggerNewvi.getLogNewvi(this.getClass()).debug(cont++, sesionBean.getSesion());
-            LoggerNewvi.getLogNewvi(this.getClass()).info(predioACalcular.getCodCatastral(), sesionBean.getSesion());
-            if (this.progreso <= 100) {
-                if ((cont++ % (listaFichas.size() / 100)) == 0) {
-                    progreso++;
-                    //cont=0;
-                }
-            } else {
-                this.progreso = 100;
-            }
-
-        }
-
-        actualizarListadoAvaluos();
-
-    }
-
     private void conmutarPantalla(EnumPantallaMantenimiento nuevaPantalla) {
         this.pantallaActual = nuevaPantalla;
     }
@@ -280,15 +157,6 @@ public class GenerarTituloBB extends AdminFichaCatastralBB {
             LoggerNewvi.getLogNewvi(this.getClass()).error(e, sesionBean.getSesion());
             MensajesFaces.mensajeError(e.getMessage());
             return false;
-        }
-    }
-
-    public String onFlowProcess(FlowEvent event) {
-        if (skip) {
-            skip = false;   //reset in case user goes back
-            return "confirm";
-        } else {
-            return event.getNewStep();
         }
     }
 
@@ -310,11 +178,6 @@ public class GenerarTituloBB extends AdminFichaCatastralBB {
             MensajesFaces.mensajeError(e.getMessage());
         }
 
-    }
-
-    public void onComplete() {
-        this.esProcesoIniciado = false;
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Progress Completed"));
     }
 
     public DefaultStreamedContent imprimir(EnumReporte tipoReporte) {
