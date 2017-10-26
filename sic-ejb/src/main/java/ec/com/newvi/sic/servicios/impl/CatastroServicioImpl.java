@@ -634,6 +634,17 @@ public class CatastroServicioImpl implements CatastroServicio {
         return dominiosFiltrados;
     }
 
+    public List<Dominios> obtenerDominiosPorGrupo(List<Dominios> dominios, String grupo) {
+        List<Dominios> dominiosFiltrados = new ArrayList<>();
+        for (Dominios dominioObtenido : dominios) {
+            if (!ComunUtil.esNulo(dominioObtenido.getDomiGrupos())
+                    && (dominioObtenido.getDomiGrupos().trim()).contains(grupo)) {
+                dominiosFiltrados.add(dominioObtenido);
+            }
+        }
+        return dominiosFiltrados;
+    }
+
     public BigDecimal obtenerSumaCoeficientes(List<Dominios> dominios) {
         BigDecimal coeficiente = new BigDecimal(BigInteger.ZERO);
         for (Dominios dominio : dominios) {
@@ -661,6 +672,25 @@ public class CatastroServicioImpl implements CatastroServicio {
         return promedioCoeficientes;
     }
 
+    public BigDecimal obtenerCoeficienteServicio(Predios predio, List<Dominios> dominios, String domiCalculo) {
+        List<Dominios> listaDominiosServicio;
+        BigDecimal totalCoeficienteCalculo = BigDecimal.ZERO;
+        BigDecimal promedioCoeficientes = BigDecimal.ZERO;
+        Integer totalCoeficientesServicios = 0;
+        for (Servicios servicio : predio.getServicosActivos()) {
+            //listaDominiosTerreno = dominiosFacade.buscarDominiosPorCodigoYCalculo(terreno.getStsCodigo(), domiCalculo);
+            listaDominiosServicio = obtenerDominiosPorCodigoYCalculo(dominios, servicio.getStsCodigo().trim(), domiCalculo);
+            for (Dominios dominio : listaDominiosServicio) {
+                totalCoeficienteCalculo = totalCoeficienteCalculo.add(BigDecimal.valueOf(dominio.getDomiCoefic()));
+                totalCoeficientesServicios++;
+            }
+        }
+        if (totalCoeficientesServicios.compareTo(0) != 0) {
+            promedioCoeficientes = totalCoeficienteCalculo.divide(new BigDecimal(totalCoeficientesServicios), 12, RoundingMode.CEILING);
+        }
+        return promedioCoeficientes;
+    }
+
     public BigDecimal obtenerValorPorCodigoCalculo(List<Dominios> dominios, String codigo, String calculo) {
         List<Dominios> listaDominios = obtenerDominiosPorCodigoYCalculo(dominios, codigo, calculo);
         return obtenerSumaCoeficientes(listaDominios);
@@ -681,58 +711,47 @@ public class CatastroServicioImpl implements CatastroServicio {
         String formatoMonedaSistema = parametrosServicio.obtenerParametroPorNombre(EnumParametroSistema.FORMATO_MONEDAS, sesion).getValor();
 
         List<AvaluoDto> nodo = new ArrayList<>();
-        List<AvaluoDto> nodoAlterno = new ArrayList<>();
+        List<AvaluoDto> nodoAlterno;
         String zona = predio.getCodZona();
         String sector = predio.getCodSector();
-        String consulta;
-        BigDecimal coff, vterreno, valorTerreno, valPredio;
-        BigDecimal promedioFactores = BigDecimal.ZERO;
-        BigDecimal div = new BigDecimal(4);
-        BigDecimal frente = !ComunUtil.esNulo(predio.getValAreaFrente()) ? predio.getValAreaFrente() : BigDecimal.ZERO;
-        BigDecimal fondo = !ComunUtil.esNulo(predio.getValAreaFondo()) ? predio.getValAreaFondo() : BigDecimal.ZERO;
+        BigDecimal valorMetro2, valorTerreno, valPredio;
+        BigDecimal promedioFactores;
         BigDecimal area = !ComunUtil.esNulo(predio.getValAreaPredio()) ? predio.getValAreaPredio() : BigDecimal.ZERO;
         BigDecimal areaConstruccion = BigDecimal.ZERO;
         BigDecimal valorEdificacion = BigDecimal.ZERO;
 
         Map<String, BigDecimal> listaImpuestos = new HashMap<>();
 
-        // Coeficiente de Topografía COT
-        BigDecimal cot = obtenerCoeficienteTerreno(predio, dominios, "TOPOGRAFIA");
-        // Coeficinte de Erosion
-        BigDecimal cero = obtenerCoeficienteTerreno(predio, dominios, "LOCALIZACION");
-        // Coeficinte de forma COFO
-        BigDecimal cofo = obtenerCoeficienteTerreno(predio, dominios, "FORMA");
         // Coeficinte de Ubicacion
         BigDecimal cubi = obtenerCoeficienteTerreno(predio, dominios, "OCUPACION");
 
-        if (ComunUtil.esNulo(frente) || frente.compareTo(BigDecimal.ZERO) == 0) {
-            coff = BigDecimal.ZERO;
-        } else {
-            coff = obtenerValoracionFondoRelativo(area, frente, dominios);
-        }
-        promedioFactores = (promedioFactores.add(coff).add(cot).add(cofo).add(cero)).divide(div, 4, RoundingMode.CEILING);
+        // Obtener Coeficientes de Terreno
+        List<AvaluoDto> coeficientesTerreno = generarCoeficientesTerreno(predio, dominios, sesion);
+
+        // Obtener Coeficientes de Servicios
+        List<AvaluoDto> coeficientesServicios = generarCoeficientesServicios(predio, dominios, sesion);
+
+        // Obtener Promedio de Coeficientes
+        List<AvaluoDto> listaCoeficientes = new ArrayList<>();
+        listaCoeficientes.addAll(coeficientesTerreno);
+        listaCoeficientes.addAll(coeficientesServicios);
+        promedioFactores = obtenerPromedioCoeficientes(listaCoeficientes);
 
         // CALCULO DEL PRECIO BASE PARA EL TERRENO
         // SE TOMA EN CUENTA UNA VALORACION POR LAS ZONAS y SECTORES DEL MUNICIPIO.
-        consulta = "20" + zona + sector;
         //vterreno = parametrosServicio.obtenerValorPorCodigoCalculo(consulta, "ZONAS VALORADAS M2");
-        vterreno = obtenerValorPorCodigoCalculo(dominios, consulta, "ZONAS VALORADAS M2");
-        valorTerreno = (promedioFactores.multiply(area)).multiply(vterreno);
+        valorMetro2 = obtenerValorPorCodigoCalculo(dominios, "20" + zona + sector, "ZONAS VALORADAS M2");
+        valorTerreno = (promedioFactores.multiply(area)).multiply(valorMetro2);
         predio.setValTerreno(valorTerreno);
         //actualizarPredio(predio, sesion);
 
-        nodo.add(generarElementoArbolAvaluo(EnumCaracteristicasAvaluo.PREDIO_AREA.getTitulo(), quitarDecimales(area), null, null));
-        nodo.add(generarElementoArbolAvaluo(EnumCaracteristicasAvaluo.PREDIO_FRENTE.getTitulo(), frente.setScale(2, BigDecimal.ROUND_UP).toString(), null, null));
-        nodo.add(generarElementoArbolAvaluo(EnumCaracteristicasAvaluo.PREDIO_FONDO_RELATIVO.getTitulo(), quitarDecimales(fondo), null, null));
-        nodo.add(generarElementoArbolAvaluo(EnumCaracteristicasAvaluo.PREDIO_FACTOR_FRENTE_FONDO.getTitulo(), quitarDecimales(coff), null, null));
-        nodo.add(generarElementoArbolAvaluo(EnumCaracteristicasAvaluo.PREDIO_TOPOGRAFIA.getTitulo(), quitarDecimales(cot), null, null));
-        nodo.add(generarElementoArbolAvaluo(EnumCaracteristicasAvaluo.PREDIO_EROSION.getTitulo(), quitarDecimales(cero), null, null));
-        nodo.add(generarElementoArbolAvaluo(EnumCaracteristicasAvaluo.PREDIO_FORMA.getTitulo(), quitarDecimales(cofo), null, null));
-        nodo.add(generarElementoArbolAvaluo(EnumCaracteristicasAvaluo.PREDIO_UBICACION.getTitulo(), quitarDecimales(cubi), null, null));
+        nodo.addAll(generarListadoInfoTerreno(predio, dominios, sesion));
+        nodo.addAll(coeficientesTerreno);
+        nodo.addAll(coeficientesServicios);
         nodo.add(generarElementoArbolAvaluo(EnumCaracteristicasAvaluo.PREDIO_PROMEDIO_FACTORES.getTitulo(), promedioFactores.setScale(2, BigDecimal.ROUND_UP).toString(), null, null));
-        nodo.add(generarElementoArbolAvaluo("Precio base en M2 en la zona " + zona + " sector " + sector, vterreno.setScale(2, BigDecimal.ROUND_UP).toString(), null, null));
+        nodo.add(generarElementoArbolAvaluo("Precio base en M2 en la zona " + zona + " sector " + sector, valorMetro2.setScale(2, BigDecimal.ROUND_UP).toString(), null, null));
 
-        List<AvaluoDto> listaAvaluoBloque = new ArrayList<>();
+        List<AvaluoDto> listaAvaluoBloque;
         if (!ComunUtil.esNulo(predio.getBloques())) {
             for (Bloques bloque : predio.getBloques()) {
                 if (bloque.getBloEstado().equals(EnumEstadoRegistro.A)) {
@@ -766,6 +785,60 @@ public class CatastroServicioImpl implements CatastroServicio {
         return nodo;
     }
 
+    private AvaluoDto generarCoeficienteFrenteFondo(Predios predio, List<Dominios> dominios, SesionDto sesion) {
+        
+        BigDecimal frente = !ComunUtil.esNulo(predio.getValAreaFrente()) ? predio.getValAreaFrente() : BigDecimal.ZERO;
+        BigDecimal area = !ComunUtil.esNulo(predio.getValAreaPredio()) ? predio.getValAreaPredio() : BigDecimal.ZERO;
+        BigDecimal coeficienteFrenteFondo = BigDecimal.ZERO;
+        if (!ComunUtil.esNulo(frente) && frente.compareTo(BigDecimal.ZERO) != 0) {
+            coeficienteFrenteFondo = obtenerValoracionFondoRelativo(area, frente, dominios);
+        }
+        AvaluoDto elementoCoeficienteFrenteFondo = generarElementoArbolAvaluo(EnumCaracteristicasAvaluo.PREDIO_TERRENO_FACTOR_FRENTE_FONDO.getTitulo(), quitarDecimales(coeficienteFrenteFondo), null, null);
+        return elementoCoeficienteFrenteFondo;
+    }
+    
+    private List<AvaluoDto> generarListadoInfoTerreno(Predios predio, List<Dominios> dominios, SesionDto sesion) {
+        BigDecimal frente = !ComunUtil.esNulo(predio.getValAreaFrente()) ? predio.getValAreaFrente() : BigDecimal.ZERO;
+        BigDecimal fondo = !ComunUtil.esNulo(predio.getValAreaFondo()) ? predio.getValAreaFondo() : BigDecimal.ZERO;
+        BigDecimal area = !ComunUtil.esNulo(predio.getValAreaPredio()) ? predio.getValAreaPredio() : BigDecimal.ZERO;
+        List<AvaluoDto> listadoInfoTerreno = new ArrayList<>();
+        listadoInfoTerreno.add(generarElementoArbolAvaluo(EnumCaracteristicasAvaluo.PREDIO_TERRENO_AREA.getTitulo(), quitarDecimales(area), null, null));
+        listadoInfoTerreno.add(generarElementoArbolAvaluo(EnumCaracteristicasAvaluo.PREDIO_TERRENO_FRENTE.getTitulo(), frente.setScale(2, BigDecimal.ROUND_UP).toString(), null, null));
+        listadoInfoTerreno.add(generarElementoArbolAvaluo(EnumCaracteristicasAvaluo.PREDIO_TERRENO_FONDO_RELATIVO.getTitulo(), quitarDecimales(fondo), null, null));
+        return listadoInfoTerreno;
+    }
+
+    private List<AvaluoDto> generarCoeficientesTerreno(Predios predio, List<Dominios> dominios, SesionDto sesion) {
+        List<AvaluoDto> listaCoeficientesTerreno = new ArrayList<>();
+        List<Dominios> listaDominios = obtenerDominiosPorGrupo(dominios, "DESCRIPCION DEL TERRENO");
+        for (EnumCaracteristicasAvaluo enumCaracteristicasAvaluo : EnumCaracteristicasAvaluo.obtenerCaracteristicasAvaluoPorGrupo("DESCRIPCION DEL TERRENO")) {
+            BigDecimal coeficiente = obtenerCoeficienteTerreno(predio, listaDominios, enumCaracteristicasAvaluo.getCalculo());
+            listaCoeficientesTerreno.add(generarElementoArbolAvaluo(enumCaracteristicasAvaluo.getTitulo(), quitarDecimales(coeficiente), null, null));
+        }
+        listaCoeficientesTerreno.add(generarCoeficienteFrenteFondo(predio, dominios, sesion));
+        return listaCoeficientesTerreno;
+    }
+
+    private List<AvaluoDto> generarCoeficientesServicios(Predios predio, List<Dominios> dominios, SesionDto sesion) throws NewviExcepcion {
+        List<AvaluoDto> listaCoeficientesServicios = new ArrayList<>();
+        List<Dominios> listaDominios = obtenerDominiosPorGrupo(dominios, "INFRAESTRUCTURA DE SERVICIOS");
+        for (EnumCaracteristicasAvaluo enumCaracteristicasAvaluo : EnumCaracteristicasAvaluo.obtenerCaracteristicasAvaluoPorGrupo("INFRAESTRUCTURA DE SERVICIOS")) {
+            BigDecimal coeficiente = obtenerCoeficienteServicio(predio, listaDominios, enumCaracteristicasAvaluo.getCalculo());
+            listaCoeficientesServicios.add(generarElementoArbolAvaluo(enumCaracteristicasAvaluo.getTitulo(), quitarDecimales(coeficiente), null, null));
+        }
+        return listaCoeficientesServicios;
+    }
+
+    private BigDecimal obtenerPromedioCoeficientes(List<AvaluoDto> listaCoeficientes) throws NewviExcepcion {
+        BigDecimal promedioCoeficientes;
+        BigDecimal sumaCoeficientes = BigDecimal.ZERO;
+        for (AvaluoDto coeficiente : listaCoeficientes) {
+            sumaCoeficientes = sumaCoeficientes.add(ComunUtil.obtenerNumeroDecimalDesdeTexto(coeficiente.getValor()));
+        }
+        promedioCoeficientes = sumaCoeficientes.divide(new BigDecimal(listaCoeficientes.size()), 4, RoundingMode.HALF_UP);
+        return promedioCoeficientes;
+    }
+
     private List<AvaluoDto> generarImpuestoPredial(Predios predio, BigDecimal avaluo, Map<String, BigDecimal> listaImpuestos, SesionDto sesion) throws NewviExcepcion {
         List<AvaluoDto> nodoAlterno = new ArrayList<>();
         List<AvaluoDto> listaOtrosRubros = new ArrayList<>();
@@ -774,7 +847,6 @@ public class CatastroServicioImpl implements CatastroServicio {
         BigDecimal valorServiciosAdministrativos = BigDecimal.ZERO;
         BigDecimal valorContribucionEspecialMejoras = BigDecimal.ZERO;
         BigDecimal tasaImpuestoPredial = BigDecimal.ZERO;
-        BigDecimal tasaSolarNoEdificado = BigDecimal.ZERO;
         BigDecimal valorServiciosAmbientales = BigDecimal.ZERO;
         BigDecimal aPagar = BigDecimal.ZERO;
         BigDecimal valPredio = avaluo;
@@ -786,7 +858,6 @@ public class CatastroServicioImpl implements CatastroServicio {
             valorServiciosAdministrativos = constantesImpuesto.getValServiciosadministrativos();
             valorContribucionEspecialMejoras = constantesImpuesto.getValCem();
             tasaImpuestoPredial = constantesImpuesto.getValTasaaplicada();
-            tasaSolarNoEdificado = constantesImpuesto.getValNoedifica();
             valorServiciosAmbientales = constantesImpuesto.getValAmbientales();
         }
 
@@ -796,7 +867,7 @@ public class CatastroServicioImpl implements CatastroServicio {
         predio.setValBomberos(valPredio.multiply(tasaImpuestoBomberos));
         predio.setValEmision(valorServiciosAdministrativos);
         if (listaImpuestos.containsKey("IMPUESTO_SOLAR_NO_EDIFICADO")) {
-            predio.setValNoEdificacion(valPredio.multiply(tasaSolarNoEdificado.multiply(listaImpuestos.get("IMPUESTO_SOLAR_NO_EDIFICADO"))));
+            predio.setValNoEdificacion(valPredio.multiply(listaImpuestos.get("IMPUESTO_SOLAR_NO_EDIFICADO")));
             aPagar = aPagar.add(predio.getValNoEdificacion());
         }
         predio.setValAmbientales(valorServiciosAmbientales);

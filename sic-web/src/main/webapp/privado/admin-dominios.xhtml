@@ -34,25 +34,17 @@
 
                     <p:dataTable id="listaDominios" var="dominio" widgetVar="listaDominiosTabla"
                                  value="#{dominiosBB.listaDominios}" rowKey="#{dominio.domiId}" filteredValue="#{dominiosBB.listaDominiosFiltrados}"
-                                 paginator="true" rows="5" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" 
-                                 rowsPerPageTemplate="5,10,15" 
+                                 paginator="true" rows="10" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" 
+                                 rowsPerPageTemplate="10,20,50" sortBy="#{dominio.domiCodigo}"
                                  emptyMessage="No se han encontrado resultados" 
                                  paginatorPosition="bottom">
 
 
-                        <p:column headerText="Codigo" sortBy="#{dominio.domiCodigo}">
+                        <p:column width="80" headerText="Codigo" sortBy="#{dominio.domiCodigo}" filterBy="#{dominio.domiCodigo}">
                             <h:outputText value="#{dominio.domiCodigo}" />
                         </p:column>
 
-                        <p:column headerText="Padre" sortBy="#{dominio.domiPadre}" >
-                            <h:outputText value="#{dominio.domiPadre}" />
-                        </p:column>
-
-                        <p:column headerText="Relacion" sortBy="#{dominio.domiRelacion}">
-                            <h:outputText value="#{dominio.domiRelacion}" />
-                        </p:column>
-
-                        <p:column headerText="Descripcion" sortBy="#{dominio.domiDescripcion}">
+                        <p:column headerText="Descripcion" sortBy="#{dominio.domiDescripcion}" filterBy="#{dominio.domiDescripcion}">
                             <h:outputText value="#{dominio.domiDescripcion}" />
                         </p:column>            
 
@@ -66,15 +58,19 @@
                             <h:outputText value="#{dominio.domiGrupos}" />
                         </p:column>            
 
-                        <p:column headerText="Coeficiente" sortBy="#{dominio.domiCoefic}">
+                        <p:column headerText="Cálculo" sortBy="#{dominio.domiCalculo}" filterBy="#{dominio.domiCalculo}">
+                            <h:outputText value="#{dominio.domiCalculo}" />
+                        </p:column>
+
+                        <p:column width="50" headerText="Coef">
                             <h:outputText value="#{dominio.domiCoefic}" />
                         </p:column>            
 
-                        <p:column headerText="Minimo" sortBy="#{dominio.domiMinimo}">
+                        <p:column width="50" headerText="Min">
                             <h:outputText value="#{dominio.domiMinimo}" />
                         </p:column>            
 
-                        <p:column headerText="Maximo" sortBy="#{dominio.domiMaximo}">
+                        <p:column width="50" headerText="Max">
                             <h:outputText value="#{dominio.domiMaximo}" />
                         </p:column>            
 
@@ -157,7 +153,7 @@
                             <p:message for="domiCodame" display="tooltip"/>
 
                             <h:outputLabel  value="Coeficiente" style="font-weight: bold;"/>
-                            <p:inputNumber id="domiCoeficiente" value="#{dominiosBB.dominio.domiCoefic}" label="Coeficiente" size="50"/>
+                            <p:inputNumber id="domiCoeficiente" value="#{dominiosBB.dominio.domiCoefic}" decimalPlaces="4" label="Coeficiente" size="50"/>
                             <p:message for="domiCoeficiente" display="tooltip"/>
 
                             <h:outputLabel value="Unidad" style="font-weight: bold;"/>
@@ -173,11 +169,11 @@
                             <p:message for="domiTipo" display="tooltip"/>
 
                             <h:outputLabel value="Minimo" style="font-weight: bold;"/>
-                            <p:inputNumber id="domiMinimo" value="#{dominiosBB.dominio.domiMinimo}" label="Minimo" size="50"/>
+                            <p:inputNumber id="domiMinimo" value="#{dominiosBB.dominio.domiMinimo}" decimalPlaces="4" label="Minimo" size="50"/>
                             <p:message for="domiMinimo" display="tooltip"/>
 
                             <h:outputLabel value="Maximo" style="font-weight: bold;"/>
-                            <p:inputNumber id="domiMaximo" value="#{dominiosBB.dominio.domiMaximo}" label="Maximo" size="50" />
+                            <p:inputNumber id="domiMaximo" value="#{dominiosBB.dominio.domiMaximo}" decimalPlaces="4" label="Maximo" size="50" />
                             <p:message for="domiMaximo" display="tooltip"/>
                         </h:panelGrid>
                         <h:panelGrid columns="4">
