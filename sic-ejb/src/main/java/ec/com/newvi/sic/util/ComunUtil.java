@@ -10,7 +10,10 @@ import ec.com.newvi.sic.util.excepciones.NewviExcepcion;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
+import java.text.ParseException;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -44,9 +47,13 @@ public class ComunUtil {
         return !esNulo(numero) && (numero.compareTo(0) >= 0);
     }
 
-    public static BigDecimal obtenerNumeroDecimalDesdeTexto(String texto) throws NewviExcepcion {
+    public static BigDecimal obtenerNumeroDecimalDesdeTexto(String texto, String formatoMonedaSistema) throws NewviExcepcion {
         if (!ComunUtil.esNulo(texto) && !ComunUtil.esCadenaVacia(texto)) {
-            return new BigDecimal(texto);
+            if (texto.contains("$")) {
+                return generarValorFormatoMoneda(texto, formatoMonedaSistema);
+            } else {
+                return new BigDecimal(texto);
+            }
         } else {
             throw new NewviExcepcion(EnumNewviExcepciones.ERR012);
         }
@@ -59,6 +66,17 @@ public class ComunUtil {
         } catch (IllegalArgumentException ex) {
             throw new NewviExcepcion(EnumNewviExcepciones.ERR208, ex);
         }
+    }
+
+    public static BigDecimal generarValorFormatoMoneda(String texto, String formato) throws NewviExcepcion {
+        DecimalFormat formatoMoneda = new DecimalFormat(formato);
+        formatoMoneda.setParseBigDecimal(true);
+        try {
+            return new BigDecimal(formatoMoneda.parse(texto).toString());
+        } catch (ParseException ex) {
+            throw new NewviExcepcion(EnumNewviExcepciones.ERR013);
+        }
+
     }
 
     public static String reemplazarTokens(String text,

@@ -154,11 +154,12 @@ public interface CatastroServicio {
      * @param bloque Bloque al que se va a calcular el avalúo
      * @param promedioFactores Promedio de los factores para el cálculo
      * @param sesion Usuario que realiza la consulta
+     * @param formatoMonedaSistema Formato de moneda del sistema
      * @param dominios Listado de dominios
      * @return Objeto AvaluoDto que contiene el avalúo del bloque
      * @throws NewviExcepcion
      */
-    public List<AvaluoDto> obtenerAvaluoBloque(Bloques bloque, BigDecimal promedioFactores, List<Dominios> dominios, SesionDto sesion) throws NewviExcepcion;
+    public List<AvaluoDto> obtenerAvaluoBloque(Bloques bloque, BigDecimal promedioFactores, List<Dominios> dominios,String formatoMonedaSistema, SesionDto sesion) throws NewviExcepcion;
 
     /*------------------------------------------------------------Pisos------------------------------------------------------------*/
     /**
@@ -228,11 +229,12 @@ public interface CatastroServicio {
      * @param piso
      * @param promedioFactores
      * @param sesion
+     * @param formatoMonedaSistema Formato de moneda del sistema
      * @param dominios
      * @return
      * @throws NewviExcepcion
      */
-    public List<AvaluoDto> obtenerAvaluoPisos(Pisos piso, BigDecimal promedioFactores, List<Dominios> dominios, SesionDto sesion) throws NewviExcepcion;
+    public List<AvaluoDto> obtenerAvaluoPisos(Pisos piso, BigDecimal promedioFactores, List<Dominios> dominios,String formatoMonedaSistema, SesionDto sesion) throws NewviExcepcion;
 
     /*------------------------------------------------------------PisoDetalle------------------------------------------------------------*/
     /**
@@ -325,10 +327,11 @@ public interface CatastroServicio {
      * @param predio Predio a calcular el avalúo
      * @param sesion Usuario que genera el avalúo
      * @param dominios lista de dominios
+     * @param formatoMonedaSistema formato de moneda
      * @return Listado de tipo AvaluoDto que tiene los valores jerarquizados.
      * @throws NewviExcepcion
      */
-    public List<AvaluoDto> obtenerAvaluoPredio(Predios predio, List<Dominios> dominios, SesionDto sesion) throws NewviExcepcion;
+    public List<AvaluoDto> obtenerAvaluoPredio(Predios predio, List<Dominios> dominios, String formatoMonedaSistema, SesionDto sesion) throws NewviExcepcion;
 
     /**
      * Genera la simulacion del calculo de los avaluos
@@ -351,10 +354,11 @@ public interface CatastroServicio {
      * Obtiene el elemento de avaluo por descripcion
      * @param listaElementos lista de dto a ser buscado
      * @param descripcion parametro por el cual se va a buscar
+     * @param formatoMonedaSistema parametro por el cual se va a buscar
      * @return el valor del elemento del avaluo
      * @throws NewviExcepcion 
      */
-    public BigDecimal obtenerElementoAvaluoPorDescripcion(List<AvaluoDto> listaElementos, String descripcion) throws NewviExcepcion;
+    public BigDecimal obtenerElementoAvaluoPorDescripcion(List<AvaluoDto> listaElementos, String descripcion, String formatoMonedaSistema) throws NewviExcepcion;
 
     /*------------------------------------------------------------FechaAvaluo------------------------------------------------------------*/
     /**

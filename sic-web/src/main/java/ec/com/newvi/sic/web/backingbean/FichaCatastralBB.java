@@ -893,7 +893,8 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
 
     public void calcularAvaluo() {
         try {
-            this.nodo = catastroServicio.obtenerAvaluoPredio(this.predio, parametrosServicio.consultarDominios(), sesionBean.getSesion());
+            String formatoMonedaSistema = parametrosServicio.obtenerParametroPorNombre(EnumParametroSistema.FORMATO_MONEDAS, sesionBean.getSesion()).getValor();
+            this.nodo = catastroServicio.obtenerAvaluoPredio(this.predio, parametrosServicio.consultarDominios(),formatoMonedaSistema, sesionBean.getSesion());
             catastroServicio.registrarArbol(this.nodo, this.predio, sesionBean.getSesion());
             generarArbolAvaluo(catastroServicio.listarAvaluoDto("Nodo", this.predio));
         } catch (NewviExcepcion e) {

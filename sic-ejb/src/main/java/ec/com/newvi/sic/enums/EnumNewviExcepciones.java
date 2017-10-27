@@ -16,6 +16,7 @@ public enum EnumNewviExcepciones {
     ERR010("ERR010", "Valor nulo.", "Se intentó acceder a un objeto/valor en nulo. Posiblemente el elemento no ha sido inicializado todavía."),
     ERR011("ERR011", "Valor negativo.", "El valor entregado no es positivo."),
     ERR012("ERR012", "Texto en blanco.", "Los datos enviados están en blanco. Por favor, enviar datos correctos."),
+    ERR013("ERR013", "Texto invalido.", "No se pudo generar la conversión. Por favor, enviar datos correctos."),
     ERR020("ERR020", "Error al acceder a una función.", "Se ha intentado acceder a una función no existente."),
     ERR021("ERR021", "Host desconocido.", "El host al que se intentó acceder es desconocido."),
     ERR022("ERR022", "Error al acceder a una función.", "Se intentó acceder a una función no permitida."),
