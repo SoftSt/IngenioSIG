@@ -706,86 +706,93 @@ public class CatastroServicioImpl implements CatastroServicio {
     }
 
     @Override
-    public List<AvaluoDto> obtenerAvaluoPredio(Predios predio, List<Dominios> dominios,String formatoMonedaSistema, SesionDto sesion) throws NewviExcepcion {
+    public List<AvaluoDto> obtenerAvaluoPredio(Predios predio, List<Dominios> dominios, String formatoMonedaSistema, SesionDto sesion) throws NewviExcepcion {
 
-        //String formatoMonedaSistema = parametrosServicio.obtenerParametroPorNombre(EnumParametroSistema.FORMATO_MONEDAS, sesion).getValor();
-
-        List<AvaluoDto> nodo = new ArrayList<>();
-        List<AvaluoDto> nodoAlterno;
-        String zona = predio.getCodZona();
-        String sector = predio.getCodSector();
-        BigDecimal valorMetro2, valorTerreno, valPredio;
+        List<AvaluoDto> listaAvaluoPredio = new ArrayList<>();
+        BigDecimal valorTerreno, valPredio;
         BigDecimal promedioFactores;
-        BigDecimal area = !ComunUtil.esNulo(predio.getValAreaPredio()) ? predio.getValAreaPredio() : BigDecimal.ZERO;
-        BigDecimal areaConstruccion = BigDecimal.ZERO;
-        BigDecimal valorEdificacion = BigDecimal.ZERO;
-
-        Map<String, BigDecimal> listaImpuestos = new HashMap<>();
-
-        // Coeficinte de Ubicacion
-        BigDecimal cubi = obtenerCoeficienteTerreno(predio, dominios, "OCUPACION");
+        BigDecimal areaConstruccion;
+        BigDecimal valorEdificacion;
 
         // Obtener Coeficientes de Terreno
         List<AvaluoDto> coeficientesTerreno = generarCoeficientesTerreno(predio, dominios, sesion);
-
         // Obtener Coeficientes de Servicios
         List<AvaluoDto> coeficientesServicios = generarCoeficientesServicios(predio, dominios, sesion);
-
         // Obtener Promedio de Coeficientes
         List<AvaluoDto> listaCoeficientes = new ArrayList<>();
         listaCoeficientes.addAll(coeficientesTerreno);
         listaCoeficientes.addAll(coeficientesServicios);
         promedioFactores = obtenerPromedioCoeficientes(listaCoeficientes, formatoMonedaSistema);
+        // Obtener Precio Terreno
+        List<AvaluoDto> listaPrecioTerreno = obtenerValorTerreno(predio, dominios, promedioFactores, formatoMonedaSistema);
+        // Obtener Precio Edificacion
+        List<AvaluoDto> listaPrecioEdificacion = obtenerValorEdificacion(predio, dominios, promedioFactores, formatoMonedaSistema, sesion);
+        
+        listaAvaluoPredio.addAll(generarListadoInfoTerreno(predio));
+        listaAvaluoPredio.addAll(coeficientesTerreno);
+        listaAvaluoPredio.addAll(coeficientesServicios);
+        listaAvaluoPredio.addAll(listaPrecioTerreno);
+        listaAvaluoPredio.addAll(listaPrecioEdificacion);
 
-        // CALCULO DEL PRECIO BASE PARA EL TERRENO
-        // SE TOMA EN CUENTA UNA VALORACION POR LAS ZONAS y SECTORES DEL MUNICIPIO.
-        //vterreno = parametrosServicio.obtenerValorPorCodigoCalculo(consulta, "ZONAS VALORADAS M2");
-        valorMetro2 = obtenerValorPorCodigoCalculo(dominios, "20" + zona + sector, "ZONAS VALORADAS M2");
-        valorTerreno = (promedioFactores.multiply(area)).multiply(valorMetro2);
+        valorTerreno = obtenerElementoAvaluoPorDescripcion(listaPrecioTerreno, EnumCaracteristicasAvaluo.PREDIO_VALOR_TERRENO.getTitulo(), formatoMonedaSistema);
+        areaConstruccion = obtenerElementoAvaluoPorDescripcion(listaPrecioTerreno, EnumCaracteristicasAvaluo.PREDIO_TERRENO_AREA_CONSTRUCCION.getTitulo(), formatoMonedaSistema);
+        valorEdificacion = obtenerElementoAvaluoPorDescripcion(listaPrecioEdificacion, EnumCaracteristicasAvaluo.PREDIO_VALOR_EDIFICACION.getTitulo(), formatoMonedaSistema);
+        valPredio = valorTerreno.add(valorEdificacion);
+
         predio.setValTerreno(valorTerreno);
-        //actualizarPredio(predio, sesion);
+        predio.setValEdifica(valorEdificacion);
+        predio.setValAreaConstruccion(areaConstruccion);
+        predio.setValPredio(valPredio);
 
-        nodo.addAll(generarListadoInfoTerreno(predio, dominios, sesion));
-        nodo.addAll(coeficientesTerreno);
-        nodo.addAll(coeficientesServicios);
-        nodo.add(generarElementoArbolAvaluo(EnumCaracteristicasAvaluo.PREDIO_PROMEDIO_FACTORES.getTitulo(), promedioFactores.setScale(2, BigDecimal.ROUND_UP).toString(), null, null));
-        nodo.add(generarElementoArbolAvaluo("Precio base en M2 en la zona " + zona + " sector " + sector, valorMetro2.setScale(2, BigDecimal.ROUND_UP).toString(), null, null));
+        listaAvaluoPredio.add(generarElementoArbolAvaluo(EnumCaracteristicasAvaluo.PREDIO_VALOR_PREDIO.getTitulo(), ComunUtil.generarFormatoMoneda(valPredio, formatoMonedaSistema), null, null));
 
+        // Impuestos
+        BigDecimal cubi = obtenerCoeficienteTerreno(predio, dominios, "OCUPACION");
+        Map<String, BigDecimal> listaImpuestos = new HashMap<>();
+        listaImpuestos.put("IMPUESTO_SOLAR_NO_EDIFICADO", cubi);
+
+        List<AvaluoDto> listaImpuestosPredio = generarImpuestoPredial(predio, valPredio, listaImpuestos);
+        listaAvaluoPredio.addAll(listaImpuestosPredio);
+
+        return listaAvaluoPredio;
+    }
+    
+    private List<AvaluoDto> obtenerValorEdificacion(Predios predio, List<Dominios> dominios, BigDecimal promedioFactores, String formatoMonedaSistema, SesionDto sesion) throws NewviExcepcion {
+        BigDecimal areaConstruccion = BigDecimal.ZERO;
+        BigDecimal valorEdificacion = BigDecimal.ZERO;
         List<AvaluoDto> listaAvaluoBloque;
+        List<AvaluoDto> listaValorEdificacion = new ArrayList<>();
         if (!ComunUtil.esNulo(predio.getBloques())) {
             for (Bloques bloque : predio.getBloques()) {
                 if (bloque.getBloEstado().equals(EnumEstadoRegistro.A)) {
                     listaAvaluoBloque = obtenerAvaluoBloque(bloque, promedioFactores, dominios, formatoMonedaSistema, sesion);
-                    nodo.add(generarElementoArbolAvaluo("Bloque: " + bloque.getNomBloque(), null, null, listaAvaluoBloque));
-                    nodo.add(generarElementoArbolAvaluo(EnumCaracteristicasAvaluo.BLOQUE_COSTO_TOTAL.getTitulo(), ComunUtil.generarFormatoMoneda(obtenerElementoAvaluoPorDescripcion(listaAvaluoBloque, EnumCaracteristicasAvaluo.BLOQUE_VALORACION.getTitulo(),formatoMonedaSistema), formatoMonedaSistema), null, null));
+                    listaValorEdificacion.add(generarElementoArbolAvaluo("Bloque: " + bloque.getNomBloque(), null, null, listaAvaluoBloque));
+                    listaValorEdificacion.add(generarElementoArbolAvaluo(EnumCaracteristicasAvaluo.BLOQUE_COSTO_TOTAL.getTitulo(), ComunUtil.generarFormatoMoneda(obtenerElementoAvaluoPorDescripcion(listaAvaluoBloque, EnumCaracteristicasAvaluo.BLOQUE_VALORACION.getTitulo(),formatoMonedaSistema), formatoMonedaSistema), null, null));
                     valorEdificacion = valorEdificacion.add(obtenerElementoAvaluoPorDescripcion(listaAvaluoBloque, EnumCaracteristicasAvaluo.BLOQUE_VALORACION.getTitulo(),formatoMonedaSistema));
                     areaConstruccion = areaConstruccion.add(obtenerElementoAvaluoPorDescripcion(listaAvaluoBloque, EnumCaracteristicasAvaluo.BLOQUE_AREA.getTitulo(),formatoMonedaSistema));
                 }
             }
         }
-
-        listaImpuestos.put("IMPUESTO_SOLAR_NO_EDIFICADO", cubi);
-
-        //Actualiza Valoración de Terreno y Contrucción
-        valPredio = valorTerreno.add(valorEdificacion);
-        predio.setValEdifica(valorEdificacion);
-        predio.setValAreaConstruccion(areaConstruccion);
-        predio.setValPredio(valPredio);
-        //actualizarPredio(predio, sesion);
-
-        nodo.add(generarElementoArbolAvaluo(EnumCaracteristicasAvaluo.PREDIO_VALOR_TERRENO.getTitulo(), ComunUtil.generarFormatoMoneda(valorTerreno, formatoMonedaSistema), null, null));
-        nodo.add(generarElementoArbolAvaluo(EnumCaracteristicasAvaluo.PREDIO_VALOR_EDIFICACION.getTitulo(), ComunUtil.generarFormatoMoneda(valorEdificacion, formatoMonedaSistema), null, null));
-        nodo.add(generarElementoArbolAvaluo(EnumCaracteristicasAvaluo.PREDIO_VALOR_PREDIO.getTitulo(), ComunUtil.generarFormatoMoneda(valPredio, formatoMonedaSistema), null, null));
-
-        nodoAlterno = generarImpuestoPredial(predio, valPredio, listaImpuestos, sesion);
-        for (AvaluoDto nuevoNodo : nodoAlterno) {
-            nodo.add(nuevoNodo);
-        }
-
-        return nodo;
+        listaValorEdificacion.add(generarElementoArbolAvaluo(EnumCaracteristicasAvaluo.PREDIO_TERRENO_AREA_CONSTRUCCION.getTitulo(), areaConstruccion.setScale(2, BigDecimal.ROUND_UP).toString(), null, null));
+        listaValorEdificacion.add(generarElementoArbolAvaluo(EnumCaracteristicasAvaluo.PREDIO_VALOR_EDIFICACION.getTitulo(), ComunUtil.generarFormatoMoneda(valorEdificacion, formatoMonedaSistema), null, null));
+        return listaValorEdificacion;
     }
-
-    private AvaluoDto generarCoeficienteFrenteFondo(Predios predio, List<Dominios> dominios, SesionDto sesion) {
+    
+    private List<AvaluoDto> obtenerValorTerreno(Predios predio, List<Dominios> dominios, BigDecimal promedioFactores, String formatoMonedaSistema) throws NewviExcepcion {
+        String zona = predio.getCodZona();
+        String sector = predio.getCodSector();
+        BigDecimal valorMetro2, valorTerreno;
+        BigDecimal area = !ComunUtil.esNulo(predio.getValAreaPredio()) ? predio.getValAreaPredio() : BigDecimal.ZERO;
+        List<AvaluoDto> listaValorTerreno = new ArrayList<>();
+        valorMetro2 = obtenerValorPorCodigoCalculo(dominios, "20" + zona + sector, "ZONAS VALORADAS M2");
+        valorTerreno = area.multiply(valorMetro2.multiply(promedioFactores));
+        listaValorTerreno.add(generarElementoArbolAvaluo(EnumCaracteristicasAvaluo.PREDIO_PROMEDIO_FACTORES.getTitulo(), promedioFactores.setScale(2, BigDecimal.ROUND_UP).toString(), null, null));
+        listaValorTerreno.add(generarElementoArbolAvaluo("Precio base en M2 en la zona " + zona + " sector " + sector, valorMetro2.setScale(2, BigDecimal.ROUND_UP).toString(), null, null));
+        listaValorTerreno.add(generarElementoArbolAvaluo(EnumCaracteristicasAvaluo.PREDIO_VALOR_TERRENO.getTitulo(), ComunUtil.generarFormatoMoneda(valorTerreno, formatoMonedaSistema), null, null));
+        return listaValorTerreno;
+    }
+    
+    private AvaluoDto generarCoeficienteFrenteFondo(Predios predio, List<Dominios> dominios) {
 
         BigDecimal frente = !ComunUtil.esNulo(predio.getValAreaFrente()) ? predio.getValAreaFrente() : BigDecimal.ZERO;
         BigDecimal area = !ComunUtil.esNulo(predio.getValAreaPredio()) ? predio.getValAreaPredio() : BigDecimal.ZERO;
@@ -797,7 +804,7 @@ public class CatastroServicioImpl implements CatastroServicio {
         return elementoCoeficienteFrenteFondo;
     }
 
-    private List<AvaluoDto> generarListadoInfoTerreno(Predios predio, List<Dominios> dominios, SesionDto sesion) {
+    private List<AvaluoDto> generarListadoInfoTerreno(Predios predio) {
         BigDecimal frente = !ComunUtil.esNulo(predio.getValAreaFrente()) ? predio.getValAreaFrente() : BigDecimal.ZERO;
         BigDecimal fondo = !ComunUtil.esNulo(predio.getValAreaFondo()) ? predio.getValAreaFondo() : BigDecimal.ZERO;
         BigDecimal area = !ComunUtil.esNulo(predio.getValAreaPredio()) ? predio.getValAreaPredio() : BigDecimal.ZERO;
@@ -815,7 +822,7 @@ public class CatastroServicioImpl implements CatastroServicio {
             BigDecimal coeficiente = obtenerCoeficienteTerreno(predio, listaDominios, enumCaracteristicasAvaluo.getCalculo());
             listaCoeficientesTerreno.add(generarElementoArbolAvaluo(enumCaracteristicasAvaluo.getTitulo(), quitarDecimales(coeficiente), null, null));
         }
-        listaCoeficientesTerreno.add(generarCoeficienteFrenteFondo(predio, dominios, sesion));
+        listaCoeficientesTerreno.add(generarCoeficienteFrenteFondo(predio, dominios));
         return listaCoeficientesTerreno;
     }
 
@@ -839,7 +846,7 @@ public class CatastroServicioImpl implements CatastroServicio {
         return promedioCoeficientes;
     }
 
-    private List<AvaluoDto> generarImpuestoPredial(Predios predio, BigDecimal avaluo, Map<String, BigDecimal> listaImpuestos, SesionDto sesion) throws NewviExcepcion {
+    private List<AvaluoDto> generarImpuestoPredial(Predios predio, BigDecimal avaluo, Map<String, BigDecimal> listaImpuestos) throws NewviExcepcion {
         List<AvaluoDto> nodoAlterno = new ArrayList<>();
         List<AvaluoDto> listaOtrosRubros = new ArrayList<>();
 
