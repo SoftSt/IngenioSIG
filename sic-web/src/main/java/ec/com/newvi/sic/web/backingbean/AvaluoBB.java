@@ -14,7 +14,6 @@ import ec.com.newvi.sic.enums.EnumNewviExcepciones;
 import ec.com.newvi.sic.enums.EnumParametroSistema;
 import ec.com.newvi.sic.enums.EnumReporte;
 import ec.com.newvi.sic.modelo.Avaluo;
-import ec.com.newvi.sic.modelo.Contribuyentes;
 import ec.com.newvi.sic.modelo.Dominios;
 import ec.com.newvi.sic.modelo.FechaAvaluo;
 import ec.com.newvi.sic.modelo.Predios;
@@ -24,10 +23,7 @@ import ec.com.newvi.sic.util.logs.LoggerNewvi;
 import ec.com.newvi.sic.web.MensajesFaces;
 import ec.com.newvi.sic.web.enums.EnumEtiquetas;
 import ec.com.newvi.sic.web.enums.EnumPantallaMantenimiento;
-import java.beans.IntrospectionException;
-import java.beans.PropertyDescriptor;
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.text.DateFormat;
@@ -36,14 +32,11 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
-import org.primefaces.event.FlowEvent;
 import org.primefaces.model.DefaultStreamedContent;
 
 /**
@@ -55,7 +48,6 @@ import org.primefaces.model.DefaultStreamedContent;
 public class AvaluoBB extends AdminFichaCatastralBB {
 
     private EnumPantallaMantenimiento pantallaActual;
-    private Boolean skip;
     private List<Avaluo> listaAvaluos;
     private List<Avaluo> listaAvaluosFiltrados;
     private List<FechaAvaluo> listaFechaAvaluos;
@@ -134,14 +126,6 @@ public class AvaluoBB extends AdminFichaCatastralBB {
         this.listaAvaluosFiltrados = listaAvaluosFiltrados;
     }
 
-    public Boolean getSkip() {
-        return skip;
-    }
-
-    public void setSkip(Boolean skip) {
-        this.skip = skip;
-    }
-
     @PostConstruct
     public void init() {
         this.esActivo = false;
@@ -155,7 +139,6 @@ public class AvaluoBB extends AdminFichaCatastralBB {
         establecerTitulo(EnumEtiquetas.SIMULACION_LISTA_TITULO,
                 EnumEtiquetas.SIMULACION_LISTA_ICONO,
                 EnumEtiquetas.SIMULACION_LISTA_DESCRIPCION);
-        this.skip = false;
         actualizarListadoFechaAvaluos();
         //actualizarListadoAvaluos();
 
@@ -171,19 +154,6 @@ public class AvaluoBB extends AdminFichaCatastralBB {
         fechaAvaluo.setFechaDescripcion(formato.format(fecha));
 
         return catastroServicio.generarNuevaFechaAvaluo(fechaAvaluo, sesionBean.getSesion());
-    }
-
-    public List<FichaCatastralDto> generarListaFichaCatastral() {
-        List<Predios> listaPredios;
-        List<FichaCatastralDto> listaFichas = new ArrayList<>();
-
-        listaPredios = catastroServicio.consultarPredios();
-
-        for (Predios elementoPredio : listaPredios) {
-            listaFichas.add(new FichaCatastralDto(elementoPredio));
-        }
-
-        return listaFichas;
     }
 
     public void abrirModalEspera() throws NewviExcepcion {
@@ -203,85 +173,45 @@ public class AvaluoBB extends AdminFichaCatastralBB {
 
         List<Predios> listaPredios = catastroServicio.consultarPredios();
         List<Dominios> dominios = parametrosServicio.consultarDominios();
-        int cont = 0;
+        List<AvaluoDto> listaAvaluosCalculados = new ArrayList<>();
+        Integer numeroPrediosProcesados = 0;
+        Integer numeroPrediosTotal = listaPredios.size();
 
         for (Predios predioACalcular : listaPredios) {
             List<AvaluoDto> calculoAvaluo = catastroServicio.obtenerAvaluoPredio(predioACalcular, dominios, formatoMonedaSistema, sesionBean.getSesion());
-            catastroServicio.registrarArbol(calculoAvaluo, predioACalcular, sesionBean.getSesion());
-            //generarElementoAvaluo(calculoAvaluo, formatoMonedaSistema);
-            LoggerNewvi.getLogNewvi(this.getClass()).info(predioACalcular.getCodCatastral(), sesionBean.getSesion());
-            if (this.progreso <= 100) {
-                if ((cont++ % (listaPredios.size() / 100)) == 0) {
-                    progreso++;
-                }
-            } else {
-                this.progreso = 100;
-            }
+            listaAvaluosCalculados.add(generarNuevoNodoPredio(predioACalcular, calculoAvaluo));
+            registrarLogPredioProcesadoActual(predioACalcular);
+            evaluarProceso(numeroPrediosProcesados++, numeroPrediosTotal);
             if (esProcesoCancelado) {
                 break;
             }
         }
+        this.generarListadoAvaluos(listaAvaluosCalculados);
+        //catastroServicio.registrarArbol(calculoAvaluo, predioACalcular, sesionBean.getSesion());
     }
 
-    public void generarSimulacion() throws NewviExcepcion {
+    private void registrarLogPredioProcesadoActual(Predios predioACalcular) {
+        LoggerNewvi.getLogNewvi(this.getClass()).info(predioACalcular.getCodCatastral(), sesionBean.getSesion());
+    }
 
-        this.esActivo = true;
-
-        Avaluo avaluo;
-        int cont = 0;
+    private void generarListadoAvaluos(List<AvaluoDto> listaAvaluosCalculados) throws NewviExcepcion {
+        this.listaAvaluos = new ArrayList<>();
         String formatoMonedaSistema = parametrosServicio.obtenerParametroPorNombre(EnumParametroSistema.FORMATO_MONEDAS, sesionBean.getSesion()).getValor();
-
-        FechaAvaluo fecavId = generarFechaAvaluo();
-        List<FichaCatastralDto> listaFichas = generarListaFichaCatastral();
-        List<Dominios> dominios = parametrosServicio.consultarDominios();
-
-        for (FichaCatastralDto fichaDto : listaFichas) {
-            Predios predioACalcular = fichaDto.getPredio();
-            Contribuyentes contribuyente = fichaDto.getContribuyentePropiedad();
-            //List<AvaluoDto> calculoAvaluo = catastroServicio.obtenerAvaluoPredio(predio, sesionBean.obtenerSesionDto());
-            catastroServicio.obtenerAvaluoPredio(predioACalcular, dominios, formatoMonedaSistema, sesionBean.getSesion());
-            avaluo = new Avaluo();
-            //if (!(calculoAvaluo == null)) {
-            if (Boolean.TRUE) {
-                avaluo.setValTerreno(predioACalcular.getValTerreno());
-                avaluo.setValPredio(predioACalcular.getValPredio());
-                avaluo.setValImpuesto(predioACalcular.getValImppredial());
-                avaluo.setValAreapredio(predioACalcular.getValImppredial());
-                avaluo.setValEdifica(predioACalcular.getValEdifica());
-                avaluo.setValAreaconstruccion(predioACalcular.getValAreaConstruccion());
-                avaluo.setValBomberos(predioACalcular.getValBomberos());
-                avaluo.setValEmision(predioACalcular.getValEmision());
-                avaluo.setValCem(predioACalcular.getValCem());
-                avaluo.setValAmbientales(predioACalcular.getValAmbientales());
-                avaluo.setValNoEdificacion(predioACalcular.getValNoEdificacion());
-
-                avaluo.setValImppredial(predioACalcular.getValImpuesto());
-            }
-            avaluo.setCodCatastral(predioACalcular);
-            avaluo.setNomCodigocatastral(predioACalcular.getNomCodigocatastral());
-            avaluo.setTxtDireccion(predioACalcular.getTxtDireccion());
-            avaluo.setStsBarrio(predioACalcular.getStsBarrio());
-            avaluo.setCodCedularuc(contribuyente.getCodCedularuc());
-            avaluo.setNomnomape(contribuyente.getNomNombres().trim() + " " + contribuyente.getNomApellidos().trim());
-            avaluo.setFecavId(fecavId);
-            avaluo.setAvalEstado(EnumEstadoRegistro.A);
-            catastroServicio.generarNuevoAvaluo(avaluo, sesionBean.getSesion());
-
-            //LoggerNewvi.getLogNewvi(this.getClass()).debug(cont++, sesionBean.getSesion());
-            LoggerNewvi.getLogNewvi(this.getClass()).info(predioACalcular.getCodCatastral(), sesionBean.getSesion());
-            if (this.progreso <= 100) {
-                if ((cont++ % (listaFichas.size() / 100)) == 0) {
-                    progreso++;
-                    //cont=0;
-                }
-            } else {
-                this.progreso = 100;
-            }
-
+        for (AvaluoDto avaluoCalculado : listaAvaluosCalculados) {
+            this.listaAvaluos.add(this.generarElementoAvaluo(avaluoCalculado.getHijos(), formatoMonedaSistema));
         }
+    }
 
-        actualizarListadoAvaluos();
+    private AvaluoDto generarNuevoNodoPredio(Predios predio, List<AvaluoDto> hijos) {
+        return new AvaluoDto("Predio: ".concat(predio.getNomCodigocatastral()), predio.getNomCodigocatastral(), null, hijos);
+    }
 
+    private void evaluarProceso(Integer numeroPrediosProcesados, Integer numeroPrediosTotal) {
+        if (this.progreso <= 100) {
+            progreso = (numeroPrediosProcesados % (numeroPrediosTotal / 100)) == 0 ? progreso + 1 : progreso;
+        } else {
+            this.progreso = 100;
+        }
     }
 
     private void conmutarPantalla(EnumPantallaMantenimiento nuevaPantalla) {
@@ -295,15 +225,6 @@ public class AvaluoBB extends AdminFichaCatastralBB {
             LoggerNewvi.getLogNewvi(this.getClass()).error(e, sesionBean.getSesion());
             MensajesFaces.mensajeError(e.getMessage());
             return false;
-        }
-    }
-
-    public String onFlowProcess(FlowEvent event) {
-        if (skip) {
-            skip = false;   //reset in case user goes back
-            return "confirm";
-        } else {
-            return event.getNewStep();
         }
     }
 
@@ -327,9 +248,9 @@ public class AvaluoBB extends AdminFichaCatastralBB {
 
     }
 
-    public void onComplete() {
+    public void finalizarProceso() {
         this.esProcesoIniciado = false;
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Progress Completed"));
+        MensajesFaces.mensajeInformacion(EnumNewviExcepciones.INF501.presentarMensaje());
     }
 
     public DefaultStreamedContent imprimir(EnumReporte tipoReporte) {
@@ -369,29 +290,7 @@ public class AvaluoBB extends AdminFichaCatastralBB {
         return "set".concat(metodo.substring(0, 1).toUpperCase().concat(metodo.substring(1, metodo.length())));
     }
 
-    public Avaluo setearDatosAvaluo(Avaluo objetoAvaluo, BigDecimal valor, String metodo, Class claseAvaluo) throws NewviExcepcion {
-
-        try {
-            Method metodoEjecutable = filtrarMetodos(objetoAvaluo.getClass().getMethods(), renombrarMetodo(metodo));
-            //try {
-            //String metodo2 = renombrarMetodo(metodo);
-            
-            PropertyDescriptor objPropertyDescriptor = new PropertyDescriptor(renombrarMetodo(metodo), claseAvaluo);
-       
-            /*metodoEjecutable.invoke(claseAvaluo.getMethod(renombrarMetodo(metodo), claseAvaluo), valor);
-            } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
-            throw new NewviExcepcion(EnumNewviExcepciones.ERR020, ex);
-            } catch (NoSuchMethodException | SecurityException ex) {
-            throw new NewviExcepcion(EnumNewviExcepciones.ERR020, ex);
-            }*/
-            return objetoAvaluo;
-        } catch (IntrospectionException ex) {
-            throw new NewviExcepcion(EnumNewviExcepciones.ERR020, ex);
-        }
-        //return null;
-    }
-
-    public void generarElementoAvaluo(List<AvaluoDto> AvaluoCalculado, String formatoMonedaSistema) throws NewviExcepcion {
+    public Avaluo generarElementoAvaluo(List<AvaluoDto> AvaluoCalculado, String formatoMonedaSistema) throws NewviExcepcion {
         Avaluo avaluo = new Avaluo();
         Class claseAvaluo = avaluo.getClass();
         String nombreMetodoBuscado = "";
@@ -401,14 +300,18 @@ public class AvaluoBB extends AdminFichaCatastralBB {
         for (Field metodo : metodosClase) {
             nombreMetodoBuscado = metodo.getName();
             for (EnumCaracteristicasAvaluo caracteristica : caracteristicasAvaluo) {
-                if (!ComunUtil.esNulo(caracteristica.getCampo()) && caracteristica.getCampo().equals(nombreMetodoBuscado)) {
+                if (!ComunUtil.esCadenaVacia(caracteristica.getCampo()) && caracteristica.getCampo().equals(nombreMetodoBuscado)) {
                     BigDecimal valorAtributo = catastroServicio.obtenerElementoAvaluoPorDescripcion(AvaluoCalculado, caracteristica.getTitulo(), formatoMonedaSistema);
-                    avaluo = setearDatosAvaluo(avaluo, valorAtributo, caracteristica.getCampo(), claseAvaluo);
-
+                    Method metodoEjecutable = filtrarMetodos(claseAvaluo.getMethods(), renombrarMetodo(nombreMetodoBuscado));
+                    try {
+                        metodoEjecutable.invoke(avaluo, valorAtributo);
+                    } catch (Exception e) {
+                    }
                 } else if (caracteristica.getCampo().equals("Tiene hijos")) {
                 }
             }
         }
+        return avaluo;
     }
 
     public List<TablaCatastralDto> obtenerListadoAvaluos(List<Avaluo> listaAvaluos) {

@@ -126,6 +126,7 @@ public enum EnumNewviExcepciones {
     ERR455("ERR455", "Parámetro no encontrado.", "El parámetro [parametro] no se ha encontrado. Compruebe que este parámetro haya sido registrado."),
     // 501 al 600 excepciones de catastro
     ERR501("ERR501", "Propietario no encontrado.", "No se pudo encontrar un propietario al predio seleccionado. Registre la propiedad correspondiente."),
+    INF501("ERR501", "Valoración finalizada", "El proceso de valoración ha finalizado."),
     ;
     
     private final String codigoExcepcion;

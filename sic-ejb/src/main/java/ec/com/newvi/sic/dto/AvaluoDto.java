@@ -68,6 +68,13 @@ public class AvaluoDto {
         this.detallesAvaluo = detalleAvaluo;
         obtenerHijos(catastroServicio);
     }
+    
+    public AvaluoDto(String descripcion, String valor, String factor, List<AvaluoDto> hijos) {
+        this.descripcion = descripcion.trim();
+        this.valor = valor;
+        this.hijos = hijos;
+        this.factor = factor;
+    }
 
     private void obtenerHijos(CatastroServicio catastroServicio) {
         this.hijos = new ArrayList<>();

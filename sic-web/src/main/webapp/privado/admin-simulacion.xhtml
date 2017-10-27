@@ -136,7 +136,7 @@
                             <h:outputText value="Calculando avalúos, por favor espere." rendered="#{avaluoBB.esProcesoIniciado}"/>
                         </p>
                         <p:progressBar id="pbarAval" widgetVar="pbAjax" ajax="true" value="#{avaluoBB.progreso}" labelTemplate="{value}%" style="width:300px" styleClass="animated" global="false">
-                            <p:ajax event="complete" listener="#{avaluoBB.onComplete}" oncomplete="PF('calcularSimulacion').enable()"/>
+                            <p:ajax event="complete" listener="#{avaluoBB.finalizarProceso()}" oncomplete="PF('calcularSimulacion').enable()" update=":formularioListaAvaluos:listaAvaluos"/>
                         </p:progressBar>
 
 

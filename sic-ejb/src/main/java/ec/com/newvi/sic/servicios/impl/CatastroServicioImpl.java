@@ -921,11 +921,7 @@ public class CatastroServicioImpl implements CatastroServicio {
     }
 
     private AvaluoDto generarElementoArbolAvaluo(String descripcion, String valor, String factor, List<AvaluoDto> hijos) {
-        AvaluoDto nodoRaiz = new AvaluoDto();
-        nodoRaiz.setDescripcion(descripcion.trim());
-        nodoRaiz.setValor(valor);
-        nodoRaiz.setHijos(hijos);
-        nodoRaiz.setFactor(factor);
+        AvaluoDto nodoRaiz = new AvaluoDto(descripcion, valor, factor, hijos);
         return nodoRaiz;
     }
 
