@@ -64,7 +64,7 @@ public enum EnumCaracteristicasAvaluo {
     IMPUESTOS_CEM("CEM", "S","valCem", "", ""),
     IMPUESTOS_SERVICIOS_AMBIENTALES("Servicios ambientales", "S","valAmbientales", "", ""),
     IMPUESTOS_SOLAR_NO_EDIFICADO("Solar no edificado", "S","", "", ""),
-    IMPUESTOS_OTROS_VALORES("OTROS RUBROS", "S","Tiene hijos", "", ""),
+    IMPUESTOS_OTROS_VALORES("OTROS RUBROS", "S", "otrosValores", "", ""),
     
     
     

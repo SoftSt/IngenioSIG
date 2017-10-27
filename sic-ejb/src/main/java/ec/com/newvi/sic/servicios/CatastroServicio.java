@@ -350,16 +350,26 @@ public interface CatastroServicio {
      * @throws NewviExcepcion
      */
     public void registrarArbol(List<AvaluoDto> nodo, Predios predio, SesionDto sesion) throws NewviExcepcion;
+    
     /**
-     * Obtiene el elemento de avaluo por descripcion
+     * Obtiene el valor del elemento de avaluo por descripcion
      * @param listaElementos lista de dto a ser buscado
      * @param descripcion parametro por el cual se va a buscar
      * @param formatoMonedaSistema parametro por el cual se va a buscar
      * @return el valor del elemento del avaluo
      * @throws NewviExcepcion 
      */
-    public BigDecimal obtenerElementoAvaluoPorDescripcion(List<AvaluoDto> listaElementos, String descripcion, String formatoMonedaSistema) throws NewviExcepcion;
+    public BigDecimal obtenerValorElementoAvaluoPorDescripcion(List<AvaluoDto> listaElementos, String descripcion, String formatoMonedaSistema) throws NewviExcepcion;
 
+    /**
+     * Obtiene el elemento de avaluo por descripcion
+     * @param listaElementos lista de dto a ser buscado
+     * @param descripcion parametro por el cual se va a buscar
+     * @return el valor del elemento del avaluo
+     * @throws NewviExcepcion 
+     */
+    public AvaluoDto obtenerElementoAvaluoPorDescripcion(List<AvaluoDto> listaElementos, String descripcion) throws NewviExcepcion;
+        
     /*------------------------------------------------------------FechaAvaluo------------------------------------------------------------*/
     /**
      * Genera una nueva FechaAvaluo

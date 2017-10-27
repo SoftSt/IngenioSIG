@@ -21,7 +21,15 @@
                     <p>#{avaluoBB.descripcionPantalla.textoEtiqueta}</p>
                     <p:tooltip />
                     <p:outputPanel id="opDetalleContribuyentes">
-                        <h:panelGrid columns="2">
+                        <h:panelGrid columns="3">
+                            <p:commandButton oncomplete="PF('dlgSimulacion').show()"
+                                             icon="fa fa-calculator"
+                                             value="Calcular"
+                                             update="grupoAvaluos"
+                                             widgetVar="calcularSimulacion"
+                                             id="generarSimulacion">
+                            </p:commandButton>
+
                             <p:selectOneMenu id="fechaAvaluo" value="#{avaluoBB.fechaAvaluoActual.fechaDescripcion}" style="width:125px" >
                                 <f:selectItem itemLabel="Seleccione tipo fecha..." itemValue="null"/>
                                 <f:selectItems value="#{avaluoBB.listaFechaAvaluos}" var="fechas" itemValue="#{fechas.fechaDescripcion}" itemLabel="#{fechas.fechaDescripcion}"/>
@@ -64,14 +72,6 @@
 
                             </p:dataTable>
                             <h:panelGrid columns="2">
-                                <p:commandButton oncomplete="PF('dlgSimulacion').show()"
-                                                 icon="fa fa-calculator"
-                                                 value="Calcular"
-                                                 update="grupoAvaluos"
-                                                 widgetVar="calcularSimulacion"
-                                                 id="generarSimulacion">
-                                </p:commandButton>
-
                                 <p:commandButton icon="fa fa-print" 
                                                  value="Imprimir" 
                                                  id="imprimir"  
@@ -99,7 +99,7 @@
                                 <p:fileDownload value="#{avaluoBB.imprimir('TABLA_CATASTRAL_URBANA_CONDENSADA')}" />
                             </p:commandButton>
 
-                            
+
                             <p:commandButton icon="fa fa-print" 
                                              value="Completo" 
                                              id="imprimirCompleto"
@@ -114,7 +114,6 @@
 
                 <p:dialog header="Cálculo de Avalúos" id="generarSim" widgetVar="dlgSimulacion" modal="false" height="300" width="400">
                     <h:form id="formCalculoAvaluo">
-
                         <p><h:outputText value="Para iniciar, de clic en el botón a continuación"></h:outputText></p>
                         <p:remoteCommand name="rc" actionListener="#{avaluoBB.generarSimulacionFinal}"/>
                         <p:commandButton oncomplete="rc();PF('calcularSimulacion').disable();PF('pbAjax').start()"
@@ -135,11 +134,9 @@
                         <p>
                             <h:outputText value="Calculando avalúos, por favor espere." rendered="#{avaluoBB.esProcesoIniciado}"/>
                         </p>
-                        <p:progressBar id="pbarAval" widgetVar="pbAjax" ajax="true" value="#{avaluoBB.progreso}" labelTemplate="{value}%" style="width:300px" styleClass="animated" global="false">
+                        <p:progressBar rendered="#{!savaluoBB.esProcesoIniciado}"  id="pbarAval" widgetVar="pbAjax" ajax="true" value="#{avaluoBB.progreso}" labelTemplate="{value}%" style="width:300px" styleClass="animated" global="false">
                             <p:ajax event="complete" listener="#{avaluoBB.finalizarProceso()}" oncomplete="PF('calcularSimulacion').enable()" update=":formularioListaAvaluos:listaAvaluos"/>
                         </p:progressBar>
-
-
                     </h:form>
 
                 </p:dialog>

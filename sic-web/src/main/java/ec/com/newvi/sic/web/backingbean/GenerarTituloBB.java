@@ -18,7 +18,6 @@ import ec.com.newvi.sic.util.logs.LoggerNewvi;
 import ec.com.newvi.sic.web.MensajesFaces;
 import ec.com.newvi.sic.web.enums.EnumEtiquetas;
 import ec.com.newvi.sic.web.enums.EnumPantallaMantenimiento;
-import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -64,8 +63,6 @@ public class GenerarTituloBB extends AdminFichaCatastralBB {
     public void setFechaActualPrueba(String fechaActualPrueba) {
         this.fechaActualPrueba = fechaActualPrueba;
     }
-
-    
 
     public List<FechaAvaluo> getListaFechaAvaluos() {
         return listaFechaAvaluos;
