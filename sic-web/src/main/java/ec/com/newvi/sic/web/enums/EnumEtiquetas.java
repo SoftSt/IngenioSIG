@@ -159,6 +159,13 @@ public enum EnumEtiquetas {
     NUEVO_PREDIO_GENERACION_TITULO("Finalización"),
     NUEVO_PREDIO_GENERACION_DESCRIPCION("Los nuevos predios generados ahora pueden ser editados"),
     NUEVO_PREDIO_GENERACION_ICONO("fa fa-edit"),
+    
+    FORMULARIO_RECAUDACION_LISTA_TITULO("Formulario Recaudaciones"),
+    FORMULARIO_RECAUDACION_LISTA_ICONO("fa fa-money"),
+    FORMULARIO_RECAUDACION_LISTA_DESCRIPCION("Gestión de Recaudaciones."),
+    RECAUDACION_EDITAR_TITULO("Editar Recaudacion"),
+    RECAUDACION_EDITAR_ICONO("fa fa-edit"),
+    RECAUDACION_EDITAR_DESCRIPCION("Edición de Recaudacion seleccionada."),
     ;
     
     private final String textoEtiqueta;

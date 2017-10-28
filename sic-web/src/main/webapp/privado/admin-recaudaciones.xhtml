@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                template="/WEB-INF/templates/default.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:newvi="http://ec.com.newvi.faces/ui">
+    <ui:define name="content">
+        <h:panelGroup id="grupoFormularioRecaudaciones">
+            <p:panel id="panelListaFichaCatastral" rendered="#{recaudacionesBB.esPantallaActual('PANTALLA_LISTADO')}">
+                <h:form id="formularioListaFichaCatastral">
+                    <p:growl id="growl" showDetail="true" sticky="true" life="800"/>
+                    <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+                    <p>
+                        <h2>
+                            <h:outputText styleClass="#{recaudacionesBB.iconoPantalla.textoEtiqueta}"/>
+                            <h:outputText value=" #{recaudacionesBB.tituloPantalla.textoEtiqueta}"/>
+                        </h2>
+                    </p>
+                    <p>#{recaudacionesBB.descripcionPantalla.textoEtiqueta}</p>
+                    
+                    <p:dataTable id="listaFichaCatastral" var="fichaCatastral" widgetVar="listaFichaCatastralTabla"
+                                 value="#{recaudacionesBB.listaFichas}" rowKey="#{fichaCatastral.predio.codCatastral}" 
+                                 paginator="true" rows="10" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" 
+                                 rowsPerPageTemplate="10,15,20" 
+                                 emptyMessage="No se han encontrado resultados" 
+                                 paginatorPosition="bottom">
+
+                        <p:column headerText="Codigo" sortBy="#{fichaCatastral.predio.nomCodigocatastral}" filterBy="#{fichaCatastral.predio.nomCodigocatastral}">
+                            <h:outputText value="#{fichaCatastral.predio.nomCodigocatastral}" />
+                        </p:column>
+
+                        <p:column headerText="Propietario CI/RUC" sortBy="#{fichaCatastral.contribuyentePropiedad.codCedularuc}" filterBy="#{fichaCatastral.contribuyentePropiedad.codCedularuc}">
+                            <h:outputText value="#{fichaCatastral.contribuyentePropiedad.codCedularuc}"/>
+                        </p:column>
+
+                        <p:column headerText="Nombre Propietario" sortBy="#{fichaCatastral.contribuyentePropiedad.nomApellidos} #{fichaCatastral.contribuyentePropiedad.nomNombres}" filterBy="#{fichaCatastral.contribuyentePropiedad.nomApellidos} #{fichaCatastral.contribuyentePropiedad.nomNombres}" >
+                            <h:outputText value="#{fichaCatastral.contribuyentePropiedad.nomApellidos} #{fichaCatastral.contribuyentePropiedad.nomNombres}"/>
+                        </p:column>
+                        <p:column width="80">                            
+                            <p:commandButton process="listaFichaCatastral" 
+                                             actionListener="#{recaudacionesBB.seleccionarContribuyente(fichaCatastral.predio.codCatastral)}"
+                                             icon="fa fa-edit"
+                                             id="editarRecaudacion"
+                                             update="grupoFormularioRecaudaciones">
+                                <p:ajax update="toolTipEdit" process="@this" /> 
+                            </p:commandButton>
+                            <p:tooltip id="toolTipEdit" for="editarRecaudacion" value="Generar Recaudacion" showEffect="fade" hideEffect="fade" position="bottom"/>
+                        </p:column>
+                    </p:dataTable>
+                </h:form>
+            </p:panel>            
+            <p:panel id="panelRecaudaciones" rendered="#{recaudacionesBB.esPantallaActual('PANTALLA_EDICION')}">
+                <h:form id="formularioRecaudaciones">
+                    <p>
+                        <h2>
+                            <h:outputText styleClass="#{recaudacionesBB.iconoPantalla.textoEtiqueta}"/>
+                            <h:outputText value=" #{recaudacionesBB.tituloPantalla.textoEtiqueta}"/>
+                        </h2>
+                    </p>
+                    <p>#{recaudacionesBB.descripcionPantalla.textoEtiqueta}</p>
+                    <p:messages id="mensajeFormulario" showDetail="true" autoUpdate="true" closable="true" />
+                    <p:tooltip />
+                    <p:outputPanel id="opDetalleRecaudaciones">
+                        <h:panelGrid columns="1">
+
+                            <h:outputLabel for="codTitulos" value="Titulo" style="font-weight: bold;"/>
+                            <p:inputNumber id="codTitulos" value="" minValue="0" label="Titulo"/>
+                            <p:message for="codTitulos" display="tooltip"/>
+
+                            <h:outputLabel for="codCatastral" value="Codigo Catastral" style="font-weight: bold;"/>
+                            <p:inputNumber id="codCatastral" value="" minValue="0" label="Codigo Catastral"/>
+                            <p:message for="codCatastral" display="tooltip"/>
+
+                        </h:panelGrid>
+                    </p:outputPanel>
+                </h:form>
+            </p:panel>
+            
+            
+        </h:panelGroup>
+    </ui:define>
+</ui:composition>
