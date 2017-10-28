@@ -116,13 +116,21 @@
                                         </p:columnGroup>
 
                                     </p:dataTable>
-                                    <h:panelGrid columns="2">
+                                    <h:panelGrid columns="4">
                                         <p:commandButton icon="fa fa-print" 
                                                          value="Imprimir" 
                                                          id="imprimir"  
                                                          oncomplete="PF('wgSeleccionImpresion').show()">
                                         </p:commandButton>
                                         <p:tooltip id="toolTipImprimir" for="imprimir" value="Imprimir" showEffect="fade" hideEffect="fade" position="top"/>
+                                        <p:commandButton icon="fa fa-save" 
+                                                         value="Guardar Avaluo" 
+                                                         id="guardarAvaluo"
+                                                         onclick="PF('statusDialog').show();"
+                                                         oncomplete="PF('statusDialog').hide();"
+                                                         actionListener="#{avaluoBB.registrarAvaluo}">
+                                        </p:commandButton>
+                                        <p:tooltip id="toolTipGuardarAvaluo" for="guardarAvaluo" value="Guardar Avaluo" showEffect="fade" hideEffect="fade" position="top"/>
                                     </h:panelGrid>
 
                                 </h:panelGrid>

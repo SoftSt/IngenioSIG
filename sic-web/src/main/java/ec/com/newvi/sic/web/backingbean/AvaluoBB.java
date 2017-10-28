@@ -36,6 +36,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
@@ -59,7 +61,7 @@ public class AvaluoBB extends AdminFichaCatastralBB {
     private Boolean esActivo;
     private Boolean esProcesoIniciado;
     private Boolean esProcesoCancelado;
-    
+
     private BigDecimal totalPorCobrar;
 
     public Boolean getEsProcesoCancelado() {
@@ -161,8 +163,8 @@ public class AvaluoBB extends AdminFichaCatastralBB {
         fechaAvaluo.setFecavEstado(EnumEstadoRegistro.A);
         fechaAvaluo.setFechaDescripcion(formato.format(fecha));
 
-        //return catastroServicio.generarNuevaFechaAvaluo(fechaAvaluo, sesionBean.getSesion());
-        return fechaAvaluo;
+        return catastroServicio.generarNuevaFechaAvaluo(fechaAvaluo, sesionBean.getSesion());
+        //return fechaAvaluo;
     }
 
     public void abrirModalEspera() throws NewviExcepcion {
@@ -264,6 +266,7 @@ public class AvaluoBB extends AdminFichaCatastralBB {
     }
 
     public void finalizarProceso() {
+        //this.progreso = 100;
         this.esProcesoIniciado = false;
         WebUtils.obtenerContextoPeticion().execute("PF('dlgSimulacion').hide()");
         MensajesFaces.mensajeInformacion(EnumNewviExcepciones.INF501.presentarMensaje());
@@ -321,14 +324,14 @@ public class AvaluoBB extends AdminFichaCatastralBB {
     }
 
     private void obtenerDatosAvaluo(Avaluo avaluo, FichaCatastralDto ficha) throws NewviExcepcion {
-        FechaAvaluo fecavId = generarFechaAvaluo();
+        //FechaAvaluo fecavId = generarFechaAvaluo();
         avaluo.setCodCatastral(ficha.getPredio());
         avaluo.setNomCodigocatastral(ficha.getPredio().getNomCodigocatastral());
         avaluo.setTxtDireccion(ficha.getPredio().getTxtDireccion());
         avaluo.setStsBarrio(ficha.getPredio().getStsBarrio());
         avaluo.setCodCedularuc(ficha.getContribuyentePropiedad().getCodCedularuc());
         avaluo.setNomnomape(ficha.getContribuyentePropiedad().getNomApellidos().trim() + " " + ficha.getContribuyentePropiedad().getNomNombres().trim());
-        avaluo.setFecavId(fecavId);
+        //avaluo.setFecavId(fecavId);
         avaluo.setAvalEstado(EnumEstadoRegistro.A);
     }
 
@@ -391,12 +394,28 @@ public class AvaluoBB extends AdminFichaCatastralBB {
     public List<Avaluo> generarListaAvaluo() {
         return catastroServicio.consultarListaAvaluosActuales();
     }
-    
+
     private void obtenerTotales(List<Avaluo> listadoAvaluo) {
         this.totalPorCobrar = BigDecimal.ZERO;
         listadoAvaluo.forEach((avaluo) -> {
             this.totalPorCobrar = this.totalPorCobrar.add(avaluo.getValImppredial());
         });
+    }
+
+    public void registrarAvaluo() throws NewviExcepcion {
+        FechaAvaluo fecavId = generarFechaAvaluo();
+        for (Avaluo avaluoActual : this.listaAvaluos) {
+            try {
+                avaluoActual.setFecavId(fecavId);
+                catastroServicio.generarNuevoAvaluo(avaluoActual, sesionBean.getSesion());
+            } catch (NewviExcepcion ex) {
+                Map<String, String> variables = new HashMap<>();
+                variables.put("avaluo", avaluoActual.getNomnomape());
+                throw new NewviExcepcion(EnumNewviExcepciones.ERR362, variables, ex);
+            }
+        }
+        LoggerNewvi.getLogNewvi(this.getClass()).info(EnumNewviExcepciones.INF363.presentarMensaje(), sesionBean.getSesion());
+        MensajesFaces.mensajeInformacion(EnumNewviExcepciones.INF363.presentarMensaje());
     }
 
 }

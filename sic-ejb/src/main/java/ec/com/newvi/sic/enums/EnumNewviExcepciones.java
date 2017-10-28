@@ -98,6 +98,7 @@ public enum EnumNewviExcepciones {
     INF360("INF360", "Descripción  de terreno agregado.", "La descripcion de terreno se ha agregado correctamente."),
     INF361("INF361", "Servicio actualizada.", "El servicio se ha actualizado correctamente."),
     INF362("INF362", "Descripción  de terreno eliminada.", "La descripcion de terreno se ha eliminado correctamente."),
+    INF363("INF363", "Avaluos ingresados.", "La lista de avaluos se han registrado correctamente."),
     ERR362("ERR362", "Avaluo no válido.", "El avaluo ingresado no es válido. Por favor verifique que los datos ingresados son correctos."),
     ERR363("ERR363", "Fecha Avaluo no válida.", "la fecha avaluo ingresada no es válida. Por favor verifique que los datos ingresados son correctos."),
     ERR364("ERR364", "Constante impuestos no válida.", "La Constante impuestos ingresada no es válida. Por favor verifique que los datos ingresados son correctos."),
