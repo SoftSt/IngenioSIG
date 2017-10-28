@@ -59,6 +59,8 @@ public class AvaluoBB extends AdminFichaCatastralBB {
     private Boolean esActivo;
     private Boolean esProcesoIniciado;
     private Boolean esProcesoCancelado;
+    
+    private BigDecimal totalPorCobrar;
 
     public Boolean getEsProcesoCancelado() {
         return esProcesoCancelado;
@@ -128,6 +130,10 @@ public class AvaluoBB extends AdminFichaCatastralBB {
         this.listaAvaluosFiltrados = listaAvaluosFiltrados;
     }
 
+    public BigDecimal getTotalPorCobrar() {
+        return totalPorCobrar;
+    }
+
     @PostConstruct
     public void init() {
         this.esActivo = false;
@@ -155,7 +161,8 @@ public class AvaluoBB extends AdminFichaCatastralBB {
         fechaAvaluo.setFecavEstado(EnumEstadoRegistro.A);
         fechaAvaluo.setFechaDescripcion(formato.format(fecha));
 
-        return catastroServicio.generarNuevaFechaAvaluo(fechaAvaluo, sesionBean.getSesion());
+        //return catastroServicio.generarNuevaFechaAvaluo(fechaAvaluo, sesionBean.getSesion());
+        return fechaAvaluo;
     }
 
     public void abrirModalEspera() throws NewviExcepcion {
@@ -190,7 +197,7 @@ public class AvaluoBB extends AdminFichaCatastralBB {
             }
         }
         this.generarListadoAvaluos(listaAvaluosCalculados);
-        this.progreso = 100;
+        obtenerTotales(listaAvaluos);
         //catastroServicio.registrarArbol(calculoAvaluo, predioACalcular, sesionBean.getSesion());
     }
 
@@ -320,7 +327,7 @@ public class AvaluoBB extends AdminFichaCatastralBB {
         avaluo.setTxtDireccion(ficha.getPredio().getTxtDireccion());
         avaluo.setStsBarrio(ficha.getPredio().getStsBarrio());
         avaluo.setCodCedularuc(ficha.getContribuyentePropiedad().getCodCedularuc());
-        avaluo.setNomnomape(ficha.getContribuyentePropiedad().getNomNombres().trim() + " " + ficha.getContribuyentePropiedad().getNomApellidos().trim());
+        avaluo.setNomnomape(ficha.getContribuyentePropiedad().getNomApellidos().trim() + " " + ficha.getContribuyentePropiedad().getNomNombres().trim());
         avaluo.setFecavId(fecavId);
         avaluo.setAvalEstado(EnumEstadoRegistro.A);
     }
@@ -383,6 +390,13 @@ public class AvaluoBB extends AdminFichaCatastralBB {
 
     public List<Avaluo> generarListaAvaluo() {
         return catastroServicio.consultarListaAvaluosActuales();
+    }
+    
+    private void obtenerTotales(List<Avaluo> listadoAvaluo) {
+        this.totalPorCobrar = BigDecimal.ZERO;
+        listadoAvaluo.forEach((avaluo) -> {
+            this.totalPorCobrar = this.totalPorCobrar.add(avaluo.getValImppredial());
+        });
     }
 
 }
