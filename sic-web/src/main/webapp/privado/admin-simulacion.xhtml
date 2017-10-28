@@ -35,8 +35,8 @@
                                 <h:panelGrid>
                                     <p:dataTable id="listaAvaluos" var="avaluo" widgetVar="listaAvaluoTabla"
                                                  value="#{avaluoBB.listaAvaluos}" rowKey="#{avaluo.avalId}" filteredValue="#{avaluoBB.listaAvaluosFiltrados}"
-                                                 paginator="true" rows="10" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" 
-                                                 rowsPerPageTemplate="10,30,50" style="font-size: 0.8em;"
+                                                 scrollable="true" scrollHeight="300" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" 
+                                                 style="font-size: 0.8em;" sortBy="#{avaluo.nomCodigocatastral}"
                                                  emptyMessage="No se han encontrado resultados" 
                                                  paginatorPosition="bottom">
 
@@ -54,7 +54,7 @@
                                             </h:outputText>
                                         </p:column>
 
-                                        <p:column headerText="Valor" width="40">
+                                        <p:column headerText="Valor Terreno" width="40">
                                             <h:outputText value="#{avaluo.valTerreno}" style="float:right">
                                                 <f:convertNumber pattern="$ ###,###.00"/>
                                             </h:outputText>
@@ -66,7 +66,7 @@
                                             </h:outputText>
                                         </p:column>
 
-                                        <p:column headerText="Valor" width="40">
+                                        <p:column headerText="Valor Edific." width="40">
                                             <h:outputText value="#{avaluo.valEdifica}" style="float:right">
                                                 <f:convertNumber pattern="$ ###,###.00"/>
                                             </h:outputText>
@@ -96,22 +96,24 @@
                                             </h:outputText>
                                         </p:column>
 
+                                        <p:column headerText="Edif. Obsoleta" width="30">
+                                            <h:outputText value="#{avaluo.valNoEdificacion}" style="float:right">
+                                                <f:convertNumber pattern="$ ###,###.00"/>
+                                            </h:outputText>
+                                        </p:column>
+
                                         <p:column headerText="A pagar" width="30">
                                             <h:outputText value="#{avaluo.valImppredial}" style="float:right">
                                                 <f:convertNumber pattern="$ ###,###.00"/>
                                             </h:outputText>
                                         </p:column>
 
-                                        <p:summaryRow>
-                                            <p:column colspan="3" style="text-align:right">
-                                                <h:outputText value="Total:" />
-                                            </p:column>
-                                            <p:column>
-                                                <h:outputText value="#{avaluoBB.totalPorCobrar}">
-                                                    <f:convertNumber pattern="$ ###,###.00"/>
-                                                </h:outputText>
-                                            </p:column>
-                                        </p:summaryRow>
+                                        <p:columnGroup type="footer">
+                                            <p:row>
+                                                <p:column colspan="11" style="text-align:right" footerText="Total:"/>
+                                                <p:column footerText="$ #{avaluoBB.totalPorCobrar}"/>
+                                            </p:row>
+                                        </p:columnGroup>
 
                                     </p:dataTable>
                                     <h:panelGrid columns="2">

@@ -568,7 +568,7 @@ a,
     box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12) !important;
 }
 
-.ui-datatable tbody, .ui-treetable tbody, .ui-datatable-odd, ui-datatable-even, .ui-datatable thead th, .ui-datatable tbody td, .ui-datatable tfoot td, .ui-treetable thead th, .ui-treetable tbody td, .ui-datatable tfoot th, .ui-panelmenu-content {
+.ui-datatable tbody, .ui-treetable tbody, .ui-datatable-odd, ui-datatable-even, .ui-datatable thead th, .ui-datatable tbody td, .ui-datatable tfoot td, .ui-treetable thead th, .ui-treetable tbody td, .ui-datatable tfoot th, .ui-panelmenu-content, .ui-datatable-scrollable-footer-box {
     border: none;
     border-width: 0px;
     border-style: none;
@@ -629,7 +629,7 @@ a,
     text-align: left;
 }
 
-.ui-paginator {
+.ui-paginator, .ui-datatable-scrollable-footer {
     height: 56px !important;
     padding-top: 30px !important;
     padding-bottom: 0px !important;
@@ -646,7 +646,7 @@ a,
     border-bottom: 0 none;
 }
 
-.ui-paginator.ui-paginator-bottom {
+.ui-paginator.ui-paginator-bottom, .ui-datatable-scrollable-footer{
     border-top: 1px solid #d5d5d5;
     border-left: 0 none;
     border-right: 0 none;
@@ -767,8 +767,8 @@ a,
     box-shadow: none !important;
 }
 
-.ui-datatable-scrollable-header {
-    border: 0 none;
+.ui-datatable-scrollable-header, .ui-datatable-scrollable-footer.ui-datatable-scrollable-footer-box, .ui-datatable-scrollable-footer .ui-state-default {
+    border: 0 none !important;
 }
 
 /* Columnas de tablas */
