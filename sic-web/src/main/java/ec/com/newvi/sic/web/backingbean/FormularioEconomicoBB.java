@@ -6,6 +6,7 @@
 package ec.com.newvi.sic.web.backingbean;
 
 import ec.com.newvi.componente.reporte.ReporteGenerador;
+import ec.com.newvi.sic.dto.PresentacionFichaCatastralDto;
 import ec.com.newvi.sic.enums.EnumReporte;
 import ec.com.newvi.sic.modelo.Predios;
 import ec.com.newvi.sic.util.excepciones.NewviExcepcion;
@@ -72,7 +73,7 @@ public class FormularioEconomicoBB extends AdminFichaCatastralBB {
     }
 
     public DefaultStreamedContent imprimir(EnumReporte tipoReporte) {
-        return generarReporteCatastro(tipoReporte);
+        return generarReporteCatastro(tipoReporte, ReporteGenerador.FormatoReporte.PDF, obtenerDatosReporteCatastral(this.predio), PresentacionFichaCatastralDto.class);
     }
 
 }

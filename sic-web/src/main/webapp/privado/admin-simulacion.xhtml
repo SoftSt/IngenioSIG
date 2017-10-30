@@ -23,32 +23,65 @@
                     <p:outputPanel id="opListaAvaluo">
                         <p:tabView dynamic="true" >
                             <p:tab id="tabCalculo" title="Cálculo">
-                                <h:panelGrid>
-                                    <p:commandButton oncomplete="PF('dlgSimulacion').show()"
-                                                     icon="fa fa-calculator"
+                                <h:panelGrid rendered="#{!avaluoBB.hayDatosCalculados()}">
+                                    <p:commandButton icon="fa fa-calculator"
                                                      value="Calcular"
                                                      update="grupoAvaluos"
                                                      widgetVar="calcularSimulacion"
+                                                     actionListener="#{avaluoBB.iniciarProcesoCalculo()}"
                                                      id="generarSimulacion">
+                                        <p:confirm header="Información" message="Este proceso tomará algunos minutos. ¿Iniciar?" icon="ui-icon-alert" />
                                     </p:commandButton>
                                 </h:panelGrid>
+                                <h:panelGrid rendered="#{avaluoBB.hayDatosCalculados()}" columns="6">
+                                    <p:commandButton icon="fa fa-save" 
+                                                     value="Guardar" 
+                                                     id="guardarAvaluo"
+                                                     onclick="PF('statusDialog').show();"
+                                                     oncomplete="PF('statusDialog').hide();"
+                                                     actionListener="#{avaluoBB.registrarAvaluo}">
+                                    </p:commandButton>
+                                    <p:tooltip id="toolTipGuardarAvaluo" for="guardarAvaluo" value="Guardar Avaluo" showEffect="fade" hideEffect="fade" position="top"/>
+                                    <p:splitButton id="imprimir" value="Imprimir" icon="fa fa-print">
+                                        <p:menuitem value="Tabla Catastral - Condensado" ajax="false"
+                                                    update="grupoAvaluos" icon="fa fa-print" 
+                                                    onclick="PrimeFaces.monitorDownload(start, stop);">
+                                            <p:fileDownload value="#{avaluoBB.imprimir('TABLA_CATASTRAL_URBANA_CONDENSADA', 'PDF')}" />
+                                        </p:menuitem>
+                                        <p:menuitem value="Tabla Catastral - Completo" ajax="false"
+                                                    update="grupoAvaluos" icon="fa fa-print" 
+                                                    onclick="PrimeFaces.monitorDownload(start, stop);">
+                                            <p:fileDownload value="#{avaluoBB.imprimir('TABLA_CATASTRAL_URBANA', 'XLSX')}" />
+                                        </p:menuitem>
+                                    </p:splitButton>
+                                    <p:tooltip id="toolTipImprimir" for="imprimir" value="Imprimir" showEffect="fade" hideEffect="fade" position="top"/>
+                                    <p:commandButton value="Reiniciar" icon="fa fa-repeat" 
+                                                     update="grupoAvaluos" 
+                                                     id="reiniciarAvaluo"
+                                                     actionListener="#{avaluoBB.reiniciarCalculo()}">
+                                    </p:commandButton>
+                                    <p:tooltip id="toolTipReiniciarAvaluo" for="reiniciarAvaluo" value="Volver a calcular" showEffect="fade" hideEffect="fade" position="top"/>
+                                </h:panelGrid>
+
                                 <h:panelGrid>
                                     <p:dataTable id="listaAvaluos" var="avaluo" widgetVar="listaAvaluoTabla"
                                                  value="#{avaluoBB.listaAvaluos}" rowKey="#{avaluo.avalId}" filteredValue="#{avaluoBB.listaAvaluosFiltrados}"
-                                                 scrollable="true" scrollHeight="300" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" 
+                                                 paginator="true" rows="10" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" 
+                                                 rowsPerPageTemplate="10,30,50" 
+                                                 resizableColumns="true"
                                                  style="font-size: 0.8em;" sortBy="#{avaluo.nomCodigocatastral}"
                                                  emptyMessage="No se han encontrado resultados" 
                                                  paginatorPosition="bottom">
 
-                                        <p:column headerText="Clave" sortBy="#{avaluo.nomCodigocatastral}" width="60">
+                                        <p:column headerText="Clave" sortBy="#{avaluo.nomCodigocatastral}" width="40" filterBy="#{avaluo.nomCodigocatastral}">
                                             <h:outputText value="#{avaluo.nomCodigocatastral}" />
                                         </p:column>
 
-                                        <p:column headerText="Propietario" sortBy="#{avaluo.nomnomape}" width="60">
+                                        <p:column headerText="Propietario" sortBy="#{avaluo.nomnomape}" width="50" filterBy="#{avaluo.nomnomape}" filterMatchMode="contains">
                                             <h:outputText value="#{avaluo.nomnomape}" />
                                         </p:column>
 
-                                        <p:column headerText="Terreno (m2)" width="30">
+                                        <p:column headerText="Terreno (m2)" width="40">
                                             <h:outputText value="#{avaluo.valAreapredio}" style="float:right">
                                                 <f:convertNumber pattern="###,###.00"/>
                                             </h:outputText>
@@ -60,7 +93,7 @@
                                             </h:outputText>
                                         </p:column>
 
-                                        <p:column headerText="Edific. (m2)" width="30">
+                                        <p:column headerText="Edific. (m2)" width="40">
                                             <h:outputText value="#{avaluo.valAreaconstruccion}" style="float:right">
                                                 <f:convertNumber pattern="###,###.00"/>
                                             </h:outputText>
@@ -78,65 +111,54 @@
                                             </h:outputText>
                                         </p:column>
 
-                                        <p:column headerText="Imp. Predial" width="30">
+                                        <p:column headerText="Imp. Predial" width="40">
                                             <h:outputText value="#{avaluo.valImpuesto}" style="float:right">
                                                 <f:convertNumber pattern="$ ###,###.00"/>
                                             </h:outputText>
                                         </p:column>
 
-                                        <p:column headerText="Bomberos" width="30">
+                                        <p:column headerText="Bomberos" width="40">
                                             <h:outputText value="#{avaluo.valBomberos}" style="float:right">
                                                 <f:convertNumber pattern="$ ###,###.00"/>
                                             </h:outputText>
                                         </p:column>
 
-                                        <p:column headerText="Solar No Edif" width="30">
+                                        <p:column headerText="Solar No Edif" width="40">
                                             <h:outputText value="#{avaluo.valNoEdificacion}" style="float:right">
                                                 <f:convertNumber pattern="$ ###,###.00"/>
                                             </h:outputText>
                                         </p:column>
 
-                                        <p:column headerText="Edif. Obsoleta" width="30">
+                                        <p:column headerText="Edif. Obsoleta" width="40">
                                             <h:outputText value="#{avaluo.valNoEdificacion}" style="float:right">
                                                 <f:convertNumber pattern="$ ###,###.00"/>
                                             </h:outputText>
                                         </p:column>
 
-                                        <p:column headerText="A pagar" width="30">
+                                        <p:column headerText="A pagar" width="60">
                                             <h:outputText value="#{avaluo.valImppredial}" style="float:right">
                                                 <f:convertNumber pattern="$ ###,###.00"/>
                                             </h:outputText>
                                         </p:column>
 
-                                        <p:columnGroup type="footer">
+                                        <p:columnGroup rendered="true" type="footer">
                                             <p:row>
                                                 <p:column colspan="11" style="text-align:right" footerText="Total:"/>
-                                                <p:column footerText="$ #{avaluoBB.totalPorCobrar}"/>
+                                                <p:column width="60">
+                                                    <f:facet name="footer">
+                                                        <h:outputText value="#{avaluoBB.totalPorCobrarCalculo}" style="float:right">
+                                                            <f:convertNumber pattern="$ ###,###.00"/>
+                                                        </h:outputText>
+                                                    </f:facet>
+                                                </p:column>
                                             </p:row>
                                         </p:columnGroup>
 
                                     </p:dataTable>
-                                    <h:panelGrid columns="4">
-                                        <p:commandButton icon="fa fa-print" 
-                                                         value="Imprimir" 
-                                                         id="imprimir"  
-                                                         oncomplete="PF('wgSeleccionImpresion').show()">
-                                        </p:commandButton>
-                                        <p:tooltip id="toolTipImprimir" for="imprimir" value="Imprimir" showEffect="fade" hideEffect="fade" position="top"/>
-                                        <p:commandButton icon="fa fa-save" 
-                                                         value="Guardar Avaluo" 
-                                                         id="guardarAvaluo"
-                                                         onclick="PF('statusDialog').show();"
-                                                         oncomplete="PF('statusDialog').hide();"
-                                                         actionListener="#{avaluoBB.registrarAvaluo}">
-                                        </p:commandButton>
-                                        <p:tooltip id="toolTipGuardarAvaluo" for="guardarAvaluo" value="Guardar Avaluo" showEffect="fade" hideEffect="fade" position="top"/>
-                                    </h:panelGrid>
-
                                 </h:panelGrid>
                             </p:tab>
                             <p:tab title="Revisión">
-                                <h:panelGrid columns="2">
+                                <h:panelGrid rendered="#{!avaluoBB.hayDatosConsultados()}" columns="2">
                                     <p:selectOneMenu id="fechaAvaluo" value="#{avaluoBB.fechaAvaluoActual.fechaDescripcion}" style="width:125px" >
                                         <f:selectItem itemLabel="Seleccione tipo fecha..." itemValue="null"/>
                                         <f:selectItems value="#{avaluoBB.listaFechaAvaluos}" var="fechas" itemValue="#{fechas.fechaDescripcion}" itemLabel="#{fechas.fechaDescripcion}"/>
@@ -146,67 +168,155 @@
                                                      icon="fa fa-check"
                                                      value="Consultar"
                                                      update="grupoAvaluos"
+                                                     onclick="PF('statusDialog').show();"
+                                                     oncomplete="PF('statusDialog').hide();"
                                                      id="consultarAvaluos">
                                     </p:commandButton>
+                                </h:panelGrid>
+                                <h:panelGrid rendered="#{avaluoBB.hayDatosConsultados()}" columns="4">
+                                    <p:splitButton id="imprimirConsultado" value="Imprimir" icon="fa fa-print">
+                                        <p:menuitem value="Tabla Catastral - Condensado" ajax="false"
+                                                    update="grupoAvaluos" icon="fa fa-print" 
+                                                    onclick="PrimeFaces.monitorDownload(start, stop);">
+                                            <p:fileDownload value="#{avaluoBB.imprimirConsultado('TABLA_CATASTRAL_URBANA_CONDENSADA', 'PDF')}" />
+                                        </p:menuitem>
+                                        <p:menuitem value="Tabla Catastral - Completo" ajax="false"
+                                                    update="grupoAvaluos" icon="fa fa-print" 
+                                                    onclick="PrimeFaces.monitorDownload(start, stop);">
+                                            <p:fileDownload value="#{avaluoBB.imprimirConsultado('TABLA_CATASTRAL_URBANA', 'XLSX')}" />
+                                        </p:menuitem>
+                                    </p:splitButton>
+                                    <p:tooltip id="toolTipImprimirConsultado" for="imprimirConsultado" value="Imprimir" showEffect="fade" hideEffect="fade" position="top"/>
+                                    <p:commandButton value="Reiniciar" icon="fa fa-repeat" 
+                                                     update="grupoAvaluos" 
+                                                     id="reiniciarConsulta"
+                                                     actionListener="#{avaluoBB.reiniciarConsulta()}">
+                                    </p:commandButton>
+                                    <p:tooltip id="toolTipReiniciarConsultado" for="reiniciarConsulta" value="Volver a consultar" showEffect="fade" hideEffect="fade" position="top"/>
+                                </h:panelGrid>
+                                <h:panelGrid>
+                                    <p:dataTable id="listaAvaluosProcesados" var="avaluoProcesado" widgetVar="listaAvaluoProcesadoTabla"
+                                                 value="#{avaluoBB.listaAvaluosProcesados}" rowKey="#{avaluoProcesado.avalId}" filteredValue="#{avaluoBB.listaAvaluosProcesadosFiltrados}"
+                                                 paginator="true" rows="10" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" 
+                                                 rowsPerPageTemplate="10,30,50" 
+                                                 resizableColumns="true"
+                                                 style="font-size: 0.8em;" sortBy="#{avaluoProcesado.nomCodigocatastral}"
+                                                 emptyMessage="No se han encontrado resultados" 
+                                                 paginatorPosition="bottom">
+
+                                        <p:column headerText="Clave" sortBy="#{avaluoProcesado.nomCodigocatastral}" width="40" filterBy="#{avaluoProcesado.nomCodigocatastral}">
+                                            <h:outputText value="#{avaluoProcesado.nomCodigocatastral}" />
+                                        </p:column>
+
+                                        <p:column headerText="Propietario" sortBy="#{avaluoProcesado.nomnomape}" width="50" filterBy="#{avaluoProcesado.nomnomape}" filterMatchMode="contains">
+                                            <h:outputText value="#{avaluoProcesado.nomnomape}" />
+                                        </p:column>
+
+                                        <p:column headerText="Terreno (m2)" width="40">
+                                            <h:outputText value="#{avaluoProcesado.valAreapredio}" style="float:right">
+                                                <f:convertNumber pattern="###,###.00"/>
+                                            </h:outputText>
+                                        </p:column>
+
+                                        <p:column headerText="Valor Terreno" width="40">
+                                            <h:outputText value="#{avaluoProcesado.valTerreno}" style="float:right">
+                                                <f:convertNumber pattern="$ ###,###.00"/>
+                                            </h:outputText>
+                                        </p:column>
+
+                                        <p:column headerText="Edific. (m2)" width="40">
+                                            <h:outputText value="#{avaluoProcesado.valAreaconstruccion}" style="float:right">
+                                                <f:convertNumber pattern="###,###.00"/>
+                                            </h:outputText>
+                                        </p:column>
+
+                                        <p:column headerText="Valor Edific." width="40">
+                                            <h:outputText value="#{avaluoProcesado.valEdifica}" style="float:right">
+                                                <f:convertNumber pattern="$ ###,###.00"/>
+                                            </h:outputText>
+                                        </p:column>
+
+                                        <p:column headerText="Propiedad" width="40">
+                                            <h:outputText value="#{avaluoProcesado.valPredio}" style="float:right">
+                                                <f:convertNumber pattern="$ ###,###.00"/>
+                                            </h:outputText>
+                                        </p:column>
+
+                                        <p:column headerText="Imp. Predial" width="40">
+                                            <h:outputText value="#{avaluoProcesado.valImpuesto}" style="float:right">
+                                                <f:convertNumber pattern="$ ###,###.00"/>
+                                            </h:outputText>
+                                        </p:column>
+
+                                        <p:column headerText="Bomberos" width="40">
+                                            <h:outputText value="#{avaluoProcesado.valBomberos}" style="float:right">
+                                                <f:convertNumber pattern="$ ###,###.00"/>
+                                            </h:outputText>
+                                        </p:column>
+
+                                        <p:column headerText="Solar No Edif" width="40">
+                                            <h:outputText value="#{avaluoProcesado.valNoEdificacion}" style="float:right">
+                                                <f:convertNumber pattern="$ ###,###.00"/>
+                                            </h:outputText>
+                                        </p:column>
+
+                                        <p:column headerText="Edif. Obsoleta" width="40">
+                                            <h:outputText value="#{avaluoProcesado.valNoEdificacion}" style="float:right">
+                                                <f:convertNumber pattern="$ ###,###.00"/>
+                                            </h:outputText>
+                                        </p:column>
+
+                                        <p:column headerText="A pagar" width="60">
+                                            <h:outputText value="#{avaluoProcesado.valImppredial}" style="float:right">
+                                                <f:convertNumber pattern="$ ###,###.00"/>
+                                            </h:outputText>
+                                        </p:column>
+
+                                        <p:columnGroup rendered="true" type="footer">
+                                            <p:row>
+                                                <p:column colspan="11" style="text-align:right" footerText="Total:"/>
+                                                <p:column width="60">
+                                                    <f:facet name="footer">
+                                                        <h:outputText value="#{avaluoBB.totalPorCobrarConsulta}" style="float:right">
+                                                            <f:convertNumber pattern="$ ###,###.00"/>
+                                                        </h:outputText>
+                                                    </f:facet>
+                                                </p:column>
+                                            </p:row>
+                                        </p:columnGroup>
+
+                                    </p:dataTable>
                                 </h:panelGrid>
                             </p:tab>
                         </p:tabView>
                     </p:outputPanel>
-                    <p:dialog header="Seleccionar Impresión" widgetVar="wgSeleccionImpresion" 
-                              modal="false" height="100">
-                        <p><h:outputText value="Seleccione el tipo de impresión que necesita" /></p>
-                        <h:panelGrid columns="2">
-
-                            <p:commandButton icon="fa fa-print" 
-                                             value="Condensado" 
-                                             id="imprimirCondensado"
-                                             ajax="false"
-                                             update="grupoAvaluos"
-                                             onclick="PrimeFaces.monitorDownload(start, stop);">
-                                <p:fileDownload value="#{avaluoBB.imprimir('TABLA_CATASTRAL_URBANA_CONDENSADA')}" />
-                            </p:commandButton>
-
-
-                            <p:commandButton icon="fa fa-print" 
-                                             value="Completo" 
-                                             id="imprimirCompleto"
-                                             update="grupoAvaluos"
-                                             ajax="false"
-                                             onclick="PrimeFaces.monitorDownload(start, stop);">
-                                <p:fileDownload value="#{avaluoBB.imprimir('TABLA_CATASTRAL_URBANA')}" />
-                            </p:commandButton>
-                        </h:panelGrid>
-                    </p:dialog>   
                 </h:form>
 
-                <p:dialog header="Cálculo de Avalúos" id="generarSim" widgetVar="dlgSimulacion" modal="false" height="300" width="400">
-                    <h:form id="formCalculoAvaluo">
-                        <p><h:outputText value="Para iniciar, de clic en el botón a continuación"></h:outputText></p>
-                        <p:remoteCommand name="rc" actionListener="#{avaluoBB.generarSimulacionFinal}"/>
-                        <p:commandButton oncomplete="rc();PF('calcularSimulacion').disable();PF('pbAjax').start()"
-                                         icon="fa fa-calculator"
-                                         value="Iniciar"
-                                         widgetVar="calcularSimulacion"
-                                         id="generarSimulacion" disabled="#{avaluoBB.esProcesoIniciado}">
-                        </p:commandButton>
-                        <p:remoteCommand name="cancelarGeneracion" action="#{avaluoBB.cancelarAvaluo}" process="@this"/>
-
-                        <p:commandButton value="Cancel" immediate="true" 
-                                         actionListener="#{avaluoBB.cancelarAvaluo}"
-                                         update="formCalculoAvaluo"
-                                         async="true"
-                                         onclick="PF('pbAjax').cancel();PF('calcularSimulacion').enable();" />
-
-                        <br /><br />
+                <h:form id="formCalculoAvaluo">
+                    <p:dialog header="Procesando..." id="generarSim" widgetVar="dlgSimulacion" modal="false">
                         <p>
-                            <h:outputText value="Calculando avalúos, por favor espere." rendered="#{avaluoBB.esProcesoIniciado}"/>
+                            <h:outputText value="Calculando, por favor espere..."></h:outputText>
                         </p>
-                        <p:progressBar rendered="#{!savaluoBB.esProcesoIniciado}"  id="pbarAval" widgetVar="pbAjax" ajax="true" value="#{avaluoBB.progreso}" labelTemplate="{value}%" style="width:300px" styleClass="animated" global="false">
-                            <p:ajax event="complete" listener="#{avaluoBB.finalizarProceso()}" oncomplete="PF('calcularSimulacion').enable()" update="grupoAvaluos"/>
-                        </p:progressBar>
-                    </h:form>
+                        <div style="text-align: center">
+                            <p:remoteCommand name="rc" actionListener="#{avaluoBB.generarSimulacionFinal}"/>
+                            <p:progressBar rendered="#{!savaluoBB.esProcesoIniciado}"  id="pbarAval" widgetVar="pbAjax" ajax="true" value="#{avaluoBB.progreso}" labelTemplate="{value}%" style="width:300px" styleClass="animated" global="false">
+                                <p:ajax event="complete" listener="#{avaluoBB.finalizarProceso()}" oncomplete="PF('calcularSimulacion').enable()" update="grupoAvaluos"/>
+                            </p:progressBar>
+                        </div>
+                        <br/>
+                        <f:facet name="footer">
+                            <div style="text-align: right">
+                                <p:remoteCommand name="cancelarGeneracion" action="#{avaluoBB.cancelarAvaluo}" process="@this"/>
+                                <p:commandButton value="Cancel" immediate="true" 
+                                                 actionListener="#{avaluoBB.cancelarAvaluo}"
+                                                 update="formCalculoAvaluo"
+                                                 async="true"
+                                                 onclick="PF('pbAjax').cancel();PF('calcularSimulacion').enable();" />
+                            </div>
+                        </f:facet>
 
-                </p:dialog>
+                    </p:dialog>
+                </h:form>
 
                 <style tyle="text/css">
                     .animated .ui-progressbar-value { 

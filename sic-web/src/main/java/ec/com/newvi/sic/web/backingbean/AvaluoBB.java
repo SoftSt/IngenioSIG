@@ -5,6 +5,7 @@
  */
 package ec.com.newvi.sic.web.backingbean;
 
+import ec.com.newvi.componente.reporte.ReporteGenerador;
 import ec.com.newvi.sic.dto.AvaluoDto;
 import ec.com.newvi.sic.dto.FichaCatastralDto;
 import ec.com.newvi.sic.dto.TablaCatastralDto;
@@ -36,8 +37,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
@@ -51,9 +50,13 @@ import org.primefaces.model.DefaultStreamedContent;
 @ViewScoped
 public class AvaluoBB extends AdminFichaCatastralBB {
 
+    private final static Integer PROCESO_COMPLETO = 100;
+
     private EnumPantallaMantenimiento pantallaActual;
     private List<Avaluo> listaAvaluos;
     private List<Avaluo> listaAvaluosFiltrados;
+    private List<Avaluo> listaAvaluosProcesados;
+    private List<Avaluo> listaAvaluosProcesadosFiltrados;
     private List<FechaAvaluo> listaFechaAvaluos;
     private Integer progreso;
     private FechaAvaluo fechaAvaluoActual;
@@ -62,7 +65,8 @@ public class AvaluoBB extends AdminFichaCatastralBB {
     private Boolean esProcesoIniciado;
     private Boolean esProcesoCancelado;
 
-    private BigDecimal totalPorCobrar;
+    private BigDecimal totalPorCobrarCalculo;
+    private BigDecimal totalPorCobrarConsulta;
 
     public Boolean getEsProcesoCancelado() {
         return esProcesoCancelado;
@@ -112,10 +116,6 @@ public class AvaluoBB extends AdminFichaCatastralBB {
         return listaAvaluos;
     }
 
-    public void setListaAvaluos(List<Avaluo> listaAvaluos) {
-        this.listaAvaluos = listaAvaluos;
-    }
-
     public FechaAvaluo getFechaAvaluoActual() {
         return fechaAvaluoActual;
     }
@@ -132,8 +132,24 @@ public class AvaluoBB extends AdminFichaCatastralBB {
         this.listaAvaluosFiltrados = listaAvaluosFiltrados;
     }
 
-    public BigDecimal getTotalPorCobrar() {
-        return totalPorCobrar;
+    public BigDecimal getTotalPorCobrarCalculo() {
+        return totalPorCobrarCalculo;
+    }
+
+    public BigDecimal getTotalPorCobrarConsulta() {
+        return totalPorCobrarConsulta;
+    }
+
+    public List<Avaluo> getListaAvaluosProcesados() {
+        return listaAvaluosProcesados;
+    }
+
+    public List<Avaluo> getListaAvaluosProcesadosFiltrados() {
+        return listaAvaluosProcesadosFiltrados;
+    }
+
+    public void setListaAvaluosProcesadosFiltrados(List<Avaluo> listaAvaluosProcesadosFiltrados) {
+        this.listaAvaluosProcesadosFiltrados = listaAvaluosProcesadosFiltrados;
     }
 
     @PostConstruct
@@ -144,6 +160,7 @@ public class AvaluoBB extends AdminFichaCatastralBB {
         this.progreso = 0;
         fechaAvaluoActual = new FechaAvaluo();
         listaAvaluos = new ArrayList<>();
+        listaAvaluosProcesados = new ArrayList<>();
         listaFechaAvaluos = new ArrayList<>();
         conmutarPantalla(EnumPantallaMantenimiento.PANTALLA_LISTADO);
         establecerTitulo(EnumEtiquetas.SIMULACION_LISTA_TITULO,
@@ -177,6 +194,13 @@ public class AvaluoBB extends AdminFichaCatastralBB {
         this.esProcesoCancelado = true;
     }
 
+    public void iniciarProcesoCalculo() {
+        WebUtils.obtenerContextoPeticion().execute("PF('dlgSimulacion').show()");
+        WebUtils.obtenerContextoPeticion().execute("rc()");
+        WebUtils.obtenerContextoPeticion().execute("PF('calcularSimulacion').disable()");
+        WebUtils.obtenerContextoPeticion().execute("PF('pbAjax').start()");
+    }
+
     public void generarSimulacionFinal() throws NewviExcepcion {
 
         this.esProcesoIniciado = true;
@@ -199,7 +223,8 @@ public class AvaluoBB extends AdminFichaCatastralBB {
             }
         }
         this.generarListadoAvaluos(listaAvaluosCalculados);
-        obtenerTotales(listaAvaluos);
+        this.totalPorCobrarCalculo = obtenerTotales(listaAvaluos);
+        this.progreso = PROCESO_COMPLETO;
         //catastroServicio.registrarArbol(calculoAvaluo, predioACalcular, sesionBean.getSesion());
     }
 
@@ -224,10 +249,10 @@ public class AvaluoBB extends AdminFichaCatastralBB {
     }
 
     private void evaluarProceso(Integer numeroPrediosProcesados, Integer numeroPrediosTotal) {
-        if (this.progreso <= 100) {
+        if (this.progreso <= PROCESO_COMPLETO - 1) {
             progreso = (numeroPrediosProcesados % (numeroPrediosTotal / 100)) == 0 ? progreso + 1 : progreso;
         } else {
-            this.progreso = 100;
+            this.progreso = PROCESO_COMPLETO - 1;
         }
     }
 
@@ -249,15 +274,10 @@ public class AvaluoBB extends AdminFichaCatastralBB {
         listaFechaAvaluos = catastroServicio.consultarFechaAvaluos();
     }
 
-    public void actualizarListadoAvaluos() {
-        listaAvaluos = catastroServicio.consultarListaAvaluosActuales();
-    }
-
     public void actualizarListaAvaluosPorFecha(String fechaDescripcion) {
-        //DateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
         try {
-            //listaAvaluos = catastroServicio.consultarListaAvaluosPorFecha(formato.parse(fechaDescripcion));
-            listaAvaluos = catastroServicio.consultarListaAvaluosPorFecha(fechaDescripcion);
+            listaAvaluosProcesados = catastroServicio.consultarListaAvaluosPorFecha(fechaDescripcion);
+            this.totalPorCobrarConsulta = obtenerTotales(listaAvaluosProcesados);
         } catch (Exception e) {
             LoggerNewvi.getLogNewvi(this.getClass()).error(EnumNewviExcepciones.ERR001.presentarMensajeCodigo(), e, sesionBean.getSesion());
             MensajesFaces.mensajeError(e.getMessage());
@@ -266,14 +286,18 @@ public class AvaluoBB extends AdminFichaCatastralBB {
     }
 
     public void finalizarProceso() {
-        //this.progreso = 100;
         this.esProcesoIniciado = false;
         WebUtils.obtenerContextoPeticion().execute("PF('dlgSimulacion').hide()");
+        this.progreso = 0;
         MensajesFaces.mensajeInformacion(EnumNewviExcepciones.INF501.presentarMensaje());
     }
 
-    public DefaultStreamedContent imprimir(EnumReporte tipoReporte) {
-        return generarReporteCatastro(tipoReporte);
+    public DefaultStreamedContent imprimir(EnumReporte tipoReporte, ReporteGenerador.FormatoReporte formatoReporte) {
+        return generarReporteCatastro(tipoReporte, formatoReporte, obtenerListadoAvaluos(this.listaAvaluos), TablaCatastralDto.class);
+    }
+
+    public DefaultStreamedContent imprimirConsultado(EnumReporte tipoReporte, ReporteGenerador.FormatoReporte formatoReporte) {
+        return generarReporteCatastro(tipoReporte, formatoReporte, obtenerListadoAvaluos(this.listaAvaluosProcesados), TablaCatastralDto.class);
     }
 
     public List<Field> filtrarFieldDecimales(Field[] metodosClase) {
@@ -395,18 +419,19 @@ public class AvaluoBB extends AdminFichaCatastralBB {
         return catastroServicio.consultarListaAvaluosActuales();
     }
 
-    private void obtenerTotales(List<Avaluo> listadoAvaluo) {
-        this.totalPorCobrar = BigDecimal.ZERO;
-        listadoAvaluo.forEach((avaluo) -> {
-            this.totalPorCobrar = this.totalPorCobrar.add(avaluo.getValImppredial());
-        });
+    private BigDecimal obtenerTotales(List<Avaluo> listadoAvaluo) {
+        BigDecimal totalPorCobrar = BigDecimal.ZERO;
+        for (Avaluo avaluo : listadoAvaluo) {
+            totalPorCobrar = totalPorCobrar.add(avaluo.getValImppredial());
+        }
+        return totalPorCobrar;
     }
 
     public void registrarAvaluo() throws NewviExcepcion {
-        FechaAvaluo fecavId = generarFechaAvaluo();
+        FechaAvaluo fechaAvaluoId = generarFechaAvaluo();
         for (Avaluo avaluoActual : this.listaAvaluos) {
             try {
-                avaluoActual.setFecavId(fecavId);
+                avaluoActual.setFecavId(fechaAvaluoId);
                 catastroServicio.generarNuevoAvaluo(avaluoActual, sesionBean.getSesion());
             } catch (NewviExcepcion ex) {
                 Map<String, String> variables = new HashMap<>();
@@ -418,4 +443,23 @@ public class AvaluoBB extends AdminFichaCatastralBB {
         MensajesFaces.mensajeInformacion(EnumNewviExcepciones.INF363.presentarMensaje());
     }
 
+    public Boolean hayDatosCalculados() {
+        return !this.listaAvaluos.isEmpty();
+    }
+
+    public Boolean hayDatosConsultados() {
+        return !this.listaAvaluosProcesados.isEmpty();
+    }
+
+    public void reiniciarCalculo() {
+        this.listaAvaluos = new ArrayList<>();
+        this.listaAvaluosFiltrados = new ArrayList<>();
+        this.totalPorCobrarCalculo = BigDecimal.ZERO;
+    }
+
+    public void reiniciarConsulta() {
+        this.listaAvaluosProcesados = new ArrayList<>();
+        this.listaAvaluosProcesadosFiltrados = new ArrayList<>();
+        this.totalPorCobrarConsulta = BigDecimal.ZERO;
+    }
 }

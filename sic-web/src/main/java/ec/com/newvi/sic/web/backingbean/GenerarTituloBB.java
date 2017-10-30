@@ -5,6 +5,7 @@
  */
 package ec.com.newvi.sic.web.backingbean;
 
+import ec.com.newvi.componente.reporte.ReporteGenerador;
 import ec.com.newvi.sic.dto.FichaCatastralDto;
 import ec.com.newvi.sic.dto.TablaCatastralDto;
 import ec.com.newvi.sic.enums.EnumEstadoRegistro;
@@ -172,8 +173,8 @@ public class GenerarTituloBB extends AdminFichaCatastralBB {
 
     }
 
-    public DefaultStreamedContent imprimir(EnumReporte tipoReporte) {
-        return generarReporteCatastro(tipoReporte);
+    public DefaultStreamedContent imprimir(EnumReporte tipoReporte, ReporteGenerador.FormatoReporte formatoReporte) {
+        return generarReporteCatastro(tipoReporte, formatoReporte, obtenerListadoAvaluos(this.listaAvaluos), TablaCatastralDto.class);
     }
 
     public List<TablaCatastralDto> obtenerListadoAvaluos(List<Avaluo> listaAvaluos) {

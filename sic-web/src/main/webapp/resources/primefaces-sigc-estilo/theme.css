@@ -568,7 +568,12 @@ a,
     box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12) !important;
 }
 
-.ui-datatable tbody, .ui-treetable tbody, .ui-datatable-odd, ui-datatable-even, .ui-datatable thead th, .ui-datatable tbody td, .ui-datatable tfoot td, .ui-treetable thead th, .ui-treetable tbody td, .ui-datatable tfoot th, .ui-panelmenu-content, .ui-datatable-scrollable-footer-box {
+.ui-datatable tbody, .ui-treetable tbody, 
+.ui-datatable-odd, ui-datatable-even, 
+.ui-datatable thead th, .ui-datatable tbody td, .ui-datatable tfoot td, 
+.ui-treetable thead th, .ui-treetable tbody td, .ui-treetable tfoot td, 
+.ui-datatable tfoot .ui-state-default, 
+.ui-panelmenu-content, .ui-datatable-scrollable-footer-box {
     border: none;
     border-width: 0px;
     border-style: none;
@@ -583,7 +588,7 @@ a,
     background: #fff !important;
 }
 
-.ui-datatable tbody td, .ui-treetable tbody td {
+.ui-datatable tbody td, .ui-datatable tfoot td, .ui-treetable tbody td {
     height: 36px;
 }
 
@@ -767,7 +772,9 @@ a,
     box-shadow: none !important;
 }
 
-.ui-datatable-scrollable-header, .ui-datatable-scrollable-footer.ui-datatable-scrollable-footer-box, .ui-datatable-scrollable-footer .ui-state-default {
+.ui-datatable-scrollable-header, 
+.ui-datatable-scrollable-footer.ui-datatable-scrollable-footer-box, 
+.ui-datatable-scrollable-footer .ui-state-default {
     border: 0 none !important;
 }
 

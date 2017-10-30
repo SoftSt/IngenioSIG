@@ -5,9 +5,11 @@
  */
 package ec.com.newvi.sic.web.backingbean;
 
+import ec.com.newvi.componente.reporte.ReporteGenerador;
 import ec.com.newvi.sic.dto.AvaluoDto;
 import ec.com.newvi.sic.dto.DominioDto;
 import ec.com.newvi.sic.dto.FichaCatastralDto;
+import ec.com.newvi.sic.dto.PresentacionFichaCatastralDto;
 import ec.com.newvi.sic.dto.SesionDto;
 import ec.com.newvi.sic.enums.EnumAcciones;
 import ec.com.newvi.sic.enums.EnumEstadoPisoDetalle;
@@ -907,7 +909,7 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
     }
 
     public DefaultStreamedContent imprimir(EnumReporte tipoReporte) {
-        return generarReporteCatastro(tipoReporte);
+        return generarReporteCatastro(tipoReporte, ReporteGenerador.FormatoReporte.PDF, obtenerDatosReporteCatastral(this.predio), PresentacionFichaCatastralDto.class);
     }
 
     public void seleccionPantallas() {

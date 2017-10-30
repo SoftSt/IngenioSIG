@@ -21,6 +21,7 @@ import ec.com.newvi.sic.modelo.Predios;
 import ec.com.newvi.sic.modelo.Propiedad;
 import ec.com.newvi.sic.servicios.CatastroServicio;
 import ec.com.newvi.sic.servicios.ContribuyentesServicio;
+import ec.com.newvi.sic.util.ComunUtil;
 import ec.com.newvi.sic.util.excepciones.NewviExcepcion;
 import ec.com.newvi.sic.util.logs.LoggerNewvi;
 import ec.com.newvi.sic.web.MensajesFaces;
@@ -55,7 +56,7 @@ public abstract class AdminFichaCatastralBB extends AdminSistemaBB {
 
     protected List<Contribuyentes> listaContribuyentes;
     protected List<Contribuyentes> listaContribuyentesFiltrado;
-    
+
     protected Predios predio;
     protected Contribuyentes contribuyente;
 
@@ -147,7 +148,7 @@ public abstract class AdminFichaCatastralBB extends AdminSistemaBB {
             MensajesFaces.mensajeError(e.getMessage());
         }
     }
-    
+
     public void seleccionarContribuyente(Integer idContribuyente) {
         try {
             this.seleccionarContribuyentePorCodigo(idContribuyente);
@@ -200,23 +201,16 @@ public abstract class AdminFichaCatastralBB extends AdminSistemaBB {
         return tablita;
     }
 
-    protected DefaultStreamedContent generarReporteCatastro(EnumReporte tipoReporte) {
+    protected DefaultStreamedContent generarReporteCatastro(EnumReporte tipoReporte, ReporteGenerador.FormatoReporte formatoReporte, List datosImpresion, Class claseImpresion) {
         try {
-            List datosImpresion;
-            datosImpresion = obtenerListadoAvaluos(generarListaAvaluo());
-            ReporteGenerador.FormatoReporte formatoReporte = ReporteGenerador.FormatoReporte.PDF;
 
-            Class claseImpresion = TablaCatastralDto.class;
-            //BloqueDto bloques;
             CaracteristicasEdificacionesDto bloques;
             Map<String, Object> parametrosReporte = new HashMap<>();
-            //datosImpresion = obtenerListadoAvaluos(catastroServicio.consultarAvaluos(fecavFechaavaluo));
-            String xPath = "/reporTablaCatastral//tablaCatastral";
+            String xPath = "/lista".concat(claseImpresion.getSimpleName()).concat("//").concat(claseImpresion.getSimpleName());
 
             if (EnumReporte.TABLA_CATASTRAL_URBANA.equals(tipoReporte)) {
                 parametrosReporte.put(EnumParametrosReporte.NOMBRE_MODULO.getNombre(), "CATASTRO PREDIAL URBANO");
                 parametrosReporte.put("TITULO_REPORTE", "TABLA CATASTRAL URBANA");
-                formatoReporte = ReporteGenerador.FormatoReporte.XLSX;
             }
             if (EnumReporte.TABLA_CATASTRAL_URBANA_CONDENSADA.equals(tipoReporte)) {
                 parametrosReporte.put(EnumParametrosReporte.NOMBRE_MODULO.getNombre(), "CATASTRO PREDIAL URBANO");
@@ -224,8 +218,6 @@ public abstract class AdminFichaCatastralBB extends AdminSistemaBB {
             }
             if (EnumReporte.FICHA_RELEVAMIENTO_PREDIAL_URBANO.equals(tipoReporte)) {
                 bloques = new CaracteristicasEdificacionesDto(this.predio);
-                datosImpresion = obtenerDatosReporteCatastral(this.predio);
-                claseImpresion = PresentacionFichaCatastralDto.class;
 
                 parametrosReporte.put(EnumParametrosReporte.NOMBRE_MODULO.getNombre(), "CATASTRO PREDIAL URBANO");
                 parametrosReporte.put(EnumParametrosReporte.TITULO_REPORTE.getNombre(), "FICHA DE RELEVAMIENTO PREDIAL URBANO");
@@ -239,21 +231,21 @@ public abstract class AdminFichaCatastralBB extends AdminSistemaBB {
             }
 
             if (EnumReporte.NOTIFICACION_AVALUO.equals(tipoReporte)) {
-                datosImpresion = obtenerDatosReporteCatastral(this.predio);
-                claseImpresion = PresentacionFichaCatastralDto.class;
+                parametrosReporte.put(EnumParametrosReporte.NOMBRE_MODULO.getNombre(), "CATASTRO PREDIAL URBANO");
+                parametrosReporte.put("TITULO_REPORTE", "NOTIFICACIÓN AVALÚO");
             }
             if (EnumReporte.CERTIFICACION_AVALUO.equals(tipoReporte)) {
-                datosImpresion = obtenerDatosReporteCatastral(this.predio);
-                claseImpresion = PresentacionFichaCatastralDto.class;
+                parametrosReporte.put(EnumParametrosReporte.NOMBRE_MODULO.getNombre(), "CATASTRO PREDIAL URBANO");
+                parametrosReporte.put("TITULO_REPORTE", "CERTIFICACIÓN AVALÚO");
             }
             if (EnumReporte.TITULO_CREDITO.equals(tipoReporte)) {
-                datosImpresion = obtenerDatosReporteCatastral(this.predio);
-                claseImpresion = PresentacionFichaCatastralDto.class;
+                parametrosReporte.put(EnumParametrosReporte.NOMBRE_MODULO.getNombre(), "CATASTRO PREDIAL URBANO");
+                parametrosReporte.put("TITULO_REPORTE", "TÍTULO CRÉDITO");
             }
 
             Map<String, Class> paramRepA = new HashMap<String, Class>();
-            paramRepA.put("tablaCatastral", claseImpresion);
-            paramRepA.put("reporTablaCatastral", List.class);
+            paramRepA.put(claseImpresion.getSimpleName(), claseImpresion);
+            paramRepA.put("lista".concat(claseImpresion.getSimpleName()), List.class);
 
             return generarReporte(tipoReporte, datosImpresion, paramRepA, xPath, parametrosReporte, formatoReporte);
 
