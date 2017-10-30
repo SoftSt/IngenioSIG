@@ -163,11 +163,10 @@ public class AvaluoBB extends AdminFichaCatastralBB {
         listaAvaluosProcesados = new ArrayList<>();
         listaFechaAvaluos = new ArrayList<>();
         conmutarPantalla(EnumPantallaMantenimiento.PANTALLA_LISTADO);
-        establecerTitulo(EnumEtiquetas.SIMULACION_LISTA_TITULO,
-                EnumEtiquetas.SIMULACION_LISTA_ICONO,
-                EnumEtiquetas.SIMULACION_LISTA_DESCRIPCION);
+        establecerTitulo(EnumEtiquetas.CALCULAR_AVALUO_LISTA_TITULO,
+                EnumEtiquetas.CALCULAR_AVALUO_LISTA_ICONO,
+                EnumEtiquetas.CALCULAR_AVALUO_LISTA_DESCRIPCION);
         actualizarListadoFechaAvaluos();
-        //actualizarListadoAvaluos();
 
     }
 
@@ -181,13 +180,6 @@ public class AvaluoBB extends AdminFichaCatastralBB {
         fechaAvaluo.setFechaDescripcion(formato.format(fecha));
 
         return catastroServicio.generarNuevaFechaAvaluo(fechaAvaluo, sesionBean.getSesion());
-        //return fechaAvaluo;
-    }
-
-    public void abrirModalEspera() throws NewviExcepcion {
-        //WebUtils.obtenerContextoPeticion().execute("PF('calcularSimulacion').disable()");
-        //generarSimulacion();
-        generarSimulacionFinal();
     }
 
     public void cancelarAvaluo() {
@@ -195,13 +187,13 @@ public class AvaluoBB extends AdminFichaCatastralBB {
     }
 
     public void iniciarProcesoCalculo() {
-        WebUtils.obtenerContextoPeticion().execute("PF('dlgSimulacion').show()");
+        WebUtils.obtenerContextoPeticion().execute("PF('dlgAvaluo').show()");
         WebUtils.obtenerContextoPeticion().execute("rc()");
-        WebUtils.obtenerContextoPeticion().execute("PF('calcularSimulacion').disable()");
+        WebUtils.obtenerContextoPeticion().execute("PF('calcularAvaluo').disable()");
         WebUtils.obtenerContextoPeticion().execute("PF('pbAjax').start()");
     }
 
-    public void generarSimulacionFinal() throws NewviExcepcion {
+    public void generarAvaluo() throws NewviExcepcion {
 
         this.esProcesoIniciado = true;
 
@@ -287,7 +279,7 @@ public class AvaluoBB extends AdminFichaCatastralBB {
 
     public void finalizarProceso() {
         this.esProcesoIniciado = false;
-        WebUtils.obtenerContextoPeticion().execute("PF('dlgSimulacion').hide()");
+        WebUtils.obtenerContextoPeticion().execute("PF('dlgAvaluo').hide()");
         this.progreso = 0;
         MensajesFaces.mensajeInformacion(EnumNewviExcepciones.INF501.presentarMensaje());
     }
@@ -439,6 +431,7 @@ public class AvaluoBB extends AdminFichaCatastralBB {
                 throw new NewviExcepcion(EnumNewviExcepciones.ERR362, variables, ex);
             }
         }
+        actualizarListadoFechaAvaluos();
         LoggerNewvi.getLogNewvi(this.getClass()).info(EnumNewviExcepciones.INF363.presentarMensaje(), sesionBean.getSesion());
         MensajesFaces.mensajeInformacion(EnumNewviExcepciones.INF363.presentarMensaje());
     }
@@ -453,13 +446,11 @@ public class AvaluoBB extends AdminFichaCatastralBB {
 
     public void reiniciarCalculo() {
         this.listaAvaluos = new ArrayList<>();
-        this.listaAvaluosFiltrados = new ArrayList<>();
         this.totalPorCobrarCalculo = BigDecimal.ZERO;
     }
 
     public void reiniciarConsulta() {
         this.listaAvaluosProcesados = new ArrayList<>();
-        this.listaAvaluosProcesadosFiltrados = new ArrayList<>();
         this.totalPorCobrarConsulta = BigDecimal.ZERO;
     }
 }

@@ -23,23 +23,23 @@
                     <p:outputPanel id="opListaAvaluo">
                         <p:tabView dynamic="true" >
                             <p:tab id="tabCalculo" title="Cálculo">
-                                <h:panelGrid rendered="#{!avaluoBB.hayDatosCalculados()}">
+                                <h:panelGrid id="pgCalcular" rendered="#{!avaluoBB.hayDatosCalculados()}">
                                     <p:commandButton icon="fa fa-calculator"
                                                      value="Calcular"
                                                      update="grupoAvaluos"
-                                                     widgetVar="calcularSimulacion"
+                                                     widgetVar="calcularAvaluo"
                                                      actionListener="#{avaluoBB.iniciarProcesoCalculo()}"
-                                                     id="generarSimulacion">
+                                                     id="generarAvaluo">
                                         <p:confirm header="Información" message="Este proceso tomará algunos minutos. ¿Iniciar?" icon="ui-icon-alert" />
                                     </p:commandButton>
                                 </h:panelGrid>
-                                <h:panelGrid rendered="#{avaluoBB.hayDatosCalculados()}" columns="6">
-                                    <p:commandButton icon="fa fa-save" 
-                                                     value="Guardar" 
-                                                     id="guardarAvaluo"
+                                <h:panelGrid id="pgManipular" rendered="#{avaluoBB.hayDatosCalculados()}" columns="6">
+                                    <p:commandButton id="guardarAvaluo" icon="fa fa-save" 
+                                                     value="Guardar"
+                                                     update="grupoAvaluos"
                                                      onclick="PF('statusDialog').show();"
                                                      oncomplete="PF('statusDialog').hide();"
-                                                     actionListener="#{avaluoBB.registrarAvaluo}">
+                                                     actionListener="#{avaluoBB.registrarAvaluo()}">
                                     </p:commandButton>
                                     <p:tooltip id="toolTipGuardarAvaluo" for="guardarAvaluo" value="Guardar Avaluo" showEffect="fade" hideEffect="fade" position="top"/>
                                     <p:splitButton id="imprimir" value="Imprimir" icon="fa fa-print">
@@ -60,7 +60,6 @@
                                                      id="reiniciarAvaluo"
                                                      actionListener="#{avaluoBB.reiniciarCalculo()}">
                                     </p:commandButton>
-                                    <p:tooltip id="toolTipReiniciarAvaluo" for="reiniciarAvaluo" value="Volver a calcular" showEffect="fade" hideEffect="fade" position="top"/>
                                 </h:panelGrid>
 
                                 <h:panelGrid>
@@ -192,7 +191,6 @@
                                                      id="reiniciarConsulta"
                                                      actionListener="#{avaluoBB.reiniciarConsulta()}">
                                     </p:commandButton>
-                                    <p:tooltip id="toolTipReiniciarConsultado" for="reiniciarConsulta" value="Volver a consultar" showEffect="fade" hideEffect="fade" position="top"/>
                                 </h:panelGrid>
                                 <h:panelGrid>
                                     <p:dataTable id="listaAvaluosProcesados" var="avaluoProcesado" widgetVar="listaAvaluoProcesadoTabla"
@@ -293,14 +291,14 @@
                 </h:form>
 
                 <h:form id="formCalculoAvaluo">
-                    <p:dialog header="Procesando..." id="generarSim" widgetVar="dlgSimulacion" modal="false">
+                    <p:dialog header="Procesando..." id="generarSim" widgetVar="dlgAvaluo" modal="false">
                         <p>
                             <h:outputText value="Calculando, por favor espere..."></h:outputText>
                         </p>
                         <div style="text-align: center">
-                            <p:remoteCommand name="rc" actionListener="#{avaluoBB.generarSimulacionFinal}"/>
+                            <p:remoteCommand name="rc" actionListener="#{avaluoBB.generarAvaluo}"/>
                             <p:progressBar rendered="#{!savaluoBB.esProcesoIniciado}"  id="pbarAval" widgetVar="pbAjax" ajax="true" value="#{avaluoBB.progreso}" labelTemplate="{value}%" style="width:300px" styleClass="animated" global="false">
-                                <p:ajax event="complete" listener="#{avaluoBB.finalizarProceso()}" oncomplete="PF('calcularSimulacion').enable()" update="grupoAvaluos"/>
+                                <p:ajax event="complete" listener="#{avaluoBB.finalizarProceso()}" update="grupoAvaluos"/>
                             </p:progressBar>
                         </div>
                         <br/>
@@ -311,7 +309,7 @@
                                                  actionListener="#{avaluoBB.cancelarAvaluo}"
                                                  update="formCalculoAvaluo"
                                                  async="true"
-                                                 onclick="PF('pbAjax').cancel();PF('calcularSimulacion').enable();" />
+                                                 onclick="PF('pbAjax').cancel();PF('calcularAvaluo').enable();" />
                             </div>
                         </f:facet>
 
