@@ -9,6 +9,7 @@ import ec.com.newvi.sic.dto.SesionDto;
 import ec.com.newvi.sic.modelo.Contribuyentes;
 import ec.com.newvi.sic.modelo.Predios;
 import ec.com.newvi.sic.modelo.Propiedad;
+import ec.com.newvi.sic.modelo.Tenencia;
 import ec.com.newvi.sic.util.excepciones.NewviExcepcion;
 import java.util.List;
 import javax.annotation.security.PermitAll;
@@ -115,4 +116,29 @@ public interface ContribuyentesServicio {
     public String eliminarPropiedad(Propiedad propiedad, SesionDto sesion) throws NewviExcepcion;
     
     public Propiedad consultarUltimoPropiedad(Predios predio) throws NewviExcepcion;
+    
+/*------------------------------------------------------------Tenencia------------------------------------------------------------*/
+    /**
+     * Genera una nueva tenencia
+     * @param nuevaTenencia La nueva tenencia a ser agregada
+     * @param sesion Sesion que realiza la operación
+     * @return Nombre de la tenencia 
+     * @throws NewviExcepcion 
+     */
+    public String generarNuevaTenencia(Tenencia nuevaTenencia, SesionDto sesion) throws NewviExcepcion;
+    /**
+     * Actualiza la tenencia existente
+     * @param tenencia tenencia a actualizar    
+     * @param sesion Sesion que realiza la operación
+     * @return Nombre de la tenencia actualizada
+     * @throws NewviExcepcion 
+     */
+    public String actualizarTenencia(Tenencia tenencia, SesionDto sesion) throws NewviExcepcion;
+    /**
+     * Selecciona una tenencia por el codigo
+     * @param codTenencia codigo por el cual va a ser buscado
+     * @return tenencia
+     * @throws NewviExcepcion 
+     */
+    public Tenencia seleccionarTenencia(Integer codTenencia) throws NewviExcepcion;
 }

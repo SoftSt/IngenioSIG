@@ -13,9 +13,9 @@ import ec.com.newvi.sic.util.ComunUtil;
  */
 public enum EnumSiNo {
 
+    ND("N/D"),
     SI("SI"),
-    NO("NO"),
-    ND("N/D");
+    NO("NO");
 
     private final String stsEscritura;
 

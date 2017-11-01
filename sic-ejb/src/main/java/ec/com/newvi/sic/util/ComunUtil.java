@@ -5,12 +5,18 @@
  */
 package ec.com.newvi.sic.util;
 
+import ec.com.newvi.sic.dto.DominioDto;
+import ec.com.newvi.sic.dto.FichaCatastralDto;
 import ec.com.newvi.sic.enums.EnumNewviExcepciones;
+import ec.com.newvi.sic.modelo.Predios;
+import ec.com.newvi.sic.modelo.Propiedad;
+import ec.com.newvi.sic.servicios.ParametrosServicio;
 import ec.com.newvi.sic.util.excepciones.NewviExcepcion;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.ParseException;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -96,5 +102,40 @@ public class ComunUtil {
         }
         matcher.appendTail(buffer);
         return buffer.toString();
+    }
+
+    public static List<DominioDto> obtenerSubNodosHijos(ParametrosServicio parametrosServicio) {
+        return parametrosServicio.listarDominiosDto("TENENCIA", "Hijo");
+    }
+
+    public static String obtenerCodigoTenencia(List<DominioDto> lista, String descripcion, String codigo) {
+        for (DominioDto dominioDto : lista) {
+            if ((dominioDto.getDominio().getDomiPadre()).trim().equals(codigo.trim()) && (dominioDto.getDescripcion()).trim().equals(descripcion.trim())) {
+                return dominioDto.getDominio().getDomiCodigo().trim();
+            }
+        }
+        return null;
+    }
+
+    public static String generarScriptTenencia(List<Predios> listaPredios, ParametrosServicio parametrosServicio) {
+        List<DominioDto> dominios = obtenerSubNodosHijos(parametrosServicio);
+        String sql = "";
+        Integer cont = 0;
+        for (Predios predioNuevo : listaPredios) {
+            FichaCatastralDto a = new FichaCatastralDto(predioNuevo);
+            Propiedad propiedad = a.getPropiedad();
+            String transDomi = propiedad.getStsTransferenciadominio().getStsTransferenciadominio();
+            String sitAct = propiedad.getStsSituacion().getStsSituacion();
+            String tenencia = propiedad.getStsTenencia().getStsTenencia();
+            String escritura = propiedad.getStsEscritura().getStsEscritura();
+            String descuento = "Ninguno";
+            sql += "\ninsert into cat_cat_tenencia VALUES (" + (++cont) + "," + propiedad.getCodPropiedad() + ",'" + obtenerCodigoTenencia(dominios, transDomi, "1201") + "','TENENCIA','TRANSFERENCIA DOMINIO','" + transDomi + "', 'A', NULL, NULL, NULL, NULL, NULL, NULL);"
+                    + "\ninsert into cat_cat_tenencia VALUES (" + (++cont) + "," + propiedad.getCodPropiedad() + ",'" + obtenerCodigoTenencia(dominios, sitAct, "1202") + "','TENENCIA','SITUACION ACTUAL','" + sitAct + "', 'A', NULL, NULL, NULL, NULL, NULL, NULL);"
+                    + "\ninsert into cat_cat_tenencia VALUES (" + (++cont) + "," + propiedad.getCodPropiedad() + ",'" + obtenerCodigoTenencia(dominios, tenencia, "1203") + "','TENENCIA','TENENCIA DOMINIO','" + tenencia + "', 'A', NULL, NULL, NULL, NULL, NULL, NULL);"
+                    + "\ninsert into cat_cat_tenencia VALUES (" + (++cont) + "," + propiedad.getCodPropiedad() + ",'" + obtenerCodigoTenencia(dominios, escritura, "1204") + "','TENENCIA','ESCRITURA','" + escritura + "', 'A', NULL, NULL, NULL, NULL, NULL, NULL);"
+                    + "\ninsert into cat_cat_tenencia VALUES (" + (++cont) + "," + propiedad.getCodPropiedad() + ",'" + obtenerCodigoTenencia(dominios, descuento, "1205") + "','TENENCIA','Descuentos Especiales','" + descuento + "', 'A', NULL, NULL, NULL, NULL, NULL, NULL);";
+        }
+
+        return sql;
     }
 }

@@ -321,29 +321,38 @@
                                     <br/>
                                     <div style="font-size:1.2em;font-weight:bold;">Tenencia</div>                                    
                                     <p:separator />
+                                    <p:commandButton value="Agregar información tenencia"
+                                                     actionListener="#{fichaCatastralBB.abrirDialogTenencia()}"
+                                                     id="nuevaTenecia"
+                                                     update="grupoFichaCatastral">
+                                        <p:ajax update="toolTipInsertDescripcion" process="@this" />
+                                    </p:commandButton>
+                                    <p:tooltip id="toolTipInsertTenencia" for="nuevaTenecia" value="Agregar información tenencia" showEffect="fade" hideEffect="fade" position="bottom"/>
 
-                                    <p:commandButton value="Editar propiedad" type="button" onclick="PF('dlgPropiedad').show();" />
+                                    <p:dataTable id="listaTenenciaPropietario" var="tenencia" widgetVar="listaTenenciaTabla"
+                                                 value="#{fichaCatastralBB.propiedadActual.tenenciasActivas}" rowKey="#{tenencia.codTenencia}" 
+                                                 paginator="true" rows="10" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" 
+                                                 rowsPerPageTemplate="10,15,20" 
+                                                 emptyMessage="No se han encontrado resultados" 
+                                                 paginatorPosition="bottom">
 
-                                    <h:outputLabel for="dominio" value="Dominio" style="font-weight: bold;"/>
-                                    <h:outputText id="dominio" value="#{fichaCatastralBB.propiedadActual.stsTenencia.toString()}"/>
-                                    <p:message for="dominio" display="tooltip"/>
+                                        <p:column headerText="Grupo" sortBy="#{tenencia.stsGrupo}">
+                                            <h:outputText value="#{tenencia.stsGrupo}" />
+                                        </p:column>
 
-                                    <h:outputLabel for="tranferenciaDominio" value="Traslación de dominio" style="font-weight: bold;"/>
-                                    <h:outputText id="tranferenciaDominio" value="#{fichaCatastralBB.propiedadActual.stsTransferenciadominio.toString()}"/>
-                                    <p:message for="tranferenciaDominio" display="tooltip"/>
+                                        <p:column headerText="SubGrupo" sortBy="#{tenencia.stsSubGrupo}">
+                                            <h:outputText value="#{tenencia.stsSubgrupo}" />
+                                        </p:column>
 
-                                    <h:outputLabel for="situacion" value="Situacion" style="font-weight: bold;"/>
-                                    <h:outputText id="situacion" value="#{fichaCatastralBB.propiedadActual.stsSituacion.toString()}"/>
-                                    <p:message for="situacion" display="tooltip"/>
+                                        <p:column headerText="Descripción" sortBy="#{tenencia.stsDescripcion}">
+                                            <h:outputText value="#{tenencia.stsDescripcion}" />
+                                        </p:column>
+
+                                    </p:dataTable>
 
                                     <br/>
                                     <div style="font-size:1.2em;font-weight:bold;">Datos de la escritura</div>
                                     <p:separator />
-                                    <h:panelGrid columns="2">
-                                        <h:outputLabel value="Tiene escritura" style="font-weight: bold;"/>
-                                        <h:outputText id="tieneEscritura" value="#{fichaCatastralBB.propiedadActual.stsEscritura}"/>
-                                    </h:panelGrid>
-
                                     <h:panelGrid id="datosEscritura">
                                         <h:outputLabel for="lugarNotaria" value="Lugar" style="font-weight: bold;"/>
                                         <h:outputText id="lugarNotaria" value="#{fichaCatastralBB.propiedadActual.txtCiudad}"/>
@@ -361,16 +370,6 @@
                                         <h:outputText id="fechaEscritutaPublica" value="#{fichaCatastralBB.propiedadActual.fecEscritura}"/>
                                         <p:message for="fechaEscritutaPublica" display="tooltip"/>
                                     </h:panelGrid>
-
-
-                                    <br/>
-                                    <div style="font-size:1.2em;font-weight:bold;">Casos Especiales</div>
-                                    <p:separator />
-                                    <h:outputLabel for="casosEspeciales" value=" " style="font-weight: bold;"/>
-                                    <p:selectOneMenu id="casosEspeciales"  style="width:125px" >
-                                        <f:selectItem itemLabel="Ley de anciano" itemValue="null" />
-                                    </p:selectOneMenu>
-                                    <p:message for="casosEspeciales" display="tooltip"/>
 
                                     <br/>
                                     <div style="font-size:1.2em;font-weight:bold;">Informante</div>
@@ -893,6 +892,20 @@
 
                     </p:treeTable>
                 </p:dialog>
+                <p:dialog header="Agregar elementos de tenencia" widgetVar="dlgTenencia" appendTo="@(body)" modal="true" showEffect="fade" hideEffect="fade" resizable="false" closable="true" width="550" height="400">
+                    <p:treeTable value="#{fichaCatastralBB.listaArbolTenencia}"
+                                 id="listaArbolTenencia" var="tenencia"
+                                 selectionMode="single" selection="#{fichaCatastralBB.tenenciaSeleccionada}" >
+                        
+                        <p:ajax event="select" listener="#{fichaCatastralBB.agregarTenenciaSeleccionada}" update="grupoFichaCatastral" />
+                        
+                        <p:column headerText="Descripcion" sortBy="#{tenencia.descripcion}">
+                            <h:outputText value="#{tenencia.descripcion}"/>
+                        </p:column>            
+
+                    </p:treeTable>
+                </p:dialog>
+
             </p:panel>
 
             <p:panel id="panelFichaCatastralAsignacion" rendered="#{fichaCatastralBB.esPantallaActual('PANTALLA_ASIGNACION')}">

@@ -7,12 +7,14 @@ package ec.com.newvi.sic.servicios.impl;
 
 import ec.com.newvi.sic.dao.ContribuyentesFacade;
 import ec.com.newvi.sic.dao.PropiedadFacade;
+import ec.com.newvi.sic.dao.TenenciaFacade;
 import ec.com.newvi.sic.dto.SesionDto;
 import ec.com.newvi.sic.enums.EnumEstadoRegistro;
 import ec.com.newvi.sic.enums.EnumNewviExcepciones;
 import ec.com.newvi.sic.modelo.Contribuyentes;
 import ec.com.newvi.sic.modelo.Predios;
 import ec.com.newvi.sic.modelo.Propiedad;
+import ec.com.newvi.sic.modelo.Tenencia;
 import ec.com.newvi.sic.util.ComunUtil;
 import ec.com.newvi.sic.util.excepciones.NewviExcepcion;
 import ec.com.newvi.sic.util.logs.LoggerNewvi;
@@ -38,6 +40,8 @@ public class ContribuyentesServicioImpl implements ContribuyentesServicio {
     private ContribuyentesFacade contribuyentesFacade;
     @EJB
     private PropiedadFacade propiedadFacade;
+    @EJB
+    private TenenciaFacade tenenciaFacade;
 
     /*------------------------------------------------------------Contribuyentes------------------------------------------------------------*/
     @Override
@@ -105,7 +109,6 @@ public class ContribuyentesServicioImpl implements ContribuyentesServicio {
     }
 
     /*------------------------------------------------------------Propiedad------------------------------------------------------------*/
-
     @Override
     public String generarNuevoPropiedad(Propiedad nuevoPropiedad, SesionDto sesion) throws NewviExcepcion {
 
@@ -182,6 +185,58 @@ public class ContribuyentesServicioImpl implements ContribuyentesServicio {
             throw new NewviExcepcion(EnumNewviExcepciones.ERR501);
         } catch (EntityNotFoundException e) {
             throw new NewviExcepcion(EnumNewviExcepciones.ERR501, e);
+        }
+    }
+
+    @Override
+    public String generarNuevaTenencia(Tenencia nuevaTenencia, SesionDto sesion) throws NewviExcepcion {
+
+        // Validar que los datos no sean incorrectos
+        LoggerNewvi.getLogNewvi(this.getClass()).debug("Validando tenencia...", sesion);
+        if (!nuevaTenencia.esTenenciaValida()) {
+            throw new NewviExcepcion(EnumNewviExcepciones.ERR348);
+        }
+        // Crear el tenencia
+        LoggerNewvi.getLogNewvi(this.getClass()).debug("Creando tenencia...", sesion);
+
+        //Registramos la auditoria de ingreso
+        nuevaTenencia.setAudIngIp(sesion.getDireccionIP());
+        nuevaTenencia.setAudIngUsu(sesion.getUsuarioRegistrado().getUsuPalabraclave().trim());
+        Date fechaIngreso = Calendar.getInstance().getTime();
+        nuevaTenencia.setAudIngFec(fechaIngreso);
+
+        tenenciaFacade.create(nuevaTenencia);
+        // Si todo marcha bien enviar nombre del tenencia
+        return nuevaTenencia.getStsDescripcion();
+    }
+
+    @Override
+    public String actualizarTenencia(Tenencia tenencia, SesionDto sesion) throws NewviExcepcion {
+        // Validar que los datos no sean incorrectos
+        LoggerNewvi.getLogNewvi(this.getClass()).debug("Validando tenencia...", sesion);
+        if (!tenencia.esTenenciaValida()) {
+            throw new NewviExcepcion(EnumNewviExcepciones.ERR347);
+        }
+        // Editar la tenencia
+        LoggerNewvi.getLogNewvi(this.getClass()).debug("Editando tenencia...", sesion);
+
+        //Registramos la auditoria de modificacion
+        tenencia.setAudModIp(sesion.getDireccionIP());
+        tenencia.setAudModUsu(sesion.getUsuarioRegistrado().getUsuPalabraclave().trim());
+        Date fechaModificacion = Calendar.getInstance().getTime();
+        tenencia.setAudModFec(fechaModificacion);
+
+        tenenciaFacade.edit(tenencia);
+        // Si todo marcha bien enviar nombre del tenencia
+        return tenencia.getStsDescripcion();
+    }
+    
+    @Override
+    public Tenencia seleccionarTenencia(Integer codTenencia) throws NewviExcepcion{
+        if (ComunUtil.esNumeroPositivo(codTenencia)) {
+            return tenenciaFacade.find(codTenencia);
+        } else {
+            throw new NewviExcepcion(EnumNewviExcepciones.ERR011);
         }
     }
 }

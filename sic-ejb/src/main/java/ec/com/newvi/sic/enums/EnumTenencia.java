@@ -13,17 +13,17 @@ import ec.com.newvi.sic.util.ComunUtil;
  */
 public enum EnumTenencia {
 
-    Particular("Particular"),
-    Otros("Otros"),
     ND("N/D"),
-    Cooperativa("Cooperativa"),
+    Particular("Particular"),
+    Municipal("Municipal"),
+    Iglesia("Iglesia"),
+    Otros("Otros"),
     Comunal("Comunal"),
+    Estatal("Estatal");
+    /*Cooperativa("Cooperativa"),
     Asociacion("Asociacion"),
     Compania("Compañia"),
-    Municipal("Municipal"),
-    Provincial("Provincial"),
-    Estatal("Estatal"),
-    Iglesia("Iglesia");
+    Provincial("Provincial");*/
 
     private final String stsTenencia;
 

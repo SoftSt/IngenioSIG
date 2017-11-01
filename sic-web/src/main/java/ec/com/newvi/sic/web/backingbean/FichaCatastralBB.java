@@ -34,6 +34,7 @@ import ec.com.newvi.sic.modelo.Pisos;
 import ec.com.newvi.sic.modelo.Predios;
 import ec.com.newvi.sic.modelo.Propiedad;
 import ec.com.newvi.sic.modelo.Servicios;
+import ec.com.newvi.sic.modelo.Tenencia;
 import ec.com.newvi.sic.modelo.Terreno;
 import ec.com.newvi.sic.util.ComunUtil;
 import ec.com.newvi.sic.util.excepciones.NewviExcepcion;
@@ -80,10 +81,12 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
     private TreeNode listaArbolAvaluo;
     private TreeNode listaArbolDescripcionTerreno;
     private TreeNode listaArbolPisosDetalle;
+    private TreeNode listaArbolTenencia;
     private TreeNode[] listaDominiosSeleccionados;
     private TreeNode pisosDetalleSeleccionado;
     private TreeNode servicioSeleccionado;
     private TreeNode descripcionTerrenoSeleccionado;
+    private TreeNode tenenciaSeleccionada;
     private List<Fotos> listaFotosPorPredio;
     private List<String> listaFotosJpg;
     private Pisos pisoSeleccionado;
@@ -236,6 +239,14 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
         this.descripcionTerrenoSeleccionado = descripcionTerrenoSeleccionado;
     }
 
+    public TreeNode getTenenciaSeleccionada() {
+        return tenenciaSeleccionada;
+    }
+
+    public void setTenenciaSeleccionada(TreeNode tenenciaSeleccionada) {
+        this.tenenciaSeleccionada = tenenciaSeleccionada;
+    }
+
     public List<Fotos> getListaFotosPorPredio() {
         return listaFotosPorPredio;
     }
@@ -310,6 +321,14 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
 
     public String getDireccionVisorPredios() {
         return direccionVisorPredios;
+    }
+
+    public TreeNode getListaArbolTenencia() {
+        return listaArbolTenencia;
+    }
+
+    public void setListaArbolTenencia(TreeNode listaArbolTenencia) {
+        this.listaArbolTenencia = listaArbolTenencia;
     }
 
     @PostConstruct
@@ -545,6 +564,21 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
         }
     }
 
+    private void actualizarListadoTenencia() {
+        List<DominioDto> listadoDominiosDto = parametrosServicio.listarDominiosDto("TENENCIA", "Nodo");
+
+        try {
+            listaArbolTenencia = new DefaultTreeNode();
+            listaArbolTenencia = WebUtils.generarArbol(listadoDominiosDto, listaArbolTenencia, "getHijos");
+        } catch (NewviExcepcion ex) {
+            LoggerNewvi.getLogNewvi(this.getClass()).error(ex, sesionBean.getSesion());
+            MensajesFaces.mensajeError(ex.getMessage());
+        } catch (Exception e) {
+            LoggerNewvi.getLogNewvi(this.getClass()).error(EnumNewviExcepciones.ERR000.presentarMensajeCodigo(), e, sesionBean.getSesion());
+            MensajesFaces.mensajeError(e.getMessage());
+        }
+    }
+
     private void actualizarListadoPisosDetalle() {
         List<DominioDto> listadoDetallesDto = parametrosServicio.listarDominiosDto("DESCRIPCION EDIFICACION", "Nodo");
 
@@ -687,6 +721,9 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
             LoggerNewvi.getLogNewvi(this.getClass()).error(EnumNewviExcepciones.ERR000.presentarMensajeCodigo(), e, sesionBean.getSesion());
             MensajesFaces.mensajeError(e.getMessage());
         }
+    }
+
+    public void actualizarTenecia() {
     }
 
     public void actualizarPisoIngresado(Pisos piso) {
@@ -867,12 +904,70 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
         }
     }
 
+    public Propiedad obtenerPropiedad(Predios predio) {
+        FichaCatastralDto ficha = new FichaCatastralDto(predio);
+        return ficha.getPropiedad();
+    }
+
+    public Tenencia obtenerTenenciaActualizable(List<Tenencia> listaTenecias, String subGrupo) throws NewviExcepcion {
+        for (Tenencia tenencia : listaTenecias) {
+            if (tenencia.getStsSubgrupo().trim().equals(subGrupo) && tenencia.getTenEstado().equals(EnumEstadoRegistro.A)) {
+                Tenencia tenenciaActual = contribuyentesServicio.seleccionarTenencia(tenencia.getCodTenencia());
+                tenenciaActual.setTenEstado(EnumEstadoRegistro.E);
+                return tenenciaActual;
+            }
+        }
+        return null;
+    }
+
+    public void agregarTenenciaSeleccionada(NodeSelectEvent event) {
+        Tenencia tenencia = new Tenencia();
+        Tenencia tenenciaActual;
+        Dominios hijo = ((DominioDto) event.getTreeNode().getData()).getDominio();
+        Propiedad actual = obtenerPropiedad(this.predio);
+
+        //generarLogPredio(this.predio, EnumAcciones.Agregacion_Descripcion_Terreno.getAccion(), sesionBean.getSesion());
+        EnumRelacionDominios nodo = hijo.getDomiRelacion();
+        if (!nodo.equals(EnumRelacionDominios.SubNodo) && !nodo.equals(EnumRelacionDominios.Nodo)) {
+            Dominios padre = ((DominioDto) event.getTreeNode().getParent().getData()).getDominio();
+            tenencia.setStsGrupo(hijo.getDomiGrupos());
+            tenencia.setStsSubgrupo(padre.getDomiDescripcion());
+            tenencia.setStsDescripcion(hijo.getDomiDescripcion());
+
+            tenencia.setCodPropietarios(actual);
+            tenencia.setTenEstado(EnumEstadoRegistro.A);
+            tenencia.setStsCodigo(hijo.getDomiCodigo());
+
+            try {
+                tenenciaActual = obtenerTenenciaActualizable(actual.getTenenciaList(), padre.getDomiDescripcion());
+                contribuyentesServicio.actualizarTenencia(tenenciaActual, sesionBean.getSesion());
+                actual.getTenenciaList().remove(tenenciaActual);
+                actual.getTenenciaList().add(tenencia);
+                contribuyentesServicio.generarNuevaTenencia(tenencia, sesionBean.getSesion());
+                //generarLogPredio(this.predio, generarLogDescripcionTerreno(terreno, this.predio), sesionBean.getSesion(), EnumAcciones.Agregacion_Descripcion_Terreno);
+                actualizarElementosPredio();
+                LoggerNewvi.getLogNewvi(this.getClass()).info(EnumNewviExcepciones.INF364.presentarMensaje(), sesionBean.getSesion());
+                MensajesFaces.mensajeInformacion(EnumNewviExcepciones.INF364.presentarMensaje());
+            } catch (NewviExcepcion e) {
+                LoggerNewvi.getLogNewvi(this.getClass()).error(e, sesionBean.getSesion());
+                MensajesFaces.mensajeError(e.getMessage());
+            } catch (Exception e) {
+                LoggerNewvi.getLogNewvi(this.getClass()).error(EnumNewviExcepciones.ERR000.presentarMensajeCodigo(), e, sesionBean.getSesion());
+                MensajesFaces.mensajeError(e.getMessage());
+            }
+        }
+    }
+
     public void abrirDialogServicios() throws NewviExcepcion {
         WebUtils.obtenerContextoPeticion().execute("PF('dlgServicios').show()");
     }
 
     public void abrirDialogDescripcionTerreno() throws NewviExcepcion {
         WebUtils.obtenerContextoPeticion().execute("PF('dlgDescripcionTerreno').show()");
+    }
+
+    public void abrirDialogTenencia() throws NewviExcepcion {
+        WebUtils.obtenerContextoPeticion().execute("PF('dlgTenencia').show()");
     }
 
     public void actualizarPropiedad(int cod_propiedad) {
@@ -896,7 +991,7 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
     public void calcularAvaluo() {
         try {
             String formatoMonedaSistema = parametrosServicio.obtenerParametroPorNombre(EnumParametroSistema.FORMATO_MONEDAS, sesionBean.getSesion()).getValor();
-            this.nodo = catastroServicio.obtenerAvaluoPredio(this.predio, parametrosServicio.consultarDominios(),formatoMonedaSistema, sesionBean.getSesion());
+            this.nodo = catastroServicio.obtenerAvaluoPredio(this.predio, parametrosServicio.consultarDominios(), formatoMonedaSistema, sesionBean.getSesion());
             catastroServicio.registrarArbol(this.nodo, this.predio, sesionBean.getSesion());
             generarArbolAvaluo(catastroServicio.listarAvaluoDto("Nodo", this.predio));
         } catch (NewviExcepcion e) {
@@ -980,6 +1075,7 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
         actualizarListadoServicios();
         actualizarListadoDescripcionTerreno();
         actualizarListadoPisosDetalle();
+        actualizarListadoTenencia();
         listaEstadosPisoDetalle = EnumEstadoPisoDetalle.values();
         this.listaFotosJpg = new ArrayList<>();
         listaTenenciaDominios = EnumTenencia.values();
@@ -1049,8 +1145,8 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
                 if (bloque.getCodBloques().equals(piso.getCodBloques().getCodBloques())) {
                     for (Pisos pisoEditable : bloque.getPisosCollection()) {
                         if (pisoEditable.getCodPisos().equals(codPiso)) {
-                            Integer numPisos =Integer.valueOf(bloque.getValNropisos().trim());
-                            bloque.setValNropisos((--numPisos).toString()) ;
+                            Integer numPisos = Integer.valueOf(bloque.getValNropisos().trim());
+                            bloque.setValNropisos((--numPisos).toString());
                             pisoEditable.setPisEstado(EnumEstadoRegistro.I);
                             pisoEditable.eliminarHijos();
                             catastroServicio.actualizarPiso(pisoEditable, sesionBean.getSesion());
@@ -1078,7 +1174,7 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
                         if (piso.getCodPisos().equals(pisoBuscado.getCodPisos())) {
                             for (PisoDetalle detalle : piso.getDetalles()) {
                                 Integer codDetalleActual = detalle.getCodPisoDetalle();
-                                if(codDetalleActual.equals(codDetallePiso));
+                                if (codDetalleActual.equals(codDetallePiso));
                                 detalle.setEstado(EnumEstadoRegistro.I);
                                 catastroServicio.actualizarPisoDetalle(detalle, sesionBean.getSesion());
                                 catastroServicio.actualizarPredio(this.predio, sesionBean.getSesion());

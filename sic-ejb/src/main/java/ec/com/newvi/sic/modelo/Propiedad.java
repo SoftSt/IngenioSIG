@@ -13,8 +13,10 @@ import ec.com.newvi.sic.enums.EnumTraslacion;
 import ec.com.newvi.sic.util.ComunUtil;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -40,6 +42,9 @@ import org.hibernate.annotations.NotFoundAction;
 @Table(name = "cat_ciu_propietario", schema = "public")
 
 public class Propiedad implements Serializable {
+
+    @OneToMany(mappedBy = "codPropietarios")
+    private List<Tenencia> tenenciaList;
 
     @OneToMany(mappedBy = "codPropietarios")
     private Collection<Titulos> titulosCollection;
@@ -372,6 +377,24 @@ public class Propiedad implements Serializable {
 
     public void setTitulosCollection(Collection<Titulos> titulosCollection) {
         this.titulosCollection = titulosCollection;
+    }
+
+    public List<Tenencia> getTenenciaList() {
+        return tenenciaList;
+    }
+
+    public void setTenenciaList(List<Tenencia> tenenciaList) {
+        this.tenenciaList = tenenciaList;
+    }
+    
+    public List<Tenencia> getTenenciasActivas() {
+        List<Tenencia> tenenciaActivas = new ArrayList<>();
+        for (Tenencia tenencia : tenenciaList) {
+            if (!ComunUtil.esNulo(tenencia.getTenEstado()) && tenencia.getTenEstado().equals(EnumEstadoRegistro.A)) {
+                tenenciaActivas.add(tenencia);
+            }
+        }
+        return tenenciaActivas;
     }
 
 }

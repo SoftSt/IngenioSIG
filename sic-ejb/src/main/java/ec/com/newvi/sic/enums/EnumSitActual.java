@@ -13,10 +13,11 @@ import ec.com.newvi.sic.util.ComunUtil;
  */
 public enum EnumSitActual {
 
-    PROPIETARIO("PROPIETARIO"),
+    ND("N/D"),
+    USUFRUCTUARIO("USUFRUCTUARIO"),
     ARRENDATARIO("ARRENDATARIO"),
-    POSESIONARIO("POSESIONARIO"),
-    USUFRUCTUARIO("USUFRUCTUARIO");
+    PROPIETARIO("PROPIETARIO"),
+    POSESIONARIO("POSESIONARIO");
 
     private final String stsSituacion;
 
@@ -40,9 +41,9 @@ public enum EnumSitActual {
                     return situacionActual;
                 }
             }
-            return EnumSitActual.ARRENDATARIO;
+            return EnumSitActual.ND;
         } else {
-            return EnumSitActual.ARRENDATARIO;
+            return EnumSitActual.ND;
         }
     }
 

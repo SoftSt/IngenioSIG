@@ -7,6 +7,7 @@ package ec.com.newvi.sic.web.backingbean;
 
 import ec.com.newvi.componente.reporte.ReporteGenerador;
 import ec.com.newvi.sic.dto.CaracteristicasEdificacionesDto;
+import ec.com.newvi.sic.dto.DominioDto;
 import ec.com.newvi.sic.dto.FichaCatastralDto;
 import ec.com.newvi.sic.dto.PresentacionFichaCatastralDto;
 import ec.com.newvi.sic.dto.TablaCatastralDto;
@@ -118,6 +119,7 @@ public abstract class AdminFichaCatastralBB extends AdminSistemaBB {
 
     protected void actualizarListadoPredios() {
         List<Predios> listaPredios = catastroServicio.consultarPredios();
+        //String sql = ComunUtil.generarScriptTenencia(listaPredios, parametrosServicio);
         listaFichas = new ArrayList<>();
         listaPredios.forEach((elementoPredio) -> {
             listaFichas.add(new FichaCatastralDto(elementoPredio));
