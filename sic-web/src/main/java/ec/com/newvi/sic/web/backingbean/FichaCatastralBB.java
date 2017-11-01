@@ -760,7 +760,7 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
                 + "/n del predio '" + predio.getCodCatastral().toString() + "'";
     }
 
-    public void registrarDetallesPiso(Pisos piso, PisoDetalle detalle) throws NewviExcepcion {
+    public void registrarDetallesPiso(Pisos piso, PisoDetalle detalle, String subGrupo) throws NewviExcepcion {
         for (Bloques bloque : this.predio.getBloques()) {
             if (bloque.equals(piso.getCodBloques())) {
                 for (Pisos objetoPiso : bloque.getPisosCollection()) {
@@ -770,6 +770,8 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
                         String logDetallesPiso = generarLogDetallesPiso(detalle, piso.getCodPisos().toString(), bloque.getCodBloques().toString(), predio);
                         generarLogPredio(this.predio, logDetallesPiso, sesionBean.getSesion(), EnumAcciones.Agregacion_Detalles_Pisos);
                         Collection<PisoDetalle> coleccion = objetoPiso.getDetalles();
+                        //quitarPisoDetalleActual(obtenerDetallePisoActualizable(coleccion, subGrupo), coleccion);
+                        //coleccion.remove(obtenerDetallePisoActualizable(coleccion, subGrupo));
                         if (!ComunUtil.esNulo(coleccion)) {
                             objetoPiso.getDetalles().add(detalle);
                         } else {
@@ -786,6 +788,32 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
 
     }
 
+    public PisoDetalle obtenerDetallePisoActualizable(Collection<PisoDetalle> listaPisoDetalle, String subGrupo) throws NewviExcepcion {
+        String subGrupoActual;
+        EnumEstadoRegistro estadoPisoDetalle;
+        Integer codPisoDetalle;
+        if(!ComunUtil.esNulo(listaPisoDetalle)){
+            for (PisoDetalle pisoDetalleVerificable : listaPisoDetalle) {
+                subGrupoActual = pisoDetalleVerificable.getSubgrupo();
+                estadoPisoDetalle = pisoDetalleVerificable.getEstado();
+                codPisoDetalle = pisoDetalleVerificable.getCodPisoDetalle();
+                if (!ComunUtil.esNulo(subGrupoActual) && subGrupoActual.trim().equals(subGrupo.trim()) && estadoPisoDetalle.equals(EnumEstadoRegistro.A)) {
+                    PisoDetalle pisoDetalleActual = catastroServicio.seleccionarDetallePiso(codPisoDetalle);
+                    pisoDetalleActual.setEstado(EnumEstadoRegistro.E);
+                    return pisoDetalleActual;
+                }
+            }
+        }
+        return null;
+    }
+
+    public void quitarPisoDetalleActual(PisoDetalle pisoDetalleActual, Collection<PisoDetalle> coleccion) throws NewviExcepcion {
+        if (!ComunUtil.esNulo(pisoDetalleActual) && !ComunUtil.esNulo(coleccion)) {
+            catastroServicio.actualizarPisoDetalle(pisoDetalleActual, sesionBean.getSesion());
+            coleccion.remove(pisoDetalleActual);
+        }
+    }
+
     public void agregarDetallePiso(NodeSelectEvent event) throws NewviExcepcion {
         PisoDetalle pisoDetalle = new PisoDetalle();
         Dominios hijo = ((DominioDto) event.getTreeNode().getData()).getDominio();
@@ -798,7 +826,7 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
             pisoDetalle.setDescripcion(hijo.getDomiDescripcion());
             pisoDetalle.setCodigo(hijo.getDomiCodigo());
             pisoDetalle.setEstado(EnumEstadoRegistro.A);
-            registrarDetallesPiso(pisoSeleccionado, pisoDetalle);
+            registrarDetallesPiso(pisoSeleccionado, pisoDetalle, padre.getDomiDescripcion());
             try {
                 actualizarElementosPredio();
                 LoggerNewvi.getLogNewvi(this.getClass()).info(EnumNewviExcepciones.INF356.presentarMensaje(), sesionBean.getSesion());
@@ -872,6 +900,30 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
         }
     }
 
+    public Terreno obtenerTerrenoActualizable(Collection<Terreno> listaTerreno, String subGrupo) throws NewviExcepcion {
+        String subGrupoActual;
+        EnumEstadoRegistro estadoTerreno;
+        Integer codTerreno;
+        for (Terreno terrenoVerificable : listaTerreno) {
+            subGrupoActual = terrenoVerificable.getStsSubGrupo();
+            estadoTerreno = terrenoVerificable.getTerEstado();
+            codTerreno = terrenoVerificable.getCodTerrenodetalle();
+            if (!ComunUtil.esNulo(subGrupoActual) && subGrupoActual.trim().equals(subGrupo.trim()) && estadoTerreno.equals(EnumEstadoRegistro.A)) {
+                Terreno terrenoActual = catastroServicio.seleccionarTerreno(codTerreno);
+                terrenoActual.setTerEstado(EnumEstadoRegistro.E);
+                return terrenoActual;
+            }
+        }
+        return null;
+    }
+
+    public void quitarDescripcionTerrenoActual(Terreno terrenoActual) throws NewviExcepcion {
+        if (!ComunUtil.esNulo(terrenoActual)) {
+            catastroServicio.actualizarTerreno(terrenoActual, sesionBean.getSesion());
+            this.predio.getCaracteristicasTerreno().remove(terrenoActual);
+        }
+    }
+
     public void agregarDescripcionTerreno(NodeSelectEvent event) {
         Terreno terreno = new Terreno();
         Dominios hijo = ((DominioDto) event.getTreeNode().getData()).getDominio();
@@ -886,9 +938,10 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
             terreno.setCodCatastral(this.predio);
             terreno.setTerEstado(EnumEstadoRegistro.A);
             terreno.setStsCodigo(hijo.getDomiCodigo());
-            this.predio.getCaracteristicasTerreno().add(terreno);
 
             try {
+                quitarDescripcionTerrenoActual(obtenerTerrenoActualizable(this.predio.getCaracteristicasTerreno(), padre.getDomiDescripcion()));
+                this.predio.getCaracteristicasTerreno().add(terreno);
                 catastroServicio.generarNuevoTerreno(terreno, sesionBean.getSesion());
                 generarLogPredio(this.predio, generarLogDescripcionTerreno(terreno, this.predio), sesionBean.getSesion(), EnumAcciones.Agregacion_Descripcion_Terreno);
                 actualizarElementosPredio();
