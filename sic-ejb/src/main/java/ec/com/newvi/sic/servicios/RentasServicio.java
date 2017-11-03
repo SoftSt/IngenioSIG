@@ -5,6 +5,11 @@
  */
 package ec.com.newvi.sic.servicios;
 
+import ec.com.newvi.sic.dto.SesionDto;
+import ec.com.newvi.sic.modelo.Avaluo;
+import ec.com.newvi.sic.modelo.Titulos;
+import ec.com.newvi.sic.util.excepciones.NewviExcepcion;
+import java.util.List;
 import javax.annotation.security.PermitAll;
 import javax.ejb.Local;
 
@@ -15,5 +20,16 @@ import javax.ejb.Local;
 @Local
 @PermitAll
 public interface RentasServicio {
-    
+
+    /**
+     * Genera un grupo de títulos a partir de un grupo de avalúos. Se envía un
+     * grupo de avalúos ya registrados en el sistema para generar el listado de
+     * títulos generados.
+     *
+     * @param listadoAvaluos Listado de avalúos a generar.
+     * @param sesion Sesión que genera los nuevos títulos.
+     * @return Listado de títulos generados.
+     * @throws NewviExcepcion
+     */
+    public List<Titulos> generarTitulosDeAvaluos(List<Avaluo> listadoAvaluos, SesionDto sesion) throws NewviExcepcion;
 }

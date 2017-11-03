@@ -60,8 +60,6 @@ public class AvaluoBB extends AdminFichaCatastralBB {
     private List<FechaAvaluo> listaFechaAvaluos;
     private Integer progreso;
     private FechaAvaluo fechaAvaluoActual;
-    private String fechaActualPrueba;
-    private Boolean esActivo;
     private Boolean esProcesoIniciado;
     private Boolean esProcesoCancelado;
 
@@ -72,72 +70,32 @@ public class AvaluoBB extends AdminFichaCatastralBB {
         return esProcesoCancelado;
     }
 
-    public Boolean getEsActivo() {
-        return esActivo;
-    }
-
-    public void setEsActivo(Boolean esActivo) {
-        this.esActivo = esActivo;
-    }
-
     public Boolean getEsProcesoIniciado() {
         return esProcesoIniciado;
-    }
-
-    public void setEsProcesoIniciado(Boolean esProcesoIniciado) {
-        this.esProcesoIniciado = esProcesoIniciado;
-    }
-
-    public String getFechaActualPrueba() {
-        return fechaActualPrueba;
-    }
-
-    public void setFechaActualPrueba(String fechaActualPrueba) {
-        this.fechaActualPrueba = fechaActualPrueba;
     }
 
     public Integer getProgreso() {
         return progreso;
     }
 
-    public void setProgreso(Integer progreso) {
-        this.progreso = progreso;
-    }
-
     public List<FechaAvaluo> getListaFechaAvaluos() {
         return listaFechaAvaluos;
-    }
-
-    public void setListaFechaAvaluos(List<FechaAvaluo> listaFechaAvaluos) {
-        this.listaFechaAvaluos = listaFechaAvaluos;
     }
 
     public List<Avaluo> getListaAvaluos() {
         return listaAvaluos;
     }
 
-    public FechaAvaluo getFechaAvaluoActual() {
-        return fechaAvaluoActual;
-    }
-
-    public void setFechaAvaluoActual(FechaAvaluo fechaAvaluoActual) {
-        this.fechaAvaluoActual = fechaAvaluoActual;
-    }
-
     public List<Avaluo> getListaAvaluosFiltrados() {
         return listaAvaluosFiltrados;
     }
 
+    public FechaAvaluo getFechaAvaluoActual() {
+        return fechaAvaluoActual;
+    }
+
     public void setListaAvaluosFiltrados(List<Avaluo> listaAvaluosFiltrados) {
         this.listaAvaluosFiltrados = listaAvaluosFiltrados;
-    }
-
-    public BigDecimal getTotalPorCobrarCalculo() {
-        return totalPorCobrarCalculo;
-    }
-
-    public BigDecimal getTotalPorCobrarConsulta() {
-        return totalPorCobrarConsulta;
     }
 
     public List<Avaluo> getListaAvaluosProcesados() {
@@ -152,9 +110,17 @@ public class AvaluoBB extends AdminFichaCatastralBB {
         this.listaAvaluosProcesadosFiltrados = listaAvaluosProcesadosFiltrados;
     }
 
+    public BigDecimal getTotalPorCobrarCalculo() {
+        return totalPorCobrarCalculo;
+    }
+
+    public BigDecimal getTotalPorCobrarConsulta() {
+        return totalPorCobrarConsulta;
+    }
+
     @PostConstruct
     public void init() {
-        this.esActivo = false;
+
         this.esProcesoIniciado = false;
         this.esProcesoCancelado = false;
         this.progreso = 0;
@@ -375,40 +341,6 @@ public class AvaluoBB extends AdminFichaCatastralBB {
                 }
             }
         }
-    }
-
-    public List<TablaCatastralDto> obtenerListadoAvaluos(List<Avaluo> listaAvaluos) {
-        List<TablaCatastralDto> datosImpresion = new ArrayList<>();
-        TablaCatastralDto datosAvaluo;
-        for (Avaluo avaluo : listaAvaluos) {
-            datosAvaluo = new TablaCatastralDto();
-            datosAvaluo.setCodigoCatastral(avaluo.getCodCatastral().getCodCatastral().toString());
-            datosAvaluo.setNombreCodigoCatastral(avaluo.getNomCodigocatastral());
-            datosAvaluo.setPropietario(avaluo.getNomnomape());
-            datosAvaluo.setCiRuc(avaluo.getCodCedularuc());
-            datosAvaluo.setBarrio(avaluo.getStsBarrio());
-            datosAvaluo.setDireccion(avaluo.getTxtDireccion());
-            datosAvaluo.setAvaluoTerreno(avaluo.getValTerreno());
-            datosAvaluo.setAreaTerreno(avaluo.getValTerreno());
-            datosAvaluo.setAreaEdificacion(avaluo.getValAreaconstruccion());
-            datosAvaluo.setAvaluoEdificacion(avaluo.getValEdifica());
-            datosAvaluo.setAvaluoPredio(avaluo.getValPredio());
-            datosAvaluo.setAreaPredio(avaluo.getValAreapredio());
-            datosAvaluo.setImpuestoPredial(avaluo.getValImpuesto());
-            datosAvaluo.setContribucionEspecialMejoras(avaluo.getValCem());
-            datosAvaluo.setTasaNoEdificacion(avaluo.getValNoEdificacion());
-            datosAvaluo.setCostoEmision(avaluo.getValEmision());
-            datosAvaluo.setTasaBomberos(avaluo.getValBomberos());
-            datosAvaluo.setServiciosAmbientales(avaluo.getValAmbientales());
-            datosAvaluo.setTotalAPagar(avaluo.getValImppredial());
-            datosAvaluo.setObservaciones(avaluo.getCatCasosespeciales());
-            datosImpresion.add(datosAvaluo);
-        }
-        return datosImpresion;
-    }
-
-    public List<Avaluo> generarListaAvaluo() {
-        return catastroServicio.consultarListaAvaluosActuales();
     }
 
     private BigDecimal obtenerTotales(List<Avaluo> listadoAvaluo) {
