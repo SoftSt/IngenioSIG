@@ -781,6 +781,8 @@ public class CatastroServicioImpl implements CatastroServicio {
     private List<AvaluoDto> obtenerValorTerreno(Predios predio, List<Dominios> dominios, BigDecimal promedioFactores, String formatoMonedaSistema) throws NewviExcepcion {
         String zona = predio.getCodZona();
         String sector = predio.getCodSector();
+        // [TODO] Agregar mazana
+        // [TODO] Agregar RangoPredio
         BigDecimal valorMetro2, valorTerreno;
         BigDecimal area = !ComunUtil.esNulo(predio.getValAreaPredio()) ? predio.getValAreaPredio() : BigDecimal.ZERO;
         List<AvaluoDto> listaValorTerreno = new ArrayList<>();
