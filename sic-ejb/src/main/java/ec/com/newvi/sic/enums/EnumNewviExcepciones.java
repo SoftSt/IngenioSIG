@@ -5,6 +5,9 @@
  */
 package ec.com.newvi.sic.enums;
 
+import ec.com.newvi.sic.util.ComunUtil;
+import java.util.Map;
+
 /**
  *
  * @author NEWVI
@@ -131,6 +134,9 @@ public enum EnumNewviExcepciones {
     ERR501("ERR501", "Propietario no encontrado.", "No se pudo encontrar un propietario al predio seleccionado. Registre la propiedad correspondiente."),
     ERR502("ERR502", "Atributo no encontrado.", "No se pudo encontrar el atributo [atributo]. Por favor contacte con el administrador."),
     INF501("ERR501", "Valoración finalizada", "El proceso de valoración ha finalizado."),
+    // 601 al 700 excepciones de Rentas
+    INF601("INF601", "Títulos generados", "Proceso finalizado. Se han generado [ntitulos] titulos."),
+    ERR601("ERR601", "Propietario no encontrado", "El propietario del predio [predio] no pudo ser encontrado. Revise si el propietario existe."),
     ;
     
     private final String codigoExcepcion;
@@ -163,7 +169,16 @@ public enum EnumNewviExcepciones {
         return this.getMensajeExcepcion();
     }
     
+    public String presentarMensaje(Map<String, String> variables) {
+        return ComunUtil.reemplazarTokens(presentarMensaje(), variables);
+    }
+    
     public String presentarMensajeCodigo() {
         return this.getMensajeExcepcion().concat(" (").concat(this.codigoExcepcion).concat(")");
     }
+    
+    public String presentarMensajeCodigo(Map<String, String> variables) {
+        return ComunUtil.reemplazarTokens(presentarMensajeCodigo(), variables);
+    }
+    
 }

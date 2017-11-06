@@ -39,6 +39,6 @@ public class NewviExcepcion extends Exception {
     }
     
     public NewviExcepcion(EnumNewviExcepciones excepcion, Map<String, String> variables, Throwable causa) {
-        super(ComunUtil.reemplazarTokens(excepcion.presentarMensajeCodigo(), variables), causa);
+        super(excepcion.presentarMensajeCodigo(variables), causa);
     }
 }

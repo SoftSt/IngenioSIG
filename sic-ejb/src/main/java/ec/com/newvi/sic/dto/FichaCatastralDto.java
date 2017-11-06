@@ -6,13 +6,10 @@
 package ec.com.newvi.sic.dto;
 
 import ec.com.newvi.sic.enums.EnumEstadoRegistro;
-import ec.com.newvi.sic.enums.EnumNewviExcepciones;
 import ec.com.newvi.sic.modelo.Contribuyentes;
 import ec.com.newvi.sic.modelo.Predios;
 import ec.com.newvi.sic.modelo.Propiedad;
 import ec.com.newvi.sic.util.ComunUtil;
-import ec.com.newvi.sic.util.excepciones.NewviExcepcion;
-import javax.persistence.EntityNotFoundException;
 
 /**
  *

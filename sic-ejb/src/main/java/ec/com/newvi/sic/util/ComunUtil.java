@@ -16,6 +16,8 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.ParseException;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
@@ -137,5 +139,10 @@ public class ComunUtil {
         }
 
         return sql;
+    }
+
+    public static Date hoy() {
+        Date fechaIngreso = Calendar.getInstance().getTime();
+        return fechaIngreso;
     }
 }

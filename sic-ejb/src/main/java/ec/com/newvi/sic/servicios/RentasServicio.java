@@ -31,5 +31,5 @@ public interface RentasServicio {
      * @return Listado de títulos generados.
      * @throws NewviExcepcion
      */
-    public List<Titulos> generarTitulosDeAvaluos(List<Avaluo> listadoAvaluos, SesionDto sesion) throws NewviExcepcion;
+    public List<Titulos> generarTitulosDesdeAvaluos(List<Avaluo> listadoAvaluos, SesionDto sesion) throws NewviExcepcion;
 }

@@ -10,8 +10,8 @@
             <p:panel id="panelListaTitulos" rendered="#{generarTituloBB.esPantallaActual('PANTALLA_LISTADO')}">
                 <h:form id="formularioListaTitulos">
 
-                    <p:growl id="growl" showDetail="true" sticky="true" life="800" />
-                    <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+                    <p:growl id="growl" showDetail="true"/>
+                    <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true"/>
                     <p>
                         <h2>
                             <h:outputText styleClass="#{generarTituloBB.iconoPantalla.textoEtiqueta}"/>
@@ -158,6 +158,109 @@
                                 </h:panelGrid>
                             </p:tab>
                             <p:tab title="Títulos generados">
+                                <h:panelGrid>
+                                    <p:dataTable id="listaTitulosGenerados" var="tituloGenerado" widgetVar="listaTitulosGeneradosTabla"
+                                                 value="#{generarTituloBB.listaTitulosGenerados}" rowKey="#{avaluoProcesado.avalId}" filteredValue="#{generarTituloBB.listaTitulosGeneradosFiltrados}"
+                                                 paginator="true" rows="10" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" 
+                                                 rowsPerPageTemplate="10,30,50" 
+                                                 resizableColumns="true"
+                                                 style="font-size: 0.8em;" sortBy="#{tituloGenerado.nomCodigocatastral}"
+                                                 emptyMessage="No se han encontrado resultados" 
+                                                 paginatorPosition="bottom">
+
+                                        <p:column headerText="Clave" sortBy="#{tituloGenerado.nomCodigocatastral}" width="50" filterBy="#{tituloGenerado.nomCodigocatastral}" priority="2">
+                                            <h:outputText value="#{tituloGenerado.nomCodigocatastral}" />
+                                        </p:column>
+
+                                        <p:column headerText="Propietario" sortBy="#{tituloGenerado.codPropietarios.contribuyente.nomApellidos} #{tituloGenerado.codPropietarios.contribuyente.nomNombres}" width="50" filterBy="#{tituloGenerado.codPropietarios.contribuyente.nomApellidos} #{tituloGenerado.codPropietarios.contribuyente.nomNombres}" filterMatchMode="contains" priority="6">
+                                            <h:outputText value="#{tituloGenerado.codPropietarios.contribuyente.nomApellidos} #{tituloGenerado.codPropietarios.contribuyente.nomNombres}" />
+                                        </p:column>
+
+                                        <p:column headerText="Terreno (m2)" width="40" priority="6">
+                                            <h:outputText value="#{tituloGenerado.valAreaterreno}" style="float:right">
+                                                <f:convertNumber pattern="###,###.00"/>
+                                            </h:outputText>
+                                        </p:column>
+
+                                        <p:column headerText="Valor Terreno" width="50" priority="4">
+                                            <h:outputText value="#{tituloGenerado.valValorterreno}" style="float:right">
+                                                <f:convertNumber pattern="$ ###,###.00"/>
+                                            </h:outputText>
+                                        </p:column>
+
+                                        <p:column headerText="Edific. (m2)" width="40" priority="6">
+                                            <h:outputText value="#{tituloGenerado.valAreaconstruccion}" style="float:right">
+                                                <f:convertNumber pattern="###,###.00"/>
+                                            </h:outputText>
+                                        </p:column>
+
+                                        <p:column headerText="Valor Edific." width="50" priority="4">
+                                            <h:outputText value="#{tituloGenerado.valConstruccion}" style="float:right">
+                                                <f:convertNumber pattern="$ ###,###.00"/>
+                                            </h:outputText>
+                                        </p:column>
+
+                                        <p:column headerText="Propiedad" width="50" priority="4">
+                                            <h:outputText value="#{tituloGenerado.valBaseimponible}" style="float:right">
+                                                <f:convertNumber pattern="$ ###,###.00"/>
+                                            </h:outputText>
+                                        </p:column>
+
+                                        <p:column headerText="Imp. Predial" width="50" priority="4">
+                                            <h:outputText value="#{tituloGenerado.valImpuestopredial}" style="float:right">
+                                                <f:convertNumber pattern="$ ###,###.00"/>
+                                            </h:outputText>
+                                        </p:column>
+
+                                        <p:column headerText="Bomberos" width="40" priority="6">
+                                            <h:outputText value="#{tituloGenerado.valBomberos}" style="float:right">
+                                                <f:convertNumber pattern="$ ###,###.00"/>
+                                            </h:outputText>
+                                        </p:column>
+
+                                        <p:column headerText="Solar No Edif" width="50" priority="6">
+                                            <h:outputText value="#{tituloGenerado.valNoconstruido}" style="float:right">
+                                                <f:convertNumber pattern="$ ###,###.00"/>
+                                            </h:outputText>
+                                        </p:column>
+
+                                        <p:column headerText="Edif. Obsoleta" width="50" priority="6">
+                                            <h:outputText value="#{tituloGenerado.valNoconstruido}" style="float:right">
+                                                <f:convertNumber pattern="$ ###,###.00"/>
+                                            </h:outputText>
+                                        </p:column>
+
+                                        <p:column headerText="A pagar" width="60" priority="1">
+                                            <h:outputText value="#{tituloGenerado.valTotalapagar}" style="float:right">
+                                                <f:convertNumber pattern="$ ###,###.00"/>
+                                            </h:outputText>
+                                        </p:column>
+
+                                        <p:columnGroup rendered="true" type="footer">
+                                            <p:row>
+                                                <p:column footerText="Total:" priority="1"/>
+                                                <p:column priority="6"/>
+                                                <p:column priority="6"/>
+                                                <p:column priority="4"/>
+                                                <p:column priority="6"/>
+                                                <p:column priority="4"/>
+                                                <p:column priority="4"/>
+                                                <p:column priority="4"/>
+                                                <p:column priority="6"/>
+                                                <p:column priority="6"/>
+                                                <p:column priority="6"/>
+                                                <p:column width="60" priority="1">
+                                                    <f:facet name="footer">
+                                                        <h:outputText value="#{generarTituloBB.totalPorCobrarTitulos}" style="float:right">
+                                                            <f:convertNumber pattern="$ ###,###.00"/>
+                                                        </h:outputText>
+                                                    </f:facet>
+                                                </p:column>
+                                            </p:row>
+                                        </p:columnGroup>
+
+                                    </p:dataTable>
+                                </h:panelGrid>
                             </p:tab>
                         </p:tabView>
                     </p:outputPanel>

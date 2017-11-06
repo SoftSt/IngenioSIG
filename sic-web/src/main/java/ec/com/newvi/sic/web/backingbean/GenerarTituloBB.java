@@ -17,7 +17,9 @@ import ec.com.newvi.sic.web.enums.EnumEtiquetas;
 import ec.com.newvi.sic.web.enums.EnumPantallaMantenimiento;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
@@ -33,18 +35,20 @@ public class GenerarTituloBB extends AdminFichaCatastralBB {
 
     @EJB
     private RentasServicio rentasServicio;
-    
+
     private EnumPantallaMantenimiento pantallaActual;
-    
+
     private List<Avaluo> listaAvaluosProcesados;
     private List<Avaluo> listaAvaluosSeleccionados;
     private List<Avaluo> listaAvaluosProcesadosFiltrados;
     private List<FechaAvaluo> listaFechaAvaluos;
     private List<Titulos> listaTitulosGenerados;
+    private List<Titulos> listaTitulosGeneradosFiltrados;
     private FechaAvaluo fechaAvaluoActual;
     private String fechaActualPrueba;
-    
+
     private BigDecimal totalPorCobrarConsulta;
+    private BigDecimal totalPorCobrarTitulos;
 
     public String getFechaActualPrueba() {
         return fechaActualPrueba;
@@ -69,7 +73,15 @@ public class GenerarTituloBB extends AdminFichaCatastralBB {
     public List<Titulos> getListaTitulosGenerados() {
         return listaTitulosGenerados;
     }
-    
+
+    public List<Titulos> getListaTitulosGeneradosFiltrados() {
+        return listaTitulosGeneradosFiltrados;
+    }
+
+    public void setListaTitulosGeneradosFiltrados(List<Titulos> listaTitulosGeneradosFiltrados) {
+        this.listaTitulosGeneradosFiltrados = listaTitulosGeneradosFiltrados;
+    }
+
     public FechaAvaluo getFechaAvaluoActual() {
         return fechaAvaluoActual;
     }
@@ -93,14 +105,18 @@ public class GenerarTituloBB extends AdminFichaCatastralBB {
     public void setListaAvaluosSeleccionados(List<Avaluo> listaAvaluosSeleccionados) {
         this.listaAvaluosSeleccionados = listaAvaluosSeleccionados;
     }
-    
+
     public BigDecimal getTotalPorCobrarConsulta() {
         return totalPorCobrarConsulta;
     }
-    
+
+    public BigDecimal getTotalPorCobrarTitulos() {
+        return totalPorCobrarTitulos;
+    }
+
     @PostConstruct
     public void init() {
-        
+
         fechaAvaluoActual = new FechaAvaluo();
         listaAvaluosProcesados = new ArrayList<>();
         listaFechaAvaluos = new ArrayList<>();
@@ -144,11 +160,19 @@ public class GenerarTituloBB extends AdminFichaCatastralBB {
         }
 
     }
-    
+
     private BigDecimal obtenerTotales(List<Avaluo> listadoAvaluo) {
         BigDecimal totalPorCobrar = BigDecimal.ZERO;
         for (Avaluo avaluo : listadoAvaluo) {
             totalPorCobrar = totalPorCobrar.add(avaluo.getValImppredial());
+        }
+        return totalPorCobrar;
+    }
+
+    private BigDecimal obtenerTotalesTitulos(List<Titulos> listadoTitulos) {
+        BigDecimal totalPorCobrar = BigDecimal.ZERO;
+        for (Titulos titulo : listadoTitulos) {
+            totalPorCobrar = totalPorCobrar.add(titulo.getValTotalapagar());
         }
         return totalPorCobrar;
     }
@@ -161,14 +185,25 @@ public class GenerarTituloBB extends AdminFichaCatastralBB {
         this.listaAvaluosProcesados = new ArrayList<>();
         this.totalPorCobrarConsulta = BigDecimal.ZERO;
     }
-    
-    public void generarTitulos(){
+
+    public void generarTitulos() {
         try {
-            this.listaTitulosGenerados = rentasServicio.generarTitulosDeAvaluos(listaAvaluosProcesados, sesionBean.getSesion());
+            this.listaTitulosGenerados = rentasServicio.generarTitulosDesdeAvaluos(listaAvaluosSeleccionados, sesionBean.getSesion());
+            this.totalPorCobrarTitulos = obtenerTotalesTitulos(this.listaTitulosGenerados);
+            
+            Map<String, String> variables = new HashMap<>();
+            variables.put("ntitulos", (new Integer(this.listaTitulosGenerados.size())).toString());            
+            LoggerNewvi.getLogNewvi(this.getClass()).info(EnumNewviExcepciones.INF601.presentarMensaje(variables), sesionBean.getSesion());
+            MensajesFaces.mensajeInformacion(EnumNewviExcepciones.INF601.presentarMensaje(variables));
+            
         } catch (NewviExcepcion e) {
             LoggerNewvi.getLogNewvi(this.getClass()).error(e, sesionBean.getSesion());
             MensajesFaces.mensajeError(e.getMessage());
         }
+    }
+
+    public Boolean hayTitulosPresentados() {
+        return !this.listaTitulosGenerados.isEmpty();
     }
 
 }
