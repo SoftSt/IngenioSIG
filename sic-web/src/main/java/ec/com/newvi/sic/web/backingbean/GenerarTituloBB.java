@@ -201,6 +201,21 @@ public class GenerarTituloBB extends AdminFichaCatastralBB {
             MensajesFaces.mensajeError(e.getMessage());
         }
     }
+    public void generarTodosTitulos() {
+        try {
+            this.listaTitulosGenerados = rentasServicio.generarTitulosDesdeAvaluos(this.listaAvaluosProcesados, sesionBean.getSesion());
+            this.totalPorCobrarTitulos = obtenerTotalesTitulos(this.listaTitulosGenerados);
+            
+            Map<String, String> variables = new HashMap<>();
+            variables.put("ntitulos", (new Integer(this.listaTitulosGenerados.size())).toString());            
+            LoggerNewvi.getLogNewvi(this.getClass()).info(EnumNewviExcepciones.INF601.presentarMensaje(variables), sesionBean.getSesion());
+            MensajesFaces.mensajeInformacion(EnumNewviExcepciones.INF601.presentarMensaje(variables));
+            
+        } catch (NewviExcepcion e) {
+            LoggerNewvi.getLogNewvi(this.getClass()).error(e, sesionBean.getSesion());
+            MensajesFaces.mensajeError(e.getMessage());
+        }
+    }
 
     public Boolean hayTitulosPresentados() {
         return !this.listaTitulosGenerados.isEmpty();

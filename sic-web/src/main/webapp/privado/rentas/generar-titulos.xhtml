@@ -49,6 +49,13 @@
                                                      id="btnGenerarTitulos"
                                                      actionListener="#{generarTituloBB.generarTitulos()}">
                                     </p:commandButton>
+                                    <p:commandButton value="Generar todos" icon="fa fa-check-square-o" 
+                                                     update="grupoTitulos" 
+                                                     id="btnGenerarTodosTitulos"
+                                                     onclick="PF('statusDialog').show();"
+                                                     oncomplete="PF('statusDialog').hide();"
+                                                     actionListener="#{generarTituloBB.generarTodosTitulos()}">
+                                    </p:commandButton>
                                 </h:panelGrid>
                                 <h:panelGrid>
                                     <p:dataTable id="listaAvaluosProcesados" var="avaluoProcesado" widgetVar="listaAvaluoProcesadoTabla" selection="#{generarTituloBB.listaAvaluosSeleccionados}"
