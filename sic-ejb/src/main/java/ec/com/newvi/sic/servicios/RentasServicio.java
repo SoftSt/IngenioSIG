@@ -32,4 +32,11 @@ public interface RentasServicio {
      * @throws NewviExcepcion
      */
     public List<Titulos> generarTitulosDesdeAvaluos(List<Avaluo> listadoAvaluos, SesionDto sesion) throws NewviExcepcion;
+    /**
+     * Se genera el registro del titulo
+     * @param nuevoTitulo nuevo titulo a registrar
+     * @param sesion Sesión que genera el registo de los nuevos títulos.
+     * @throws NewviExcepcion 
+     */
+    public void generarNuevoTitulo(Titulos nuevoTitulo, SesionDto sesion) throws NewviExcepcion;
 }

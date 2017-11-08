@@ -10,7 +10,7 @@ package ec.com.newvi.sic.enums;
  * @author israelavila
  */
 public enum EnumParametroSistema {
-    
+
     // SISTEMA
     TITULO_SISTEMA("TITULO_SISTEMA", "Título del sistema", "SIGC", EnumGrupoParametroSistema.DATOS_SISTEMA, EnumTipoParametro.VALOR),
     NOMBRE_SISTEMA("NOMBRE_SISTEMA", "Nombre del sistema", "Sistema de Información Geográfico Catastral", EnumGrupoParametroSistema.DATOS_SISTEMA, EnumTipoParametro.VALOR),
@@ -23,7 +23,7 @@ public enum EnumParametroSistema {
     IMAGEN_LOGO_MUNICIPIO_1("IMAGEN_LOGO_MUNICIPIO_1", "Ubicación de la imagen del primer logo del municipio", "[DIRECCION_IMAGENES_SISTEMA]/logo_1.png", EnumGrupoParametroSistema.DATOS_SISTEMA, EnumTipoParametro.IMAGEN),
     IMAGEN_LOGO_MUNICIPIO_2("IMAGEN_LOGO_MUNICIPIO_2", "Ubicación de la imagen del segundo logo del municipio", "[DIRECCION_IMAGENES_SISTEMA]/logo_2.png", EnumGrupoParametroSistema.DATOS_SISTEMA, EnumTipoParametro.IMAGEN),
     FORMATO_MONEDAS("FORMATO_MONEDAS", "Formato para la representación de las monedas en el sistema.", "$ ###,###.00", EnumGrupoParametroSistema.DATOS_SISTEMA, EnumTipoParametro.VALOR),
-    
+    NIVEL_ZONAS_HOMOGENEAS("NIVEL_ZONAS_HOMOGENEAS", "Nivel zonas homogeneas", "", EnumGrupoParametroSistema.DATOS_SISTEMA, EnumTipoParametro.VALOR),
     // MUNICIPIO
     NOMBRE_COMPLETO_MUNICIPIO("NOMBRE_COMPLETO_MUNICIPIO", "Nombre completo del municipio", "[Municipio]", EnumGrupoParametroSistema.DATOS_MUNICIPIO, EnumTipoParametro.VALOR),
     NOMBRE_CORTO_MUNICIPIO("NOMBRE_CORTO_MUNICIPIO", "Nombre corto del municipio", "[Municipio]", EnumGrupoParametroSistema.DATOS_MUNICIPIO, EnumTipoParametro.VALOR);
@@ -39,7 +39,7 @@ public enum EnumParametroSistema {
         DATOS_SISTEMA,
         DATOS_MUNICIPIO
     }
-    
+
     private final String nombreParametro;
     private final String descripcionParametro;
     private final EnumGrupoParametroSistema grupoParametro;
@@ -65,7 +65,7 @@ public enum EnumParametroSistema {
     public String getValorPorDefecto() {
         return valorPorDefecto;
     }
-    
+
     private EnumParametroSistema(String nombreParametro, String descripcionParametro, String valorPorDefecto, EnumGrupoParametroSistema grupoParametro, EnumTipoParametro tipoParametro) {
         this.nombreParametro = nombreParametro;
         this.descripcionParametro = descripcionParametro;

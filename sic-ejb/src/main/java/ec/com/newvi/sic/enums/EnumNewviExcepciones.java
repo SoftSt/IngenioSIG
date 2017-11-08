@@ -52,8 +52,8 @@ public enum EnumNewviExcepciones {
     INF311("INF311", "Funcionalidad ingresada.", "La funcionalidad se ha registrado correctamente."),
     INF312("INF312", "Funcionalidad eliminada.", "La funcionalidad se ha eliminado correctamente."),
     INF313("INF313", "Funcionalidad editada.", "La funcionalidad se ha editado correctamente."),
-    INF314("INF314", "asignacion ingresada.", "La asignacion se ha registrado correctamente."),
-    INF315("INF315", "asignacion eliminada.", "La asignacion se ha eliminada correctamente."),
+    INF314("INF314", "Asignacion ingresada.", "La asignacion se ha registrado correctamente."),
+    INF315("INF315", "Asignacion eliminada.", "La asignacion se ha eliminada correctamente."),
     INF316("INF316", "asignacion editada.", "La asignacion se ha editada correctamente."),
     ERR317("ERR317", "No se pudo salir del sistema.", "No se pudo salir del sistema."),
     ERR318("ERR318", "No se ha ingresado datos.", "No se han ingresado un usuario / contraseña."),
@@ -136,7 +136,9 @@ public enum EnumNewviExcepciones {
     INF501("ERR501", "Valoración finalizada", "El proceso de valoración ha finalizado."),
     // 601 al 700 excepciones de Rentas
     INF601("INF601", "Títulos generados", "Proceso finalizado. Se han generado [ntitulos] titulos."),
+    INF602("INF602", "Títulos registrados", "Proceso finalizado. Se han registrado [ntitulos] titulos."),
     ERR601("ERR601", "Propietario no encontrado", "El propietario del predio [predio] no pudo ser encontrado. Revise si el propietario existe."),
+    ERR602("ERR602", "Título no válido.", "El título ingresado no es válido. Por favor verifique que los datos ingresados son correctos."),
     ;
     
     private final String codigoExcepcion;

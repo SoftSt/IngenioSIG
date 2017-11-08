@@ -25,11 +25,11 @@ public class TituloFacade extends AbstractFacade<Titulos, Integer> implements Se
         super(Titulos.class, Integer.class);
     }
     
-    public List<Titulos> buscarContribuyentes() {
-        // Busca un listado de dominios
+    public List<Titulos> buscarTitulos() {
+        // Busca un listado de titulos
         Query q = this.getEntityManager().createQuery("SELECT titulo FROM Titulos titulo where titulo.tituloEstado = :ESTADO");
         q.setParameter("ESTADO", EnumEstadoRegistro.A);
-        //@return listado de dominios
+        //@return listado de titulos
         return q.getResultList();
     }
     

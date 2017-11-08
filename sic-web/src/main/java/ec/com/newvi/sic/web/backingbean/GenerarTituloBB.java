@@ -190,27 +190,28 @@ public class GenerarTituloBB extends AdminFichaCatastralBB {
         try {
             this.listaTitulosGenerados = rentasServicio.generarTitulosDesdeAvaluos(listaAvaluosSeleccionados, sesionBean.getSesion());
             this.totalPorCobrarTitulos = obtenerTotalesTitulos(this.listaTitulosGenerados);
-            
+
             Map<String, String> variables = new HashMap<>();
-            variables.put("ntitulos", (new Integer(this.listaTitulosGenerados.size())).toString());            
+            variables.put("ntitulos", (new Integer(this.listaTitulosGenerados.size())).toString());
             LoggerNewvi.getLogNewvi(this.getClass()).info(EnumNewviExcepciones.INF601.presentarMensaje(variables), sesionBean.getSesion());
             MensajesFaces.mensajeInformacion(EnumNewviExcepciones.INF601.presentarMensaje(variables));
-            
+
         } catch (NewviExcepcion e) {
             LoggerNewvi.getLogNewvi(this.getClass()).error(e, sesionBean.getSesion());
             MensajesFaces.mensajeError(e.getMessage());
         }
     }
+
     public void generarTodosTitulos() {
         try {
             this.listaTitulosGenerados = rentasServicio.generarTitulosDesdeAvaluos(this.listaAvaluosProcesados, sesionBean.getSesion());
             this.totalPorCobrarTitulos = obtenerTotalesTitulos(this.listaTitulosGenerados);
-            
+
             Map<String, String> variables = new HashMap<>();
-            variables.put("ntitulos", (new Integer(this.listaTitulosGenerados.size())).toString());            
+            variables.put("ntitulos", (new Integer(this.listaTitulosGenerados.size())).toString());
             LoggerNewvi.getLogNewvi(this.getClass()).info(EnumNewviExcepciones.INF601.presentarMensaje(variables), sesionBean.getSesion());
             MensajesFaces.mensajeInformacion(EnumNewviExcepciones.INF601.presentarMensaje(variables));
-            
+
         } catch (NewviExcepcion e) {
             LoggerNewvi.getLogNewvi(this.getClass()).error(e, sesionBean.getSesion());
             MensajesFaces.mensajeError(e.getMessage());
@@ -219,6 +220,24 @@ public class GenerarTituloBB extends AdminFichaCatastralBB {
 
     public Boolean hayTitulosPresentados() {
         return !this.listaTitulosGenerados.isEmpty();
+    }
+
+    public void registrarNuevoTitulo() throws NewviExcepcion {
+        for (Titulos nuevoTitulo : this.listaTitulosGenerados) {
+            try {
+                rentasServicio.generarNuevoTitulo(nuevoTitulo, sesionBean.getSesion());
+            } catch (NewviExcepcion e) {
+                LoggerNewvi.getLogNewvi(this.getClass()).error(e, sesionBean.getSesion());
+                MensajesFaces.mensajeError(e.getMessage());
+            } catch (Exception e) {
+                LoggerNewvi.getLogNewvi(this.getClass()).error(EnumNewviExcepciones.ERR000.presentarMensajeCodigo(), e, sesionBean.getSesion());
+                MensajesFaces.mensajeError(e.getMessage());
+            }
+        }
+        Map<String, String> variables = new HashMap<>();
+        variables.put("ntitulos", (new Integer(this.listaTitulosGenerados.size())).toString());
+        LoggerNewvi.getLogNewvi(this.getClass()).info(EnumNewviExcepciones.INF602.presentarMensaje(variables), sesionBean.getSesion());
+        MensajesFaces.mensajeInformacion(EnumNewviExcepciones.INF602.presentarMensaje(variables));
     }
 
 }

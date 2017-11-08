@@ -5,16 +5,17 @@
  */
 package ec.com.newvi.sic.servicios.impl;
 
+import ec.com.newvi.sic.dao.TituloFacade;
 import ec.com.newvi.sic.dto.SesionDto;
+import ec.com.newvi.sic.enums.EnumEstadoRegistro;
 import ec.com.newvi.sic.enums.EnumNewviExcepciones;
 import ec.com.newvi.sic.modelo.Avaluo;
 import ec.com.newvi.sic.modelo.Titulos;
-import ec.com.newvi.sic.servicios.CatastroServicio;
 import ec.com.newvi.sic.servicios.ContribuyentesServicio;
 import ec.com.newvi.sic.servicios.RentasServicio;
 import ec.com.newvi.sic.util.ComunUtil;
 import ec.com.newvi.sic.util.excepciones.NewviExcepcion;
-import java.math.BigDecimal;
+import ec.com.newvi.sic.util.logs.LoggerNewvi;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -35,15 +36,17 @@ public class RentasServicioImpl implements RentasServicio {
 
     @EJB
     private ContribuyentesServicio contribuyentesServicio;
+    @EJB
+    private TituloFacade tituloFacade;
 
     @Override
     public List<Titulos> generarTitulosDesdeAvaluos(List<Avaluo> listadoAvaluos, SesionDto sesion) throws NewviExcepcion {
-        
+
         List<Titulos> listaTitulosGenerados = new ArrayList<>();
-        
+
         for (Avaluo avaluo : listadoAvaluos) {
             Titulos nuevoTitulo = obtenerTituloDesdeAvaluo(avaluo);
-            
+
             // Registrar datos del nuevo titulo
             nuevoTitulo.setFecEmision(ComunUtil.hoy());
 
@@ -51,11 +54,11 @@ public class RentasServicioImpl implements RentasServicio {
             nuevoTitulo.setAudIngIp(sesion.getDireccionIP());
             nuevoTitulo.setAudIngUsu(sesion.getUsuarioRegistrado().getUsuPalabraclave().trim());
             nuevoTitulo.setAudIngFec(ComunUtil.hoy());
-            
+
             listaTitulosGenerados.add(nuevoTitulo);
-            
+
         }
-        
+
         return listaTitulosGenerados;
     }
 
@@ -80,8 +83,31 @@ public class RentasServicioImpl implements RentasServicio {
         nuevoTitulo.setValCem(avaluo.getValCem());
         nuevoTitulo.setValNoconstruido(avaluo.getValNoEdificacion());
         nuevoTitulo.setValTotalapagar(avaluo.getValImpuesto());
+        nuevoTitulo.setTituloEstado(EnumEstadoRegistro.A);
 
         return nuevoTitulo;
+    }
+
+    @Override
+    public void generarNuevoTitulo(Titulos nuevoTitulo, SesionDto sesion) throws NewviExcepcion {
+        // Validar que los datos no sean incorrectos
+            LoggerNewvi.getLogNewvi(this.getClass()).debug("Validando predio...", sesion);
+            if (!nuevoTitulo.esTituloValido()) {
+                throw new NewviExcepcion(EnumNewviExcepciones.ERR602);
+            }
+            // Crear el predio
+            LoggerNewvi.getLogNewvi(this.getClass()).debug("Creando predio...", sesion);
+
+            //Registramos la auditoria de ingreso
+            Date fechaIngreso = Calendar.getInstance().getTime();
+            nuevoTitulo.setAudIngIp(sesion.getDireccionIP());
+            nuevoTitulo.setAudIngUsu(sesion.getUsuarioRegistrado().getUsuPalabraclave().trim());
+            nuevoTitulo.setAudIngFec(fechaIngreso);
+
+            tituloFacade.create(nuevoTitulo);
+            // Si todo marcha bien enviar nombre del predio
+            //return nuevoPredio.getNomCodigocatastral();
+        
     }
 
 }

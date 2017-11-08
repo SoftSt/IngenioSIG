@@ -267,6 +267,14 @@
                                         </p:columnGroup>
 
                                     </p:dataTable>
+                                    
+                                <p:commandButton value="Guardar títulos" icon="fa-floppy-o"
+                                                     update="grupoTitulos" 
+                                                     id="btnRegistrarTodosTitulos"
+                                                     onclick="PF('statusDialog').show();"
+                                                     oncomplete="PF('statusDialog').hide();"
+                                                     actionListener="#{generarTituloBB.registrarNuevoTitulo()}">
+                                    </p:commandButton>
                                 </h:panelGrid>
                             </p:tab>
                         </p:tabView>
