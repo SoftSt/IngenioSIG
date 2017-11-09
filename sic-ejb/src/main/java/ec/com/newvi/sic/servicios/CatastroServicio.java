@@ -90,6 +90,14 @@ public interface CatastroServicio {
      * @throws NewviExcepcion
      */
     public String generarLogPredio(Predios predio) throws NewviExcepcion;
+    /**
+     * actualizará los valores de zona sector manzana y codpresio
+     * @param predioActualizable predio en cual va ser actualizado
+     * @param sesion sesion que realizará la accion
+     * @return el predio actualizado
+     * @throws NewviExcepcion 
+     */
+    public Predios actualizarValoresUbicacion(Predios predioActualizable, SesionDto sesion) throws NewviExcepcion;
 
     /*------------------------------------------------------------Bloques------------------------------------------------------------*/
     /**

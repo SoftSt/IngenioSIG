@@ -21,6 +21,7 @@ import ec.com.newvi.sic.dto.SesionDto;
 import ec.com.newvi.sic.enums.EnumCaracteristicasAvaluo;
 import ec.com.newvi.sic.enums.EnumEstadoRegistro;
 import ec.com.newvi.sic.enums.EnumNewviExcepciones;
+import ec.com.newvi.sic.enums.EnumParametroSistema;
 import ec.com.newvi.sic.modelo.Avaluo;
 import ec.com.newvi.sic.modelo.Bloques;
 import ec.com.newvi.sic.modelo.ConstantesImpuestos;
@@ -777,6 +778,17 @@ public class CatastroServicioImpl implements CatastroServicio {
         listaValorEdificacion.add(generarElementoArbolAvaluo(EnumCaracteristicasAvaluo.PREDIO_VALOR_EDIFICACION.getTitulo(), ComunUtil.generarFormatoMoneda(valorEdificacion, formatoMonedaSistema), null, null));
         return listaValorEdificacion;
     }
+    @Override
+    public Predios actualizarValoresUbicacion(Predios predioActualizable, SesionDto sesion) throws NewviExcepcion{
+        String codCatastral = predioActualizable.getNomCodigocatastralanterior();
+        predioActualizable.setCodZona(codCatastral.substring(6, 8));
+        predioActualizable.setCodSector(codCatastral.substring(8, 10));
+        predioActualizable.setCodZona(codCatastral.substring(10, 12));
+        predioActualizable.setCodManzana(codCatastral.substring(12, 14));
+        predioActualizable.setCodPredio(codCatastral.substring(14, codCatastral.length()));
+        actualizarPredio(predioActualizable, sesion);
+        return predioActualizable;
+    }
 
     private List<AvaluoDto> obtenerValorTerreno(Predios predio, List<Dominios> dominios, BigDecimal promedioFactores, String formatoMonedaSistema) throws NewviExcepcion {
         String zona = predio.getCodZona();
@@ -784,19 +796,18 @@ public class CatastroServicioImpl implements CatastroServicio {
         String mazana = predio.getCodManzana();
         String codPredio = predio.getCodPredio();
         
-        // [TODO] Agregar RangoPredio
         BigDecimal valorMetro2, valorTerreno;
         BigDecimal area = !ComunUtil.esNulo(predio.getValAreaPredio()) ? predio.getValAreaPredio() : BigDecimal.ZERO;
         List<AvaluoDto> listaValorTerreno = new ArrayList<>();
-        //valorMetro2 = obtenerValorPorCodigoCalculo(dominios, "20" + zona + sector, "ZONAS VALORADAS M2");
-        valorMetro2 = obtenerValorPorCodigoCalculo(dominios, obtenerCodigoBusqueda(zona, sector, mazana, codPredio), "ZONAS VALORADAS M2");
+        valorMetro2 = obtenerValorPorCodigoCalculo(dominios, "20" + zona + sector, "ZONAS VALORADAS M2");
+        //valorMetro2 = obtenerValorPorCodigoCalculo(dominios, obtenerCodigoBusqueda(zona, sector, mazana, codPredio), "ZONAS VALORADAS M2");
         valorTerreno = area.multiply(valorMetro2.multiply(promedioFactores));
         listaValorTerreno.add(generarElementoArbolAvaluo(EnumCaracteristicasAvaluo.PREDIO_PROMEDIO_FACTORES.getTitulo(), promedioFactores.setScale(2, BigDecimal.ROUND_UP).toString(), null, null));
         listaValorTerreno.add(generarElementoArbolAvaluo("Precio base en M2 en la zona " + zona + " sector " + sector, valorMetro2.setScale(2, BigDecimal.ROUND_UP).toString(), null, null));
         listaValorTerreno.add(generarElementoArbolAvaluo(EnumCaracteristicasAvaluo.PREDIO_VALOR_TERRENO.getTitulo(), ComunUtil.generarFormatoMoneda(valorTerreno, formatoMonedaSistema), null, null));
         return listaValorTerreno;
     }
-    private String obtenerCodigoBusqueda(String zona, String sector, String manzana, String rango){
+    private String obtenerCodigoBusqueda(String zona, String sector, String manzana, String codPredio){
         return zona+sector+manzana;
     }
 
