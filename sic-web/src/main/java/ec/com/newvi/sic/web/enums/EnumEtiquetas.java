@@ -166,6 +166,21 @@ public enum EnumEtiquetas {
     RECAUDACION_EDITAR_TITULO("Editar Recaudacion"),
     RECAUDACION_EDITAR_ICONO("fa fa-edit"),
     RECAUDACION_EDITAR_DESCRIPCION("Edición de Recaudacion seleccionada."),
+    
+    FORMULARIO_DESCUENTO_LISTA_TITULO("Formulario Descuentos"),
+    FORMULARIO_DESCUENTO_LISTA_ICONO("fa fa-money"),
+    FORMULARIO_DESCUENTO_LISTA_DESCRIPCION("Gestión de Descuentos."),
+     
+    DESCUENTO_LISTA_TITULO("Descuentos"),
+    DESCUENTO_LISTA_ICONO("fa fa-leanpub"),
+    DESCUENTO_LISTA_DESCRIPCION("Gestión de descuento en el sistema."),
+    DESCUENTO_NUEVO_TITULO("Nuevo Descuento"),
+    DESCUENTO_NUEVO_ICONO("fa fa-plus"),
+    DESCUENTO_NUEVO_DESCRIPCION("Creación de nuevo descuento."),
+    DESCUENTO_EDITAR_TITULO("Editar Descuento"),
+    DESCUENTO_EDITAR_ICONO("fa fa-edit"),
+    DESCUENTO_EDITAR_DESCRIPCION("Edición de descuento seleccionado."),
+    
     ;
     
     private final String textoEtiqueta;
