@@ -137,8 +137,10 @@ public enum EnumNewviExcepciones {
     // 601 al 700 excepciones de Rentas
     INF601("INF601", "Títulos generados", "Proceso finalizado. Se han generado [ntitulos] titulos."),
     INF602("INF602", "Títulos registrados", "Proceso finalizado. Se han registrado [ntitulos] titulos."),
+    INF603("INF603", "Título eliminado", "Título eliminado. Se ha eliminado correctamente."),
     ERR601("ERR601", "Propietario no encontrado", "El propietario del predio [predio] no pudo ser encontrado. Revise si el propietario existe."),
     ERR602("ERR602", "Título no válido.", "El título ingresado no es válido. Por favor verifique que los datos ingresados son correctos."),
+    ERR603("ERR603", "Título no encontrado.", "El título seleccionado no se encontró. Por favor verifique que los datos ingresados son correctos."),
     ;
     
     private final String codigoExcepcion;

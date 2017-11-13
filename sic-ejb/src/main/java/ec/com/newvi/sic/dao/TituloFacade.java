@@ -6,8 +6,10 @@
 package ec.com.newvi.sic.dao;
 
 import ec.com.newvi.sic.enums.EnumEstadoRegistro;
+import ec.com.newvi.sic.enums.EnumEstadoTitulo;
 import ec.com.newvi.sic.modelo.Titulos;
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 import javax.annotation.security.PermitAll;
 import javax.ejb.Stateless;
@@ -32,5 +34,24 @@ public class TituloFacade extends AbstractFacade<Titulos, Integer> implements Se
         //@return listado de titulos
         return q.getResultList();
     }
+    public List<Titulos> buscarTitulosGenerados(Date fechaEmision) {
+        // Busca un listado de titulos
+        Query q = this.getEntityManager().createQuery("SELECT titulo FROM Titulos titulo where titulo.fecEmision = :FECHAEMISION AND titulo.stsEstado = :ESTADOTITULO AND titulo.tituloEstado = :ESTADO");
+        q.setParameter("FECHAEMISION", fechaEmision);
+        q.setParameter("ESTADOTITULO", EnumEstadoTitulo.TITULO_EMITIDO);
+        q.setParameter("ESTADO", EnumEstadoRegistro.A);
+        //@return listado de titulos
+        return q.getResultList();
+    }
     
+    public List<Titulos> buscarTitulosPorCodigoCatastral(Integer codCatastral) {
+        // Busca un listado de titulos
+        Query q = this.getEntityManager().createQuery("SELECT titulo FROM Titulos titulo where titulo.tituloEstado = :ESTADO AND titulo.codCatastral.codCatastral = :CODCATASTRAL AND titulo.stsEstado = :ESTADOTITULO OR titulo.stsEstado = :ESTADOTITULOAUX");
+        q.setParameter("ESTADO", EnumEstadoRegistro.A);
+        q.setParameter("ESTADOTITULO", EnumEstadoTitulo.TITULO_EMITIDO);
+        q.setParameter("ESTADOTITULOAUX", EnumEstadoTitulo.TITULO_COBRADO);
+        q.setParameter("CODCATASTRAL", codCatastral);
+        //@return listado de titulos
+        return q.getResultList();
+    }
 }

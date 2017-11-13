@@ -43,17 +43,18 @@ public class RentasServicioImpl implements RentasServicio {
     public List<Titulos> generarTitulosDesdeAvaluos(List<Avaluo> listadoAvaluos, SesionDto sesion) throws NewviExcepcion {
 
         List<Titulos> listaTitulosGenerados = new ArrayList<>();
+        Date fechaEmision = ComunUtil.hoy();
 
         for (Avaluo avaluo : listadoAvaluos) {
             Titulos nuevoTitulo = obtenerTituloDesdeAvaluo(avaluo);
 
             // Registrar datos del nuevo titulo
-            nuevoTitulo.setFecEmision(ComunUtil.hoy());
+            nuevoTitulo.setFecEmision(fechaEmision);
 
             //Registramos la auditoria de ingreso
             nuevoTitulo.setAudIngIp(sesion.getDireccionIP());
             nuevoTitulo.setAudIngUsu(sesion.getUsuarioRegistrado().getUsuPalabraclave().trim());
-            nuevoTitulo.setAudIngFec(ComunUtil.hoy());
+            nuevoTitulo.setAudIngFec(fechaEmision);
 
             listaTitulosGenerados.add(nuevoTitulo);
 
@@ -89,25 +90,66 @@ public class RentasServicioImpl implements RentasServicio {
     }
 
     @Override
-    public void generarNuevoTitulo(Titulos nuevoTitulo, SesionDto sesion) throws NewviExcepcion {
+    public Date generarNuevoTitulo(Titulos nuevoTitulo, SesionDto sesion) throws NewviExcepcion {
         // Validar que los datos no sean incorrectos
-            LoggerNewvi.getLogNewvi(this.getClass()).debug("Validando predio...", sesion);
-            if (!nuevoTitulo.esTituloValido()) {
-                throw new NewviExcepcion(EnumNewviExcepciones.ERR602);
-            }
-            // Crear el predio
-            LoggerNewvi.getLogNewvi(this.getClass()).debug("Creando predio...", sesion);
+        LoggerNewvi.getLogNewvi(this.getClass()).debug("Validando título...", sesion);
+        if (!nuevoTitulo.esTituloValido()) {
+            throw new NewviExcepcion(EnumNewviExcepciones.ERR602);
+        }
+        // Crear el titulo
+        LoggerNewvi.getLogNewvi(this.getClass()).debug("Creando título...", sesion);
 
-            //Registramos la auditoria de ingreso
-            Date fechaIngreso = Calendar.getInstance().getTime();
-            nuevoTitulo.setAudIngIp(sesion.getDireccionIP());
-            nuevoTitulo.setAudIngUsu(sesion.getUsuarioRegistrado().getUsuPalabraclave().trim());
-            nuevoTitulo.setAudIngFec(fechaIngreso);
+        //Registramos la auditoria de ingreso
+        Date fechaIngreso = Calendar.getInstance().getTime();
+        nuevoTitulo.setAudIngIp(sesion.getDireccionIP());
+        nuevoTitulo.setAudIngUsu(sesion.getUsuarioRegistrado().getUsuPalabraclave().trim());
+        nuevoTitulo.setAudIngFec(fechaIngreso);
 
-            tituloFacade.create(nuevoTitulo);
-            // Si todo marcha bien enviar nombre del predio
-            //return nuevoPredio.getNomCodigocatastral();
-        
+        tituloFacade.create(nuevoTitulo);
+        // Si todo marcha bien se retorna la fecha de emsion
+        return nuevoTitulo.getFecEmision();
+    }
+
+    @Override
+    public List<Titulos> consultarTitulosGenerados(Date fechaEmision) {
+        return tituloFacade.buscarTitulosGenerados(fechaEmision);
+    }
+
+    @Override
+    public List<Titulos> consultarTitulosPorCodigoCatastral(Integer codCatastral) {
+        return tituloFacade.buscarTitulosPorCodigoCatastral(codCatastral);
+    }
+
+    @Override
+    public Titulos seleccionarTitulo(Integer codTitulo) throws NewviExcepcion {
+        if (ComunUtil.esNumeroPositivo(codTitulo)) {
+            return tituloFacade.find(codTitulo);
+        } else {
+            throw new NewviExcepcion(EnumNewviExcepciones.ERR011);
+        }
+    }
+    
+    @Override
+    public String actualizarTitulo(Titulos titulo, SesionDto sesion) throws NewviExcepcion{
+        // Validar que los datos no sean incorrectos
+        LoggerNewvi.getLogNewvi(this.getClass()).debug("Validando título...", sesion);
+        if (!titulo.esTituloValido()) {
+            throw new NewviExcepcion(EnumNewviExcepciones.ERR602);
+        }
+        // Editar el título
+        LoggerNewvi.getLogNewvi(this.getClass()).debug("Editando título...", sesion);
+
+        //Registramos la auditoria de modificacion
+        Date fechaModificacion = Calendar.getInstance().getTime();
+        titulo.setAudModIp(sesion.getDireccionIP());
+        titulo.setAudModUsu(sesion.getUsuarioRegistrado().getUsuPalabraclave().trim());
+        titulo.setAudModFec(fechaModificacion);
+
+
+        tituloFacade.edit(titulo);
+
+        // Si todo marcha bien enviar nombre del título
+        return titulo.getCodTitulos()+"";
     }
 
 }

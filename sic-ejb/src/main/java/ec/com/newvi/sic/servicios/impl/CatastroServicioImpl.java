@@ -624,11 +624,23 @@ public class CatastroServicioImpl implements CatastroServicio {
         return fotosFacade.buscarFotosPorPredio(codCatastral);
     }
 
-    public List<Dominios> obtenerDominiosPorCodigoYCalculo(List<Dominios> dominios, String codigo, String calculo) {
+    public BigDecimal obtenerM2Ame(List<Dominios> dominios, String codigo, String codPredio, String calculo) {
+        for (Dominios dominioObtenido : obtenerDominiosPorCalculoYManzana(dominios, calculo, codigo)) {
+            String codPredioObtenido = dominioObtenido.getDomiCodigo().trim().substring(8, 11);
+            if (codPredioObtenido.equals(codPredio)) {
+                return new BigDecimal(dominioObtenido.getDomiCoefic());
+            }
+        }
+        return null;
+    }
+
+    public List<Dominios> obtenerDominiosPorCalculoYManzana(List<Dominios> dominios, String calculo, String codigo) {
         List<Dominios> dominiosFiltrados = new ArrayList<>();
         for (Dominios dominioObtenido : dominios) {
-            if ((dominioObtenido.getDomiCodigo().trim()).contains(codigo)
-                    && (dominioObtenido.getDomiCalculo().trim()).contains(calculo)) {
+            //String codDominio = dominioObtenido.getDomiCodigo().trim().substring(0, 8);
+            String codDominio = dominioObtenido.getDomiCodigo().trim().length() > 9 ? dominioObtenido.getDomiCodigo().trim().substring(0, 8) : "0";
+            if (!ComunUtil.esNulo(dominioObtenido.getDomiCalculo())
+                    && (dominioObtenido.getDomiCalculo().trim()).contains(calculo) && codDominio.equals(codigo)) {
                 dominiosFiltrados.add(dominioObtenido);
             }
         }
@@ -653,6 +665,17 @@ public class CatastroServicioImpl implements CatastroServicio {
         }
         return coeficiente;
     }
+    
+    public List<Dominios> obtenerDominiosPorCodigoYCalculo(List<Dominios> dominios, String codigo, String calculo) {
+        List<Dominios> dominiosFiltrados = new ArrayList<>();
+        for (Dominios dominioObtenido : dominios) {
+            if ((dominioObtenido.getDomiCodigo().trim()).contains(codigo)
+                    && (dominioObtenido.getDomiCalculo().trim()).contains(calculo)) {
+                dominiosFiltrados.add(dominioObtenido);
+            }
+        }
+        return dominiosFiltrados;
+    }
 
     public BigDecimal obtenerCoeficienteTerreno(Predios predio, List<Dominios> dominios, String domiCalculo) {
         List<Dominios> listaDominiosTerreno;
@@ -672,7 +695,6 @@ public class CatastroServicioImpl implements CatastroServicio {
         }
         return promedioCoeficientes;
     }
-
     public BigDecimal obtenerCoeficienteServicio(Predios predio, List<Dominios> dominios, String domiCalculo) {
         List<Dominios> listaDominiosServicio;
         BigDecimal totalCoeficienteCalculo = BigDecimal.ZERO;
@@ -691,7 +713,6 @@ public class CatastroServicioImpl implements CatastroServicio {
         }
         return promedioCoeficientes;
     }
-
     public BigDecimal obtenerValorPorCodigoCalculo(List<Dominios> dominios, String codigo, String calculo) {
         List<Dominios> listaDominios = obtenerDominiosPorCodigoYCalculo(dominios, codigo, calculo);
         return obtenerSumaCoeficientes(listaDominios);
@@ -778,8 +799,9 @@ public class CatastroServicioImpl implements CatastroServicio {
         listaValorEdificacion.add(generarElementoArbolAvaluo(EnumCaracteristicasAvaluo.PREDIO_VALOR_EDIFICACION.getTitulo(), ComunUtil.generarFormatoMoneda(valorEdificacion, formatoMonedaSistema), null, null));
         return listaValorEdificacion;
     }
+
     @Override
-    public Predios actualizarValoresUbicacion(Predios predioActualizable, SesionDto sesion) throws NewviExcepcion{
+    public Predios actualizarValoresUbicacion(Predios predioActualizable, SesionDto sesion) throws NewviExcepcion {
         String codCatastral = predioActualizable.getNomCodigocatastralanterior();
         predioActualizable.setCodZona(codCatastral.substring(6, 8));
         predioActualizable.setCodSector(codCatastral.substring(8, 10));
@@ -795,20 +817,22 @@ public class CatastroServicioImpl implements CatastroServicio {
         String sector = predio.getCodSector();
         String mazana = predio.getCodManzana();
         String codPredio = predio.getCodPredio();
-        
+
         BigDecimal valorMetro2, valorTerreno;
         BigDecimal area = !ComunUtil.esNulo(predio.getValAreaPredio()) ? predio.getValAreaPredio() : BigDecimal.ZERO;
         List<AvaluoDto> listaValorTerreno = new ArrayList<>();
         valorMetro2 = obtenerValorPorCodigoCalculo(dominios, "20" + zona + sector, "ZONAS VALORADAS M2");
-        //valorMetro2 = obtenerValorPorCodigoCalculo(dominios, obtenerCodigoBusqueda(zona, sector, mazana, codPredio), "ZONAS VALORADAS M2");
+        //valorMetro2 = obtenerValorPorCodigoCalculo(dominios, "20" + zona + sector + mazana + codPredio, "ZONAS VALORADAS AME");
+        //valorMetro2 = obtenerM2Ame(dominios, "040518", "999", "ZONAS VALORADAS M2");
         valorTerreno = area.multiply(valorMetro2.multiply(promedioFactores));
         listaValorTerreno.add(generarElementoArbolAvaluo(EnumCaracteristicasAvaluo.PREDIO_PROMEDIO_FACTORES.getTitulo(), promedioFactores.setScale(2, BigDecimal.ROUND_UP).toString(), null, null));
         listaValorTerreno.add(generarElementoArbolAvaluo("Precio base en M2 en la zona " + zona + " sector " + sector, valorMetro2.setScale(2, BigDecimal.ROUND_UP).toString(), null, null));
         listaValorTerreno.add(generarElementoArbolAvaluo(EnumCaracteristicasAvaluo.PREDIO_VALOR_TERRENO.getTitulo(), ComunUtil.generarFormatoMoneda(valorTerreno, formatoMonedaSistema), null, null));
         return listaValorTerreno;
     }
-    private String obtenerCodigoBusqueda(String zona, String sector, String manzana, String codPredio){
-        return zona+sector+manzana;
+
+    private String obtenerCodigoBusqueda(String zona, String sector, String manzana, String codPredio) {
+        return zona + sector + manzana;
     }
 
     private AvaluoDto generarCoeficienteFrenteFondo(Predios predio, List<Dominios> dominios) {

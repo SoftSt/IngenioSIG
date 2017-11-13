@@ -44,17 +44,17 @@
                                                      id="btnReiniciarConsulta"
                                                      actionListener="#{generarTituloBB.reiniciarConsulta()}">
                                     </p:commandButton>
-                                    <p:commandButton value="Generar títulos" icon="fa fa-bolt" 
-                                                     update="grupoTitulos" 
-                                                     id="btnGenerarTitulos"
-                                                     actionListener="#{generarTituloBB.generarTitulos()}">
+                                    <p:commandButton value="Seleccionar todos" icon="fa fa-check-square-o" 
+                                                     id="btnSeleccionarTodosTitulos"
+                                                     update="listaAvaluosProcesados"
+                                                     actionListener="#{generarTituloBB.seleccionarTodosTitulos()}">
                                     </p:commandButton>
-                                    <p:commandButton value="Generar todos" icon="fa fa-check-square-o" 
-                                                     update="grupoTitulos" 
-                                                     id="btnGenerarTodosTitulos"
+                                    <p:commandButton value="Generar títulos" icon="fa fa-bolt" 
+                                                     update="grupoTitulos"
                                                      onclick="PF('statusDialog').show();"
                                                      oncomplete="PF('statusDialog').hide();"
-                                                     actionListener="#{generarTituloBB.generarTodosTitulos()}">
+                                                     id="btnGenerarTitulos"
+                                                     actionListener="#{generarTituloBB.generarTitulos()}">
                                     </p:commandButton>
                                 </h:panelGrid>
                                 <h:panelGrid>
@@ -68,7 +68,7 @@
                                                  paginatorPosition="bottom">
 
                                         <p:column selectionMode="multiple" width="20" style="text-align:center" priority="1"/>
-                                        
+
                                         <p:column headerText="Clave" sortBy="#{avaluoProcesado.nomCodigocatastral}" width="50" filterBy="#{avaluoProcesado.nomCodigocatastral}" priority="2">
                                             <h:outputText value="#{avaluoProcesado.nomCodigocatastral}" />
                                         </p:column>
@@ -164,7 +164,18 @@
                                     </p:dataTable>
                                 </h:panelGrid>
                             </p:tab>
-                            <p:tab title="Títulos generados">
+                            <p:tab title="Registro de títulos">
+                                <h:panelGrid columns="1">
+                                    <p:remoteCommand name="rc" actionListener="#{generarTituloBB.limpiarListaGenerados()}" />
+                                    <p:commandButton value="Guardar títulos" icon="fa fa-floppy-o"
+                                                     update="grupoTitulos" 
+                                                     id="btnRegistrarTodosTitulos"
+                                                     onclick="PF('statusDialog').show();"
+                                                     oncomplete="PF('statusDialog').hide();"
+                                                     actionListener="#{generarTituloBB.registrarNuevoTitulo()}">
+                                        <p:confirm header="Información" message="Se podrá realizar unicamente un registro por año. ¿Desea continuar?" icon="ui-icon-alert" />
+                                    </p:commandButton>
+                                </h:panelGrid>
                                 <h:panelGrid>
                                     <p:dataTable id="listaTitulosGenerados" var="tituloGenerado" widgetVar="listaTitulosGeneradosTabla"
                                                  value="#{generarTituloBB.listaTitulosGenerados}" rowKey="#{avaluoProcesado.avalId}" filteredValue="#{generarTituloBB.listaTitulosGeneradosFiltrados}"
@@ -267,14 +278,113 @@
                                         </p:columnGroup>
 
                                     </p:dataTable>
-                                    
-                                <p:commandButton value="Guardar títulos" icon="fa-floppy-o"
-                                                     update="grupoTitulos" 
-                                                     id="btnRegistrarTodosTitulos"
-                                                     onclick="PF('statusDialog').show();"
-                                                     oncomplete="PF('statusDialog').hide();"
-                                                     actionListener="#{generarTituloBB.registrarNuevoTitulo()}">
-                                    </p:commandButton>
+
+                                </h:panelGrid>
+                            </p:tab>
+                            <p:tab title="Títulos generados">
+                                <h:panelGrid>
+                                    <p:dataTable id="listaTitulosRegistrados" var="tituloRegistrado" widgetVar="listaTitulosRegistradosTabla"
+                                                 value="#{generarTituloBB.listaTitulosRegistrados}" rowKey="#{tituloRegistrado.codTitulos}" filteredValue="#{generarTituloBB.listaTitulosRegistradosFiltrados}"
+                                                 paginator="true" rows="10" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" 
+                                                 rowsPerPageTemplate="10,30,50" 
+                                                 resizableColumns="true"
+                                                 style="font-size: 0.8em;" sortBy="#{tituloRegistrado.codTitulos}"
+                                                 emptyMessage="No se han encontrado resultados" 
+                                                 paginatorPosition="bottom">
+
+                                        <p:column headerText="Clave" sortBy="#{tituloRegistrado.nomCodigocatastral}" width="50" filterBy="#{tituloRegistrado.nomCodigocatastral}" priority="2">
+                                            <h:outputText value="#{tituloRegistrado.nomCodigocatastral}" />
+                                        </p:column>
+
+                                        <p:column headerText="Propietario" sortBy="#{tituloRegistrado.codPropietarios.contribuyente.nomApellidos} #{tituloRegistrado.codPropietarios.contribuyente.nomNombres}" width="50" filterBy="#{tituloRegistrado.codPropietarios.contribuyente.nomApellidos} #{tituloRegistrado.codPropietarios.contribuyente.nomNombres}" filterMatchMode="contains" priority="6">
+                                            <h:outputText value="#{tituloRegistrado.codPropietarios.contribuyente.nomApellidos} #{tituloRegistrado.codPropietarios.contribuyente.nomNombres}" />
+                                        </p:column>
+
+                                        <p:column headerText="Terreno (m2)" width="40" priority="6">
+                                            <h:outputText value="#{tituloRegistrado.valAreaterreno}" style="float:right">
+                                                <f:convertNumber pattern="###,###.00"/>
+                                            </h:outputText>
+                                        </p:column>
+
+                                        <p:column headerText="Valor Terreno" width="50" priority="4">
+                                            <h:outputText value="#{tituloRegistrado.valValorterreno}" style="float:right">
+                                                <f:convertNumber pattern="$ ###,###.00"/>
+                                            </h:outputText>
+                                        </p:column>
+
+                                        <p:column headerText="Edific. (m2)" width="40" priority="6">
+                                            <h:outputText value="#{tituloRegistrado.valAreaconstruccion}" style="float:right">
+                                                <f:convertNumber pattern="###,###.00"/>
+                                            </h:outputText>
+                                        </p:column>
+
+                                        <p:column headerText="Valor Edific." width="50" priority="4">
+                                            <h:outputText value="#{tituloRegistrado.valConstruccion}" style="float:right">
+                                                <f:convertNumber pattern="$ ###,###.00"/>
+                                            </h:outputText>
+                                        </p:column>
+
+                                        <p:column headerText="Propiedad" width="50" priority="4">
+                                            <h:outputText value="#{tituloRegistrado.valBaseimponible}" style="float:right">
+                                                <f:convertNumber pattern="$ ###,###.00"/>
+                                            </h:outputText>
+                                        </p:column>
+
+                                        <p:column headerText="Imp. Predial" width="50" priority="4">
+                                            <h:outputText value="#{tituloRegistrado.valImpuestopredial}" style="float:right">
+                                                <f:convertNumber pattern="$ ###,###.00"/>
+                                            </h:outputText>
+                                        </p:column>
+
+                                        <p:column headerText="Bomberos" width="40" priority="6">
+                                            <h:outputText value="#{tituloRegistrado.valBomberos}" style="float:right">
+                                                <f:convertNumber pattern="$ ###,###.00"/>
+                                            </h:outputText>
+                                        </p:column>
+
+                                        <p:column headerText="Solar No Edif" width="50" priority="6">
+                                            <h:outputText value="#{tituloRegistrado.valNoconstruido}" style="float:right">
+                                                <f:convertNumber pattern="$ ###,###.00"/>
+                                            </h:outputText>
+                                        </p:column>
+
+                                        <p:column headerText="Edif. Obsoleta" width="50" priority="6">
+                                            <h:outputText value="#{tituloRegistrado.valNoconstruido}" style="float:right">
+                                                <f:convertNumber pattern="$ ###,###.00"/>
+                                            </h:outputText>
+                                        </p:column>
+
+                                        <p:column headerText="A pagar" width="60" priority="1">
+                                            <h:outputText value="#{tituloRegistrado.valTotalapagar}" style="float:right">
+                                                <f:convertNumber pattern="$ ###,###.00"/>
+                                            </h:outputText>
+                                        </p:column>
+
+                                        <p:columnGroup rendered="true" type="footer">
+                                            <p:row>
+                                                <p:column footerText="Total:" priority="1"/>
+                                                <p:column priority="6"/>
+                                                <p:column priority="6"/>
+                                                <p:column priority="4"/>
+                                                <p:column priority="6"/>
+                                                <p:column priority="4"/>
+                                                <p:column priority="4"/>
+                                                <p:column priority="4"/>
+                                                <p:column priority="6"/>
+                                                <p:column priority="6"/>
+                                                <p:column priority="6"/>
+                                                <p:column width="60" priority="1">
+                                                    <f:facet name="footer">
+                                                        <h:outputText value="#{generarTituloBB.totalCobrardoTitulos}" style="float:right">
+                                                            <f:convertNumber pattern="$ ###,###.00"/>
+                                                        </h:outputText>
+                                                    </f:facet>
+                                                </p:column>
+                                            </p:row>
+                                        </p:columnGroup>
+
+                                    </p:dataTable>
+
                                 </h:panelGrid>
                             </p:tab>
                         </p:tabView>

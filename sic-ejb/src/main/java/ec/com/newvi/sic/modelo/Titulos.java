@@ -6,6 +6,7 @@
 package ec.com.newvi.sic.modelo;
 
 import ec.com.newvi.sic.enums.EnumEstadoRegistro;
+import ec.com.newvi.sic.enums.EnumEstadoTitulo;
 import ec.com.newvi.sic.util.ComunUtil;
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -62,9 +63,12 @@ public class Titulos implements Serializable {
     @Size(max = 25)
     @Column(name = "sts_tipo")
     private String stsTipo;
-    @Size(max = 25)
+    @Size(max = 30)
+    @Column(name = "cod_secuencial")
+    private String codSecuencial;
+    @Enumerated(EnumType.STRING)
     @Column(name = "sts_estado")
-    private String stsEstado;
+    private EnumEstadoTitulo stsEstado;
     @Column(name = "val_nroimpresion")
     private Integer valNroimpresion;
     @Size(max = 100)
@@ -235,11 +239,11 @@ public class Titulos implements Serializable {
         this.stsTipo = stsTipo;
     }
 
-    public String getStsEstado() {
+    public EnumEstadoTitulo getStsEstado() {
         return stsEstado;
     }
 
-    public void setStsEstado(String stsEstado) {
+    public void setStsEstado(EnumEstadoTitulo stsEstado) {
         this.stsEstado = stsEstado;
     }
 
@@ -555,6 +559,14 @@ public class Titulos implements Serializable {
         this.codPropietarios = codPropietarios;
     }
 
+    public String getCodSecuencial() {
+        return codSecuencial;
+    }
+
+    public void setCodSecuencial(String codSecuencial) {
+        this.codSecuencial = codSecuencial;
+    }
+    
     @Override
     public int hashCode() {
         int hash = 0;

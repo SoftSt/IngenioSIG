@@ -5,11 +5,13 @@
  */
 package ec.com.newvi.sic.web.backingbean;
 
+import ec.com.newvi.sic.enums.EnumEstadoTitulo;
 import ec.com.newvi.sic.enums.EnumNewviExcepciones;
 import ec.com.newvi.sic.modelo.Avaluo;
 import ec.com.newvi.sic.modelo.FechaAvaluo;
 import ec.com.newvi.sic.modelo.Titulos;
 import ec.com.newvi.sic.servicios.RentasServicio;
+import ec.com.newvi.sic.util.ComunUtil;
 import ec.com.newvi.sic.util.excepciones.NewviExcepcion;
 import ec.com.newvi.sic.util.logs.LoggerNewvi;
 import ec.com.newvi.sic.web.MensajesFaces;
@@ -17,7 +19,10 @@ import ec.com.newvi.sic.web.enums.EnumEtiquetas;
 import ec.com.newvi.sic.web.enums.EnumPantallaMantenimiento;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.PostConstruct;
@@ -43,12 +48,17 @@ public class GenerarTituloBB extends AdminFichaCatastralBB {
     private List<Avaluo> listaAvaluosProcesadosFiltrados;
     private List<FechaAvaluo> listaFechaAvaluos;
     private List<Titulos> listaTitulosGenerados;
+    private List<Titulos> listaTitulosRegistrados;
     private List<Titulos> listaTitulosGeneradosFiltrados;
+    private List<Titulos> listaTitulosRegistradosFiltrados;
     private FechaAvaluo fechaAvaluoActual;
     private String fechaActualPrueba;
 
     private BigDecimal totalPorCobrarConsulta;
     private BigDecimal totalPorCobrarTitulos;
+    private BigDecimal totalCobrardoTitulos;
+
+    private Date fechaEmisionTitulo;
 
     public String getFechaActualPrueba() {
         return fechaActualPrueba;
@@ -114,6 +124,30 @@ public class GenerarTituloBB extends AdminFichaCatastralBB {
         return totalPorCobrarTitulos;
     }
 
+    public BigDecimal getTotalCobrardoTitulos() {
+        return totalCobrardoTitulos;
+    }
+
+    public Date getFechaEmisionTitulo() {
+        return fechaEmisionTitulo;
+    }
+
+    public List<Titulos> getListaTitulosRegistrados() {
+        return listaTitulosRegistrados;
+    }
+
+    public void setListaTitulosRegistrados(List<Titulos> listaTitulosRegistrados) {
+        this.listaTitulosRegistrados = listaTitulosRegistrados;
+    }
+
+    public List<Titulos> getListaTitulosRegistradosFiltrados() {
+        return listaTitulosRegistradosFiltrados;
+    }
+
+    public void setListaTitulosRegistradosFiltrados(List<Titulos> listaTitulosRegistradosFiltrados) {
+        this.listaTitulosRegistradosFiltrados = listaTitulosRegistradosFiltrados;
+    }
+
     @PostConstruct
     public void init() {
 
@@ -125,6 +159,7 @@ public class GenerarTituloBB extends AdminFichaCatastralBB {
                 EnumEtiquetas.GENERARION_TITULO_LISTA_ICONO,
                 EnumEtiquetas.GENERARION_TITULO_LISTA_DESCRIPCION);
         actualizarListadoFechaAvaluos();
+        actualizarListadoTitulosRegistrados();
 
     }
 
@@ -200,8 +235,12 @@ public class GenerarTituloBB extends AdminFichaCatastralBB {
             LoggerNewvi.getLogNewvi(this.getClass()).error(e, sesionBean.getSesion());
             MensajesFaces.mensajeError(e.getMessage());
         }
+        this.listaAvaluosSeleccionados = new ArrayList<>();
     }
 
+    public void seleccionarTodosTitulos() {
+        this.listaAvaluosSeleccionados = this.listaAvaluosProcesados;
+    }
     public void generarTodosTitulos() {
         try {
             this.listaTitulosGenerados = rentasServicio.generarTitulosDesdeAvaluos(this.listaAvaluosProcesados, sesionBean.getSesion());
@@ -221,11 +260,41 @@ public class GenerarTituloBB extends AdminFichaCatastralBB {
     public Boolean hayTitulosPresentados() {
         return !this.listaTitulosGenerados.isEmpty();
     }
+    
+    private String generarSerial(String codigo) {
+        while (codigo.length() < 6) {
+            codigo = "0".concat(codigo);
+        }
+        return codigo;
+    }
+    
+     public void limpiarListaGenerados() {
+        Iterator<Titulos> iter = this.listaTitulosGenerados.iterator();
+        while (iter.hasNext()) {
+            iter.next();
+            iter.remove();
+        }
+        this.totalCobrardoTitulos = BigDecimal.ZERO;
+    }
+     private String generarCodSecuencial(Titulos tituloGenerado) {
 
-    public void registrarNuevoTitulo() throws NewviExcepcion {
+        Calendar fechaEmision = Calendar.getInstance();
+        fechaEmision.setTime(tituloGenerado.getFecEmision());
+        return fechaEmision.get(Calendar.YEAR) + "-" + generarSerial(tituloGenerado.getCodCatastral().getCodCatastral().toString()) + "-PU";
+    }
+     
+     public void actualizarListadoTitulosRegistrados() {
+        this.listaTitulosRegistrados = rentasServicio.consultarTitulosGenerados(!ComunUtil.esNulo(this.fechaEmisionTitulo) ? this.fechaEmisionTitulo : ComunUtil.hoy());
+        this.totalCobrardoTitulos = obtenerTotalesTitulos(this.listaTitulosRegistrados);
+    }
+
+     public void registrarNuevoTitulo() throws NewviExcepcion {
         for (Titulos nuevoTitulo : this.listaTitulosGenerados) {
             try {
-                rentasServicio.generarNuevoTitulo(nuevoTitulo, sesionBean.getSesion());
+                nuevoTitulo.setStsEstado(EnumEstadoTitulo.TITULO_EMITIDO);
+                nuevoTitulo.setCodSecuencial(generarCodSecuencial(nuevoTitulo));
+                this.fechaEmisionTitulo = rentasServicio.generarNuevoTitulo(nuevoTitulo, sesionBean.getSesion());
+                //this.listaTitulosGenerados.remove(nuevoTitulo);
             } catch (NewviExcepcion e) {
                 LoggerNewvi.getLogNewvi(this.getClass()).error(e, sesionBean.getSesion());
                 MensajesFaces.mensajeError(e.getMessage());
@@ -234,10 +303,12 @@ public class GenerarTituloBB extends AdminFichaCatastralBB {
                 MensajesFaces.mensajeError(e.getMessage());
             }
         }
+        actualizarListadoTitulosRegistrados();
         Map<String, String> variables = new HashMap<>();
         variables.put("ntitulos", (new Integer(this.listaTitulosGenerados.size())).toString());
         LoggerNewvi.getLogNewvi(this.getClass()).info(EnumNewviExcepciones.INF602.presentarMensaje(variables), sesionBean.getSesion());
         MensajesFaces.mensajeInformacion(EnumNewviExcepciones.INF602.presentarMensaje(variables));
+        limpiarListaGenerados();
     }
 
 }
