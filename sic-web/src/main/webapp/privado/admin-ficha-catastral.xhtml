@@ -147,7 +147,7 @@
                                     <h:outputLabel id="codCatastral" value="#{fichaCatastralBB.predio.nomCodigocatastral}" />
                                     <p:message for="codCatastral" display="tooltip"/>
 
-                                    <h:panelGrid columns="7">
+                                    <h:panelGrid columns="8">
                                         <p:inputMask id="codDPA" value="#{fichaCatastralBB.predio.codDpa}" mask="999999" size="6"><p:ajax event="keyup" listener="#{fichaCatastralBB.actualizarCodigoCatastral()}" update="codCatastral" /></p:inputMask>
                                         <p:inputMask id="codZona" value="#{fichaCatastralBB.predio.codZona}" mask="99" size="2"><p:ajax event="keyup" listener="#{fichaCatastralBB.actualizarCodigoCatastral()}" update="codCatastral" /></p:inputMask>
                                         <p:inputMask id="codSector" value="#{fichaCatastralBB.predio.codSector}" mask="99" size="2"><p:ajax event="keyup" listener="#{fichaCatastralBB.actualizarCodigoCatastral()}" update="codCatastral" /></p:inputMask>
@@ -155,6 +155,11 @@
                                         <p:inputMask id="codPredio" value="#{fichaCatastralBB.predio.codPredio}" mask="9999" size="4"><p:ajax event="keyup" listener="#{fichaCatastralBB.actualizarCodigoCatastral()}" update="codCatastral" /></p:inputMask>
                                         <p:inputMask id="codRegTenencia" value="#{fichaCatastralBB.predio.codRegimentenencia}" mask="99" size="2"><p:ajax event="keyup" listener="#{fichaCatastralBB.actualizarCodigoCatastral()}" update="codCatastral" /></p:inputMask>
                                         <p:inputMask id="codHorizontal" value="#{fichaCatastralBB.predio.codHorizontal}" mask="999" size="3"><p:ajax event="keyup" listener="#{fichaCatastralBB.actualizarCodigoCatastral()}" update="codCatastral" /></p:inputMask>
+                                        <p:selectOneMenu id="codZonaInfluencia" value="#{fichaCatastralBB.predio.codZonaInfluencia}" style="width:30px" >
+                                            <f:selectItems value="#{fichaCatastralBB.listaZonaInfluencia}" var="zonaInfluencia" itemValue="#{zonaInfluencia}" itemLabel="#{zonaInfluencia.codZonaInfluencia}"/>
+                                            <p:ajax event="change" update="@this" />
+                                        </p:selectOneMenu>
+
 
                                         <h:outputLabel for="codDPA" value="Código nacional" style="font-size:0.7em;" />
                                         <h:outputLabel for="codZona" value="Zona" style="font-size:0.7em;" />
@@ -163,6 +168,7 @@
                                         <h:outputLabel for="codPredio" value="Predio" style="font-size:0.7em;"/>
                                         <h:outputLabel for="codRegTenencia" value="R. Tenencia" style="font-size:0.7em;"/>
                                         <h:outputLabel for="codHorizontal" value="P. Horizontal" style="font-size:0.7em;"/>
+                                        <h:outputLabel for="codZonaInfluencia" value="Z. Influencia" style="font-size:0.7em;"/>
 
                                         <p:message for="codDPA" display="tooltip"/>
                                         <p:message for="codZona" display="tooltip"/>
@@ -171,6 +177,7 @@
                                         <p:message for="codPredio" display="tooltip"/>
                                         <p:message for="codRegTenencia" display="tooltip"/>
                                         <p:message for="codHorizontal" display="tooltip"/>
+                                        <p:message for="codZonaInfluencia" display="tooltip"/>
                                     </h:panelGrid>
 
                                     <h:outputLabel for="nomCodigocatastralanterior" value="Clave Catastral anterior" style="font-weight: bold;"/>
@@ -896,9 +903,9 @@
                     <p:treeTable value="#{fichaCatastralBB.listaArbolTenencia}"
                                  id="listaArbolTenencia" var="tenencia"
                                  selectionMode="single" selection="#{fichaCatastralBB.tenenciaSeleccionada}" >
-                        
+
                         <p:ajax event="select" listener="#{fichaCatastralBB.agregarTenenciaSeleccionada}" update="grupoFichaCatastral" />
-                        
+
                         <p:column headerText="Descripcion" sortBy="#{tenencia.descripcion}">
                             <h:outputText value="#{tenencia.descripcion}"/>
                         </p:column>            

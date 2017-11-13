@@ -23,6 +23,7 @@ import ec.com.newvi.sic.enums.EnumSitActual;
 import ec.com.newvi.sic.enums.EnumTenencia;
 import ec.com.newvi.sic.enums.EnumTipoPantalla;
 import ec.com.newvi.sic.enums.EnumTraslacion;
+import ec.com.newvi.sic.enums.EnumZonaInfluencia;
 import ec.com.newvi.sic.modelo.Bloques;
 import ec.com.newvi.sic.modelo.DetallesAvaluo;
 import ec.com.newvi.sic.modelo.Dominios;
@@ -88,6 +89,7 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
     private Pisos pisoSeleccionado;
     private EnumEstadoPisoDetalle[] listaEstadosPisoDetalle;
     private EnumTenencia[] listaTenenciaDominios;
+    private EnumZonaInfluencia[] listaZonaInfluencia;
     private EnumTraslacion[] listaTraslacion;
     private EnumSitActual[] listaSituacionActual;
     private EnumSiNo[] listaEstadoEscritura;
@@ -281,6 +283,14 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
 
     public void setListaTenenciaDominios(EnumTenencia[] listaTenenciaDominios) {
         this.listaTenenciaDominios = listaTenenciaDominios;
+    }
+
+    public EnumZonaInfluencia[] getListaZonaInfluencia() {
+        return listaZonaInfluencia;
+    }
+
+    public void setListaZonaInfluencia(EnumZonaInfluencia[] listaZonaInfluencia) {
+        this.listaZonaInfluencia = listaZonaInfluencia;
     }
 
     public EnumTraslacion[] getListaTraslacion() {
@@ -1128,6 +1138,7 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
         listaEstadosPisoDetalle = EnumEstadoPisoDetalle.values();
         this.listaFotosJpg = new ArrayList<>();
         listaTenenciaDominios = EnumTenencia.values();
+        listaZonaInfluencia = EnumZonaInfluencia.values();
         listaTraslacion = EnumTraslacion.values();
         listaSituacionActual = EnumSitActual.values();
         listaEstadoEscritura = EnumSiNo.values();

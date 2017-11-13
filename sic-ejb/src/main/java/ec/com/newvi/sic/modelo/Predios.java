@@ -7,6 +7,7 @@ package ec.com.newvi.sic.modelo;
 
 import ec.com.newvi.sic.enums.EnumEstadoRegistro;
 import ec.com.newvi.sic.enums.EnumNewviExcepciones;
+import ec.com.newvi.sic.enums.EnumZonaInfluencia;
 import ec.com.newvi.sic.util.ComunUtil;
 import ec.com.newvi.sic.util.excepciones.NewviExcepcion;
 import java.io.Serializable;
@@ -74,6 +75,9 @@ public class Predios implements Serializable {
     @Enumerated(EnumType.STRING)
     @Column(name = "cat_estado")
     private EnumEstadoRegistro catEstado;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "cod_zona_influencia")
+    private EnumZonaInfluencia codZonaInfluencia;
     @OneToMany(mappedBy = "codCatastral")
     private Collection<Avaluo> avaluoCollection;
 
@@ -642,6 +646,13 @@ public class Predios implements Serializable {
 
     public void setHistoricoPropiedad(Collection<Propiedad> historicoPropiedad) {
         this.historicoPropiedad = historicoPropiedad;
+    }
+    public EnumZonaInfluencia getCodZonaInfluencia() {
+        return codZonaInfluencia;
+    }
+
+    public void setCodZonaInfluencia(EnumZonaInfluencia codZonaInfluencia) {
+        this.codZonaInfluencia = codZonaInfluencia;
     }
 
     @Override
