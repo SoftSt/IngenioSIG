@@ -970,7 +970,7 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
 
     public Tenencia obtenerTenenciaActualizable(List<Tenencia> listaTenecias, String subGrupo) throws NewviExcepcion {
         for (Tenencia tenencia : listaTenecias) {
-            if (tenencia.getStsSubgrupo().trim().equals(subGrupo) && tenencia.getTenEstado().equals(EnumEstadoRegistro.A)) {
+            if (tenencia.getStsSubgrupo().trim().contains(subGrupo.trim()) && tenencia.getTenEstado().equals(EnumEstadoRegistro.A)) {
                 Tenencia tenenciaActual = contribuyentesServicio.seleccionarTenencia(tenencia.getCodTenencia());
                 tenenciaActual.setTenEstado(EnumEstadoRegistro.E);
                 return tenenciaActual;

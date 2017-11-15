@@ -299,7 +299,7 @@
                             <p:remoteCommand name="rc" actionListener="#{avaluoBB.generarAvaluo}"/>
                             <p:progressBar id="pbarAval" widgetVar="pbAjax" 
                                            ajax="true" value="#{avaluoBB.progreso}" 
-                                           labelTemplate="{value}%" style="width:300px" interval="150"
+                                           labelTemplate="{value}%" style="width:300px"
                                            styleClass="animated" global="false">
                                 <p:ajax event="complete" listener="#{avaluoBB.finalizarProceso()}" update="grupoAvaluos"/>
                             </p:progressBar>

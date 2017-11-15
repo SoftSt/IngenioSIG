@@ -175,7 +175,8 @@ public class AvaluoBB extends AdminFichaCatastralBB {
             List<AvaluoDto> calculoAvaluo = catastroServicio.obtenerAvaluoPredio(predioACalcular, dominios, formatoMonedaSistema, sesionBean.getSesion());
             listaAvaluosCalculados.add(generarNuevoNodoPredio(predioACalcular, calculoAvaluo));
             registrarLogPredioProcesadoActual(predioACalcular);
-            evaluarProceso(numeroPrediosProcesados++, numeroPrediosTotal);
+            numeroPrediosProcesados++;
+            evaluarProceso(numeroPrediosProcesados, numeroPrediosTotal);
             if (esProcesoCancelado) {
                 break;
             }

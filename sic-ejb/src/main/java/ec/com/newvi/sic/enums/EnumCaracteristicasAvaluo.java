@@ -30,7 +30,7 @@ public enum EnumCaracteristicasAvaluo {
     PREDIO_SERVICIOS_COEFICIENTE_ABASTECIMIENTO_AGUA("Abastecimiento de Agua", "S", "", "ABASTECIMIENTO DE AGUA", "INFRAESTRUCTURA DE SERVICIOS"),
     PREDIO_SERVICIOS_COEFICIENTE_ALCANTARILLADO("Alcantarillado", "S", "", "ALCANTARILLADO", "INFRAESTRUCTURA DE SERVICIOS"),    
     
-    PREDIO_PROMEDIO_FACTORES("Promedio de factores","S","", "", ""),
+    PREDIO_PROMEDIO_FACTORES("FACTORES DE AFECTACIÓN","S","", "", ""),
     PREDIO_VALOR_TERRENO("Valor del terreno (VT)","S","valTerreno", "", ""),
     PREDIO_VALOR_EDIFICACION("Valor de la edificación (VE)","S","valEdifica", "", ""),
     PREDIO_VALOR_PREDIO("Valor del predio (VT + VE)","S","valPredio", "", ""),
@@ -65,9 +65,9 @@ public enum EnumCaracteristicasAvaluo {
     IMPUESTOS_SERVICIOS_AMBIENTALES("Servicios ambientales", "S","valAmbientales", "", ""),
     IMPUESTOS_SOLAR_NO_EDIFICADO("Solar no edificado", "S","", "", ""),
     IMPUESTOS_OTROS_VALORES("OTROS RUBROS", "S", "otrosValores", "", ""),
-    
-    
-    
+    IMPUESTOS_OTROS_VALORES_TOTAL("Total Otros Rubros", "N", "otrosValores", "", ""),
+    IMPUESTOS_EXONERACIONES("EXONERACIONES", "S", "exoneraciones", "", ""),
+    IMPUESTOS_EXONERACIONES_TOTAL("Total Exoneraciones", "N", "exoneraciones", "", ""),
     ;
     
 
