@@ -30,7 +30,8 @@ public enum EnumCaracteristicasAvaluo {
     PREDIO_SERVICIOS_COEFICIENTE_ABASTECIMIENTO_AGUA("Abastecimiento de Agua", "S", "", "ABASTECIMIENTO DE AGUA", "INFRAESTRUCTURA DE SERVICIOS"),
     PREDIO_SERVICIOS_COEFICIENTE_ALCANTARILLADO("Alcantarillado", "S", "", "ALCANTARILLADO", "INFRAESTRUCTURA DE SERVICIOS"),    
     
-    PREDIO_PROMEDIO_FACTORES("FACTORES DE AFECTACIÓN","S","", "", ""),
+    PREDIO_PROMEDIO_FACTORES("FACTORES DE AFECTACIÓN","S","valPromFactores", "", ""),
+    PREDIO_PRECIO_BASE("PRECIO BASE","N","valPrecioBase", "", ""),
     PREDIO_VALOR_TERRENO("Valor del terreno (VT)","S","valTerreno", "", ""),
     PREDIO_VALOR_EDIFICACION("Valor de la edificación (VE)","S","valEdifica", "", ""),
     PREDIO_VALOR_PREDIO("Valor del predio (VT + VE)","S","valPredio", "", ""),

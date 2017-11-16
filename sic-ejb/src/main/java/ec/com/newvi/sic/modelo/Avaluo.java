@@ -79,6 +79,10 @@ public class Avaluo implements Serializable {
     private BigDecimal valImppredial;
     @Column(name = "val_impuesto")
     private BigDecimal valImpuesto;
+    @Column(name = "val_prom_factores")
+    private BigDecimal valPromFactores;
+    @Column(name = "val_precio_base")
+    private BigDecimal valPrecioBase;
     @Size(max = 50)
     @Column(name = "cat_casosespeciales")
     private String catCasosespeciales;
@@ -275,6 +279,22 @@ public class Avaluo implements Serializable {
 
     public void setAvalEstado(EnumEstadoRegistro avalEstado) {
         this.avalEstado = avalEstado;
+    }
+
+    public BigDecimal getValPromFactores() {
+        return valPromFactores;
+    }
+
+    public void setValPromFactores(BigDecimal valPromFactores) {
+        this.valPromFactores = valPromFactores;
+    }
+
+    public BigDecimal getValPrecioBase() {
+        return valPrecioBase;
+    }
+
+    public void setValPrecioBase(BigDecimal valPrecioBase) {
+        this.valPrecioBase = valPrecioBase;
     }
 
     public String getAudIngUsu() {

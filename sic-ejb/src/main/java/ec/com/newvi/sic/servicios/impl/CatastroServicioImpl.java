@@ -825,6 +825,7 @@ public class CatastroServicioImpl implements CatastroServicio {
         valorTerreno = area.multiply(valorMetro2.multiply(promedioFactores));
         listaValorTerreno.add(generarElementoArbolAvaluo(EnumCaracteristicasAvaluo.PREDIO_PROMEDIO_FACTORES.getTitulo(), promedioFactores.setScale(2, BigDecimal.ROUND_UP).toString(), null, listaCoeficientes));
         listaValorTerreno.add(generarElementoArbolAvaluo("Precio base (m2): zona " + zona + " sector " + sector + " influencia " + influencia, valorMetro2.setScale(2, BigDecimal.ROUND_UP).toString(), null, null));
+        listaValorTerreno.add(generarElementoArbolAvaluo(EnumCaracteristicasAvaluo.PREDIO_PRECIO_BASE.getTitulo(), valorMetro2.setScale(2, BigDecimal.ROUND_UP).toString(), null, null));
         listaValorTerreno.add(generarElementoArbolAvaluo(EnumCaracteristicasAvaluo.PREDIO_VALOR_TERRENO.getTitulo(), ComunUtil.generarFormatoMoneda(valorTerreno, formatoMonedaSistema), null, null));
         return listaValorTerreno;
     }
