@@ -5,9 +5,12 @@
  */
 package ec.com.newvi.sic.web.backingbean;
 
+import ec.com.newvi.componente.reporte.ReporteGenerador;
 import ec.com.newvi.sic.dto.FichaCatastralDto;
+import ec.com.newvi.sic.dto.PresentacionFichaCatastralDto;
 import ec.com.newvi.sic.enums.EnumEstadoTitulo;
 import ec.com.newvi.sic.enums.EnumNewviExcepciones;
+import ec.com.newvi.sic.enums.EnumReporte;
 import ec.com.newvi.sic.modelo.Titulos;
 import ec.com.newvi.sic.servicios.RentasServicio;
 import ec.com.newvi.sic.util.excepciones.NewviExcepcion;
@@ -21,6 +24,7 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import org.primefaces.model.DefaultStreamedContent;
 
 /**
  *
@@ -37,6 +41,7 @@ public class GestionarTituloBB extends AdminFichaCatastralBB {
     private List<Titulos> listaTitulosRegistrados;
     private List<Titulos> listaTitulosRegistradosFiltrados;
     private FichaCatastralDto fichaCatastral;
+    private Titulos tituloActual;
 
     public List<Titulos> getListaTitulosRegistrados() {
         return listaTitulosRegistrados;
@@ -58,6 +63,10 @@ public class GestionarTituloBB extends AdminFichaCatastralBB {
         this.fichaCatastral = fichaCatastral;
     }
 
+    public Titulos getTituloActual() {
+        return tituloActual;
+    }
+    
     @PostConstruct
     public void init() {
         conmutarPantalla(EnumPantallaMantenimiento.PANTALLA_LISTADO);
@@ -121,6 +130,10 @@ public class GestionarTituloBB extends AdminFichaCatastralBB {
         }
         this.listaTitulosRegistrados.remove(tituloEliminable);
 
+    }
+    
+    public DefaultStreamedContent imprimir(EnumReporte tipoReporte, Integer codTitulos) throws NewviExcepcion {
+        return generarReporteCatastro(tipoReporte, ReporteGenerador.FormatoReporte.PDF, obtenerDatosReporteTitulos(rentasServicio.seleccionarTitulo(codTitulos)), PresentacionFichaCatastralDto.class);
     }
 
 }

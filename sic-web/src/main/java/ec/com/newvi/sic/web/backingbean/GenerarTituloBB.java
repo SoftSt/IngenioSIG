@@ -5,10 +5,15 @@
  */
 package ec.com.newvi.sic.web.backingbean;
 
+import ec.com.newvi.componente.reporte.ReporteGenerador;
+import ec.com.newvi.sic.dto.PresentacionFichaCatastralDto;
+import ec.com.newvi.sic.enums.EnumEstadoRegistro;
 import ec.com.newvi.sic.enums.EnumEstadoTitulo;
 import ec.com.newvi.sic.enums.EnumNewviExcepciones;
+import ec.com.newvi.sic.enums.EnumReporte;
 import ec.com.newvi.sic.modelo.Avaluo;
 import ec.com.newvi.sic.modelo.FechaAvaluo;
+import ec.com.newvi.sic.modelo.Predios;
 import ec.com.newvi.sic.modelo.Titulos;
 import ec.com.newvi.sic.servicios.RentasServicio;
 import ec.com.newvi.sic.util.ComunUtil;
@@ -25,10 +30,13 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import org.primefaces.model.DefaultStreamedContent;
 
 /**
  *
@@ -53,6 +61,8 @@ public class GenerarTituloBB extends AdminFichaCatastralBB {
     private List<Titulos> listaTitulosRegistradosFiltrados;
     private FechaAvaluo fechaAvaluoActual;
     private String fechaActualPrueba;
+    private FechaAvaluo fechaAvaluo;
+    private Titulos tituloActual;
 
     private BigDecimal totalPorCobrarConsulta;
     private BigDecimal totalPorCobrarTitulos;
@@ -148,6 +158,14 @@ public class GenerarTituloBB extends AdminFichaCatastralBB {
         this.listaTitulosRegistradosFiltrados = listaTitulosRegistradosFiltrados;
     }
 
+    public FechaAvaluo getFechaAvaluo() {
+        return fechaAvaluo;
+    }
+
+    public void setTituloActual(Titulos tituloActual) {
+        this.tituloActual = tituloActual;
+    }
+    
     @PostConstruct
     public void init() {
 
@@ -218,13 +236,18 @@ public class GenerarTituloBB extends AdminFichaCatastralBB {
 
     public void reiniciarConsulta() {
         this.listaAvaluosProcesados = new ArrayList<>();
+        this.listaTitulosGenerados = new ArrayList<>();
         this.totalPorCobrarConsulta = BigDecimal.ZERO;
+        this.totalCobrardoTitulos = BigDecimal.ZERO;
+        this.listaTitulosRegistrados = new ArrayList<>();
     }
 
     public void generarTitulos() {
         try {
             this.listaTitulosGenerados = rentasServicio.generarTitulosDesdeAvaluos(listaAvaluosSeleccionados, sesionBean.getSesion());
             this.totalPorCobrarTitulos = obtenerTotalesTitulos(this.listaTitulosGenerados);
+
+            this.fechaAvaluo = listaAvaluosSeleccionados.get(0).getFecavId();
 
             Map<String, String> variables = new HashMap<>();
             variables.put("ntitulos", (new Integer(this.listaTitulosGenerados.size())).toString());
@@ -241,6 +264,7 @@ public class GenerarTituloBB extends AdminFichaCatastralBB {
     public void seleccionarTodosTitulos() {
         this.listaAvaluosSeleccionados = this.listaAvaluosProcesados;
     }
+
     public void generarTodosTitulos() {
         try {
             this.listaTitulosGenerados = rentasServicio.generarTitulosDesdeAvaluos(this.listaAvaluosProcesados, sesionBean.getSesion());
@@ -260,15 +284,15 @@ public class GenerarTituloBB extends AdminFichaCatastralBB {
     public Boolean hayTitulosPresentados() {
         return !this.listaTitulosGenerados.isEmpty();
     }
-    
+
     private String generarSerial(String codigo) {
         while (codigo.length() < 6) {
             codigo = "0".concat(codigo);
         }
         return codigo;
     }
-    
-     public void limpiarListaGenerados() {
+
+    public void limpiarListaGenerados() {
         Iterator<Titulos> iter = this.listaTitulosGenerados.iterator();
         while (iter.hasNext()) {
             iter.next();
@@ -276,25 +300,39 @@ public class GenerarTituloBB extends AdminFichaCatastralBB {
         }
         this.totalCobrardoTitulos = BigDecimal.ZERO;
     }
-     private String generarCodSecuencial(Titulos tituloGenerado) {
+
+    private String generarCodSecuencial(Titulos tituloGenerado) {
 
         Calendar fechaEmision = Calendar.getInstance();
         fechaEmision.setTime(tituloGenerado.getFecEmision());
         return fechaEmision.get(Calendar.YEAR) + "-" + generarSerial(tituloGenerado.getCodCatastral().getCodCatastral().toString()) + "-PU";
     }
-     
-     public void actualizarListadoTitulosRegistrados() {
+
+    public void actualizarListadoTitulosRegistrados() {
         this.listaTitulosRegistrados = rentasServicio.consultarTitulosGenerados(!ComunUtil.esNulo(this.fechaEmisionTitulo) ? this.fechaEmisionTitulo : ComunUtil.hoy());
         this.totalCobrardoTitulos = obtenerTotalesTitulos(this.listaTitulosRegistrados);
     }
 
-     public void registrarNuevoTitulo() throws NewviExcepcion {
+    public void eliminarAvaluo(Predios codCatastral) {
+        try {
+            Avaluo avaluoEliminable = catastroServicio.consultarAvaluoPorCodCatastralYFechaAvaluo(codCatastral, this.fechaAvaluo);
+            avaluoEliminable.setAvalEstado(EnumEstadoRegistro.E);
+            catastroServicio.actualizarAvaluo(avaluoEliminable, sesionBean.getSesion());
+            listaAvaluosProcesados.remove(avaluoEliminable);
+        } catch (NewviExcepcion ex) {
+            LoggerNewvi.getLogNewvi(this.getClass()).error(EnumNewviExcepciones.ERR000.presentarMensajeCodigo(), ex, sesionBean.getSesion());
+            MensajesFaces.mensajeError(ex.getMessage());
+        }
+    }
+
+    public void registrarNuevoTitulo() throws NewviExcepcion {
         for (Titulos nuevoTitulo : this.listaTitulosGenerados) {
             try {
                 nuevoTitulo.setStsEstado(EnumEstadoTitulo.TITULO_EMITIDO);
                 nuevoTitulo.setCodSecuencial(generarCodSecuencial(nuevoTitulo));
                 this.fechaEmisionTitulo = rentasServicio.generarNuevoTitulo(nuevoTitulo, sesionBean.getSesion());
                 //this.listaTitulosGenerados.remove(nuevoTitulo);
+                eliminarAvaluo(nuevoTitulo.getCodCatastral());
             } catch (NewviExcepcion e) {
                 LoggerNewvi.getLogNewvi(this.getClass()).error(e, sesionBean.getSesion());
                 MensajesFaces.mensajeError(e.getMessage());
@@ -304,11 +342,17 @@ public class GenerarTituloBB extends AdminFichaCatastralBB {
             }
         }
         actualizarListadoTitulosRegistrados();
+        actualizarListadoAvaluos();
         Map<String, String> variables = new HashMap<>();
         variables.put("ntitulos", (new Integer(this.listaTitulosGenerados.size())).toString());
         LoggerNewvi.getLogNewvi(this.getClass()).info(EnumNewviExcepciones.INF602.presentarMensaje(variables), sesionBean.getSesion());
         MensajesFaces.mensajeInformacion(EnumNewviExcepciones.INF602.presentarMensaje(variables));
         limpiarListaGenerados();
+        this.totalPorCobrarConsulta = BigDecimal.ZERO;
+    }
+    
+    public DefaultStreamedContent imprimir(EnumReporte tipoReporte) {
+        return generarReporteCatastro(tipoReporte, ReporteGenerador.FormatoReporte.PDF, obtenerDatosReporteTitulos(this.tituloActual), PresentacionFichaCatastralDto.class);
     }
 
 }

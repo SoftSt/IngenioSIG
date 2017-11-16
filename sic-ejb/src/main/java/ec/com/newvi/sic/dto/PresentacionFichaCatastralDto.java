@@ -11,7 +11,11 @@ import ec.com.newvi.sic.modelo.Predios;
 import ec.com.newvi.sic.modelo.Propiedad;
 import ec.com.newvi.sic.modelo.Servicios;
 import ec.com.newvi.sic.modelo.Terreno;
+import ec.com.newvi.sic.modelo.Titulos;
 import java.math.BigDecimal;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -32,6 +36,7 @@ public class PresentacionFichaCatastralDto {
     private String codHorizontal;
     private String stsBarrio;
     private String txtDireccion;
+    private String txtCallePrincipal;
     private String txtObservacion;
     private String nomNumero;
     private String nomCartografia;
@@ -52,6 +57,7 @@ public class PresentacionFichaCatastralDto {
     private BigDecimal valNoEdificacion;
     private BigDecimal valAmbientales;
     private BigDecimal valImpuesto;
+    private BigDecimal valServiciosadministrativos;
     private BigDecimal valImppredial;
     private String txtNorte;
     private String txtSur;
@@ -84,8 +90,8 @@ public class PresentacionFichaCatastralDto {
     private String nombreRepresentante;
     private String cedulaRepresentante;
     private String direccionRepresentante;
-    
-    
+    private String fecEmision;
+
     private List<Terreno> listaDescripcionTerreno;
 
     private List<Bloques> listaBloques;
@@ -115,7 +121,7 @@ public class PresentacionFichaCatastralDto {
     public void setValCoordenadaEste(BigDecimal valCoordenadaEste) {
         this.valCoordenadaEste = valCoordenadaEste;
     }
-    
+
     public String getNomNombres() {
         return nomNombres;
     }
@@ -172,7 +178,6 @@ public class PresentacionFichaCatastralDto {
         this.direccionRepresentante = direccionRepresentante;
     }
 
-    
     public String getCodCedularuc() {
         return codCedularuc;
     }
@@ -284,7 +289,7 @@ public class PresentacionFichaCatastralDto {
     public void setValImppredial(BigDecimal valImppredial) {
         this.valImppredial = valImppredial;
     }
-    
+
     public String getNomCodigocatastral() {
         return nomCodigocatastral;
     }
@@ -380,7 +385,7 @@ public class PresentacionFichaCatastralDto {
     public void setTxtObservacion(String txtObservacion) {
         this.txtObservacion = txtObservacion;
     }
-    
+
     public BigDecimal getValAreaPredio() {
         return valAreaPredio;
     }
@@ -612,6 +617,18 @@ public class PresentacionFichaCatastralDto {
     public void setNomcCartografiaOtros(String nomcCartografiaOtros) {
         this.nomcCartografiaOtros = nomcCartografiaOtros;
     }
+
+    public BigDecimal getValServiciosadministrativos() {
+        return valServiciosadministrativos;
+    }
+
+    public String getTxtCallePrincipal() {
+        return txtCallePrincipal;
+    }
+
+    public String getFecEmision() {
+        return fecEmision;
+    }
     
     public PresentacionFichaCatastralDto(Predios predio) {
         FichaCatastralDto fichaCatastralDto = new FichaCatastralDto(predio);
@@ -622,6 +639,21 @@ public class PresentacionFichaCatastralDto {
         this.listaServicios = (List<Servicios>) fichaCatastralDto.getPredio().getServicios();
         setearDatosPropiedad(fichaCatastralDto.getPropiedad());
 
+    }
+
+    public PresentacionFichaCatastralDto(Titulos titulo) {
+        FichaCatastralDto fichaCatastralDto = new FichaCatastralDto(titulo.getCodCatastral());
+        setearDatosTitulo(titulo);
+        setearDatosContribuyente(fichaCatastralDto.getContribuyentePropiedad());
+        setearDatosPropiedad(fichaCatastralDto.getPropiedad());
+        setearDatosPredioTitulo(titulo.getCodCatastral());
+    }
+
+    private void setearDatosPredioTitulo(Predios predio) {
+        this.txtCallePrincipal = predio.getTxtDireccion();
+        this.stsBarrio = predio.getStsBarrio();
+        this.nomNumero = predio.getNomNumero();
+        this.nomCodigocatastral = predio.getNomCodigocatastralanterior();
     }
 
     private void setearDatosPredio(Predios predio) {
@@ -669,6 +701,7 @@ public class PresentacionFichaCatastralDto {
         this.nomApellidos = contribuyentePropiedad.getNomApellidos();
         this.nomNombres = contribuyentePropiedad.getNomNombres();
         this.txtTelefono = contribuyentePropiedad.getTxtTelefono();
+        this.txtDireccion = contribuyentePropiedad.getTxtDireccion();
         this.txtEmail = contribuyentePropiedad.getTxtEmail();
         this.nomCiudadDomicilio = contribuyentePropiedad.getNomCiudadDomicilio();
         this.nombreRepresentante = contribuyentePropiedad.getNombreRepresentante();
@@ -680,6 +713,26 @@ public class PresentacionFichaCatastralDto {
         this.stsTenencia = propiedad.getStsTenencia().getStsTenencia();
         this.stsTenenciaotro = propiedad.getStsTenenciaotro();
         this.stsTransferenciadominio = propiedad.getStsTransferenciadominio().getStsTransferenciadominio();
+    }
+    
+    public String generarHora(Date fechaEmision){
+        DateFormat format = new SimpleDateFormat("MM/dd/yyyy");
+        return format.format(fechaEmision);
+    }
+
+    private void setearDatosTitulo(Titulos titulo) {
+        this.valAreaPredio = titulo.getValAreaterreno();
+        this.valAreaConstruccion = titulo.getValAreaconstruccion();
+        this.valTerreno = titulo.getValValorterreno();
+        this.valEdifica = titulo.getValConstruccion();
+        this.valPredio = titulo.getValBaseimponible();
+        this.valImppredial = titulo.getValImpuestopredial();
+        this.valBomberos = titulo.getValBomberos();
+        this.valCem = titulo.getValCem();
+        this.valNoEdificacion = titulo.getValNoconstruido();
+        this.valImpuesto = titulo.getValTotalapagar();
+        this.fecEmision = generarHora(titulo.getFecEmision());
+        this.valServiciosadministrativos = titulo.getValServiciosadministrativos();
     }
 
 }

@@ -1089,6 +1089,34 @@ public class CatastroServicioImpl implements CatastroServicio {
     }
 
     @Override
+    public Avaluo consultarAvaluoPorCodCatastralYFechaAvaluo(Predios codCatrastal, FechaAvaluo fecavId){
+        return avaluoFacade.consultarAvaluoPorCodCatastralYFechaAvaluo(codCatrastal, fecavId);
+    }
+    
+    @Override
+    public String actualizarAvaluo(Avaluo avaluo, SesionDto sesion) throws NewviExcepcion{
+        // Validar que los datos no sean incorrectos
+        LoggerNewvi.getLogNewvi(this.getClass()).debug("Validando avaluo...", sesion);
+        if (!avaluo.esAvaluoValido()) {
+            throw new NewviExcepcion(EnumNewviExcepciones.ERR362);
+        }
+        // Editando el avaluo
+        LoggerNewvi.getLogNewvi(this.getClass()).debug("Actualizando avaluo...", sesion);
+
+        //Registramos la auditoria de ingreso
+        Date fechaIngreso = Calendar.getInstance().getTime();
+        avaluo.setAudIngIp(sesion.getDireccionIP());
+        avaluo.setAudIngUsu(sesion.getUsuarioRegistrado().getUsuPalabraclave().trim());
+
+        avaluo.setAudIngFec(fechaIngreso);
+
+        avaluoFacade.edit(avaluo);
+
+        // Si todo marcha bien enviar id de avaluo
+        return avaluo.getAvalId().toString();
+    }
+
+    @Override
     public List<DetallesAvaluo> consultarListaDetallesAvaluo(Integer codCatastral) {
         return detallesAvaluoFacade.buscarDetallesAvaluo(codCatastral);
     }

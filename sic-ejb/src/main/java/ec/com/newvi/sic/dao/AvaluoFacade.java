@@ -6,6 +6,8 @@
 package ec.com.newvi.sic.dao;
 import ec.com.newvi.sic.enums.EnumEstadoRegistro;
 import ec.com.newvi.sic.modelo.Avaluo;
+import ec.com.newvi.sic.modelo.FechaAvaluo;
+import ec.com.newvi.sic.modelo.Predios;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
@@ -51,6 +53,15 @@ public class AvaluoFacade extends AbstractFacade<Avaluo, Integer> implements Ser
         q.setParameter("ESTADO", EnumEstadoRegistro.A);
         //@return listado de avaluos
         return (Avaluo)q.setMaxResults(1).getSingleResult();
+    }
+    
+    public Avaluo consultarAvaluoPorCodCatastralYFechaAvaluo(Predios codCatrastal, FechaAvaluo fecavId){
+        // Busca un listado de avaluos
+        Query q = this.getEntityManager().createQuery("SELECT avaluos FROM Avaluo avaluos where avaluos.codCatastral =:CODCATASTRAL AND avaluos.fecavId =:FECHAAVALUO");
+        q.setParameter("CODCATASTRAL", codCatrastal);
+        q.setParameter("FECHAAVALUO", fecavId);
+        //@return listado de avaluos
+        return (Avaluo)q.getSingleResult();
     }
     
     

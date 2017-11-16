@@ -406,6 +406,14 @@ public interface CatastroServicio {
      * @throws NewviExcepcion
      */
     public Integer generarNuevoAvaluo(Avaluo nuevoAvaluo, SesionDto sesion) throws NewviExcepcion;
+    /**
+     * Actualiza el avaluo entregado
+     * @param avaluo objeto a ser actualizado
+     * @param sesion Sesión que realiza la acción
+     * @return código del avaluo actualizado
+     * @throws NewviExcepcion 
+     */
+    public String actualizarAvaluo(Avaluo avaluo, SesionDto sesion) throws NewviExcepcion;
 
     /**
      * Lista los avaluos por determinada fecha
@@ -438,6 +446,13 @@ public interface CatastroServicio {
      * @return lista de avaluos
      */
     public List<Avaluo> consultarListaAvaluosPorFecha(String fechaAvaluo);
+    /**
+     * Devuelve un avaluo por código catastral y fecha del avaluo
+     * @param codCatrastal código catastral por el cual se buscará
+     * @param fecavId id de la fecha por la cual se buscará
+     * @return Avaluo
+     */
+    public Avaluo consultarAvaluoPorCodCatastralYFechaAvaluo(Predios codCatrastal, FechaAvaluo fecavId);
 
     /*------------------------------------------------------------Detalles Avaluo------------------------------------------------------------*/
     /**

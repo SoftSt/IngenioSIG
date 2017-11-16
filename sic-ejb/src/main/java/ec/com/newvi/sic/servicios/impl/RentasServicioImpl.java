@@ -75,7 +75,7 @@ public class RentasServicioImpl implements RentasServicio {
             throw new NewviExcepcion(EnumNewviExcepciones.ERR601, variables, ex);
         }
         nuevoTitulo.setValAreaterreno(avaluo.getValAreapredio());
-        nuevoTitulo.setValValorterreno(avaluo.getValAreapredio());
+        nuevoTitulo.setValValorterreno(avaluo.getValTerreno());
         nuevoTitulo.setValAreaconstruccion(avaluo.getValAreaconstruccion());
         nuevoTitulo.setValConstruccion(avaluo.getValEdifica());
         nuevoTitulo.setValBaseimponible(avaluo.getValPredio());
@@ -85,6 +85,7 @@ public class RentasServicioImpl implements RentasServicio {
         nuevoTitulo.setValNoconstruido(avaluo.getValNoEdificacion());
         nuevoTitulo.setValTotalapagar(avaluo.getValImpuesto());
         nuevoTitulo.setTituloEstado(EnumEstadoRegistro.A);
+        nuevoTitulo.setValServiciosadministrativos(avaluo.getValEmision());
 
         return nuevoTitulo;
     }

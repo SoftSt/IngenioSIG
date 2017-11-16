@@ -20,6 +20,7 @@ import ec.com.newvi.sic.modelo.Contribuyentes;
 import ec.com.newvi.sic.modelo.ModeloPredioLazy;
 import ec.com.newvi.sic.modelo.Predios;
 import ec.com.newvi.sic.modelo.Propiedad;
+import ec.com.newvi.sic.modelo.Titulos;
 import ec.com.newvi.sic.servicios.CatastroServicio;
 import ec.com.newvi.sic.servicios.ContribuyentesServicio;
 import ec.com.newvi.sic.util.ComunUtil;
@@ -202,6 +203,11 @@ public abstract class AdminFichaCatastralBB extends AdminSistemaBB {
         tablita.add(new PresentacionFichaCatastralDto(predio));
         return tablita;
     }
+    protected List<PresentacionFichaCatastralDto> obtenerDatosReporteTitulos(Titulos titulo) {
+        List<PresentacionFichaCatastralDto> tablita = new ArrayList<>();
+        tablita.add(new PresentacionFichaCatastralDto(titulo));
+        return tablita;
+    }
 
     protected DefaultStreamedContent generarReporteCatastro(EnumReporte tipoReporte, ReporteGenerador.FormatoReporte formatoReporte, List datosImpresion, Class claseImpresion) {
         try {
@@ -243,6 +249,10 @@ public abstract class AdminFichaCatastralBB extends AdminSistemaBB {
             if (EnumReporte.TITULO_CREDITO.equals(tipoReporte)) {
                 parametrosReporte.put(EnumParametrosReporte.NOMBRE_MODULO.getNombre(), "CATASTRO PREDIAL URBANO");
                 parametrosReporte.put("TITULO_REPORTE", "TÍTULO CRÉDITO");
+            }
+            if (EnumReporte.TITULO_GENERADO.equals(tipoReporte)) {
+                parametrosReporte.put(EnumParametrosReporte.NOMBRE_MODULO.getNombre(), "CATASTRO PREDIAL URBANO");
+                parametrosReporte.put("TITULO_REPORTE", "TÍTULO GENERADO");
             }
 
             Map<String, Class> paramRepA = new HashMap<String, Class>();
