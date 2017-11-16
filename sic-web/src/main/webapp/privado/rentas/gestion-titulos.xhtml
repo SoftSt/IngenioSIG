@@ -57,16 +57,16 @@
             <p:dialog header="Títulos del predio" widgetVar="dlgTitulos" appendTo="@(body)" modal="true" showEffect="fade" hideEffect="fade" resizable="false" closable="true" width="750" height="500">
                 <h:form id="dialogTitulos">
                     <p:growl id="messagesw" showDetail="true" escape="false"/>
-                           
+
                     <!--<div style="font-size:1.2em;font-weight:bold;">Selección titulo predio</div>-->
-                    
+
                     <h:panelGrid >
                         <h:outputLabel for="claveCatastral" value="Clave catastral" style="font-weight: bold;"/>
                         <h:outputText id="claveCatastral" value="#{gestionarTituloBB.fichaCatastral.predio.nomCodigocatastralanterior}"/>
                         <h:outputLabel for="propietarioActual" value="Apellidos y Nombres" style="font-weight: bold;"/>
                         <h:outputText id="propietarioActual" value="#{gestionarTituloBB.fichaCatastral.contribuyentePropiedad.nomNombres.trim()} #{gestionarTituloBB.fichaCatastral.contribuyentePropiedad.nomApellidos.trim()}"/>
                     </h:panelGrid>
-                    
+
                     <p:separator />
                     <p:dataTable id="listaTitulosRegistrados" var="tituloRegistrado" widgetVar="listaTitulosRegistradosTabla"
                                  value="#{gestionarTituloBB.listaTitulosRegistrados}" rowKey="#{tituloRegistrado.codTitulos}" filteredValue="#{gestionarTituloBB.listaTitulosRegistradosFiltrados}"
@@ -106,32 +106,20 @@
                                 <f:convertNumber pattern="$ ###,###.00"/>
                             </h:outputText>
                         </p:column>
-                        
-                        <p:column headerText="Eliminar">
-                            <p:commandButton process="listaTitulosRegistrados" 
-                                             actionListener="#{gestionarTituloBB.eliminarTitulo(tituloRegistrado.codTitulos)}"
-                                             icon="fa fa-trash"
-                                             id="btnEliminarTitulo"
-                                             update="listaTitulosRegistrados">
-                                <p:ajax update="toolTipEliminarTitulo" process="@this" />
-                                <p:confirm header="Información" message="Se eliminará el título. ¿Desea continuar?" icon="ui-icon-alert" />
-                            </p:commandButton>
-                            <p:tooltip id="toolTipEliminarTitulo" for="btnEliminarTitulo" value="Eliminar título" showEffect="fade" hideEffect="fade" position="bottom"/>
-                        </p:column>
-                        <p:column headerText="Reporte">
-                            <p:commandButton icon="fa fa-print" 
-                                                 id="imprimirGeneracionTitulos"
-                                                 ajax="false"
-                                                 update="grupoGestionTitulo"
-                                                 onclick="PrimeFaces.monitorDownload(start, stop);">
-                                <p:fileDownload value="#{gestionarTituloBB.imprimir('TITULO_GENERADO',tituloRegistrado.codTitulos)}" />
-                                </p:commandButton>
+                        <p:column>
+                            <p:commandButton id="btnAccionesTitulos" type="button" icon="fa fa-ellipsis-v" />
+                            <p:tieredMenu overlay="true" trigger="btnAccionesTitulos" my="left top" at="left bottom" style="width:200px">
+                                <p:menuitem icon="fa fa-trash" value="Eliminar título" actionListener="#{gestionarTituloBB.eliminarTitulo(tituloRegistrado.codTitulos)}" update="listaTitulosRegistrados"/>
+                                <p:menuitem icon="fa fa-print" value="Imprimir reporte" ajax="false" update="grupoGestionTitulo" onclick="PrimeFaces.monitorDownload(start, stop);">
+                                    <p:fileDownload value="#{gestionarTituloBB.imprimir('TITULO_GENERADO',tituloRegistrado.codTitulos)}"/>
+                                </p:menuitem>
+                            </p:tieredMenu>
                         </p:column>
                     </p:dataTable>
                 </h:form>
             </p:dialog>
 
-            
+
         </h:panelGroup>
     </ui:define>
 </ui:composition>
