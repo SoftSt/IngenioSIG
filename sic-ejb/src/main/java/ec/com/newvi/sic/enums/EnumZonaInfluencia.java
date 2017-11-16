@@ -14,7 +14,8 @@ public enum EnumZonaInfluencia {
     A("A"),
     B("B"),
     C("C"),
-    D("D");
+    D("D"),
+    E("E");
     
     private final String codZonaInfluencia;
 
