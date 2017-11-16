@@ -23,6 +23,7 @@ import ec.com.newvi.sic.enums.EnumCaracteristicasAvaluo;
 import ec.com.newvi.sic.enums.EnumEstadoRegistro;
 import ec.com.newvi.sic.enums.EnumNewviExcepciones;
 import ec.com.newvi.sic.enums.EnumParametroSistema;
+import ec.com.newvi.sic.enums.EnumZonaInfluencia;
 import ec.com.newvi.sic.modelo.Avaluo;
 import ec.com.newvi.sic.modelo.Bloques;
 import ec.com.newvi.sic.modelo.ConstantesImpuestos;
@@ -807,24 +808,25 @@ public class CatastroServicioImpl implements CatastroServicio {
     private List<AvaluoDto> obtenerValorTerreno(Predios predio, List<Dominios> dominios, List<AvaluoDto> listaCoeficientes, BigDecimal promedioFactores, String formatoMonedaSistema) throws NewviExcepcion {
         String zona = predio.getCodZona();
         String sector = predio.getCodSector();
-        String mazana = predio.getCodManzana();
-        String codPredio = predio.getCodPredio();
+        String influencia = EnumZonaInfluencia.A.name();
+        if (!ComunUtil.esNulo(predio.getCodZonaInfluencia())) {
+            influencia = predio.getCodZonaInfluencia().toString();
+        }
 
-        BigDecimal valorMetro2, valorTerreno;
+        BigDecimal valorMetro2, valorTerreno, valorInfluencia;
         BigDecimal area = !ComunUtil.esNulo(predio.getValAreaPredio()) ? predio.getValAreaPredio() : BigDecimal.ZERO;
         List<AvaluoDto> listaValorTerreno = new ArrayList<>();
         valorMetro2 = obtenerValorPorCodigoCalculo(dominios, "20" + zona + sector, "ZONAS VALORADAS M2");
-        //valorMetro2 = obtenerValorPorCodigoCalculo(dominios, "20" + zona + sector + mazana + codPredio, "ZONAS VALORADAS AME");
-        //valorMetro2 = obtenerM2Ame(dominios, "040518", "999", "ZONAS VALORADAS M2");
+        valorInfluencia = obtenerValorPorCodigoCalculo(dominios, "20" + zona + sector + influencia, "ZONAS VALORADAS M2");
+        if (valorInfluencia.compareTo(BigDecimal.ZERO) == 0) {
+            valorInfluencia = BigDecimal.ONE;
+        }
+        valorMetro2 = valorMetro2.multiply(valorInfluencia);
         valorTerreno = area.multiply(valorMetro2.multiply(promedioFactores));
         listaValorTerreno.add(generarElementoArbolAvaluo(EnumCaracteristicasAvaluo.PREDIO_PROMEDIO_FACTORES.getTitulo(), promedioFactores.setScale(2, BigDecimal.ROUND_UP).toString(), null, listaCoeficientes));
-        listaValorTerreno.add(generarElementoArbolAvaluo("Precio base en M2 en la zona " + zona + " sector " + sector, valorMetro2.setScale(2, BigDecimal.ROUND_UP).toString(), null, null));
+        listaValorTerreno.add(generarElementoArbolAvaluo("Precio base (m2): zona " + zona + " sector " + sector + " influencia " + influencia, valorMetro2.setScale(2, BigDecimal.ROUND_UP).toString(), null, null));
         listaValorTerreno.add(generarElementoArbolAvaluo(EnumCaracteristicasAvaluo.PREDIO_VALOR_TERRENO.getTitulo(), ComunUtil.generarFormatoMoneda(valorTerreno, formatoMonedaSistema), null, null));
         return listaValorTerreno;
-    }
-
-    private String obtenerCodigoBusqueda(String zona, String sector, String manzana, String codPredio) {
-        return zona + sector + manzana;
     }
 
     private AvaluoDto generarCoeficienteFrenteFondo(Predios predio, List<Dominios> dominios) {
@@ -882,9 +884,9 @@ public class CatastroServicioImpl implements CatastroServicio {
     }
 
     private List<AvaluoDto> generarImpuestoPredial(Predios predio, BigDecimal avaluo, Map<String, BigDecimal> listaImpuestos, List<Dominios> dominios, String formatoMonedaSistema) throws NewviExcepcion {
-        
+
         List<AvaluoDto> listaImpuestosPredio = new ArrayList<>();
-        
+
         ConstantesImpuestos constantesImpuestos = parametrosServicio.obtenerConstantesImpuestosPorTipo("URBANO").get(0);
         BigDecimal valorImpuestoPredial = avaluo.multiply(constantesImpuestos.getValTasaaplicada());
         predio.setValImpuesto(valorImpuestoPredial);
@@ -899,7 +901,7 @@ public class CatastroServicioImpl implements CatastroServicio {
 
         List<AvaluoDto> listaExoneraciones = determinarDescuentosYExoneraciones(predio, aPagar, dominios, formatoMonedaSistema);
         BigDecimal totalExoneraciones = obtenerValorElementoAvaluoPorDescripcion(listaExoneraciones, EnumCaracteristicasAvaluo.IMPUESTOS_EXONERACIONES_TOTAL.getTitulo(), formatoMonedaSistema);
-        
+
         aPagar = aPagar.subtract(totalExoneraciones);
 
         predio.setValImppredial(aPagar);
