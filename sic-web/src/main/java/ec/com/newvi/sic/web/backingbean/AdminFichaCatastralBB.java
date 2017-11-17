@@ -180,7 +180,7 @@ public abstract class AdminFichaCatastralBB extends AdminSistemaBB {
             datosAvaluo.setBarrio(avaluo.getStsBarrio());
             datosAvaluo.setDireccion(avaluo.getTxtDireccion());
             datosAvaluo.setAvaluoTerreno(avaluo.getValTerreno());
-            datosAvaluo.setAreaTerreno(avaluo.getValTerreno());
+            datosAvaluo.setAreaTerreno(avaluo.getValAreapredio());
             datosAvaluo.setAreaEdificacion(avaluo.getValAreaconstruccion());
             datosAvaluo.setAvaluoEdificacion(avaluo.getValEdifica());
             datosAvaluo.setAvaluoPredio(avaluo.getValPredio());

@@ -69,6 +69,8 @@ public class Avaluo implements Serializable {
     private BigDecimal valCem;
     @Column(name = "val_noedifica")
     private BigDecimal valNoEdificacion;
+    @Column(name = "val_construccion_obsoleta")
+    private BigDecimal valConstruccionObsoleta;
     @Column(name = "val_emision")
     private BigDecimal valEmision;
     @Column(name = "val_bomberos")
@@ -79,6 +81,8 @@ public class Avaluo implements Serializable {
     private BigDecimal valImppredial;
     @Column(name = "val_impuesto")
     private BigDecimal valImpuesto;
+    @Column(name = "val_descuento_exoneracion")
+    private BigDecimal valDescuentosExoneraciones;
     @Column(name = "val_prom_factores")
     private BigDecimal valPromFactores;
     @Column(name = "val_precio_base")
@@ -233,6 +237,14 @@ public class Avaluo implements Serializable {
         this.valNoEdificacion = valNoEdificacion;
     }
 
+    public BigDecimal getValConstruccionObsoleta() {
+        return valConstruccionObsoleta;
+    }
+
+    public void setValConstruccionObsoleta(BigDecimal valConstruccionObsoleta) {
+        this.valConstruccionObsoleta = valConstruccionObsoleta;
+    }
+    
     public BigDecimal getValEmision() {
         return valEmision;
     }
@@ -273,6 +285,14 @@ public class Avaluo implements Serializable {
         this.catCasosespeciales = catCasosespeciales;
     }
 
+    public BigDecimal getValDescuentosExoneraciones() {
+        return valDescuentosExoneraciones;
+    }
+
+    public void setValDescuentosExoneraciones(BigDecimal valDescuentosExoneraciones) {
+        this.valDescuentosExoneraciones = valDescuentosExoneraciones;
+    }
+    
     public EnumEstadoRegistro getAvalEstado() {
         return avalEstado;
     }

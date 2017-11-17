@@ -498,19 +498,12 @@ public class CatastroServicioImpl implements CatastroServicio {
         //BigDecimal costoPiso = sumaFactores.subtract(depreciacion);
         BigDecimal costoPiso = depreciacion;
 
-        //Detalle de construccion Estructura
         listaDetallesConstruccion.add(generarElementoArbolAvaluo(EnumCaracteristicasAvaluo.DETALLE_ESTRUCTURA.getTitulo(), null, null, listaDetallesEstructura));
-        //Destalle de construccion Acabados
         listaDetallesConstruccion.add(generarElementoArbolAvaluo(EnumCaracteristicasAvaluo.DETALLE_ACABADOS.getTitulo(), null, null, listaDetallesAcabado));
-        //Detalle de construccion Extras
         listaDetallesConstruccion.add(generarElementoArbolAvaluo(EnumCaracteristicasAvaluo.DETALLE_EXTRAS.getTitulo(), null, null, listaDetallesExtras));
-        //Detalle de construccion Valoración Metro
         listaDetallesConstruccion.add(generarElementoArbolAvaluo(EnumCaracteristicasAvaluo.DETALLE_VALORACION_METRO.getTitulo(), (((coeficienteEstructura.multiply(v1)).add(coeficienteAcabado.multiply(v2)).add(coeficienteExtras.multiply(v3))).multiply(valorDepreciacion)).setScale(2, BigDecimal.ROUND_UP).toString(), null, null));
-        //Detalle de construccion Total Valoración
         listaDetallesConstruccion.add(generarElementoArbolAvaluo(EnumCaracteristicasAvaluo.DETALLE_VALORACION.getTitulo(), costoPiso.setScale(2, BigDecimal.ROUND_UP).toString(), null, null));
-        //Detalle de construccion Suma Factores
         listaDetallesConstruccion.add(generarElementoArbolAvaluo(EnumCaracteristicasAvaluo.DETALLE_FACTORES.getTitulo(), (coeficienteEstructura.add(coeficienteAcabado).add(coeficienteExtras)).setScale(2, BigDecimal.ROUND_UP).toString(), null, null));
-        // Ubica valor de calculos en la tabla de pisos
 
         return listaDetallesConstruccion;
     }

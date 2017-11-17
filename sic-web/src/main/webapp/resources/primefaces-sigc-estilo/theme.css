@@ -754,6 +754,7 @@ a,
 
 .ui-treetable-toggler {
     margin-left: -15px;
+    position: relative;
 }
 
 .ui-treetable tbody tr td:first-child  {

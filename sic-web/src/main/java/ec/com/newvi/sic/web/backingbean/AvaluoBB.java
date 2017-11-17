@@ -320,10 +320,12 @@ public class AvaluoBB extends AdminFichaCatastralBB {
 
     private void obtenerValorAtributo(List<AvaluoDto> avaluoCalculado, Avaluo avaluo, String nombreMetodoBuscado, String formatoMonedaSistema) throws NewviExcepcion {
         Class claseAvaluo = avaluo.getClass();
-        EnumCaracteristicasAvaluo[] caracteristicasAvaluo = EnumCaracteristicasAvaluo.values();
-        for (EnumCaracteristicasAvaluo caracteristica : caracteristicasAvaluo) {
-            if (!ComunUtil.esCadenaVacia(caracteristica.getCampo()) && caracteristica.getCampo().equals(nombreMetodoBuscado)) {
-                BigDecimal valorAtributo = catastroServicio.obtenerValorElementoAvaluoPorDescripcion(avaluoCalculado, caracteristica.getTitulo(), formatoMonedaSistema);
+        for (EnumCaracteristicasAvaluo caracteristica : EnumCaracteristicasAvaluo.obtenerCaracteristicasAvaluoConCampo()) {
+            AvaluoDto elemento = catastroServicio.obtenerElementoAvaluoPorDescripcion(avaluoCalculado, caracteristica.getTitulo());
+            if (!ComunUtil.esCadenaVacia(caracteristica.getCampo())
+                    && caracteristica.getCampo().equals(nombreMetodoBuscado)
+                    && !ComunUtil.esNulo(elemento)) {
+                BigDecimal valorAtributo = ComunUtil.obtenerNumeroDecimalDesdeTexto(elemento.getValor(), formatoMonedaSistema);
                 Method metodoEjecutable = filtrarMetodos(claseAvaluo.getMethods(), renombrarMetodo(nombreMetodoBuscado));
                 try {
                     metodoEjecutable.invoke(avaluo, valorAtributo);
@@ -333,13 +335,11 @@ public class AvaluoBB extends AdminFichaCatastralBB {
                     variables.put("atributo", caracteristica.getCampo());
                     throw new NewviExcepcion(EnumNewviExcepciones.ERR502, variables, ex);
                 }
-            } else if (caracteristica.equals(EnumCaracteristicasAvaluo.IMPUESTOS_OTROS_VALORES)) {
-                AvaluoDto elemento = catastroServicio.obtenerElementoAvaluoPorDescripcion(avaluoCalculado, caracteristica.getTitulo());
-                if (!ComunUtil.esNulo(elemento)
-                        && !ComunUtil.esNulo(elemento.getHijos())
-                        && !elemento.getHijos().isEmpty()) {
-                    obtenerValorAtributo(elemento.getHijos(), avaluo, nombreMetodoBuscado, formatoMonedaSistema);
-                }
+            } else if (caracteristica.getCampo().contains("tieneHijos")
+                    && !ComunUtil.esNulo(elemento)
+                    && !ComunUtil.esNulo(elemento.getHijos())
+                    && !elemento.getHijos().isEmpty()) {
+                obtenerValorAtributo(elemento.getHijos(), avaluo, nombreMetodoBuscado, formatoMonedaSistema);
             }
         }
     }

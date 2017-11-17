@@ -5,6 +5,7 @@
  */
 package ec.com.newvi.sic.enums;
 
+import ec.com.newvi.sic.util.ComunUtil;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -65,10 +66,10 @@ public enum EnumCaracteristicasAvaluo {
     IMPUESTOS_CEM("CEM", "S","valCem", "", ""),
     IMPUESTOS_SERVICIOS_AMBIENTALES("Servicios ambientales", "S","valAmbientales", "", ""),
     IMPUESTOS_SOLAR_NO_EDIFICADO("Solar no edificado", "S","", "", ""),
-    IMPUESTOS_OTROS_VALORES("OTROS RUBROS", "S", "otrosValores", "", ""),
-    IMPUESTOS_OTROS_VALORES_TOTAL("Total Otros Rubros", "N", "otrosValores", "", ""),
-    IMPUESTOS_EXONERACIONES("EXONERACIONES", "S", "exoneraciones", "", ""),
-    IMPUESTOS_EXONERACIONES_TOTAL("Total Exoneraciones", "N", "exoneraciones", "", ""),
+    IMPUESTOS_OTROS_VALORES("OTROS RUBROS", "S", "tieneHijos", "", ""),
+    IMPUESTOS_OTROS_VALORES_TOTAL("Total Otros Rubros", "N", "", "", ""),
+    IMPUESTOS_EXONERACIONES("EXONERACIONES", "S", "valDescuentosExoneraciones", "", ""),
+    IMPUESTOS_EXONERACIONES_TOTAL("Total Exoneraciones", "N", "", "", ""),
     ;
     
 
@@ -110,6 +111,16 @@ public enum EnumCaracteristicasAvaluo {
         List<EnumCaracteristicasAvaluo> listaCaracteristicasAvaluo = new ArrayList<>();
         for (EnumCaracteristicasAvaluo enumCaracteristicasAvaluo : EnumCaracteristicasAvaluo.values()) {
             if (enumCaracteristicasAvaluo.getGrupo().contains(grupo)) {
+                listaCaracteristicasAvaluo.add(enumCaracteristicasAvaluo);
+            }
+        }
+        return listaCaracteristicasAvaluo;
+    } 
+    
+    public static List<EnumCaracteristicasAvaluo> obtenerCaracteristicasAvaluoConCampo() {
+        List<EnumCaracteristicasAvaluo> listaCaracteristicasAvaluo = new ArrayList<>();
+        for (EnumCaracteristicasAvaluo enumCaracteristicasAvaluo : EnumCaracteristicasAvaluo.values()) {
+            if (!ComunUtil.esCadenaVacia(enumCaracteristicasAvaluo.getCampo())) {
                 listaCaracteristicasAvaluo.add(enumCaracteristicasAvaluo);
             }
         }
