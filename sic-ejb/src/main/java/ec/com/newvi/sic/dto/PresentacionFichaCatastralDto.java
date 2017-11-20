@@ -60,6 +60,7 @@ public class PresentacionFichaCatastralDto {
     private BigDecimal valServiciosadministrativos;
     private BigDecimal valImppredial;
     private BigDecimal valContruccionObsoleta;
+    private BigDecimal valDescuentoExoneracion;
     private String txtNorte;
     private String txtSur;
     private String txtEste;
@@ -638,6 +639,14 @@ public class PresentacionFichaCatastralDto {
     public void setValContruccionObsoleta(BigDecimal valContruccionObsoleta) {
         this.valContruccionObsoleta = valContruccionObsoleta;
     }
+
+    public BigDecimal getValDescuentoExoneracion() {
+        return valDescuentoExoneracion;
+    }
+
+    public void setValDescuentoExoneracion(BigDecimal valDescuentoExoneracion) {
+        this.valDescuentoExoneracion = valDescuentoExoneracion;
+    }
     
     public PresentacionFichaCatastralDto(Predios predio) {
         FichaCatastralDto fichaCatastralDto = new FichaCatastralDto(predio);
@@ -735,14 +744,15 @@ public class PresentacionFichaCatastralDto {
         this.valTerreno = titulo.getValValorterreno();
         this.valEdifica = titulo.getValConstruccion();
         this.valPredio = titulo.getValBaseimponible();
-        this.valImppredial = titulo.getValImpuestopredial();
+        this.valImppredial = titulo.getValTotalapagar();
         this.valBomberos = titulo.getValBomberos();
         this.valCem = titulo.getValCem();
         this.valNoEdificacion = titulo.getValNoconstruido();
-        this.valImpuesto = titulo.getValTotalapagar();
+        this.valImpuesto = titulo.getValImpuestopredial();
         this.fecEmision = generarHora(titulo.getFecEmision());
         this.valServiciosadministrativos = titulo.getValServiciosadministrativos();
         this.valContruccionObsoleta = titulo.getValContruccionObsoleta();
+        this.valDescuentoExoneracion = titulo.getValDescuentoExoneracion();
     }
 
 }
