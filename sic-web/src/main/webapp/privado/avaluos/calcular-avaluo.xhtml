@@ -116,6 +116,12 @@
                                             </h:outputText>
                                         </p:column>
 
+                                        <p:column headerText="Exenciones y Rebajas" width="40">
+                                            <h:outputText value="#{avaluo.valDescuentosExoneraciones}" style="float:right">
+                                                <f:convertNumber pattern="$ ###,###.00"/>
+                                            </h:outputText>
+                                        </p:column>
+                                        
                                         <p:column headerText="Bomberos" width="40">
                                             <h:outputText value="#{avaluo.valBomberos}" style="float:right">
                                                 <f:convertNumber pattern="$ ###,###.00"/>
@@ -129,11 +135,17 @@
                                         </p:column>
 
                                         <p:column headerText="Edif. Obsoleta" width="40">
-                                            <h:outputText value="#{avaluo.valNoEdificacion}" style="float:right">
+                                            <h:outputText value="#{avaluo.valConstruccionObsoleta}" style="float:right">
                                                 <f:convertNumber pattern="$ ###,###.00"/>
                                             </h:outputText>
                                         </p:column>
 
+                                        <p:column headerText="Edif. Obsoleta" width="40">
+                                            <h:outputText value="#{avaluo.valConstruccionObsoleta}" style="float:right">
+                                                <f:convertNumber pattern="$ ###,###.00"/>
+                                            </h:outputText>
+                                        </p:column>
+                                        
                                         <p:column headerText="A pagar" width="60">
                                             <h:outputText value="#{avaluo.valImppredial}" style="float:right">
                                                 <f:convertNumber pattern="$ ###,###.00"/>
@@ -246,6 +258,12 @@
                                             </h:outputText>
                                         </p:column>
 
+                                        <p:column headerText="Exenciones y Rebajas" width="40">
+                                            <h:outputText value="#{avaluo.valDescuentosExoneraciones}" style="float:right">
+                                                <f:convertNumber pattern="$ ###,###.00"/>
+                                            </h:outputText>
+                                        </p:column>
+                                        
                                         <p:column headerText="Bomberos" width="40">
                                             <h:outputText value="#{avaluoProcesado.valBomberos}" style="float:right">
                                                 <f:convertNumber pattern="$ ###,###.00"/>
@@ -259,7 +277,7 @@
                                         </p:column>
 
                                         <p:column headerText="Edif. Obsoleta" width="40">
-                                            <h:outputText value="#{avaluoProcesado.valNoEdificacion}" style="float:right">
+                                            <h:outputText value="#{avaluoProcesado.valConstruccionObsoleta}" style="float:right">
                                                 <f:convertNumber pattern="$ ###,###.00"/>
                                             </h:outputText>
                                         </p:column>

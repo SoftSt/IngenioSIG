@@ -753,12 +753,7 @@ public class CatastroServicioImpl implements CatastroServicio {
 
         listaAvaluoPredio.add(generarElementoArbolAvaluo(EnumCaracteristicasAvaluo.PREDIO_VALOR_PREDIO.getTitulo(), ComunUtil.generarFormatoMoneda(valPredio, formatoMonedaSistema), null, null));
 
-        // Impuestos
-        BigDecimal cubi = obtenerCoeficienteTerreno(predio, dominios, "OCUPACION");
-        Map<String, BigDecimal> listaImpuestos = new HashMap<>();
-        listaImpuestos.put("IMPUESTO_SOLAR_NO_EDIFICADO", cubi);
-
-        List<AvaluoDto> listaImpuestosPredio = generarImpuestoPredial(predio, valPredio, listaImpuestos, dominios, formatoMonedaSistema);
+        List<AvaluoDto> listaImpuestosPredio = generarImpuestoPredial(predio, valPredio, dominios, formatoMonedaSistema);
         listaAvaluoPredio.addAll(listaImpuestosPredio);
 
         return listaAvaluoPredio;
@@ -877,23 +872,18 @@ public class CatastroServicioImpl implements CatastroServicio {
         return promedioCoeficientes;
     }
 
-    private List<AvaluoDto> generarImpuestoPredial(Predios predio, BigDecimal avaluo, Map<String, BigDecimal> listaImpuestos, List<Dominios> dominios, String formatoMonedaSistema) throws NewviExcepcion {
+    private List<AvaluoDto> generarImpuestoPredial(Predios predio, BigDecimal avaluo, List<Dominios> dominios, String formatoMonedaSistema) throws NewviExcepcion {
 
         List<AvaluoDto> listaImpuestosPredio = new ArrayList<>();
 
         ConstantesImpuestos constantesImpuestos = parametrosServicio.obtenerConstantesImpuestosPorTipo("URBANO").get(0);
         BigDecimal valorImpuestoPredial = avaluo.multiply(constantesImpuestos.getValTasaaplicada());
         predio.setValImpuesto(valorImpuestoPredial);
-        List<AvaluoDto> listaOtrosRubros = determinarOtrosRubros(predio, avaluo, constantesImpuestos, formatoMonedaSistema);
+        List<AvaluoDto> listaOtrosRubros = determinarOtrosRubros(predio, avaluo, dominios, constantesImpuestos, formatoMonedaSistema);
         BigDecimal totalOtrosRubros = obtenerValorElementoAvaluoPorDescripcion(listaOtrosRubros, EnumCaracteristicasAvaluo.IMPUESTOS_OTROS_VALORES_TOTAL.getTitulo(), formatoMonedaSistema);
         BigDecimal aPagar = valorImpuestoPredial.add(totalOtrosRubros);
 
-        if (listaImpuestos.containsKey("IMPUESTO_SOLAR_NO_EDIFICADO")) {
-            predio.setValNoEdificacion(avaluo.multiply(listaImpuestos.get("IMPUESTO_SOLAR_NO_EDIFICADO")));
-            aPagar = aPagar.add(predio.getValNoEdificacion());
-        }
-
-        List<AvaluoDto> listaExoneraciones = determinarDescuentosYExoneraciones(predio, aPagar, dominios, formatoMonedaSistema);
+        List<AvaluoDto> listaExoneraciones = determinarDescuentosYExoneraciones(predio, valorImpuestoPredial, dominios, formatoMonedaSistema);
         BigDecimal totalExoneraciones = obtenerValorElementoAvaluoPorDescripcion(listaExoneraciones, EnumCaracteristicasAvaluo.IMPUESTOS_EXONERACIONES_TOTAL.getTitulo(), formatoMonedaSistema);
 
         aPagar = aPagar.subtract(totalExoneraciones);
@@ -901,7 +891,6 @@ public class CatastroServicioImpl implements CatastroServicio {
         predio.setValImppredial(aPagar);
 
         listaImpuestosPredio.add(generarElementoArbolAvaluo(EnumCaracteristicasAvaluo.PREDIO_IMPUESTO_PREDIAL.getTitulo(), ComunUtil.generarFormatoMoneda(valorImpuestoPredial, formatoMonedaSistema), null, null));
-        listaImpuestosPredio.add(generarElementoArbolAvaluo(EnumCaracteristicasAvaluo.IMPUESTOS_SOLAR_NO_EDIFICADO.getTitulo(), ComunUtil.generarFormatoMoneda(predio.getValNoEdificacion(), formatoMonedaSistema), null, null));
         listaImpuestosPredio.add(generarElementoArbolAvaluo(EnumCaracteristicasAvaluo.IMPUESTOS_OTROS_VALORES.getTitulo(), ComunUtil.generarFormatoMoneda(totalOtrosRubros, formatoMonedaSistema), null, listaOtrosRubros));
         listaImpuestosPredio.add(generarElementoArbolAvaluo(EnumCaracteristicasAvaluo.IMPUESTOS_EXONERACIONES.getTitulo(), ComunUtil.generarFormatoMoneda(totalExoneraciones, formatoMonedaSistema), null, listaExoneraciones));
         listaImpuestosPredio.add(generarElementoArbolAvaluo(EnumCaracteristicasAvaluo.PREDIO_A_PAGAR.getTitulo(), ComunUtil.generarFormatoMoneda(aPagar, formatoMonedaSistema), null, null));
@@ -909,7 +898,7 @@ public class CatastroServicioImpl implements CatastroServicio {
         return listaImpuestosPredio;
     }
 
-    private List<AvaluoDto> determinarOtrosRubros(Predios predio, BigDecimal avaluo, ConstantesImpuestos constantesImpuestos, String formatoMonedaSistema) throws NewviExcepcion {
+    private List<AvaluoDto> determinarOtrosRubros(Predios predio, BigDecimal avaluo, List<Dominios> dominios, ConstantesImpuestos constantesImpuestos, String formatoMonedaSistema) throws NewviExcepcion {
 
         List<AvaluoDto> listaOtrosRubros = new ArrayList<>();
 
@@ -918,6 +907,15 @@ public class CatastroServicioImpl implements CatastroServicio {
         BigDecimal valorServiciosAdministrativos = constantesImpuestos.getValServiciosadministrativos();
         BigDecimal valorContribucionEspecialMejoras = constantesImpuestos.getValCem();
         BigDecimal valorServiciosAmbientales = constantesImpuestos.getValAmbientales();
+
+        // Solar no edificado
+        BigDecimal coeficienteUbicacion = obtenerCoeficienteTerreno(predio, dominios, "OCUPACION");
+        BigDecimal valorImpuestoNoEdificado = BigDecimal.ZERO;
+        if (!ComunUtil.esNulo(coeficienteUbicacion)
+                && coeficienteUbicacion.compareTo(BigDecimal.ZERO) != 0) {
+            valorImpuestoNoEdificado = avaluo.multiply(coeficienteUbicacion);
+            predio.setValNoEdificacion(valorImpuestoNoEdificado);
+        }
 
         // Actualiza otros valores calculados
         predio.setValCem(valorContribucionEspecialMejoras);
@@ -929,8 +927,9 @@ public class CatastroServicioImpl implements CatastroServicio {
         listaOtrosRubros.add(generarElementoArbolAvaluo(EnumCaracteristicasAvaluo.IMPUESTOS_COSTO_EMISION.getTitulo(), ComunUtil.generarFormatoMoneda(predio.getValEmision(), formatoMonedaSistema), null, null));
         listaOtrosRubros.add(generarElementoArbolAvaluo(EnumCaracteristicasAvaluo.IMPUESTOS_CEM.getTitulo(), ComunUtil.generarFormatoMoneda(predio.getValCem(), formatoMonedaSistema), null, null));
         listaOtrosRubros.add(generarElementoArbolAvaluo(EnumCaracteristicasAvaluo.IMPUESTOS_SERVICIOS_AMBIENTALES.getTitulo(), ComunUtil.generarFormatoMoneda(predio.getValAmbientales(), formatoMonedaSistema), null, null));
+        listaOtrosRubros.add(generarElementoArbolAvaluo(EnumCaracteristicasAvaluo.IMPUESTOS_SOLAR_NO_EDIFICADO.getTitulo(), ComunUtil.generarFormatoMoneda(valorImpuestoNoEdificado, formatoMonedaSistema), null, null));
 
-        BigDecimal totalOtrosRubros = valorServiciosAdministrativos.add(valorContribucionEspecialMejoras).add(valorServiciosAmbientales).add(avaluo.multiply(tasaImpuestoBomberos));
+        BigDecimal totalOtrosRubros = valorServiciosAdministrativos.add(valorContribucionEspecialMejoras).add(valorServiciosAmbientales).add(avaluo.multiply(tasaImpuestoBomberos)).add(valorImpuestoNoEdificado);
 
         listaOtrosRubros.add(generarElementoArbolAvaluo(EnumCaracteristicasAvaluo.IMPUESTOS_OTROS_VALORES_TOTAL.getTitulo(), ComunUtil.generarFormatoMoneda(totalOtrosRubros, formatoMonedaSistema), null, null));
 
@@ -1083,12 +1082,12 @@ public class CatastroServicioImpl implements CatastroServicio {
     }
 
     @Override
-    public Avaluo consultarAvaluoPorCodCatastralYFechaAvaluo(Predios codCatrastal, FechaAvaluo fecavId){
+    public Avaluo consultarAvaluoPorCodCatastralYFechaAvaluo(Predios codCatrastal, FechaAvaluo fecavId) {
         return avaluoFacade.consultarAvaluoPorCodCatastralYFechaAvaluo(codCatrastal, fecavId);
     }
-    
+
     @Override
-    public String actualizarAvaluo(Avaluo avaluo, SesionDto sesion) throws NewviExcepcion{
+    public String actualizarAvaluo(Avaluo avaluo, SesionDto sesion) throws NewviExcepcion {
         // Validar que los datos no sean incorrectos
         LoggerNewvi.getLogNewvi(this.getClass()).debug("Validando avaluo...", sesion);
         if (!avaluo.esAvaluoValido()) {
