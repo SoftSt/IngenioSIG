@@ -5,6 +5,8 @@
  */
 package ec.com.newvi.sic.enums;
 
+import ec.com.newvi.sic.util.ComunUtil;
+
 /**
  *
  * @author Andrés
@@ -13,7 +15,8 @@ public enum EnumEstadoTitulo {
     
     TITULO_EMITIDO("Título Emitido"),
     TITULO_ANULADO("Título Anulado"),
-    TITULO_COBRADO("Título Cobrado");
+    TITULO_COBRADO("Título Cobrado"),
+    TITULO_INEXISTENTE("Título Inexistente"),;
     
     private final String estadoTitulo;
 
@@ -24,6 +27,19 @@ public enum EnumEstadoTitulo {
     
     public String getEstadoTitulo() {
         return estadoTitulo;
+    }
+    
+    public static EnumEstadoTitulo obtenerEstadoTitulo(String estadoTituloActual) {
+        if (!ComunUtil.esCadenaVacia(estadoTituloActual)) {
+            for (EnumEstadoTitulo tipoTitulo : EnumEstadoTitulo.values()) {
+                if (tipoTitulo.estadoTitulo.contentEquals(estadoTituloActual.trim())) {
+                    return tipoTitulo;
+                }
+            }
+            return EnumEstadoTitulo.TITULO_INEXISTENTE;
+        } else {
+            return EnumEstadoTitulo.TITULO_INEXISTENTE;
+        }
     }
     
     

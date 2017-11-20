@@ -21,12 +21,12 @@ import javax.persistence.Query;
  */
 @Stateless
 @PermitAll
-public class TituloFacade extends AbstractFacade<Titulos, Integer> implements Serializable  {
+public class TituloFacade extends AbstractFacade<Titulos, Integer> implements Serializable {
 
     public TituloFacade() {
         super(Titulos.class, Integer.class);
     }
-    
+
     public List<Titulos> buscarTitulos() {
         // Busca un listado de titulos
         Query q = this.getEntityManager().createQuery("SELECT titulo FROM Titulos titulo where titulo.tituloEstado = :ESTADO");
@@ -34,6 +34,7 @@ public class TituloFacade extends AbstractFacade<Titulos, Integer> implements Se
         //@return listado de titulos
         return q.getResultList();
     }
+
     public List<Titulos> buscarTitulosGenerados(Date fechaEmision) {
         // Busca un listado de titulos
         Query q = this.getEntityManager().createQuery("SELECT titulo FROM Titulos titulo where titulo.fecEmision = :FECHAEMISION AND titulo.stsEstado = :ESTADOTITULO AND titulo.tituloEstado = :ESTADO");
@@ -43,7 +44,7 @@ public class TituloFacade extends AbstractFacade<Titulos, Integer> implements Se
         //@return listado de titulos
         return q.getResultList();
     }
-    
+
     public List<Titulos> buscarTitulosPorCodigoCatastral(Integer codCatastral) {
         // Busca un listado de titulos
         Query q = this.getEntityManager().createQuery("SELECT titulo FROM Titulos titulo where titulo.tituloEstado = :ESTADO AND titulo.codCatastral.codCatastral = :CODCATASTRAL AND titulo.stsEstado = :ESTADOTITULO OR titulo.stsEstado = :ESTADOTITULOAUX");
@@ -51,6 +52,15 @@ public class TituloFacade extends AbstractFacade<Titulos, Integer> implements Se
         q.setParameter("ESTADOTITULO", EnumEstadoTitulo.TITULO_EMITIDO);
         q.setParameter("ESTADOTITULOAUX", EnumEstadoTitulo.TITULO_COBRADO);
         q.setParameter("CODCATASTRAL", codCatastral);
+        //@return listado de titulos
+        return q.getResultList();
+    }
+
+    public List<Titulos> buscarTitulosPorTipo(EnumEstadoTitulo tipoTitulo) {
+        // Busca un listado de titulos
+        Query q = this.getEntityManager().createQuery("SELECT titulo FROM Titulos titulo where titulo.tituloEstado = :ESTADO AND titulo.stsEstado = :ESTADOTITULO");
+        q.setParameter("ESTADOTITULO", tipoTitulo);
+        q.setParameter("ESTADO", EnumEstadoRegistro.A);
         //@return listado de titulos
         return q.getResultList();
     }

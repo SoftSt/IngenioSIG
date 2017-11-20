@@ -63,6 +63,9 @@ public class GenerarTituloBB extends AdminFichaCatastralBB {
     private String fechaActualPrueba;
     private FechaAvaluo fechaAvaluo;
     private Titulos tituloActual;
+    private String tipoTituloActual;
+
+    private EnumEstadoTitulo[] listaEstadosTitulo;
 
     private BigDecimal totalPorCobrarConsulta;
     private BigDecimal totalPorCobrarTitulos;
@@ -162,8 +165,22 @@ public class GenerarTituloBB extends AdminFichaCatastralBB {
         return fechaAvaluo;
     }
 
-    public void setTituloActual(Titulos tituloActual) {
-        this.tituloActual = tituloActual;
+    
+
+    public Titulos getTituloActual() {
+        return tituloActual;
+    }
+
+    public EnumEstadoTitulo[] getListaEstadosTitulo() {
+        return listaEstadosTitulo;
+    }
+
+    public String getTipoTituloActual() {
+        return tipoTituloActual;
+    }
+
+    public void setTipoTituloActual(String tipoTituloActual) {
+        this.tipoTituloActual = tipoTituloActual;
     }
     
     @PostConstruct
@@ -173,11 +190,12 @@ public class GenerarTituloBB extends AdminFichaCatastralBB {
         listaAvaluosProcesados = new ArrayList<>();
         listaFechaAvaluos = new ArrayList<>();
         conmutarPantalla(EnumPantallaMantenimiento.PANTALLA_LISTADO);
-        establecerTitulo(EnumEtiquetas.GENERARION_TITULO_LISTA_TITULO,
-                EnumEtiquetas.GENERARION_TITULO_LISTA_ICONO,
-                EnumEtiquetas.GENERARION_TITULO_LISTA_DESCRIPCION);
+        establecerTitulo(EnumEtiquetas.GENERACION_TITULO_LISTA_TITULO,
+                EnumEtiquetas.GENERACION_TITULO_LISTA_ICONO,
+                EnumEtiquetas.GENERACION_TITULO_LISTA_DESCRIPCION);
         actualizarListadoFechaAvaluos();
         actualizarListadoTitulosRegistrados();
+        this.listaEstadosTitulo = EnumEstadoTitulo.values();
 
     }
 
@@ -350,9 +368,14 @@ public class GenerarTituloBB extends AdminFichaCatastralBB {
         limpiarListaGenerados();
         this.totalPorCobrarConsulta = BigDecimal.ZERO;
     }
-    
+
     public DefaultStreamedContent imprimir(EnumReporte tipoReporte) {
         return generarReporteCatastro(tipoReporte, ReporteGenerador.FormatoReporte.PDF, obtenerDatosReporteTitulos(this.tituloActual), PresentacionFichaCatastralDto.class);
+    }
+    
+    public void buscarTituloPorTipo(){
+        this.listaTitulosRegistrados = rentasServicio.consultarTitulosPorTipo(EnumEstadoTitulo.obtenerEstadoTitulo(this.tipoTituloActual));
+        this.totalCobrardoTitulos = obtenerTotalesTitulos(this.listaTitulosRegistrados);
     }
 
 }

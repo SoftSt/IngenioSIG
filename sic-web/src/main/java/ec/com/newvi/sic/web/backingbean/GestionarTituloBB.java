@@ -70,9 +70,9 @@ public class GestionarTituloBB extends AdminFichaCatastralBB {
     @PostConstruct
     public void init() {
         conmutarPantalla(EnumPantallaMantenimiento.PANTALLA_LISTADO);
-        establecerTitulo(EnumEtiquetas.GESTION_TITULO_LISTA_TITULO,
-                EnumEtiquetas.GESTION_TITULO_LISTA_ICONO,
-                EnumEtiquetas.GESTION_TITULO_LISTA_DESCRIPCION);
+        establecerTitulo(EnumEtiquetas.CONSULTA_TITULO_PREDIO_LISTA_TITULO,
+                EnumEtiquetas.CONSULTA_TITULO_PREDIO_LISTA_ICONO,
+                EnumEtiquetas.CONSULTA_TITULO_PREDIO_LISTA_DESCRIPCION);
         actualizarListadoPredios();
     }
 

@@ -8,6 +8,7 @@ package ec.com.newvi.sic.servicios.impl;
 import ec.com.newvi.sic.dao.TituloFacade;
 import ec.com.newvi.sic.dto.SesionDto;
 import ec.com.newvi.sic.enums.EnumEstadoRegistro;
+import ec.com.newvi.sic.enums.EnumEstadoTitulo;
 import ec.com.newvi.sic.enums.EnumNewviExcepciones;
 import ec.com.newvi.sic.modelo.Avaluo;
 import ec.com.newvi.sic.modelo.Titulos;
@@ -79,11 +80,13 @@ public class RentasServicioImpl implements RentasServicio {
         nuevoTitulo.setValAreaconstruccion(avaluo.getValAreaconstruccion());
         nuevoTitulo.setValConstruccion(avaluo.getValEdifica());
         nuevoTitulo.setValBaseimponible(avaluo.getValPredio());
-        nuevoTitulo.setValImpuestopredial(avaluo.getValImppredial());
+        nuevoTitulo.setValImpuestopredial(avaluo.getValImpuesto());
+        //nuevoTitulo.setValImpuestopredial(avaluo.getValImppredial());
         nuevoTitulo.setValBomberos(avaluo.getValBomberos());
         nuevoTitulo.setValCem(avaluo.getValCem());
         nuevoTitulo.setValNoconstruido(avaluo.getValNoEdificacion());
-        nuevoTitulo.setValTotalapagar(avaluo.getValImpuesto());
+        nuevoTitulo.setValTotalapagar(avaluo.getValImppredial());
+        //nuevoTitulo.setValTotalapagar(avaluo.getValImpuesto());
         nuevoTitulo.setTituloEstado(EnumEstadoRegistro.A);
         nuevoTitulo.setValServiciosadministrativos(avaluo.getValEmision());
 
@@ -129,9 +132,9 @@ public class RentasServicioImpl implements RentasServicio {
             throw new NewviExcepcion(EnumNewviExcepciones.ERR011);
         }
     }
-    
+
     @Override
-    public String actualizarTitulo(Titulos titulo, SesionDto sesion) throws NewviExcepcion{
+    public String actualizarTitulo(Titulos titulo, SesionDto sesion) throws NewviExcepcion {
         // Validar que los datos no sean incorrectos
         LoggerNewvi.getLogNewvi(this.getClass()).debug("Validando título...", sesion);
         if (!titulo.esTituloValido()) {
@@ -146,11 +149,15 @@ public class RentasServicioImpl implements RentasServicio {
         titulo.setAudModUsu(sesion.getUsuarioRegistrado().getUsuPalabraclave().trim());
         titulo.setAudModFec(fechaModificacion);
 
-
         tituloFacade.edit(titulo);
 
         // Si todo marcha bien enviar nombre del título
-        return titulo.getCodTitulos()+"";
+        return titulo.getCodTitulos() + "";
+    }
+
+    @Override
+    public List<Titulos> consultarTitulosPorTipo(EnumEstadoTitulo tipoTitulo) {
+        return tituloFacade.buscarTitulosPorTipo(tipoTitulo);
     }
 
 }

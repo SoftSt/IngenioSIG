@@ -6,6 +6,7 @@
 package ec.com.newvi.sic.servicios;
 
 import ec.com.newvi.sic.dto.SesionDto;
+import ec.com.newvi.sic.enums.EnumEstadoTitulo;
 import ec.com.newvi.sic.modelo.Avaluo;
 import ec.com.newvi.sic.modelo.Titulos;
 import ec.com.newvi.sic.util.excepciones.NewviExcepcion;
@@ -68,4 +69,10 @@ public interface RentasServicio {
      * @throws NewviExcepcion 
      */
     public String actualizarTitulo(Titulos titulo, SesionDto sesion) throws NewviExcepcion;
+    /**
+     * Lista todos los titulos por un tipo determinado
+     * @param tipoTitulo Tipo de titulo para consulta
+     * @return Lista de títulos filtrados
+     */
+    public List<Titulos> consultarTitulosPorTipo(EnumEstadoTitulo tipoTitulo);
 }
