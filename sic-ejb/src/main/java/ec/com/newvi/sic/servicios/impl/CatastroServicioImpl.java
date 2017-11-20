@@ -879,20 +879,22 @@ public class CatastroServicioImpl implements CatastroServicio {
         ConstantesImpuestos constantesImpuestos = parametrosServicio.obtenerConstantesImpuestosPorTipo("URBANO").get(0);
         BigDecimal valorImpuestoPredial = avaluo.multiply(constantesImpuestos.getValTasaaplicada());
         predio.setValImpuesto(valorImpuestoPredial);
-        List<AvaluoDto> listaOtrosRubros = determinarOtrosRubros(predio, avaluo, dominios, constantesImpuestos, formatoMonedaSistema);
-        BigDecimal totalOtrosRubros = obtenerValorElementoAvaluoPorDescripcion(listaOtrosRubros, EnumCaracteristicasAvaluo.IMPUESTOS_OTROS_VALORES_TOTAL.getTitulo(), formatoMonedaSistema);
-        BigDecimal aPagar = valorImpuestoPredial.add(totalOtrosRubros);
 
         List<AvaluoDto> listaExoneraciones = determinarDescuentosYExoneraciones(predio, valorImpuestoPredial, dominios, formatoMonedaSistema);
         BigDecimal totalExoneraciones = obtenerValorElementoAvaluoPorDescripcion(listaExoneraciones, EnumCaracteristicasAvaluo.IMPUESTOS_EXONERACIONES_TOTAL.getTitulo(), formatoMonedaSistema);
 
-        aPagar = aPagar.subtract(totalExoneraciones);
+        BigDecimal aPagar = valorImpuestoPredial.subtract(totalExoneraciones);
+        
+        List<AvaluoDto> listaOtrosRubros = determinarOtrosRubros(predio, avaluo, dominios, constantesImpuestos, formatoMonedaSistema);
+        BigDecimal totalOtrosRubros = obtenerValorElementoAvaluoPorDescripcion(listaOtrosRubros, EnumCaracteristicasAvaluo.IMPUESTOS_OTROS_VALORES_TOTAL.getTitulo(), formatoMonedaSistema);
+
+        aPagar = aPagar.add(totalOtrosRubros);
 
         predio.setValImppredial(aPagar);
 
         listaImpuestosPredio.add(generarElementoArbolAvaluo(EnumCaracteristicasAvaluo.PREDIO_IMPUESTO_PREDIAL.getTitulo(), ComunUtil.generarFormatoMoneda(valorImpuestoPredial, formatoMonedaSistema), null, null));
-        listaImpuestosPredio.add(generarElementoArbolAvaluo(EnumCaracteristicasAvaluo.IMPUESTOS_OTROS_VALORES.getTitulo(), ComunUtil.generarFormatoMoneda(totalOtrosRubros, formatoMonedaSistema), null, listaOtrosRubros));
         listaImpuestosPredio.add(generarElementoArbolAvaluo(EnumCaracteristicasAvaluo.IMPUESTOS_EXONERACIONES.getTitulo(), ComunUtil.generarFormatoMoneda(totalExoneraciones, formatoMonedaSistema), null, listaExoneraciones));
+        listaImpuestosPredio.add(generarElementoArbolAvaluo(EnumCaracteristicasAvaluo.IMPUESTOS_OTROS_VALORES.getTitulo(), ComunUtil.generarFormatoMoneda(totalOtrosRubros, formatoMonedaSistema), null, listaOtrosRubros));
         listaImpuestosPredio.add(generarElementoArbolAvaluo(EnumCaracteristicasAvaluo.PREDIO_A_PAGAR.getTitulo(), ComunUtil.generarFormatoMoneda(aPagar, formatoMonedaSistema), null, null));
 
         return listaImpuestosPredio;
