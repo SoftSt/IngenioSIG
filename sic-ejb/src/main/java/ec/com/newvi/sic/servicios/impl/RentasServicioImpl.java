@@ -17,6 +17,7 @@ import ec.com.newvi.sic.servicios.RentasServicio;
 import ec.com.newvi.sic.util.ComunUtil;
 import ec.com.newvi.sic.util.excepciones.NewviExcepcion;
 import ec.com.newvi.sic.util.logs.LoggerNewvi;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -89,6 +90,8 @@ public class RentasServicioImpl implements RentasServicio {
         //nuevoTitulo.setValTotalapagar(avaluo.getValImpuesto());
         nuevoTitulo.setTituloEstado(EnumEstadoRegistro.A);
         nuevoTitulo.setValServiciosadministrativos(avaluo.getValEmision());
+        nuevoTitulo.setValDescuentoExoneracion(avaluo.getValDescuentosExoneraciones());
+        nuevoTitulo.setValContruccionObsoleta(avaluo.getValConstruccionObsoleta());
 
         return nuevoTitulo;
     }

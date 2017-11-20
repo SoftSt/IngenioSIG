@@ -132,6 +132,10 @@ public class Titulos implements Serializable {
     private BigDecimal valInteresaplicado;
     @Column(name = "val_descuentoaplicado")
     private BigDecimal valDescuentoaplicado;
+    @Column(name = "val_descuento_exoneracion")
+    private BigDecimal valDescuentoExoneracion;
+    @Column(name = "val_construccion_obsoleta")
+    private BigDecimal valContruccionObsoleta;
     @Enumerated(EnumType.STRING)
     @Column(name = "titulo_estado")
     private EnumEstadoRegistro tituloEstado;
@@ -565,6 +569,22 @@ public class Titulos implements Serializable {
 
     public void setCodSecuencial(String codSecuencial) {
         this.codSecuencial = codSecuencial;
+    }
+
+    public BigDecimal getValDescuentoExoneracion() {
+        return valDescuentoExoneracion;
+    }
+
+    public void setValDescuentoExoneracion(BigDecimal valDescuentoExoneracion) {
+        this.valDescuentoExoneracion = valDescuentoExoneracion;
+    }
+
+    public BigDecimal getValContruccionObsoleta() {
+        return valContruccionObsoleta;
+    }
+
+    public void setValContruccionObsoleta(BigDecimal valContruccionObsoleta) {
+        this.valContruccionObsoleta = valContruccionObsoleta;
     }
     
     @Override

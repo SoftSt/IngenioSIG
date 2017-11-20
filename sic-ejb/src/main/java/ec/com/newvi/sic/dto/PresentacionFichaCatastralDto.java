@@ -59,6 +59,7 @@ public class PresentacionFichaCatastralDto {
     private BigDecimal valImpuesto;
     private BigDecimal valServiciosadministrativos;
     private BigDecimal valImppredial;
+    private BigDecimal valContruccionObsoleta;
     private String txtNorte;
     private String txtSur;
     private String txtEste;
@@ -629,6 +630,14 @@ public class PresentacionFichaCatastralDto {
     public String getFecEmision() {
         return fecEmision;
     }
+
+    public BigDecimal getValContruccionObsoleta() {
+        return valContruccionObsoleta;
+    }
+
+    public void setValContruccionObsoleta(BigDecimal valContruccionObsoleta) {
+        this.valContruccionObsoleta = valContruccionObsoleta;
+    }
     
     public PresentacionFichaCatastralDto(Predios predio) {
         FichaCatastralDto fichaCatastralDto = new FichaCatastralDto(predio);
@@ -733,6 +742,7 @@ public class PresentacionFichaCatastralDto {
         this.valImpuesto = titulo.getValTotalapagar();
         this.fecEmision = generarHora(titulo.getFecEmision());
         this.valServiciosadministrativos = titulo.getValServiciosadministrativos();
+        this.valContruccionObsoleta = titulo.getValContruccionObsoleta();
     }
 
 }

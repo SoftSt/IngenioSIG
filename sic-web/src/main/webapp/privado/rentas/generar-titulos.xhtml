@@ -125,8 +125,13 @@
                                             </h:outputText>
                                         </p:column>
 
-                                        <p:column headerText="Edif. Obsoleta" width="50" priority="6">
-                                            <h:outputText value="#{avaluoProcesado.valNoEdificacion}" style="float:right">
+                                        <p:column headerText="Edif. Obsoleta" width="40" priority="6">
+                                            <h:outputText value="#{avaluo.valConstruccionObsoleta}" style="float:right">
+                                                <f:convertNumber pattern="$ ###,###.00"/>
+                                            </h:outputText>
+                                        </p:column>
+                                        <p:column headerText="Exoneraciones" width="40" priority="6">
+                                            <h:outputText value="#{avaluo.valDescuentosExoneraciones}" style="float:right">
                                                 <f:convertNumber pattern="$ ###,###.00"/>
                                             </h:outputText>
                                         </p:column>
@@ -241,9 +246,14 @@
                                                 <f:convertNumber pattern="$ ###,###.00"/>
                                             </h:outputText>
                                         </p:column>
+                                        <p:column headerText="Exoeneraciones" width="50" priority="6">
+                                            <h:outputText value="#{tituloGenerado.valDescuentoExoneracion}" style="float:right">
+                                                <f:convertNumber pattern="$ ###,###.00"/>
+                                            </h:outputText>
+                                        </p:column>
 
                                         <p:column headerText="Edif. Obsoleta" width="50" priority="6">
-                                            <h:outputText value="#{tituloGenerado.valNoconstruido}" style="float:right">
+                                            <h:outputText value="#{tituloGenerado.valContruccionObsoleta}" style="float:right">
                                                 <f:convertNumber pattern="$ ###,###.00"/>
                                             </h:outputText>
                                         </p:column>
@@ -342,6 +352,12 @@
                                             </h:outputText>
                                         </p:column>
 
+                                        <p:column headerText="Exoneraciones" width="50" priority="6">
+                                            <h:outputText value="#{tituloRegistrado.valDescuentoExoneracion}" style="float:right">
+                                                <f:convertNumber pattern="$ ###,###.00"/>
+                                            </h:outputText>
+                                        </p:column>
+                                        
                                         <p:column headerText="Solar No Edif" width="50" priority="6">
                                             <h:outputText value="#{tituloRegistrado.valNoconstruido}" style="float:right">
                                                 <f:convertNumber pattern="$ ###,###.00"/>
@@ -349,7 +365,7 @@
                                         </p:column>
 
                                         <p:column headerText="Edif. Obsoleta" width="50" priority="6">
-                                            <h:outputText value="#{tituloRegistrado.valNoconstruido}" style="float:right">
+                                            <h:outputText value="#{tituloRegistrado.valContruccionObsoleta}" style="float:right">
                                                 <f:convertNumber pattern="$ ###,###.00"/>
                                             </h:outputText>
                                         </p:column>
