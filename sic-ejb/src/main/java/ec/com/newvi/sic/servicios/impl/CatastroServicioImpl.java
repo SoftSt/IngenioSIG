@@ -302,7 +302,7 @@ public class CatastroServicioImpl implements CatastroServicio {
         BigDecimal areaBloque = BigDecimal.ZERO;
         List<AvaluoDto> listaPisosDto = new ArrayList<>();
         List<AvaluoDto> listaCaracteristicasPisosDto;
-        for (Pisos piso : bloque.getPisosCollection()) {
+        for (Pisos piso : bloque.getPisosActivos()) {
             if (piso.getPisEstado().equals(EnumEstadoRegistro.A)) {
                 listaCaracteristicasPisosDto = obtenerAvaluoPisos(piso, promedioFactores, dominios, formatoMonedaSistema, sesion);
                 areaBloque = areaBloque.add(obtenerValorElementoAvaluoPorDescripcion(listaCaracteristicasPisosDto, EnumCaracteristicasAvaluo.PISO_AREA.getTitulo(), formatoMonedaSistema));
@@ -454,7 +454,7 @@ public class CatastroServicioImpl implements CatastroServicio {
         BigDecimal totalDetalleConstruccion = BigDecimal.ZERO;
         BigDecimal promedioCoeficientes = BigDecimal.ZERO;
         Integer totalCoeficientesConstruccion = 0;
-        for (PisoDetalle detalle : piso.getDetalles()) {
+        for (PisoDetalle detalle : piso.getDetallesPisosActivos()) {
             if (detalle.getEstado().equals(EnumEstadoRegistro.A)) {
                 totalDetalleConstruccion = totalDetalleConstruccion.add(obtenerCoeficienteDetallePiso(detalle, domiCalculo, dominios));
                 totalCoeficientesConstruccion++;
@@ -513,7 +513,7 @@ public class CatastroServicioImpl implements CatastroServicio {
         BigDecimal coeficiente = obtenerCoeficienteConstruccion(piso, elementoCalculo, dominios);
         BigDecimal costoMetroReferencial = obtenerTotalCoeficienteDominiosPorCodigo(codigoDominio, dominios);
 
-        piso.getDetalles().forEach((pisoDetalle) -> {
+        piso.getDetallesPisosActivos().forEach((pisoDetalle) -> {
             if (pisoDetalle.getEstado().equals(EnumEstadoRegistro.A)) {
                 AvaluoDto nuevoDetalle = generarNodoDetalle(pisoDetalle, elementoCalculo, dominios);
                 BigDecimal coeficienteObtenido = new BigDecimal(nuevoDetalle.getFactor());
@@ -667,7 +667,7 @@ public class CatastroServicioImpl implements CatastroServicio {
         BigDecimal totalCoeficienteCalculo = BigDecimal.ZERO;
         BigDecimal promedioCoeficientes = BigDecimal.ZERO;
         Integer totalCoeficientesTerreno = 0;
-        for (Terreno terreno : predio.getCaracteristicasTerreno()) {
+        for (Terreno terreno : predio.getCaracteristicasTerrenoActivas()) {
             listaDominiosTerreno = obtenerDominiosPorCodigoYCalculo(dominios, terreno.getStsCodigo().trim(), domiCalculo);
             for (Dominios dominio : listaDominiosTerreno) {
                 totalCoeficienteCalculo = totalCoeficienteCalculo.add(BigDecimal.valueOf(dominio.getDomiCoefic()));
@@ -765,8 +765,8 @@ public class CatastroServicioImpl implements CatastroServicio {
         List<AvaluoDto> listaAvaluoBloque;
         List<AvaluoDto> listaValorEdificacion = new ArrayList<>();
         List<AvaluoDto> listaEdificacion = new ArrayList<>();
-        if (!ComunUtil.esNulo(predio.getBloques())) {
-            for (Bloques bloque : predio.getBloques()) {
+        if (!ComunUtil.esNulo(predio.getBloquesActivos())) {
+            for (Bloques bloque : predio.getBloquesActivos()) {
                 if (bloque.getBloEstado().equals(EnumEstadoRegistro.A)) {
                     listaAvaluoBloque = obtenerAvaluoBloque(bloque, promedioFactores, dominios, formatoMonedaSistema, sesion);
                     listaEdificacion.add(generarElementoArbolAvaluo("Bloque: " + bloque.getNomBloque(), ComunUtil.generarFormatoMoneda(obtenerValorElementoAvaluoPorDescripcion(listaAvaluoBloque, EnumCaracteristicasAvaluo.BLOQUE_VALORACION.getTitulo(), formatoMonedaSistema), formatoMonedaSistema), null, listaAvaluoBloque));

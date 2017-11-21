@@ -694,6 +694,12 @@
                                 <h:panelGrid >
                                     <br/>
                                     <div style="font-size:1.2em;font-weight:bold;">Resumen Avalúo</div>
+                                    <p:commandButton icon="fa fa-calculator" 
+                                                     value="Calcular avalúo" 
+                                                     id="calcularAvaluo"
+                                                     ajax="false" actionListener="#{fichaCatastralBB.calcularAvaluo()}"
+                                                     update="grupoFichaCatastral">
+                                    </p:commandButton>
                                     <p:separator />
 
                                     <p:treeTable value="#{fichaCatastralBB.listaArbolAvaluo}"

@@ -28,7 +28,7 @@ import javax.validation.constraints.Size;
  * @author Andrés
  */
 @Entity
-@Table(name = "cat_cat_tenencia")
+@Table(name = "cat_ciu_tenencia")
 public class Tenencia implements Serializable {
 
     private static final long serialVersionUID = 1L;

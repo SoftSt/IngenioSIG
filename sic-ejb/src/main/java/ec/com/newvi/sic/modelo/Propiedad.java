@@ -59,22 +59,22 @@ public class Propiedad implements Serializable {
     @JoinColumn(name = "cod_catastral", referencedColumnName = "cod_catastral")
     @ManyToOne
     private Predios codCatastral;
-    
+
     @JoinColumn(name = "cod_personeria", referencedColumnName = "cod_personeria")
     @ManyToOne
-    @NotFound(action=NotFoundAction.IGNORE)
+    @NotFound(action = NotFoundAction.IGNORE)
     private Contribuyentes contribuyente;
-    
+
     @Column(name = "sts_tenencia")
     private String stsTenencia;
-    
+
     @Size(max = 50)
     @Column(name = "sts_tenenciaotro")
     private String stsTenenciaotro;
-    
+
     @Column(name = "sts_transferenciadominio")
     private String stsTransferenciadominio;
-    
+
     @Column(name = "val_predioareaescritura")
     private BigDecimal valPredioAreaEscritura;
     @Size(max = 100)
@@ -95,14 +95,13 @@ public class Propiedad implements Serializable {
     @Size(max = 50)
     @Column(name = "txt_informanterelacion")
     private String txtInformanteRelacion;
-    
-    
+
     @Column(name = "sts_situacion")
     private String stsSituacion;
-    
+
     @Column(name = "sts_escritura")
     private String stsEscritura;
-    
+
     @Size(max = 10)
     @Column(name = "fec_inscripcion")
     private String fecInscripcion;
@@ -136,7 +135,6 @@ public class Propiedad implements Serializable {
     @Size(max = 30)
     @Column(name = "aud_mod_ip")
     private String audModIp;
-    
 
     public Integer getCodPropiedad() {
         return codPropiedad;
@@ -356,14 +354,12 @@ public class Propiedad implements Serializable {
     public void setContribuyente(Contribuyentes contribuyente) {
         this.contribuyente = contribuyente;
     }
-    
-    
-    
+
     @Override
     public String toString() {
         return "ec.com.newvi.sic.modelo.Propiedad[ cod_propietarios=" + codPropiedad + " ]";
     }
-    
+
     public Boolean esPropiedadValido() {
         return (!ComunUtil.esNulo(this.proEstado));
     }
@@ -386,12 +382,14 @@ public class Propiedad implements Serializable {
     public void setTenenciaList(List<Tenencia> tenenciaList) {
         this.tenenciaList = tenenciaList;
     }
-    
+
     public List<Tenencia> getTenenciasActivas() {
         List<Tenencia> tenenciaActivas = new ArrayList<>();
-        for (Tenencia tenencia : tenenciaList) {
-            if (!ComunUtil.esNulo(tenencia.getTenEstado()) && tenencia.getTenEstado().equals(EnumEstadoRegistro.A)) {
-                tenenciaActivas.add(tenencia);
+        if (!ComunUtil.esNulo(tenenciaList)) {
+            for (Tenencia tenencia : tenenciaList) {
+                if (!ComunUtil.esNulo(tenencia.getTenEstado()) && tenencia.getTenEstado().equals(EnumEstadoRegistro.A)) {
+                    tenenciaActivas.add(tenencia);
+                }
             }
         }
         return tenenciaActivas;
