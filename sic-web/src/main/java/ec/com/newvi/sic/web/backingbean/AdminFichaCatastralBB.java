@@ -186,8 +186,10 @@ public abstract class AdminFichaCatastralBB extends AdminSistemaBB {
             datosAvaluo.setAvaluoPredio(avaluo.getValPredio());
             datosAvaluo.setAreaPredio(avaluo.getValAreapredio());
             datosAvaluo.setImpuestoPredial(avaluo.getValImpuesto());
+            datosAvaluo.setExoneraciones(avaluo.getValDescuentosExoneraciones());
             datosAvaluo.setContribucionEspecialMejoras(avaluo.getValCem());
             datosAvaluo.setTasaNoEdificacion(avaluo.getValNoEdificacion());
+            datosAvaluo.setTasaConstruccionObsoleta(avaluo.getValConstruccionObsoleta());
             datosAvaluo.setCostoEmision(avaluo.getValEmision());
             datosAvaluo.setTasaBomberos(avaluo.getValBomberos());
             datosAvaluo.setServiciosAmbientales(avaluo.getValAmbientales());

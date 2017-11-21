@@ -76,7 +76,7 @@ public class Predios implements Serializable {
     @Column(name = "cat_estado")
     private EnumEstadoRegistro catEstado;
     @Enumerated(EnumType.STRING)
-    @Column(name = "cod_zona_influencia")
+    @Column(name = "sts_ubicacioninfluencia")
     private EnumZonaInfluencia codZonaInfluencia;
     @OneToMany(mappedBy = "codCatastral")
     private Collection<Avaluo> avaluoCollection;
@@ -144,7 +144,7 @@ public class Predios implements Serializable {
     private BigDecimal valCoordenadaEste;
     @Column(name = "val_coordenadanorte")
     private BigDecimal valCoordenadaNorte;
-    @Column(name = "vat_terreno")
+    @Column(name = "val_terreno")
     private BigDecimal valTerreno;
     @Size(max = 100)
     @Column(name = "txt_norte")

@@ -36,9 +36,8 @@ public class Contribuyentes implements Serializable {
     @GeneratedValue(generator = "CONTRIBUYENTES_CODIGO_GENERATOR")
     @Column(name = "cod_personeria")
     private Integer codPersoneria;
-    @Enumerated(EnumType.STRING)
     @Column(name = "sts_tipopersoneria")
-    private EnumTipoPersoneria stsTipopersoneria;
+    private String stsTipopersoneria;
     @Size(max = 15)
     @Column(name = "cod_cedularuc")
     private String codCedularuc;
@@ -122,11 +121,11 @@ public class Contribuyentes implements Serializable {
     }
 
     public EnumTipoPersoneria getStsTipopersoneria() {
-        return stsTipopersoneria;
+        return EnumTipoPersoneria.obtenerTipoPersoneriaPorDescripcion(stsTipopersoneria);
     }
 
     public void setStsTipopersoneria(EnumTipoPersoneria stsTipopersoneria) {
-        this.stsTipopersoneria = stsTipopersoneria;
+        this.stsTipopersoneria = stsTipopersoneria.getDescripcionTipoPersoneria();
     }
 
     public String getCodCedularuc() {

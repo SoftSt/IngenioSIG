@@ -26,8 +26,10 @@ public class TablaCatastralDto {
     private BigDecimal avaluoPredio; 
     private BigDecimal areaPredio; 
     private BigDecimal impuestoPredial; 
+    private BigDecimal exoneraciones; 
     private BigDecimal contribucionEspecialMejoras; 
     private BigDecimal tasaNoEdificacion; 
+    private BigDecimal tasaConstruccionObsoleta; 
     private BigDecimal costoEmision; 
     private BigDecimal tasaBomberos; 
     private BigDecimal serviciosAmbientales; 
@@ -139,6 +141,14 @@ public class TablaCatastralDto {
         this.impuestoPredial = impuestoPredial;
     }
 
+    public BigDecimal getExoneraciones() {
+        return exoneraciones;
+    }
+
+    public void setExoneraciones(BigDecimal exoneraciones) {
+        this.exoneraciones = exoneraciones;
+    }
+    
     public BigDecimal getContribucionEspecialMejoras() {
         return contribucionEspecialMejoras;
     }
@@ -153,6 +163,14 @@ public class TablaCatastralDto {
 
     public void setTasaNoEdificacion(BigDecimal tasaNoEdificacion) {
         this.tasaNoEdificacion = tasaNoEdificacion;
+    }
+
+    public BigDecimal getTasaConstruccionObsoleta() {
+        return tasaConstruccionObsoleta;
+    }
+
+    public void setTasaConstruccionObsoleta(BigDecimal tasaConstruccionObsoleta) {
+        this.tasaConstruccionObsoleta = tasaConstruccionObsoleta;
     }
 
     public BigDecimal getCostoEmision() {

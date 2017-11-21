@@ -22,4 +22,13 @@ public enum EnumTipoPersoneria {
     public String getDescripcionTipoPersoneria() {
         return descripcionTipoPersoneria;
     }
+    
+    public static EnumTipoPersoneria obtenerTipoPersoneriaPorDescripcion(String descripcionTipoPersoneria) {
+        for (EnumTipoPersoneria enumTipoPersoneria : EnumTipoPersoneria.values()) {
+            if (enumTipoPersoneria.getDescripcionTipoPersoneria().contains(descripcionTipoPersoneria.trim())) {
+                return enumTipoPersoneria;
+            }
+        }
+        return null;
+    }
 }
