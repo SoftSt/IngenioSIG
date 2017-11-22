@@ -105,6 +105,10 @@ public class Contribuyentes implements Serializable {
     @Column(name = "aud_mod_ip")
     private String audModIp;
 
+    @Size(max = 50)
+    @Column(name = "sts_especiales")
+    private String stsEspeciales;
+
     public Contribuyentes() {
     }
 
@@ -271,7 +275,7 @@ public class Contribuyentes implements Serializable {
     public void setNomCiudadDomicilio(String nomCiudadDomicilio) {
         this.nomCiudadDomicilio = nomCiudadDomicilio;
     }
-    
+
     public String getTxtCiudad() {
         return txtCiudad;
     }
@@ -303,9 +307,15 @@ public class Contribuyentes implements Serializable {
     public void setDireccionRepresentante(String direccionRepresentante) {
         this.direccionRepresentante = direccionRepresentante;
     }
-    
-    
 
+    public String getStsEspeciales() {
+        return stsEspeciales;
+    }
+
+    public void setStsEspeciales(String stsEspeciales) {
+        this.stsEspeciales = stsEspeciales;
+    }
+    
     @Override
     public int hashCode() {
         int hash = 0;
@@ -330,8 +340,8 @@ public class Contribuyentes implements Serializable {
     public String toString() {
         return "ec.com.newvi.sic.modelo.Contribuyentes[ codPersoneria=" + codPersoneria + " ]";
     }
-    
-    public Boolean esContribuyenteValido(){
+
+    public Boolean esContribuyenteValido() {
         return (!ComunUtil.esNulo(this.codCedularuc));
     }
 }

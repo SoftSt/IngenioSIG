@@ -438,7 +438,8 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
     @Override
     public void seleccionarPredio(Integer idPredio) {
         this.seleccionarPredioPorCodigo(idPredio);
-        calcularAvaluo();
+        //calcularAvaluo();
+        this.listaArbolAvaluo = new DefaultTreeNode();
         try {
             this.direccionVisorPredios = parametrosServicio.obtenerParametroPorNombre(EnumParametroSistema.DIRECCION_VISOR_PREDIOS, sesionBean.getSesion()).getValor();
         } catch (NewviExcepcion e) {
@@ -544,7 +545,6 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
     private void generarArbolAvaluo(List<AvaluoDto> listaArbol) {
 
         try {
-            listaArbolAvaluo = new DefaultTreeNode();
             listaArbolAvaluo = WebUtils.generarArbol(listaArbol, listaArbolAvaluo, "getHijos");
         } catch (NewviExcepcion ex) {
             LoggerNewvi.getLogNewvi(this.getClass()).error(ex, sesionBean.getSesion());
@@ -798,7 +798,7 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
         String subGrupoActual;
         EnumEstadoRegistro estadoPisoDetalle;
         Integer codPisoDetalle;
-        if(!ComunUtil.esNulo(listaPisoDetalle)){
+        if (!ComunUtil.esNulo(listaPisoDetalle)) {
             for (PisoDetalle pisoDetalleVerificable : listaPisoDetalle) {
                 subGrupoActual = pisoDetalleVerificable.getSubgrupo();
                 estadoPisoDetalle = pisoDetalleVerificable.getEstado();

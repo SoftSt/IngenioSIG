@@ -95,7 +95,7 @@ public class Predios implements Serializable {
     @Size(max = 25)
     @Column(name = "nom_codigocatastral")
     private String nomCodigocatastral;
-    @Size(max = 25)
+    @Size(max = 100)
     @Column(name = "nom_codigocatastralanterior")
     private String nomCodigocatastralanterior;
     @Size(max = 6)

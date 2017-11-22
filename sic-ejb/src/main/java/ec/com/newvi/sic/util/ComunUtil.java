@@ -8,6 +8,7 @@ package ec.com.newvi.sic.util;
 import ec.com.newvi.sic.dto.DominioDto;
 import ec.com.newvi.sic.dto.FichaCatastralDto;
 import ec.com.newvi.sic.enums.EnumNewviExcepciones;
+import ec.com.newvi.sic.modelo.Contribuyentes;
 import ec.com.newvi.sic.modelo.Predios;
 import ec.com.newvi.sic.modelo.Propiedad;
 import ec.com.newvi.sic.servicios.ParametrosServicio;
@@ -119,6 +120,13 @@ public class ComunUtil {
         return null;
     }
 
+    public static String obtenerDescuento(Contribuyentes contribuyente) {
+        if (!esCadenaVacia(contribuyente.getStsEspeciales()) && ("Predios Municipales").equals((contribuyente.getStsEspeciales().trim()))) {
+            return contribuyente.getStsEspeciales().trim();
+        }
+        return "Ninguno";
+    }
+
     public static String generarScriptTenencia(List<Predios> listaPredios, ParametrosServicio parametrosServicio) {
         List<DominioDto> dominios = obtenerSubNodosHijos(parametrosServicio);
         String sql = "";
@@ -130,12 +138,12 @@ public class ComunUtil {
             String sitAct = propiedad.getStsSituacion().getStsSituacion();
             String tenencia = propiedad.getStsTenencia().getStsTenencia();
             String escritura = propiedad.getStsEscritura().getStsEscritura();
-            String descuento = "Ninguno";
-            sql += "\ninsert into cat_cat_tenencia VALUES (" + (++cont) + "," + propiedad.getCodPropiedad() + ",'" + obtenerCodigoTenencia(dominios, transDomi, "1201") + "','TENENCIA','TRANSFERENCIA DOMINIO','" + transDomi + "', 'A', NULL, NULL, NULL, NULL, NULL, NULL);"
-                    + "\ninsert into cat_cat_tenencia VALUES (" + (++cont) + "," + propiedad.getCodPropiedad() + ",'" + obtenerCodigoTenencia(dominios, sitAct, "1202") + "','TENENCIA','SITUACION ACTUAL','" + sitAct + "', 'A', NULL, NULL, NULL, NULL, NULL, NULL);"
-                    + "\ninsert into cat_cat_tenencia VALUES (" + (++cont) + "," + propiedad.getCodPropiedad() + ",'" + obtenerCodigoTenencia(dominios, tenencia, "1203") + "','TENENCIA','TENENCIA DOMINIO','" + tenencia + "', 'A', NULL, NULL, NULL, NULL, NULL, NULL);"
-                    + "\ninsert into cat_cat_tenencia VALUES (" + (++cont) + "," + propiedad.getCodPropiedad() + ",'" + obtenerCodigoTenencia(dominios, escritura, "1204") + "','TENENCIA','ESCRITURA','" + escritura + "', 'A', NULL, NULL, NULL, NULL, NULL, NULL);"
-                    + "\ninsert into cat_cat_tenencia VALUES (" + (++cont) + "," + propiedad.getCodPropiedad() + ",'" + obtenerCodigoTenencia(dominios, descuento, "1205") + "','TENENCIA','Descuentos Especiales','" + descuento + "', 'A', NULL, NULL, NULL, NULL, NULL, NULL);";
+            String descuento = obtenerDescuento(a.getContribuyentePropiedad());
+            sql += "\ninsert into cat_ciu_tenencia VALUES (" + (++cont) + "," + propiedad.getCodPropiedad() + ",'" + obtenerCodigoTenencia(dominios, transDomi, "1201") + "','TENENCIA','TRANSFERENCIA DOMINIO','" + transDomi + "', 'A', NULL, NULL, NULL, NULL, NULL, NULL);"
+                    + "\ninsert into cat_ciu_tenencia VALUES (" + (++cont) + "," + propiedad.getCodPropiedad() + ",'" + obtenerCodigoTenencia(dominios, sitAct, "1202") + "','TENENCIA','SITUACION ACTUAL','" + sitAct + "', 'A', NULL, NULL, NULL, NULL, NULL, NULL);"
+                    + "\ninsert into cat_ciu_tenencia VALUES (" + (++cont) + "," + propiedad.getCodPropiedad() + ",'" + obtenerCodigoTenencia(dominios, tenencia, "1203") + "','TENENCIA','TENENCIA DOMINIO','" + tenencia + "', 'A', NULL, NULL, NULL, NULL, NULL, NULL);"
+                    + "\ninsert into cat_ciu_tenencia VALUES (" + (++cont) + "," + propiedad.getCodPropiedad() + ",'" + obtenerCodigoTenencia(dominios, escritura, "1204") + "','TENENCIA','ESCRITURA','" + escritura + "', 'A', NULL, NULL, NULL, NULL, NULL, NULL);"
+                    + "\ninsert into cat_ciu_tenencia VALUES (" + (++cont) + "," + propiedad.getCodPropiedad() + ",'" + obtenerCodigoTenencia(dominios, descuento, "1205") + "','TENENCIA','Descuentos Especiales','" + descuento + "', 'A', NULL, NULL, NULL, NULL, NULL, NULL);";
         }
 
         return sql;
