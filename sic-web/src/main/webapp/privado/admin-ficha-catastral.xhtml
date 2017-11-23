@@ -606,6 +606,17 @@
                                                         <f:facet name="input"><p:inputText value="#{piso.valAnioreparacion}"/></f:facet>
                                                     </p:cellEditor>
                                                 </p:column>
+                                                <p:column headerText="Estado" class="column-title-left" width="60">
+                                                    <p:cellEditor>
+                                                        <f:facet name="output"><h:outputText value="#{piso.stsEstado}" /></f:facet>
+                                                        <f:facet name="input">
+                                                            <h:selectOneMenu value="#{piso.stsEstado}" style="width:100%">
+                                                                <f:selectItem itemLabel="Seleccione Uno"/>
+                                                                <f:selectItems value="#{fichaCatastralBB.listaEstadosPisos}" />
+                                                            </h:selectOneMenu>
+                                                        </f:facet>
+                                                    </p:cellEditor>
+                                                </p:column>
 
                                                 <p:column headerText="Opciones" width="80">
                                                     <p:rowEditor/>
@@ -660,7 +671,8 @@
                                                                 <f:facet name="output"><h:outputText value="#{elementosConstruccion.estadoDetalle}" /></f:facet>
                                                                 <f:facet name="input">
                                                                     <h:selectOneMenu value="#{elementosConstruccion.estadoDetalle}" style="width:100%">
-                                                                        <f:selectItems value="#{fichaCatastralBB.listaEstadosPisoDetalle}" var="estadoPisoDetalle" itemLabel="#{estadoPisoDetalle}" itemValue="#{estadoPisoDetalle.estadoDetalle}" />
+                                                                        <f:selectItem itemLabel="Seleccione Uno"/>
+                                                                        <f:selectItems value="#{fichaCatastralBB.listaEstadosDetallesPisos}" />
                                                                     </h:selectOneMenu>
                                                                 </f:facet>
                                                             </p:cellEditor>

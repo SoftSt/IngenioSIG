@@ -396,6 +396,10 @@ public class CatastroServicioImpl implements CatastroServicio {
     public Pisos buscarPisosPorCodigoBloque(Integer codBloques) {
         return pisosFacade.buscarPisosPorCodigoBloque(codBloques);
     }
+    @Override
+    public List<Pisos> consultarStsEstadoPiso(){
+        return pisosFacade.buscarStsEstadoPisos();
+    }
 
     /*------------------------------------------------------------PisosDetalle------------------------------------------------------------*/
     @Override
@@ -536,6 +540,11 @@ public class CatastroServicioImpl implements CatastroServicio {
         } else {
             throw new NewviExcepcion(EnumNewviExcepciones.ERR011);
         }
+    }
+    
+    @Override
+    public List<PisoDetalle> consultarStsEstadoDetallePiso(){
+        return pisosDetalleFacade.buscarStsEstadoDetallePisos();
     }
 
     /*------------------------------------------------------------Terreno------------------------------------------------------------*/

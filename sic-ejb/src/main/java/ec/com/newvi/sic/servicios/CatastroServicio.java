@@ -243,6 +243,11 @@ public interface CatastroServicio {
      * @throws NewviExcepcion
      */
     public List<AvaluoDto> obtenerAvaluoPisos(Pisos piso, BigDecimal promedioFactores, List<Dominios> dominios,String formatoMonedaSistema, SesionDto sesion) throws NewviExcepcion;
+    /**
+     * Devuelve un listado de pisos filtrado por su estado
+     * @return Listado de pisos filtrado por su estado
+     */
+    public List<Pisos> consultarStsEstadoPiso();
 
     /*------------------------------------------------------------PisoDetalle------------------------------------------------------------*/
     /**
@@ -271,6 +276,11 @@ public interface CatastroServicio {
      * @throws NewviExcepcion 
      */
     public PisoDetalle seleccionarDetallePiso(Integer codDetallePiso) throws NewviExcepcion;
+    /**
+     * Devuelve un listado de detalles pisos filtrado por su estado
+     * @return Listado de detalles pisos filtrado por su estado
+     */
+    public List<PisoDetalle> consultarStsEstadoDetallePiso();
 
     /*------------------------------------------------------------Terreno------------------------------------------------------------*/
     /**

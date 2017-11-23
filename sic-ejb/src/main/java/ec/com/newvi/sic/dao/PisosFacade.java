@@ -55,5 +55,13 @@ public class PisosFacade extends AbstractFacade<Pisos, Integer> implements Seria
         return q.getResultList().toArray();
         //return Double.parseDouble((q.getResultList().toString()).substring(1, 7));
     }
+    
+    
+    public List<Pisos> buscarStsEstadoPisos() {
+        // Busca un listado de Pisos
+        Query q = this.getEntityManager().createQuery("SELECT distinct piso.stsEstado FROM Pisos piso where piso.stsEstado IS NOT NULL");
+        //@return listado de Pisos
+        return q.getResultList();
+    } 
 
 }

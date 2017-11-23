@@ -7,8 +7,10 @@ package ec.com.newvi.sic.dao;
 
 import ec.com.newvi.sic.modelo.PisoDetalle;
 import java.io.Serializable;
+import java.util.List;
 import javax.annotation.security.PermitAll;
 import javax.ejb.Stateless;
+import javax.persistence.Query;
 
 /**
  *
@@ -22,9 +24,11 @@ public class PisosDetalleFacade extends AbstractFacade<PisoDetalle, Integer> imp
         super(PisoDetalle.class, Integer.class);
     }
     
-    
-    
-    
-    
+    public List<PisoDetalle> buscarStsEstadoDetallePisos() {
+        // Busca un listado de Detalle Pisos
+        Query q = this.getEntityManager().createQuery("SELECT distinct detalle.estadoDetalle FROM PisoDetalle detalle where detalle.estadoDetalle IS NOT NULL");
+        //@return listado de Detalle Pisos
+        return q.getResultList();
+    } 
     
 }

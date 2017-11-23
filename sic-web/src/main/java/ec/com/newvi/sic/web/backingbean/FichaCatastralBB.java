@@ -44,6 +44,7 @@ import ec.com.newvi.sic.web.enums.EnumEtiquetas;
 import ec.com.newvi.sic.web.enums.EnumPantallaMantenimiento;
 import ec.com.newvi.sic.web.utils.ValidacionUtils;
 import ec.com.newvi.sic.web.utils.WebUtils;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
@@ -87,6 +88,8 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
     private List<Fotos> listaFotosPorPredio;
     private List<String> listaFotosJpg;
     private Pisos pisoSeleccionado;
+    private List<Pisos> listaEstadosPisos;
+    private List<PisoDetalle> listaEstadosDetallesPisos;
     private EnumEstadoPisoDetalle[] listaEstadosPisoDetalle;
     private EnumTenencia[] listaTenenciaDominios;
     private EnumZonaInfluencia[] listaZonaInfluencia;
@@ -337,11 +340,35 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
         this.listaArbolTenencia = listaArbolTenencia;
     }
 
+    public List<Pisos> getListaEstadosPisos() {
+        return listaEstadosPisos;
+    }
+
+    public void setListaEstadosPisos(List<Pisos> listaEstadosPisos) {
+        this.listaEstadosPisos = listaEstadosPisos;
+    }
+
+    public List<PisoDetalle> getListaEstadosDetallesPisos() {
+        return listaEstadosDetallesPisos;
+    }
+
+    public void setListaEstadosDetallesPisos(List<PisoDetalle> listaEstadosDetallesPisos) {
+        this.listaEstadosDetallesPisos = listaEstadosDetallesPisos;
+    }
+    
     @PostConstruct
     public void init() {
         this.predio = new Predios();
         deshabilitarPantallas();
         seleccionPantallas();
+    }
+    
+    public void actulizarEstadosPisos(){
+        this.listaEstadosPisos = catastroServicio.consultarStsEstadoPiso();
+    }
+    
+    public void actulizarEstadosDetallesPisos(){
+        this.listaEstadosDetallesPisos = catastroServicio.consultarStsEstadoDetallePiso();
     }
 
     public void crearNuevoPredio() {
@@ -674,6 +701,8 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
     public void agregarNuevoPiso(Integer codBloque) throws NewviExcepcion {
         Pisos piso = new Pisos();
         piso.setNomPiso("Piso nuevo");
+        piso.setStsEstado("Estable");
+        piso.setValAreapiso(BigDecimal.ZERO);
         piso.setPisEstado(EnumEstadoRegistro.A);
         agregarPisoBloqueSeleccionado(piso, codBloque);
 
@@ -832,6 +861,7 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
             pisoDetalle.setDescripcion(hijo.getDomiDescripcion());
             pisoDetalle.setCodigo(hijo.getDomiCodigo());
             pisoDetalle.setEstado(EnumEstadoRegistro.A);
+            pisoDetalle.setEstadoDetalle("Estable");
             registrarDetallesPiso(pisoSeleccionado, pisoDetalle, padre.getDomiDescripcion());
             try {
                 actualizarElementosPredio();
@@ -1086,6 +1116,8 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
                     EnumEtiquetas.FICHA_CATASTRAL_LISTA_EDITAR_DESCRIPCION);
             actualizarListadoPredios();
             actualizarCaracteristicasPredios();
+            actulizarEstadosPisos();
+            actulizarEstadosDetallesPisos();
         } else if (cadenaAccion.equals(EnumTipoPantalla.eliminacionFicha.getTipoPantalla())) {
             this.esPantallaEliminacion = true;
             this.esPantallaLista = true;
