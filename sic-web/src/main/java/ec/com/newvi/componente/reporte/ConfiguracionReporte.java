@@ -171,8 +171,7 @@ public class ConfiguracionReporte {
     }
 
     private void procesarParametrosGenerales() {
-        //Locale locale = new Locale("en", "US");
-        Locale locale = Locale.ENGLISH;
+        Locale locale = new Locale("en", "US");
         TimeZone timeZone = TimeZone.getTimeZone("America/Guayaquil");
         this.params.put(EnumParametrosReporte.DATASOURCE_EXPRESSION.getNombre(), this.xpath);
         this.params.put(EnumParametrosReporte.LOCALE.getNombre(), locale);

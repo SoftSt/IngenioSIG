@@ -53,11 +53,6 @@
                                                     onclick="PrimeFaces.monitorDownload(start, stop);">
                                             <p:fileDownload value="#{avaluoBB.imprimir('TABLA_CATASTRAL_URBANA', 'XLSX')}" />
                                         </p:menuitem>
-                                        <p:menuitem value="Tabla Catastral - Impresión" ajax="false"
-                                                    update="grupoAvaluos" icon="fa fa-print" 
-                                                    onclick="PrimeFaces.monitorDownload(start, stop);">
-                                            <p:fileDownload value="#{avaluoBB.imprimir('TABLA_CATASTRAL_URBANA_PAGINADA', 'PDF')}" />
-                                        </p:menuitem>
                                     </p:splitButton>
                                     <p:tooltip id="toolTipImprimir" for="imprimir" value="Imprimir" showEffect="fade" hideEffect="fade" position="top"/>
                                     <p:commandButton value="Reiniciar" icon="fa fa-repeat" 
@@ -195,11 +190,6 @@
                                                     onclick="PrimeFaces.monitorDownload(start, stop);">
                                             <p:fileDownload value="#{avaluoBB.imprimirConsultado('TABLA_CATASTRAL_URBANA', 'XLSX')}" />
                                         </p:menuitem>
-                                        <p:menuitem value="Tabla Catastral - Impresión" ajax="false"
-                                                    update="grupoAvaluos" icon="fa fa-print" 
-                                                    onclick="PrimeFaces.monitorDownload(start, stop);">
-                                            <p:fileDownload value="#{avaluoBB.imprimirConsultado('TABLA_CATASTRAL_URBANA_PAGINADA', 'PDF')}" />
-                                        </p:menuitem>
                                     </p:splitButton>
                                     <p:tooltip id="toolTipImprimirConsultado" for="imprimirConsultado" value="Imprimir" showEffect="fade" hideEffect="fade" position="top"/>
                                     <p:commandButton value="Reiniciar" icon="fa fa-repeat" 
@@ -263,7 +253,7 @@
                                         </p:column>
 
                                         <p:column headerText="Exenciones y Rebajas" width="40">
-                                            <h:outputText value="#{avaluoProcesado.valDescuentosExoneraciones}" style="float:right">
+                                            <h:outputText value="#{avaluo.valDescuentosExoneraciones}" style="float:right">
                                                 <f:convertNumber pattern="$ ###,###.00"/>
                                             </h:outputText>
                                         </p:column>

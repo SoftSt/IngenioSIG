@@ -63,10 +63,7 @@ public abstract class AdminSistemaBB extends SistemaBB {
     protected DefaultStreamedContent generarReporte(EnumReporte tipoReporte, List datosReporte, Map<String, Class> clasesDatosReporte, String xPath, Map<String, Object> parametrosReporte, ReporteGenerador.FormatoReporte formatoReporte) throws NewviExcepcion {
         DefaultStreamedContent archivoReporteGenerado = null;
         parametrosReporte.putAll(this.obtenerParametrosSistemaParaReporte());
-
         Reporte reporte = parametrosServicio.obtenerReporte(tipoReporte, sesionBean.getSesion());
-        parametrosReporte.put("TITULO_REPORTE", reporte.getTituloReporte());
-
         ConfiguracionReporte configReporte = new ConfiguracionReporte(formatoReporte, datosReporte, clasesDatosReporte, reporte.getArchivoReporte(), xPath, parametrosReporte);
         if (ComunUtil.esNulo(configReporte)) {
             return null;

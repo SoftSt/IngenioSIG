@@ -205,7 +205,6 @@ public abstract class AdminFichaCatastralBB extends AdminSistemaBB {
         tablita.add(new PresentacionFichaCatastralDto(predio));
         return tablita;
     }
-
     protected List<PresentacionFichaCatastralDto> obtenerDatosReporteTitulos(Titulos titulo) {
         List<PresentacionFichaCatastralDto> tablita = new ArrayList<>();
         tablita.add(new PresentacionFichaCatastralDto(titulo));
@@ -217,13 +216,21 @@ public abstract class AdminFichaCatastralBB extends AdminSistemaBB {
 
             CaracteristicasEdificacionesDto bloques;
             Map<String, Object> parametrosReporte = new HashMap<>();
-            
-            parametrosReporte.put(EnumParametrosReporte.NOMBRE_MODULO.getNombre(), "CATASTRO PREDIAL URBANO");
-            
             String xPath = "/lista".concat(claseImpresion.getSimpleName()).concat("//").concat(claseImpresion.getSimpleName());
 
+            if (EnumReporte.TABLA_CATASTRAL_URBANA.equals(tipoReporte)) {
+                parametrosReporte.put(EnumParametrosReporte.NOMBRE_MODULO.getNombre(), "CATASTRO PREDIAL URBANO");
+                parametrosReporte.put("TITULO_REPORTE", "TABLA CATASTRAL URBANA");
+            }
+            if (EnumReporte.TABLA_CATASTRAL_URBANA_CONDENSADA.equals(tipoReporte)) {
+                parametrosReporte.put(EnumParametrosReporte.NOMBRE_MODULO.getNombre(), "CATASTRO PREDIAL URBANO");
+                parametrosReporte.put("TITULO_REPORTE", "TABLA CATASTRAL URBANA CONDENSADA");
+            }
             if (EnumReporte.FICHA_RELEVAMIENTO_PREDIAL_URBANO.equals(tipoReporte)) {
                 bloques = new CaracteristicasEdificacionesDto(this.predio);
+
+                parametrosReporte.put(EnumParametrosReporte.NOMBRE_MODULO.getNombre(), "CATASTRO PREDIAL URBANO");
+                parametrosReporte.put(EnumParametrosReporte.TITULO_REPORTE.getNombre(), "FICHA DE RELEVAMIENTO PREDIAL URBANO");
 
                 parametrosReporte.put(EnumParametrosReporte.DESCRIPCION_TERRENO.getNombre(), ((PresentacionFichaCatastralDto) datosImpresion.get(0)).getListaDescripcionTerreno());
                 parametrosReporte.put(EnumParametrosReporte.INFRAESTRUCTURA_SERVICIOS.getNombre(), ((PresentacionFichaCatastralDto) datosImpresion.get(0)).getListaServicios());
@@ -231,6 +238,23 @@ public abstract class AdminFichaCatastralBB extends AdminSistemaBB {
                 parametrosReporte.put(EnumParametrosReporte.PISO.getNombre(), bloques.getListadetallesPisoDtoD());
 
                 parametrosReporte.put(EnumParametrosReporte.IMAGEN_DELIMITACION_PREDIO.getNombre(), parametrosServicio.obtenerParametroPorNombre(EnumParametroSistema.DIRECCION_SERVICIO_IMAGEN_PREDIO, sesionBean.getSesion()).getValor().concat(geoCatastroServicio.obtenerBordesPredio(predio, BigDecimal.valueOf(95), BigDecimal.valueOf(533), sesionBean.getSesion())));
+            }
+
+            if (EnumReporte.NOTIFICACION_AVALUO.equals(tipoReporte)) {
+                parametrosReporte.put(EnumParametrosReporte.NOMBRE_MODULO.getNombre(), "CATASTRO PREDIAL URBANO");
+                parametrosReporte.put("TITULO_REPORTE", "NOTIFICACIÓN AVALÚO");
+            }
+            if (EnumReporte.CERTIFICACION_AVALUO.equals(tipoReporte)) {
+                parametrosReporte.put(EnumParametrosReporte.NOMBRE_MODULO.getNombre(), "CATASTRO PREDIAL URBANO");
+                parametrosReporte.put("TITULO_REPORTE", "CERTIFICACIÓN AVALÚO");
+            }
+            if (EnumReporte.TITULO_CREDITO.equals(tipoReporte)) {
+                parametrosReporte.put(EnumParametrosReporte.NOMBRE_MODULO.getNombre(), "CATASTRO PREDIAL URBANO");
+                parametrosReporte.put("TITULO_REPORTE", "TÍTULO CRÉDITO");
+            }
+            if (EnumReporte.TITULO_GENERADO.equals(tipoReporte)) {
+                parametrosReporte.put(EnumParametrosReporte.NOMBRE_MODULO.getNombre(), "CATASTRO PREDIAL URBANO");
+                parametrosReporte.put("TITULO_REPORTE", "TÍTULO GENERADO");
             }
 
             Map<String, Class> paramRepA = new HashMap<String, Class>();
