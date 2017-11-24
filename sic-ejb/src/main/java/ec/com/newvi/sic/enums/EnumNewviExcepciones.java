@@ -141,6 +141,10 @@ public enum EnumNewviExcepciones {
     ERR601("ERR601", "Propietario no encontrado", "El propietario del predio [predio] no pudo ser encontrado. Revise si el propietario existe."),
     ERR602("ERR602", "Título no válido.", "El título ingresado no es válido. Por favor verifique que los datos ingresados son correctos."),
     ERR603("ERR603", "Título no encontrado.", "El título seleccionado no se encontró. Por favor verifique que los datos ingresados son correctos."),
+
+    // 601 al 700 excepciones de Tesoreria
+    INF700("INF700", "descuento editado.", "El descuento se ha editado correctamente."),
+    INF701("INF701", "multa editada.", "La Multa se ha editado correctamente."),
     ;
     
     private final String codigoExcepcion;

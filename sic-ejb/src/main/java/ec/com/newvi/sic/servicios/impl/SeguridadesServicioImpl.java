@@ -89,8 +89,6 @@ public class SeguridadesServicioImpl implements SeguridadesServicio {
         // Acturlizar el usuario
         LoggerNewvi.getLogNewvi(this.getClass()).debug("Editando usuario...", sesion);
         
-       
-        
         //Registro de campos independientes
         usuario.setUsuPalabraclave(usuario.getUsuUsuario());
         

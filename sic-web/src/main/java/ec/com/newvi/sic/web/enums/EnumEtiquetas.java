@@ -193,6 +193,20 @@ public enum EnumEtiquetas {
     DESCUENTO_EDITAR_ICONO("fa fa-edit"),
     DESCUENTO_EDITAR_DESCRIPCION("Edición de descuento seleccionado."),
     
+    FORMULARIO_MULTA_LISTA_TITULO("Formulario Multas"),
+    FORMULARIO_MULTA_LISTA_ICONO("fa fa-money"),
+    FORMULARIO_MULTA_LISTA_DESCRIPCION("Gestión de Multas."),
+     
+    MULTA_LISTA_TITULO("Multas"),
+    MULTA_LISTA_ICONO("fa fa-leanpub"),
+    MULTA_LISTA_DESCRIPCION("Gestión de multas en el sistema."),
+    MULTA_NUEVO_TITULO("Nueva Multa"),
+    MULTA_NUEVO_ICONO("fa fa-plus"),
+    MULTA_NUEVO_DESCRIPCION("Creación de nueva multa."),
+    MULTA_EDITAR_TITULO("Editar Multa"),
+    MULTA_EDITAR_ICONO("fa fa-edit"),
+    MULTA_EDITAR_DESCRIPCION("Edición de multa seleccionada."),
+    
     ;
     
     private final String textoEtiqueta;

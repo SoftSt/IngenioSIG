@@ -5,11 +5,15 @@
  */
 package ec.com.newvi.sic.modelo;
 
+import ec.com.newvi.sic.enums.EnumEstadoRegistro;
+import ec.com.newvi.sic.util.ComunUtil;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -46,9 +50,9 @@ public class CatConConstantesdescuentos implements Serializable {
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "val_valor")
     private BigDecimal valValor;
-    @Size(max = 25)
+    @Enumerated(EnumType.STRING)
     @Column(name = "sts_estado")
-    private String stsEstado;
+    private EnumEstadoRegistro stsEstado;
 
     public CatConConstantesdescuentos() {
     }
@@ -97,11 +101,11 @@ public class CatConConstantesdescuentos implements Serializable {
         this.valValor = valValor;
     }
 
-    public String getStsEstado() {
+    public EnumEstadoRegistro getStsEstado() {
         return stsEstado;
     }
 
-    public void setStsEstado(String stsEstado) {
+    public void setStsEstado(EnumEstadoRegistro stsEstado) {
         this.stsEstado = stsEstado;
     }
 
@@ -130,4 +134,7 @@ public class CatConConstantesdescuentos implements Serializable {
         return "ec.com.newvi.sic.modelo.CatConConstantesdescuentos[ codConstantesdescuentos=" + codConstantesdescuentos + " ]";
     }
     
+    public Boolean esDescuentoValido() {
+        return (!ComunUtil.esNulo(this.stsEstado));
+    }
 }

@@ -7,6 +7,7 @@ package ec.com.newvi.sic.dao;
 
 import ec.com.newvi.sic.enums.EnumEstadoRegistro;
 import ec.com.newvi.sic.modelo.CatConConstantesdescuentos;
+import ec.com.newvi.sic.modelo.CatConConstantesinteresmora;
 import java.io.Serializable;
 import java.util.List;
 import javax.annotation.security.PermitAll;
@@ -19,15 +20,14 @@ import javax.persistence.Query;
  */
 @Stateless
 @PermitAll
-public class ConstantesDescuentosFacade extends AbstractFacade<CatConConstantesdescuentos, Integer>  implements Serializable{
+public class ConstantesInteresMoraFacade extends AbstractFacade<CatConConstantesinteresmora, Integer>  implements Serializable{
 
-    public ConstantesDescuentosFacade() {
-        super(CatConConstantesdescuentos.class, Integer.class);
+    public ConstantesInteresMoraFacade() {
+        super(CatConConstantesinteresmora.class, Integer.class);
     }
     
-    public List<CatConConstantesdescuentos> buscarDescuentos(){      
-        Query q = this.getEntityManager().createQuery("SELECT descuentos FROM CatConConstantesdescuentos descuentos WHERE descuentos.stsEstado =:ESTADO ORDER BY descuentos.codConstantesdescuentos ASC");
-        q.setParameter("ESTADO", EnumEstadoRegistro.A);
+    public List<CatConConstantesinteresmora> buscarMultas(){      
+        Query q = this.getEntityManager().createQuery("SELECT interesmora FROM CatConConstantesinteresmora interesmora ORDER BY interesmora.codInteresmora ASC");
         return q.getResultList();
     }
 }
