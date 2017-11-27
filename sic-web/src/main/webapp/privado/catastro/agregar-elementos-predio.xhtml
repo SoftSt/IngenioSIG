@@ -28,9 +28,9 @@
                         <div style="font-size:1.2em;font-weight:bold;">Dominios</div>
                         <p:separator />
 
-                        <p:accordionPanel multiple="true">
+                        <p:accordionPanel id="aPanel">
                             <p:tab title="Caracteristicas de Terreno">
-                                <h:panelGrid>
+                                <h:panelGrid id="pgTerreno">
                                     <p:commandButton value="Agregar Descripcion"
                                                      actionListener="#{nuevosElementosPredioBB.abrirDialogDescripcionTerreno()}"
                                                      id="btnNuevaDescripcionTerreno"
@@ -75,7 +75,7 @@
                                 </h:panelGrid>
                             </p:tab>
                             <p:tab title="Infraestructura de Servicios y Cerramiento">
-                                <h:panelGrid>
+                                <h:panelGrid id="pgServicios">
                                     <p:commandButton value="Agregar Servicio"
                                                      actionListener="#{nuevosElementosPredioBB.abrirDialogServicios()}"
                                                      id="btnNuevoServicio"
@@ -119,7 +119,7 @@
                                 </h:panelGrid>
                             </p:tab>
                             <p:tab title="Tenencia">
-                                <h:panelGrid>
+                                <h:panelGrid id="pgTenencia">
                                     <p:commandButton value="Agregar tenencia"
                                                      actionListener="#{nuevosElementosPredioBB.abrirDialogTenencia()}"
                                                      id="btnNuevaTenecia"
@@ -162,11 +162,12 @@
                                 </h:panelGrid>
                             </p:tab>
                         </p:accordionPanel>
-                        <h:panelGrid style="float:right;">
+                        <h:panelGrid style="float:right;" id="pgFooter">
                             <f:facet name="footer">
-                                <p:commandButton value="Continuar"
+                                <p:commandButton value="Continuar Selección Predios"
                                                  id="btnContinuar"
                                                  update="grupoNuevosElementos"
+                                                 disabled="#{nuevosElementosPredioBB.hayElementosSeleccionados}"
                                                  icon="fa fa-arrow-right"
                                                  actionListener="#{nuevosElementosPredioBB.avanzarPaginaSiguiente()}"
                                                  style="float:right;"/>
@@ -174,29 +175,30 @@
 
                         </h:panelGrid>
 
+                        <p:dialog header="Agregar nuevos servicios" widgetVar="dlgServicios" appendTo="@(body)" modal="true" showEffect="fade" hideEffect="fade" resizable="false" closable="true" width="550" height="400">
+                            <p:growl id="messagesServicios" showDetail="true" escape="false"/>
+                            <p:treeTable value="#{nuevosElementosPredioBB.listaArbolServicios}"
+                                         id="listaArbolServicios" var="servicio"
+                                         selectionMode="single" selection="#{nuevosElementosPredioBB.servicioSeleccionado}" >
+
+                                <p:ajax event="select" listener="#{nuevosElementosPredioBB.agregarServicioSeleccionado}" update="formularioListaNuevosElementos:aPanel:pgServicios formularioListaNuevosElementos:pgFooter" />
+
+                                <p:column headerText="Descripcion" sortBy="#{servicio.descripcion}">
+                                    <h:outputText value="#{servicio.descripcion}"/>
+                                </p:column>            
+
+                            </p:treeTable>
+                        </p:dialog>
                     </p:outputPanel>
                 </h:form>
 
-                <p:dialog header="Agregar nuevos servicios" widgetVar="dlgServicios" appendTo="@(body)" modal="true" showEffect="fade" hideEffect="fade" resizable="false" closable="true" width="550" height="400">
-                    <p:treeTable value="#{nuevosElementosPredioBB.listaArbolServicios}"
-                                 id="listaArbolServicios" var="servicio"
-                                 selectionMode="single" selection="#{nuevosElementosPredioBB.servicioSeleccionado}" >
-
-                        <p:ajax event="select" listener="#{nuevosElementosPredioBB.agregarServicioSeleccionado}" update="grupoNuevosElementos" />
-
-                        <p:column headerText="Descripcion" sortBy="#{servicio.descripcion}">
-                            <h:outputText value="#{servicio.descripcion}"/>
-                        </p:column>            
-
-                    </p:treeTable>
-                </p:dialog>
 
                 <p:dialog header="Agregar nuevos descripcion al terreno" widgetVar="dlgDescripcionTerreno" appendTo="@(body)" modal="true" showEffect="fade" hideEffect="fade" resizable="false" closable="true" width="550" height="400">
                     <p:treeTable value="#{nuevosElementosPredioBB.listaArbolDescripcionTerreno}"
                                  id="listaArbolDescripcionTerreno" var="descripcionTerreno"
                                  selectionMode="single" selection="#{nuevosElementosPredioBB.descripcionTerrenoSeleccionado}" >
 
-                        <p:ajax event="select" listener="#{nuevosElementosPredioBB.agregarDescripcionTerrenoSeleccionada}" update="grupoNuevosElementos" />
+                        <p:ajax event="select" listener="#{nuevosElementosPredioBB.agregarDescripcionTerrenoSeleccionada}" update="formularioListaNuevosElementos:aPanel:pgTerreno" />
 
                         <p:column headerText="Descripcion" sortBy="#{descripcionTerreno.descripcion}">
                             <h:outputText value="#{descripcionTerreno.descripcion}"/>
@@ -209,7 +211,7 @@
                                  id="listaArbolTenencia" var="tenencia"
                                  selectionMode="single" selection="#{nuevosElementosPredioBB.tenenciaSeleccionada}" >
 
-                        <p:ajax event="select" listener="#{nuevosElementosPredioBB.agregarTenenciaSeleccionada}" update="grupoNuevosElementos" />
+                        <p:ajax event="select" listener="#{nuevosElementosPredioBB.agregarTenenciaSeleccionada}" update="formularioListaNuevosElementos:aPanel:pgTenencia" />
 
                         <p:column headerText="Descripcion" sortBy="#{tenencia.descripcion}">
                             <h:outputText value="#{tenencia.descripcion}"/>
@@ -297,7 +299,7 @@
                                                  icon="fa fa-arrow-right"
                                                  style="float:right;">
                                 </p:commandButton>
-                                <p:commandButton value="Regresar"
+                                <p:commandButton value="Regresar Selecció Dominios"
                                                  id="btnRegresarDominios"
                                                  update="grupoNuevosElementos"
                                                  icon="fa fa-arrow-left"
@@ -365,6 +367,62 @@
                                                  update="grupoNuevosElementos"
                                                  icon="fa fa-arrow-left"
                                                  actionListener="#{nuevosElementosPredioBB.avanzarPaginaSiguiente()}"
+                                                 style="float:left;">
+                                </p:commandButton>
+                            </f:facet>
+
+                        </h:panelGrid>
+
+                    </p:outputPanel>
+                </h:form>
+            </p:panel>
+            <p:panel id="panelConsultaElementos" rendered="#{nuevosElementosPredioBB.esPantallaActual('PANTALLA_BUSQUEDA')}">
+                <h:form id="formularioConsultaElementos">
+
+                    <p:growl id="growl" showDetail="true"/>
+                    <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true"/>
+                    <p>
+                        <h2>
+                            <h:outputText styleClass="#{nuevosElementosPredioBB.iconoPantalla.textoEtiqueta}"/>
+                            <h:outputText value=" #{nuevosElementosPredioBB.tituloPantalla.textoEtiqueta}"/>
+                        </h2>
+                    </p>
+                    <p>#{nuevosElementosPredioBB.descripcionPantalla.textoEtiqueta}</p>
+                    <p:tooltip />
+                    <p:outputPanel id="opConsultaElementos">
+                        <h:panelGrid class="ui-g-12">
+
+                            <br/>
+                            <div style="font-size:1em;font-weight:bold;">Descripción de Terreno</div>
+                            <p:separator />
+                            <p:dataList value="#{nuevosElementosPredioBB.listaTerrenoProcesados}" var="descripcionTerreno" type="ordered" emptyMessage="No se ha seleccionado registros">
+                                #{descripcionTerreno.stsGrupo}, #{descripcionTerreno.stsSubGrupo}, #{descripcionTerreno.stsDescripcion}
+                            </p:dataList>
+                            <br/>
+                            <div style="font-size:1em;font-weight:bold;">Infraestructura de Servicios y Cerramiento</div>
+                            <p:separator />
+                            <p:dataList value="#{nuevosElementosPredioBB.listaServiciosProcesados}" var="servicios" type="ordered" emptyMessage="No se ha seleccionado registros">
+                                #{servicios.stsGrupo}, #{servicios.stsSubGrupo}, #{servicios.stsDescripcion}
+                            </p:dataList>
+                            <br/>
+                            <div style="font-size:1em;font-weight:bold;">Características de Tenencia</div>
+                            <p:separator />
+                            <p:dataList value="#{nuevosElementosPredioBB.listaTenenciaProcesados}" var="tenencia" type="ordered" emptyMessage="No se ha seleccionado registros">
+                                #{tenencia.stsGrupo}, #{tenencia.stsSubgrupo}, #{tenencia.stsDescripcion}
+                            </p:dataList>
+                            <br/>
+                            <div style="font-size:1.2em;font-weight:bold;">A los siguentes Predios</div>
+                            <p:separator />
+                            <p:dataList value="#{nuevosElementosPredioBB.listaFichasProcesados}" style="font-size: 0.8em;" var="fichaProcesado" type="ordered" emptyMessage="No se ha seleccionado registros">
+                                #{fichaProcesado.predio.nomCodigocatastral}, #{fichaProcesado.contribuyentePropiedad.nomApellidos} #{fichaProcesado.contribuyentePropiedad.nomNombres}
+                            </p:dataList>
+
+                            <f:facet name="footer">
+                                <p:commandButton value="Regresar al inicio"
+                                                 id="btnRegresarInicio"
+                                                 actionListener="#{nuevosElementosPredioBB.regresarPaginaInicial()}"
+                                                 update="grupoNuevosElementos"
+                                                 icon="fa fa-arrow-left"
                                                  style="float:left;">
                                 </p:commandButton>
                             </f:facet>

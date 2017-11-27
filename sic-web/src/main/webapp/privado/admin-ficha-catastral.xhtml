@@ -638,7 +638,7 @@
                                                     <p:commandButton value="Agregar detalles"
                                                                      actionListener="#{fichaCatastralBB.obtenerPisoSeleccionado(piso.codPisos)}"
                                                                      id="nuevoDetalle"
-                                                                     update="grupoFichaCatastral">
+                                                                     update="listaElementosConstruccion">
                                                         <p:ajax update="toolTipInsertDetalle" process="@this" />
                                                     </p:commandButton>
 
@@ -696,7 +696,6 @@
                                             </p:dataTable>
                                         </p:rowExpansion>
                                     </p:dataTable>
-
 
                                 </h:panelGrid>
 
@@ -772,19 +771,6 @@
                     </p:outputPanel>
                 </h:form>
 
-                <p:dialog header="Agregar nuevos servicios" widgetVar="dlgServicios" appendTo="@(body)" modal="true" showEffect="fade" hideEffect="fade" resizable="false" closable="true" width="550" height="400">
-                    <p:treeTable value="#{fichaCatastralBB.listaArbolServicios}"
-                                 id="listaArbolServicios" var="servicio"
-                                 selectionMode="single" selection="#{fichaCatastralBB.servicioSeleccionado}" >
-
-                        <p:ajax event="select" listener="#{fichaCatastralBB.agregarServicio}" update="grupoFichaCatastral" />
-
-                        <p:column headerText="Descripcion" sortBy="#{servicio.descripcion}">
-                            <h:outputText value="#{servicio.descripcion}"/>
-                        </p:column>            
-
-                    </p:treeTable>
-                </p:dialog>
                 <p:dialog header="Agregar detalles al piso" widgetVar="dlgDetallePiso" appendTo="@(body)" modal="true" showEffect="fade" hideEffect="fade" resizable="false" closable="true" width="550" height="400">
                     <p:growl id="messages" showDetail="true" escape="false"/>
                     <p:treeTable value="#{fichaCatastralBB.listaArbolPisosDetalle}"
@@ -798,6 +784,22 @@
                         </p:column>            
                     </p:treeTable>
                 </p:dialog>
+
+                <p:dialog header="Agregar nuevos servicios" widgetVar="dlgServicios" appendTo="@(body)" modal="true" showEffect="fade" hideEffect="fade" resizable="false" closable="true" width="550" height="400">
+                    <p:growl id="messages" showDetail="true" escape="false"/>
+                    <p:treeTable value="#{fichaCatastralBB.listaArbolServicios}"
+                                 id="listaArbolServicios" var="servicio"
+                                 selectionMode="single" selection="#{fichaCatastralBB.servicioSeleccionado}" >
+
+                        <p:ajax event="select" listener="#{fichaCatastralBB.agregarServicio}" update="grupoFichaCatastral" />
+
+                        <p:column headerText="Descripcion" sortBy="#{servicio.descripcion}">
+                            <h:outputText value="#{servicio.descripcion}"/>
+                        </p:column>            
+
+                    </p:treeTable>
+                </p:dialog>
+
                 <p:dialog header="Edición de Propiedad" widgetVar="dlgPropiedad" appendTo="@(body)" modal="true" showEffect="fade" hideEffect="fade" resizable="false" closable="true" width="550" height="400">
                     <h:form id="dialogPropiedad">
                         <p:growl id="messagesw" showDetail="true" escape="false"/>
@@ -1285,7 +1287,7 @@
                                                     <p:commandButton value="Agregar detalles"
                                                                      actionListener="#{fichaCatastralBB.obtenerPisoSeleccionado(piso.codPisos)}"
                                                                      id="nuevoDetalle"
-                                                                     update="grupoFichaCatastral">
+                                                                     update="listaElementosConstruccion">
                                                         <p:ajax update="toolTipInsertDetalle" process="@this" />
                                                     </p:commandButton>
 

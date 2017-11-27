@@ -133,7 +133,8 @@ public enum EnumNewviExcepciones {
     // 501 al 600 excepciones de catastro
     ERR501("ERR501", "Propietario no encontrado.", "No se pudo encontrar un propietario al predio seleccionado. Registre la propiedad correspondiente."),
     ERR502("ERR502", "Atributo no encontrado.", "No se pudo encontrar el atributo [atributo]. Por favor contacte con el administrador."),
-    INF501("ERR501", "Valoración finalizada", "El proceso de valoración ha finalizado."),
+    INF501("INF501", "Valoración finalizada", "El proceso de valoración ha finalizado."),
+    INF503("INF503", "Proceso terminado", "El proceso de registro de elementos al predio ha finalizado."),
     // 601 al 700 excepciones de Rentas
     INF601("INF601", "Títulos generados", "Proceso finalizado. Se han generado [ntitulos] titulos."),
     INF602("INF602", "Títulos registrados", "Proceso finalizado. Se han registrado [ntitulos] titulos."),

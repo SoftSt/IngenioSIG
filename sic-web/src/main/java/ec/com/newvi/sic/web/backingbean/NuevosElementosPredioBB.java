@@ -10,7 +10,6 @@ import ec.com.newvi.sic.dto.FichaCatastralDto;
 import ec.com.newvi.sic.enums.EnumEstadoRegistro;
 import ec.com.newvi.sic.enums.EnumNewviExcepciones;
 import ec.com.newvi.sic.enums.EnumRelacionDominios;
-import ec.com.newvi.sic.modelo.Contribuyentes;
 import ec.com.newvi.sic.modelo.Dominios;
 import ec.com.newvi.sic.modelo.Predios;
 import ec.com.newvi.sic.modelo.Propiedad;
@@ -64,6 +63,9 @@ public class NuevosElementosPredioBB extends AdminFichaCatastralBB {
     private List<FichaCatastralDto> listaFichasProcesados;
     private List<FichaCatastralDto> listaFichaFiltradas;
     private List<FichaCatastralDto> listaFichaProcesadosFiltradas;
+
+    private Boolean hayElementosSeleccionados;
+    private Boolean hayPrediosSeleccionados;
 
     public TreeNode getListaArbolDescripcionTerreno() {
         return listaArbolDescripcionTerreno;
@@ -181,6 +183,22 @@ public class NuevosElementosPredioBB extends AdminFichaCatastralBB {
         this.listaFichaProcesadosFiltradas = listaFichaProcesadosFiltradas;
     }
 
+    public Boolean getHayElementosSeleccionados() {
+        return hayElementosSeleccionados;
+    }
+
+    public void setHayElementosSeleccionados(Boolean hayElementosSeleccionados) {
+        this.hayElementosSeleccionados = hayElementosSeleccionados;
+    }
+
+    public Boolean getHayPrediosSeleccionados() {
+        return hayPrediosSeleccionados;
+    }
+
+    public void setHayPrediosSeleccionados(Boolean hayPrediosSeleccionados) {
+        this.hayPrediosSeleccionados = hayPrediosSeleccionados;
+    }
+
     @PostConstruct
     public void init() {
         conmutarPantalla(EnumPantallaMantenimiento.PANTALLA_LISTADO);
@@ -193,10 +211,12 @@ public class NuevosElementosPredioBB extends AdminFichaCatastralBB {
         actualizarListadoTenencia();
         inicializarListasSeleccionadas();
         inicializarListasProcesadas();
+        verificarElementosSeleccionados();
     }
 
     private void inicializarListasSeleccionadas() {
         this.listaServiciosSeleccionados = new ArrayList<>();
+        this.listaFichasSeleccionadas = new ArrayList<>();
         this.listaTerrenoSeleccionados = new ArrayList<>();
         this.listaTenenciaSeleccionados = new ArrayList<>();
     }
@@ -286,14 +306,30 @@ public class NuevosElementosPredioBB extends AdminFichaCatastralBB {
 
     public void eliminarTerreno(Terreno terrenoEliminable) {
         this.listaTerrenoSeleccionados.remove(terrenoEliminable);
+        verificarElementosSeleccionados();
     }
 
     public void eliminarServicio(Servicios servicioEliminable) {
         this.listaServiciosSeleccionados.remove(servicioEliminable);
+        verificarElementosSeleccionados();
     }
 
     public void eliminarTenencia(Tenencia tenenciaEliminable) {
         this.listaTenenciaSeleccionados.remove(tenenciaEliminable);
+        verificarElementosSeleccionados();
+    }
+
+    private void verificarElementosSeleccionados() {
+        if (this.listaTerrenoSeleccionados.size() > 0
+                || this.listaServiciosSeleccionados.size() > 0
+                || this.listaTenenciaSeleccionados.size() > 0) {
+            this.hayElementosSeleccionados = false;
+        }
+        if (this.listaTerrenoSeleccionados.isEmpty()
+                && this.listaServiciosSeleccionados.isEmpty()
+                && this.listaTenenciaSeleccionados.isEmpty()) {
+            this.hayElementosSeleccionados = true;
+        }
     }
 
     public void agregarServicioSeleccionado(NodeSelectEvent event) {
@@ -313,6 +349,7 @@ public class NuevosElementosPredioBB extends AdminFichaCatastralBB {
             //this.predio.getServicios().add(servicio);
             this.listaServiciosSeleccionados.add(nuevoServicio);
         }
+        verificarElementosSeleccionados();
     }
 
     public void agregarDescripcionTerrenoSeleccionada(NodeSelectEvent event) {
@@ -332,6 +369,7 @@ public class NuevosElementosPredioBB extends AdminFichaCatastralBB {
 
             this.listaTerrenoSeleccionados.add(nuevaDescripcionTerreno);
         }
+        verificarElementosSeleccionados();
     }
 
     public void agregarTenenciaSeleccionada(NodeSelectEvent event) {
@@ -351,6 +389,7 @@ public class NuevosElementosPredioBB extends AdminFichaCatastralBB {
 
             this.listaTenenciaSeleccionados.add(nuevaTenencia);
         }
+        verificarElementosSeleccionados();
     }
 
     public void avanzarPaginaSiguiente() {
@@ -411,13 +450,59 @@ public class NuevosElementosPredioBB extends AdminFichaCatastralBB {
                 EnumEtiquetas.NUEVOS_ELEMENTOS_PREDIO_LISTA_DESCRIPCION);
     }
 
+    public void regresarPaginaInicial() {
+        conmutarPantalla(EnumPantallaMantenimiento.PANTALLA_LISTADO);
+        establecerTitulo(EnumEtiquetas.NUEVOS_ELEMENTOS_PREDIO_LISTA_TITULO,
+                EnumEtiquetas.NUEVOS_ELEMENTOS_PREDIO_LISTA_ICONO,
+                EnumEtiquetas.NUEVOS_ELEMENTOS_PREDIO_LISTA_DESCRIPCION);
+        inicializarListasSeleccionadas();
+        inicializarListasProcesadas();
+    }
+
+    private Servicios generarServicio(Servicios servicioActual, Predios codCatastral) {
+        Servicios nuevoServicio = new Servicios();
+        nuevoServicio.setStsGrupo(servicioActual.getStsGrupo());
+        nuevoServicio.setStsSubGrupo(servicioActual.getStsSubGrupo());
+        nuevoServicio.setStsDescripcion(servicioActual.getStsDescripcion());
+        nuevoServicio.setCodCatastral(codCatastral);
+        nuevoServicio.setStsCodigo(servicioActual.getStsCodigo());
+        nuevoServicio.setSerEstado(servicioActual.getSerEstado());
+        nuevoServicio.setSerEstado(servicioActual.getSerEstado());
+
+        return nuevoServicio;
+    }
+
+    private Terreno generarTerreno(Terreno terrenoActual, Predios codCatastral) {
+        Terreno nuevaDescripcionTerreno = new Terreno();
+        nuevaDescripcionTerreno.setStsGrupo(terrenoActual.getStsGrupo());
+        nuevaDescripcionTerreno.setStsSubGrupo(terrenoActual.getStsSubGrupo());
+        nuevaDescripcionTerreno.setStsDescripcion(terrenoActual.getStsDescripcion());
+        nuevaDescripcionTerreno.setCodCatastral(codCatastral);
+        nuevaDescripcionTerreno.setTerEstado(terrenoActual.getTerEstado());
+        nuevaDescripcionTerreno.setStsCodigo(terrenoActual.getStsCodigo());
+
+        return nuevaDescripcionTerreno;
+    }
+
+    private Tenencia generarTenencia(Tenencia tenenciaActual, Propiedad codPropietarios) {
+        Tenencia nuevaTenencia = new Tenencia();
+        nuevaTenencia.setStsGrupo(tenenciaActual.getStsGrupo());
+        nuevaTenencia.setStsSubgrupo(tenenciaActual.getStsSubgrupo());
+        nuevaTenencia.setStsDescripcion(tenenciaActual.getStsDescripcion());
+        nuevaTenencia.setCodPropietarios(codPropietarios);
+        nuevaTenencia.setTenEstado(tenenciaActual.getTenEstado());
+        nuevaTenencia.setStsCodigo(tenenciaActual.getStsCodigo());
+
+        return nuevaTenencia;
+    }
+
     private void registrarServicios(Predios predioActual) {
         if (!ComunUtil.esNulo(this.listaServiciosSeleccionados)) {
             for (Servicios servicioAProcesar : this.listaServiciosProcesados) {
-                servicioAProcesar.setCodCatastral(predioActual);
-                //predioActual.getServicios().add(servicioAProcesar);
+                Servicios nuevoServicio = generarServicio(servicioAProcesar, predioActual);
                 try {
-                    catastroServicio.generarNuevoServicio(servicioAProcesar, sesionBean.getSesion());
+                    catastroServicio.generarNuevoServicio(nuevoServicio, sesionBean.getSesion());
+                    servicioAProcesar = new Servicios();
                 } catch (NewviExcepcion ex) {
                     Logger.getLogger(NuevosElementosPredioBB.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -429,9 +514,10 @@ public class NuevosElementosPredioBB extends AdminFichaCatastralBB {
         if (!ComunUtil.esNulo(this.listaTerrenoSeleccionados)) {
             for (Terreno terrenoAProcesar : this.listaTerrenoSeleccionados) {
                 terrenoAProcesar.setCodCatastral(predioActual);
-                //predioActual.getCaracteristicasTerreno().add(terrenoAProcesar);
+                Terreno nuevoDescripcionTerreno = generarTerreno(terrenoAProcesar, predioActual);
                 try {
-                    catastroServicio.generarNuevoTerreno(terrenoAProcesar, sesionBean.getSesion());
+                    catastroServicio.generarNuevoTerreno(nuevoDescripcionTerreno, sesionBean.getSesion());
+                    terrenoAProcesar = new Terreno();
                 } catch (NewviExcepcion ex) {
                     Logger.getLogger(NuevosElementosPredioBB.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -442,10 +528,9 @@ public class NuevosElementosPredioBB extends AdminFichaCatastralBB {
     private void registrarTenencia(Propiedad propiedadActual) {
         if (!ComunUtil.esNulo(this.listaTenenciaSeleccionados)) {
             for (Tenencia tenenciaAProcesar : this.listaTenenciaSeleccionados) {
-                tenenciaAProcesar.setCodPropietarios(propiedadActual);
-                //propiedadActual.getTenenciaList().add(tenenciaAProcesar);
+                Tenencia nuevaTenencia = generarTenencia(tenenciaAProcesar, propiedadActual);
                 try {
-                    contribuyentesServicio.generarNuevaTenencia(tenenciaAProcesar, sesionBean.getSesion());
+                    contribuyentesServicio.generarNuevaTenencia(nuevaTenencia, sesionBean.getSesion());
                 } catch (NewviExcepcion ex) {
                     Logger.getLogger(NuevosElementosPredioBB.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -461,8 +546,13 @@ public class NuevosElementosPredioBB extends AdminFichaCatastralBB {
             registrarTerreno(predioActual);
             registrarTenencia(propiedadActual);
         }
-        LoggerNewvi.getLogNewvi(this.getClass()).info(EnumNewviExcepciones.INF364.presentarMensaje(), sesionBean.getSesion());
-        MensajesFaces.mensajeInformacion(EnumNewviExcepciones.INF364.presentarMensaje());
+        LoggerNewvi.getLogNewvi(this.getClass()).info(EnumNewviExcepciones.INF503.presentarMensaje(), sesionBean.getSesion());
+        MensajesFaces.mensajeInformacion(EnumNewviExcepciones.INF503.presentarMensaje());
+
+        conmutarPantalla(EnumPantallaMantenimiento.PANTALLA_BUSQUEDA);
+        establecerTitulo(EnumEtiquetas.NUEVOS_ELEMENTOS_PREDIO_CONSULTA_TITULO,
+                EnumEtiquetas.NUEVOS_ELEMENTOS_PREDIO_CONSULTA_ICONO,
+                EnumEtiquetas.NUEVOS_ELEMENTOS_PREDIO_CONSULTA_DESCRIPCION);
     }
 
 }
