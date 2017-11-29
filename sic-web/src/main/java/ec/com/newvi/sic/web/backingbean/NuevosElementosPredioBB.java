@@ -432,15 +432,21 @@ public class NuevosElementosPredioBB extends AdminFichaCatastralBB {
     }
 
     public void avanzarPaginaVerificacion() {
-        conmutarPantalla(EnumPantallaMantenimiento.PANTALLA_ASIGNACION);
-        establecerTitulo(EnumEtiquetas.NUEVOS_ELEMENTOS_PREDIO_VERIFICAR_TITULO,
-                EnumEtiquetas.NUEVOS_ELEMENTOS_PREDIO_VERIFICAR_ICONO,
-                EnumEtiquetas.NUEVOS_ELEMENTOS_PREDIO_VERIFICAR_DESCRIPCION);
-        inicializarListasProcesadas();
-        procesarListasServiciosSeleccionadas();
-        procesarListasDescripcionTerrenoSeleccionadas();
-        procesarListasTenenciaSeleccionadas();
-        procesarListasFichasSeleccionadas();
+        
+        if(!this.listaFichasSeleccionadas.isEmpty()){
+            conmutarPantalla(EnumPantallaMantenimiento.PANTALLA_ASIGNACION);
+            establecerTitulo(EnumEtiquetas.NUEVOS_ELEMENTOS_PREDIO_VERIFICAR_TITULO,
+                    EnumEtiquetas.NUEVOS_ELEMENTOS_PREDIO_VERIFICAR_ICONO,
+                    EnumEtiquetas.NUEVOS_ELEMENTOS_PREDIO_VERIFICAR_DESCRIPCION);
+            inicializarListasProcesadas();
+            procesarListasServiciosSeleccionadas();
+            procesarListasDescripcionTerrenoSeleccionadas();
+            procesarListasTenenciaSeleccionadas();
+            procesarListasFichasSeleccionadas();
+        }else{
+            WebUtils.obtenerContextoPeticion().execute("PF('dlgPredios').show()");
+        }
+        
     }
 
     public void regresarPaginaAnterior() {

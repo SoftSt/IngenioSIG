@@ -212,14 +212,22 @@ public abstract class AdminFichaCatastralBB extends AdminSistemaBB {
         return tablita;
     }
 
+    protected List<PresentacionFichaCatastralDto> obtenerDatosReporteListaTitulos(List<Titulos> listaTitulos) {
+        List<PresentacionFichaCatastralDto> tablita = new ArrayList<>();
+        for (Titulos titulo : listaTitulos) {
+            tablita.add(new PresentacionFichaCatastralDto(titulo));
+        }
+        return tablita;
+    }
+
     protected DefaultStreamedContent generarReporteCatastro(EnumReporte tipoReporte, ReporteGenerador.FormatoReporte formatoReporte, List datosImpresion, Class claseImpresion) {
         try {
 
             CaracteristicasEdificacionesDto bloques;
             Map<String, Object> parametrosReporte = new HashMap<>();
-            
+
             parametrosReporte.put(EnumParametrosReporte.NOMBRE_MODULO.getNombre(), "CATASTRO PREDIAL URBANO");
-            
+
             String xPath = "/lista".concat(claseImpresion.getSimpleName()).concat("//").concat(claseImpresion.getSimpleName());
 
             if (EnumReporte.FICHA_RELEVAMIENTO_PREDIAL_URBANO.equals(tipoReporte)) {

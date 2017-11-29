@@ -5,7 +5,10 @@
  */
 package ec.com.newvi.sic.web.backingbean;
 
+import ec.com.newvi.componente.reporte.ReporteGenerador;
+import ec.com.newvi.sic.dto.PresentacionFichaCatastralDto;
 import ec.com.newvi.sic.enums.EnumEstadoTitulo;
+import ec.com.newvi.sic.enums.EnumReporte;
 import ec.com.newvi.sic.modelo.Titulos;
 import ec.com.newvi.sic.servicios.RentasServicio;
 import ec.com.newvi.sic.util.excepciones.NewviExcepcion;
@@ -20,6 +23,7 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import org.primefaces.model.DefaultStreamedContent;
 
 /**
  *
@@ -33,11 +37,15 @@ public class ConsultaTitulosBB extends AdminFichaCatastralBB {
     private RentasServicio rentasServicio;
     private EnumPantallaMantenimiento pantallaActual;
     private String tipoTituloActual;
+    
     private List<Titulos> listaTitulosRegistrados;
     private List<Titulos> listaTitulosRegistradosFiltrados;
+    
     private Date fechaMinima;
     private Date fechaMaxima;
-           
+    
+    private Boolean hayTipos;       
+    private Boolean hayFechaEmision;       
     
     private EnumEstadoTitulo[] listaEstadosTitulo;
     
@@ -82,6 +90,23 @@ public class ConsultaTitulosBB extends AdminFichaCatastralBB {
     public void setFechaMaxima(Date fechaMaxima) {
         this.fechaMaxima = fechaMaxima;
     }
+
+    public Boolean getHayTipos() {
+        return hayTipos;
+    }
+
+    public void setHayTipos(Boolean hayTipos) {
+        this.hayTipos = hayTipos;
+    }
+
+    public Boolean getHayFechaEmision() {
+        return hayFechaEmision;
+    }
+
+    public void setHayFechaEmision(Boolean hayFechaEmision) {
+        this.hayFechaEmision = hayFechaEmision;
+    }
+    
     
     @PostConstruct
     public void init() {
@@ -91,6 +116,8 @@ public class ConsultaTitulosBB extends AdminFichaCatastralBB {
                 EnumEtiquetas.CONSULTA_TITULO_CARACTERISITCAS_LISTA_DESCRIPCION);
         
         this.listaEstadosTitulo = EnumEstadoTitulo.values();
+        this.hayTipos = Boolean.FALSE;
+        this.hayFechaEmision = Boolean.FALSE;
     }
     
     private void conmutarPantalla(EnumPantallaMantenimiento nuevaPantalla) {
@@ -119,8 +146,16 @@ public class ConsultaTitulosBB extends AdminFichaCatastralBB {
         this.listaTitulosRegistrados = rentasServicio.consultarTitulosPorTipo(EnumEstadoTitulo.obtenerEstadoTitulo(this.tipoTituloActual));
         this.totalCobrardoTitulos = obtenerTotalesTitulos(this.listaTitulosRegistrados);
     }
+    private ReporteGenerador.FormatoReporte obtenerFormatoReporte (String tipoReporte){
+        if(tipoReporte.equals("PDF"))
+            return ReporteGenerador.FormatoReporte.PDF;
+        else if (tipoReporte.equals("XLSX"))
+            return ReporteGenerador.FormatoReporte.XLSX;
+        else 
+            return ReporteGenerador.FormatoReporte.DOCX;
+    }
     
-    
-        
-    
+    public DefaultStreamedContent imprimir(EnumReporte tipoReporte, String formatoReporte) throws NewviExcepcion {
+        return generarReporteCatastro(tipoReporte, obtenerFormatoReporte(formatoReporte), obtenerDatosReporteListaTitulos(this.listaTitulosRegistrados), PresentacionFichaCatastralDto.class);
+    }
 }

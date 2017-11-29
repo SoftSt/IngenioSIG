@@ -22,21 +22,61 @@
                     <p:tooltip />
                     <p:outputPanel id="opListaConsultaTitulos">
 
-                        <h:panelGrid columns="2">
-                            <p:selectOneMenu id="caracterisitcaTitulo" value="#{consultaTitulosBB.tipoTituloActual}" style="width:125px" >
-                                <f:selectItem itemLabel="Seleccione tipo título..." itemValue="null"/>
-                                <f:selectItems value="#{consultaTitulosBB.listaEstadosTitulo}" var="estadosTitulo" itemValue="#{estadosTitulo.estadoTitulo}" itemLabel="#{estadosTitulo.estadoTitulo}"/>
-                            </p:selectOneMenu>
+                        <h:panelGrid>
+                            <h:panelGrid columns="2">
+                                <p:splitButton id="imprimir" value="Imprimir" icon="fa fa-print">
+                                    <p:menuitem icon="fa fa-file-pdf-o" value="Imprimir en PDF" ajax="false" update="grupoConsultaTitulos" onclick="PrimeFaces.monitorDownload(start, stop);">
+                                        <p:fileDownload value="#{consultaTitulosBB.imprimir('LISTA_TITULOS_COMPLETA','PDF')}"/>
+                                    </p:menuitem>
+                                    <p:menuitem icon="fa fa-file-excel-o" value="Imprimir en XLSX" ajax="false" update="grupoConsultaTitulos" onclick="PrimeFaces.monitorDownload(start, stop);">
+                                        <p:fileDownload value="#{consultaTitulosBB.imprimir('LISTA_TITULOS_COMPLETA','XLSX')}"/>
+                                    </p:menuitem>
+                                </p:splitButton>
+                                <p:commandButton icon="fa fa-filter"
+                                                 value="Seleecionar filtros"
+                                                 update="grupoConsultaTitulos"
+                                                 id="btnAbrirFiltros">
+                                </p:commandButton>
+
+                            </h:panelGrid>
+                            <h:panelGrid id="pgFiltros">
+
+                                <h:panelGrid id="pgTipoTitulo" columns="3">
+                                    <h:outputLabel for="caracterisitcaTitulo" value="Tipo de título" style="font-weight: bold;"/>
+                                    <p:selectBooleanCheckbox value="#{consultaTitulosBB.hayTipos}">
+                                        <p:ajax update="pgFiltros"/>
+                                    </p:selectBooleanCheckbox>
+
+                                    <p:selectOneMenu id="caracterisitcaTitulo" rendered="#{consultaTitulosBB.hayTipos}" value="#{consultaTitulosBB.tipoTituloActual}" style="width:125px" >
+                                        <f:selectItem itemLabel="Seleccione tipo título..." itemValue="null"/>
+                                        <f:selectItems value="#{consultaTitulosBB.listaEstadosTitulo}" var="estadosTitulo" itemValue="#{estadosTitulo.estadoTitulo}" itemLabel="#{estadosTitulo.estadoTitulo}"/>
+                                    </p:selectOneMenu>
+
+                                    <p:outputLabel value="TODOS" rendered="#{!consultaTitulosBB.hayTipos}"/>
+                                </h:panelGrid>
+                                <h:panelGrid id="pgFecEmision" columns="4">
+                                    <h:outputLabel value="Fecha Emisión" style="font-weight: bold;"/>
+                                    <p:selectBooleanCheckbox value="#{consultaTitulosBB.hayFechaEmision}">
+                                        <p:ajax update="pgFecEmision"/>
+                                    </p:selectBooleanCheckbox>
+
+                                    <p:calendar id="clFechaMinima" rendered="#{consultaTitulosBB.hayFechaEmision}" navigator="true" value="#{consultaTitulosBB.fechaMinima}" label="Fecha de nacimiento" 
+                                                showOn="button" size="10" pattern="dd/MM/yyyy" mask="true" >
+                                        <p:watermark for="clFechaMinima" value="dd/mm/aaaa"/>
+                                    </p:calendar>
+
+                                    <p:calendar id="clFechaMaxima" rendered="#{consultaTitulosBB.hayFechaEmision}" navigator="true" value="#{consultaTitulosBB.fechaMaxima}" label="Fecha de nacimiento" 
+                                                showOn="button" size="10" pattern="dd/MM/yyyy" mask="true" >
+                                        <p:watermark for="clFechaMaxima" value="dd/mm/aaaa"/>
+                                    </p:calendar>        
+
+                                    <p:outputLabel value="TODOS" rendered="#{!consultaTitulosBB.hayFechaEmision}"/>
+                                </h:panelGrid>
+
+
+                            </h:panelGrid>
+
                             
-                            <p:calendar id="clFechaMinima" navigator="true" value="#{consultaTitulosBB.fechaMinima}" label="Fecha de nacimiento" 
-                                        showOn="button" size="10" pattern="dd/MM/yyyy" mask="true" >
-                                <p:watermark for="clFechaMinima" value="dd/mm/aaaa"/>
-                            </p:calendar>
-                            
-                            <p:calendar id="clFechaMaxima" navigator="true" value="#{consultaTitulosBB.fechaMaxima}" label="Fecha de nacimiento" 
-                                        showOn="button" size="10" pattern="dd/MM/yyyy" mask="true" >
-                                <p:watermark for="clFechaMaxima" value="dd/mm/aaaa"/>
-                            </p:calendar>
 
                             <p:commandButton actionListener="#{consultaTitulosBB.buscarTituloPorTipo}"
                                              icon="fa fa-search"
@@ -45,7 +85,7 @@
                                              id="btnTipoTitulo">
                             </p:commandButton>
                         </h:panelGrid>
-                        
+
                         <h:panelGrid>
                             <p:dataTable id="listaTitulosRegistrados" var="tituloRegistrado" widgetVar="listaTitulosRegistradosTabla"
                                          value="#{consultaTitulosBB.listaTitulosRegistrados}" rowKey="#{tituloRegistrado.codTitulos}" filteredValue="#{consultaTitulosBB.listaTitulosRegistradosFiltrados}"
@@ -148,6 +188,8 @@
                                 </p:columnGroup>
 
                             </p:dataTable>
+
+
 
                         </h:panelGrid>
 

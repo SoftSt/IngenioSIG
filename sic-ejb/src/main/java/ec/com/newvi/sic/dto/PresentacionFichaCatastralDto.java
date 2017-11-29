@@ -93,6 +93,7 @@ public class PresentacionFichaCatastralDto {
     private String cedulaRepresentante;
     private String direccionRepresentante;
     private String fecEmision;
+    private String anioEmision;
 
     private List<Terreno> listaDescripcionTerreno;
 
@@ -647,6 +648,16 @@ public class PresentacionFichaCatastralDto {
     public void setValDescuentoExoneracion(BigDecimal valDescuentoExoneracion) {
         this.valDescuentoExoneracion = valDescuentoExoneracion;
     }
+
+    public String getAnioEmision() {
+        return anioEmision;
+    }
+
+    public void setAnioEmision(String anioEmision) {
+        this.anioEmision = anioEmision;
+    }
+    
+    
     
     public PresentacionFichaCatastralDto(Predios predio) {
         FichaCatastralDto fichaCatastralDto = new FichaCatastralDto(predio);
@@ -671,7 +682,7 @@ public class PresentacionFichaCatastralDto {
         this.txtCallePrincipal = predio.getTxtDireccion();
         this.stsBarrio = predio.getStsBarrio();
         this.nomNumero = predio.getNomNumero();
-        this.nomCodigocatastral = predio.getNomCodigocatastralanterior();
+        //this.nomCodigocatastral = predio.getNomCodigocatastralanterior();
     }
 
     private void setearDatosPredio(Predios predio) {
@@ -737,6 +748,10 @@ public class PresentacionFichaCatastralDto {
         DateFormat format = new SimpleDateFormat("MM/dd/yyyy");
         return format.format(fechaEmision);
     }
+    public String generarAnio(Date fechaEmision){
+        DateFormat format = new SimpleDateFormat("yyyy");
+        return format.format(fechaEmision);
+    }
 
     private void setearDatosTitulo(Titulos titulo) {
         this.valAreaPredio = titulo.getValAreaterreno();
@@ -753,6 +768,8 @@ public class PresentacionFichaCatastralDto {
         this.valServiciosadministrativos = titulo.getValServiciosadministrativos();
         this.valContruccionObsoleta = titulo.getValContruccionObsoleta();
         this.valDescuentoExoneracion = titulo.getValDescuentoExoneracion();
+        this.anioEmision = generarAnio(titulo.getFecEmision());
+        this.nomCodigocatastral =  titulo.getNomCodigocatastral();
     }
 
 }

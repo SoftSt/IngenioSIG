@@ -135,5 +135,5 @@ public class GestionarTituloBB extends AdminFichaCatastralBB {
     public DefaultStreamedContent imprimir(EnumReporte tipoReporte, Integer codTitulos) throws NewviExcepcion {
         return generarReporteCatastro(tipoReporte, ReporteGenerador.FormatoReporte.PDF, obtenerDatosReporteTitulos(rentasServicio.seleccionarTitulo(codTitulos)), PresentacionFichaCatastralDto.class);
     }
-
+    
 }

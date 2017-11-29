@@ -198,7 +198,7 @@
                                  id="listaArbolDescripcionTerreno" var="descripcionTerreno"
                                  selectionMode="single" selection="#{nuevosElementosPredioBB.descripcionTerrenoSeleccionado}" >
 
-                        <p:ajax event="select" listener="#{nuevosElementosPredioBB.agregarDescripcionTerrenoSeleccionada}" update="formularioListaNuevosElementos:aPanel:pgTerreno" />
+                        <p:ajax event="select" listener="#{nuevosElementosPredioBB.agregarDescripcionTerrenoSeleccionada}" update="formularioListaNuevosElementos:aPanel:pgTerreno formularioListaNuevosElementos:pgFooter" />
 
                         <p:column headerText="Descripcion" sortBy="#{descripcionTerreno.descripcion}">
                             <h:outputText value="#{descripcionTerreno.descripcion}"/>
@@ -211,7 +211,7 @@
                                  id="listaArbolTenencia" var="tenencia"
                                  selectionMode="single" selection="#{nuevosElementosPredioBB.tenenciaSeleccionada}" >
 
-                        <p:ajax event="select" listener="#{nuevosElementosPredioBB.agregarTenenciaSeleccionada}" update="formularioListaNuevosElementos:aPanel:pgTenencia" />
+                        <p:ajax event="select" listener="#{nuevosElementosPredioBB.agregarTenenciaSeleccionada}" update="formularioListaNuevosElementos:aPanel:pgTenencia formularioListaNuevosElementos:pgFooter" />
 
                         <p:column headerText="Descripcion" sortBy="#{tenencia.descripcion}">
                             <h:outputText value="#{tenencia.descripcion}"/>
@@ -312,6 +312,10 @@
 
                     </p:outputPanel>
                 </h:form>
+                
+                <p:dialog header="Seleccione predios" widgetVar="dlgPredios" appendTo="@(body)" modal="true" showEffect="fade" hideEffect="fade" resizable="false" closable="true">
+                    
+                </p:dialog>
             </p:panel>
             <p:panel id="panelVerificacionElementos" rendered="#{nuevosElementosPredioBB.esPantallaActual('PANTALLA_ASIGNACION')}">
                 <h:form id="formularioVerificacionElementos">
