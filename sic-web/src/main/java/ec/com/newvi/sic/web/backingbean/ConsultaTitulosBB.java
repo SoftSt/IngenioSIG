@@ -11,12 +11,15 @@ import ec.com.newvi.sic.enums.EnumEstadoTitulo;
 import ec.com.newvi.sic.enums.EnumReporte;
 import ec.com.newvi.sic.modelo.Titulos;
 import ec.com.newvi.sic.servicios.RentasServicio;
+import ec.com.newvi.sic.util.ComunUtil;
 import ec.com.newvi.sic.util.excepciones.NewviExcepcion;
 import ec.com.newvi.sic.util.logs.LoggerNewvi;
 import ec.com.newvi.sic.web.MensajesFaces;
 import ec.com.newvi.sic.web.enums.EnumEtiquetas;
 import ec.com.newvi.sic.web.enums.EnumPantallaMantenimiento;
+import ec.com.newvi.sic.web.utils.WebUtils;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -32,23 +35,31 @@ import org.primefaces.model.DefaultStreamedContent;
 @ManagedBean
 @ViewScoped
 public class ConsultaTitulosBB extends AdminFichaCatastralBB {
-    
+
     @EJB
     private RentasServicio rentasServicio;
     private EnumPantallaMantenimiento pantallaActual;
     private String tipoTituloActual;
-    
+
     private List<Titulos> listaTitulosRegistrados;
     private List<Titulos> listaTitulosRegistradosFiltrados;
-    
-    private Date fechaMinima;
-    private Date fechaMaxima;
-    
-    private Boolean hayTipos;       
-    private Boolean hayFechaEmision;       
-    
+
+    private Date fechaMinimaEmision;
+    private Date fechaMaximaEmision;
+    private Date fechaMinimaRecaudacion;
+    private Date fechaMaximaRecaudacion;
+
+    private Boolean hayTipos;
+    private Boolean hayFechaEmision;
+    private Boolean hayFechaRecaudacion;
+    private Boolean hayMonto;
+    private Boolean esPanelFiltros;
+
+    private BigDecimal montoMinimo;
+    private BigDecimal montoMaximo;
+
     private EnumEstadoTitulo[] listaEstadosTitulo;
-    
+
     private BigDecimal totalCobrardoTitulos;
 
     public String getTipoTituloActual() {
@@ -75,22 +86,46 @@ public class ConsultaTitulosBB extends AdminFichaCatastralBB {
         return listaTitulosRegistradosFiltrados;
     }
 
-    public Date getFechaMinima() {
-        return fechaMinima;
+    public Date getFechaMinimaEmision() {
+        return fechaMinimaEmision;
     }
 
-    public void setFechaMinima(Date fechaMinima) {
-        this.fechaMinima = fechaMinima;
+    public void setFechaMinimaEmision(Date fechaMinimaEmision) {
+        this.fechaMinimaEmision = fechaMinimaEmision;
     }
 
-    public Date getFechaMaxima() {
-        return fechaMaxima;
+    public Date getFechaMaximaEmision() {
+        return fechaMaximaEmision;
     }
 
-    public void setFechaMaxima(Date fechaMaxima) {
-        this.fechaMaxima = fechaMaxima;
+    public void setFechaMaximaEmision(Date fechaMaximaEmision) {
+        this.fechaMaximaEmision = fechaMaximaEmision;
     }
 
+    public Date getFechaMinimaRecaudacion() {
+        return fechaMinimaRecaudacion;
+    }
+
+    public void setFechaMinimaRecaudacion(Date fechaMinimaRecaudacion) {
+        this.fechaMinimaRecaudacion = fechaMinimaRecaudacion;
+    }
+
+    public Date getFechaMaximaRecaudacion() {
+        return fechaMaximaRecaudacion;
+    }
+
+    public void setFechaMaximaRecaudacion(Date fechaMaximaRecaudacion) {
+        this.fechaMaximaRecaudacion = fechaMaximaRecaudacion;
+    }
+
+    public Boolean getEsPanelFiltros() {
+        return esPanelFiltros;
+    }
+
+    public void setEsPanelFiltros(Boolean esPanelFiltros) {
+        this.esPanelFiltros = esPanelFiltros;
+    }
+    
     public Boolean getHayTipos() {
         return hayTipos;
     }
@@ -106,24 +141,58 @@ public class ConsultaTitulosBB extends AdminFichaCatastralBB {
     public void setHayFechaEmision(Boolean hayFechaEmision) {
         this.hayFechaEmision = hayFechaEmision;
     }
-    
-    
+
+    public Boolean getHayFechaRecaudacion() {
+        return hayFechaRecaudacion;
+    }
+
+    public void setHayFechaRecaudacion(Boolean hayFechaRecaudacion) {
+        this.hayFechaRecaudacion = hayFechaRecaudacion;
+    }
+
+    public Boolean getHayMonto() {
+        return hayMonto;
+    }
+
+    public void setHayMonto(Boolean hayMonto) {
+        this.hayMonto = hayMonto;
+    }
+
+    public BigDecimal getMontoMinimo() {
+        return montoMinimo;
+    }
+
+    public void setMontoMinimo(BigDecimal montoMinimo) {
+        this.montoMinimo = montoMinimo;
+    }
+
+    public BigDecimal getMontoMaximo() {
+        return montoMaximo;
+    }
+
+    public void setMontoMaximo(BigDecimal montoMaximo) {
+        this.montoMaximo = montoMaximo;
+    }
+
     @PostConstruct
     public void init() {
         conmutarPantalla(EnumPantallaMantenimiento.PANTALLA_LISTADO);
         establecerTitulo(EnumEtiquetas.CONSULTA_TITULO_CARACTERISITCAS_LISTA_TITULO,
                 EnumEtiquetas.CONSULTA_TITULO_CARACTERISITCAS_LISTA_ICONO,
                 EnumEtiquetas.CONSULTA_TITULO_CARACTERISITCAS_LISTA_DESCRIPCION);
-        
+
         this.listaEstadosTitulo = EnumEstadoTitulo.values();
         this.hayTipos = Boolean.FALSE;
         this.hayFechaEmision = Boolean.FALSE;
+        this.hayFechaRecaudacion = Boolean.FALSE;
+        this.hayMonto = Boolean.FALSE;
+        this.esPanelFiltros = Boolean.FALSE;
     }
-    
+
     private void conmutarPantalla(EnumPantallaMantenimiento nuevaPantalla) {
         this.pantallaActual = nuevaPantalla;
     }
-    
+
     public Boolean esPantallaActual(String pantallaEsperada) {
         try {
             return this.pantallaActual.equals(EnumPantallaMantenimiento.obtenerPantallaPorNombre(pantallaEsperada));
@@ -133,7 +202,7 @@ public class ConsultaTitulosBB extends AdminFichaCatastralBB {
             return false;
         }
     }
-    
+
     private BigDecimal obtenerTotalesTitulos(List<Titulos> listadoTitulos) {
         BigDecimal totalPorCobrar = BigDecimal.ZERO;
         for (Titulos titulo : listadoTitulos) {
@@ -141,21 +210,162 @@ public class ConsultaTitulosBB extends AdminFichaCatastralBB {
         }
         return totalPorCobrar;
     }
-    
-    public void buscarTituloPorTipo(){
-        this.listaTitulosRegistrados = rentasServicio.consultarTitulosPorTipo(EnumEstadoTitulo.obtenerEstadoTitulo(this.tipoTituloActual));
+
+    public Boolean esEstadoTituloIgual(EnumEstadoTitulo estadoTituloRegistrado, String estadoTitulo) {
+        if (!ComunUtil.esNulo(estadoTituloRegistrado)
+                && estadoTituloRegistrado.equals(EnumEstadoTitulo.obtenerEstadoTitulo(estadoTitulo))) {
+            return Boolean.TRUE;
+        } else {
+            return Boolean.FALSE;
+        }
+    }
+
+    public List<Titulos> obtenerTitulosPorTipo(List<Titulos> titulosAFiltrar) {
+        List<Titulos> titulosFiltrados = new ArrayList<>();
+        for (Titulos titulo : titulosAFiltrar) {
+            EnumEstadoTitulo estadoTituloRegistrado = titulo.getStsEstado();
+            if (esEstadoTituloIgual(estadoTituloRegistrado, this.tipoTituloActual)) {
+                titulosFiltrados.add(titulo);
+            }
+        }
+        return titulosFiltrados;
+    }
+
+    public List<Titulos> filtrarPorTipo(List<Titulos> titulosAFiltrar) {
+        if (hayTipos && !ComunUtil.esNulo(this.tipoTituloActual)) {
+            return obtenerTitulosPorTipo(titulosAFiltrar);
+        } else {
+            return titulosAFiltrar;
+        }
+    }
+
+    public List<Titulos> obtenerTitulosPorFechaEmision(List<Titulos> titulosAFiltrar) {
+        List<Titulos> titulosFiltrados = new ArrayList<>();
+        for (Titulos titulo : titulosAFiltrar) {
+            Date fechaRegistrada = titulo.getFecEmision();
+            if (estaDentroRangoFecha(fechaRegistrada, this.fechaMinimaEmision, this.fechaMaximaEmision)) {
+                titulosFiltrados.add(titulo);
+            }
+        }
+        return titulosFiltrados;
+    }
+
+    public Boolean sonFechasValidas(Date fechaMinima, Date fechaMaxima) {
+        if (!ComunUtil.esNulo(fechaMinima) && !ComunUtil.esNulo(fechaMaxima)) {
+            return Boolean.TRUE;
+        } else {
+            return Boolean.FALSE;
+        }
+    }
+
+    public List<Titulos> filtrarPorFechaEmision(List<Titulos> titulosAFiltrar) {
+        if (hayFechaEmision && sonFechasValidas(this.fechaMinimaEmision, this.fechaMaximaEmision)) {
+            return obtenerTitulosPorFechaEmision(titulosAFiltrar);
+        } else {
+            return titulosAFiltrar;
+        }
+    }
+
+    public List<Titulos> obtenerTitulosPorFechaRecaudacion(List<Titulos> titulosAFiltrar) {
+        List<Titulos> titulosFiltrados = new ArrayList<>();
+        for (Titulos titulo : titulosAFiltrar) {
+            Date fechaRegistrada = titulo.getFecFpago();
+            if (estaDentroRangoFecha(fechaRegistrada, this.fechaMinimaRecaudacion, this.fechaMaximaRecaudacion)) {
+                titulosFiltrados.add(titulo);
+            }
+        }
+        return titulosFiltrados;
+    }
+
+    public List<Titulos> filtrarPorFechaRecaudacion(List<Titulos> titulosAFiltrar) {
+        if (hayFechaEmision && sonFechasValidas(this.fechaMinimaRecaudacion, this.fechaMaximaRecaudacion)) {
+            return obtenerTitulosPorFechaRecaudacion(titulosAFiltrar);
+        } else {
+            return titulosAFiltrar;
+        }
+    }
+
+    public Boolean estaDentroRangoFecha(Date fechaRegistradaActual, Date fechaMinima, Date fechaMaxima) {
+        if (!ComunUtil.esNulo(fechaRegistradaActual)
+                && fechaRegistradaActual.after(fechaMinima)
+                && fechaRegistradaActual.before(fechaMaxima)) {
+            return Boolean.TRUE;
+        } else {
+            return Boolean.FALSE;
+        }
+    }
+
+    public Boolean estaDentroRangoNumero(BigDecimal montoRegistradoActual, BigDecimal valorMinimo, BigDecimal valorMaximo) {
+        if (!ComunUtil.esNulo(montoRegistradoActual)
+                && montoRegistradoActual.subtract(valorMinimo).signum() >= 0
+                && montoRegistradoActual.subtract(valorMaximo).signum() <= 0) {
+            return Boolean.TRUE;
+        } else {
+            return Boolean.FALSE;
+        }
+    }
+
+    public List<Titulos> obtenerTituloPorMonto(List<Titulos> titulosAFiltrar) {
+        List<Titulos> titulosFiltrados = new ArrayList<>();
+        for (Titulos titulo : titulosAFiltrar) {
+            BigDecimal montoRegistrado = titulo.getValTotalapagar();
+            if (estaDentroRangoNumero(montoRegistrado, this.montoMinimo, this.montoMaximo)) {
+                titulosFiltrados.add(titulo);
+            }
+        }
+        return titulosFiltrados;
+    }
+    public Boolean sonMontosValidos(BigDecimal valorMinimo, BigDecimal valorMaximo) {
+        if (!ComunUtil.esNulo(valorMinimo) && !ComunUtil.esNulo(valorMaximo)) {
+            return Boolean.TRUE;
+        } else {
+            return Boolean.FALSE;
+        }
+    }
+
+    public List<Titulos> filtrarPorMonto(List<Titulos> titulosAFiltrar) {
+        if (hayMonto && sonMontosValidos(this.montoMinimo, this.montoMaximo)) {
+            return obtenerTituloPorMonto(titulosAFiltrar);
+        } else {
+            return titulosAFiltrar;
+        }
+    }
+
+    public List<Titulos> aplicarFiltros(List<Titulos> listaTitulos) {
+        listaTitulos = filtrarPorTipo(listaTitulos);
+        listaTitulos = filtrarPorMonto(listaTitulos);
+        listaTitulos = filtrarPorFechaEmision(listaTitulos);
+        listaTitulos = filtrarPorFechaRecaudacion(listaTitulos);
+        return listaTitulos;
+    }
+
+    public void buscarTituloPorTipo() {
+        this.listaTitulosRegistrados = aplicarFiltros(rentasServicio.consultarTitulos());
         this.totalCobrardoTitulos = obtenerTotalesTitulos(this.listaTitulosRegistrados);
     }
-    private ReporteGenerador.FormatoReporte obtenerFormatoReporte (String tipoReporte){
-        if(tipoReporte.equals("PDF"))
+
+    private ReporteGenerador.FormatoReporte obtenerFormatoReporte(String tipoReporte) {
+        if (tipoReporte.equals("PDF")) {
             return ReporteGenerador.FormatoReporte.PDF;
-        else if (tipoReporte.equals("XLSX"))
+        } else if (tipoReporte.equals("XLSX")) {
             return ReporteGenerador.FormatoReporte.XLSX;
-        else 
+        } else {
             return ReporteGenerador.FormatoReporte.DOCX;
+        }
     }
-    
+
     public DefaultStreamedContent imprimir(EnumReporte tipoReporte, String formatoReporte) throws NewviExcepcion {
         return generarReporteCatastro(tipoReporte, obtenerFormatoReporte(formatoReporte), obtenerDatosReporteListaTitulos(this.listaTitulosRegistrados), PresentacionFichaCatastralDto.class);
+    }
+    
+    public void habilitarPanelFiltros(){
+        this.esPanelFiltros = true;
+    }
+    public void desHabilitarPanelFiltros(){
+        this.esPanelFiltros = Boolean.FALSE;
+    }
+    
+    public void abrirDialogFiltros() throws NewviExcepcion {
+        WebUtils.obtenerContextoPeticion().execute("PF('dlgFiltros').show()");
     }
 }

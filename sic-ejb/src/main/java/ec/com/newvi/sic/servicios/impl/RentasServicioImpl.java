@@ -162,5 +162,10 @@ public class RentasServicioImpl implements RentasServicio {
     public List<Titulos> consultarTitulosPorTipo(EnumEstadoTitulo tipoTitulo) {
         return tituloFacade.buscarTitulosPorTipo(tipoTitulo);
     }
+    
+    @Override
+    public List<Titulos> consultarTitulos(){
+        return  tituloFacade.buscarTitulos();
+    }
 
 }

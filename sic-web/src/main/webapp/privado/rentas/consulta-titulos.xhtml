@@ -22,7 +22,7 @@
                     <p:tooltip />
                     <p:outputPanel id="opListaConsultaTitulos">
 
-                        <h:panelGrid>
+                        <h:panelGrid class="ui-g-12">
                             <h:panelGrid columns="2">
                                 <p:splitButton id="imprimir" value="Imprimir" icon="fa fa-print">
                                     <p:menuitem icon="fa fa-file-pdf-o" value="Imprimir en PDF" ajax="false" update="grupoConsultaTitulos" onclick="PrimeFaces.monitorDownload(start, stop);">
@@ -33,20 +33,20 @@
                                     </p:menuitem>
                                 </p:splitButton>
                                 <p:commandButton icon="fa fa-filter"
-                                                 value="Seleecionar filtros"
-                                                 update="grupoConsultaTitulos"
-                                                 id="btnAbrirFiltros">
+                                                 value="Seleccionar filtros"
+                                                 update="formularioListaConsultaTitulos:pgFiltros"
+                                                 id="btnAbrirFiltros"
+                                                 actionListener="#{consultaTitulosBB.habilitarPanelFiltros}"                                                 >
                                 </p:commandButton>
 
                             </h:panelGrid>
+
                             <h:panelGrid id="pgFiltros">
-
                                 <h:panelGrid id="pgTipoTitulo" columns="3">
-                                    <h:outputLabel for="caracterisitcaTitulo" value="Tipo de título" style="font-weight: bold;"/>
+                                    <h:outputLabel value="Tipo de título" style="font-weight: bold;"/>
                                     <p:selectBooleanCheckbox value="#{consultaTitulosBB.hayTipos}">
-                                        <p:ajax update="pgFiltros"/>
+                                        <p:ajax update="pgTipoTitulo"/>
                                     </p:selectBooleanCheckbox>
-
                                     <p:selectOneMenu id="caracterisitcaTitulo" rendered="#{consultaTitulosBB.hayTipos}" value="#{consultaTitulosBB.tipoTituloActual}" style="width:125px" >
                                         <f:selectItem itemLabel="Seleccione tipo título..." itemValue="null"/>
                                         <f:selectItems value="#{consultaTitulosBB.listaEstadosTitulo}" var="estadosTitulo" itemValue="#{estadosTitulo.estadoTitulo}" itemLabel="#{estadosTitulo.estadoTitulo}"/>
@@ -54,39 +54,65 @@
 
                                     <p:outputLabel value="TODOS" rendered="#{!consultaTitulosBB.hayTipos}"/>
                                 </h:panelGrid>
-                                <h:panelGrid id="pgFecEmision" columns="4">
+                                <h:panelGrid id="pgFecEmision" columns="6" >
                                     <h:outputLabel value="Fecha Emisión" style="font-weight: bold;"/>
                                     <p:selectBooleanCheckbox value="#{consultaTitulosBB.hayFechaEmision}">
                                         <p:ajax update="pgFecEmision"/>
                                     </p:selectBooleanCheckbox>
-
-                                    <p:calendar id="clFechaMinima" rendered="#{consultaTitulosBB.hayFechaEmision}" navigator="true" value="#{consultaTitulosBB.fechaMinima}" label="Fecha de nacimiento" 
+                                    <h:outputLabel value="de:" rendered="#{consultaTitulosBB.hayFechaEmision}"/>
+                                    <p:calendar id="clFechaMinimaEmision" rendered="#{consultaTitulosBB.hayFechaEmision}" navigator="true" value="#{consultaTitulosBB.fechaMinimaEmision}"
                                                 showOn="button" size="10" pattern="dd/MM/yyyy" mask="true" >
-                                        <p:watermark for="clFechaMinima" value="dd/mm/aaaa"/>
+                                        <p:watermark for="clFechaMinimaEmision" value="dd/mm/aaaa"/>
                                     </p:calendar>
-
-                                    <p:calendar id="clFechaMaxima" rendered="#{consultaTitulosBB.hayFechaEmision}" navigator="true" value="#{consultaTitulosBB.fechaMaxima}" label="Fecha de nacimiento" 
+                                    <h:outputLabel value="hasta:" rendered="#{consultaTitulosBB.hayFechaEmision}"/>
+                                    <p:calendar id="clFechaMaximaEmision" rendered="#{consultaTitulosBB.hayFechaEmision}" navigator="true" value="#{consultaTitulosBB.fechaMaximaEmision}" 
                                                 showOn="button" size="10" pattern="dd/MM/yyyy" mask="true" >
-                                        <p:watermark for="clFechaMaxima" value="dd/mm/aaaa"/>
+                                        <p:watermark for="clFechaMaximaEmision" value="dd/mm/aaaa"/>
                                     </p:calendar>        
 
                                     <p:outputLabel value="TODOS" rendered="#{!consultaTitulosBB.hayFechaEmision}"/>
                                 </h:panelGrid>
+                                <h:panelGrid id="pgFecRecaudacion" columns="6">
+                                    <h:outputLabel value="Fecha Recaudación" style="font-weight: bold;"/>
+                                    <p:selectBooleanCheckbox value="#{consultaTitulosBB.hayFechaRecaudacion}">
+                                        <p:ajax update="pgFecRecaudacion"/>
+                                    </p:selectBooleanCheckbox>
 
+                                    <h:outputLabel value="de:" rendered="#{consultaTitulosBB.hayFechaRecaudacion}"/>
+                                    <p:calendar id="clFechaMinimaRecaudacion" rendered="#{consultaTitulosBB.hayFechaRecaudacion}" navigator="true" value="#{consultaTitulosBB.fechaMinimaRecaudacion}"
+                                                showOn="button" size="10" pattern="dd/MM/yyyy" mask="true" >
+                                        <p:watermark for="clFechaMinimaRecaudacion" value="dd/mm/aaaa"/>
+                                    </p:calendar>
+                                    <h:outputLabel value="hasta:" rendered="#{consultaTitulosBB.hayFechaRecaudacion}"/>
+                                    <p:calendar id="clFechaMaximaRecaudacion" rendered="#{consultaTitulosBB.hayFechaRecaudacion}" navigator="true" value="#{consultaTitulosBB.fechaMaximaRecaudacion}" 
+                                                showOn="button" size="10" pattern="dd/MM/yyyy" mask="true" >
+                                        <p:watermark for="clFechaMaximaRecaudacion" value="dd/mm/aaaa"/>
+                                    </p:calendar>        
 
+                                    <p:outputLabel value="TODOS" rendered="#{!consultaTitulosBB.hayFechaRecaudacion}"/>
+                                </h:panelGrid>
+                                <h:panelGrid id="pgMonto" columns="6">
+                                    <h:outputLabel value="Monto" style="font-weight: bold;"/>
+                                    <p:selectBooleanCheckbox value="#{consultaTitulosBB.hayMonto}">
+                                        <p:ajax update="pgMonto"/>
+                                    </p:selectBooleanCheckbox>
+                                    <h:outputLabel value="de:" rendered="#{consultaTitulosBB.hayMonto}"/>
+                                    <p:inputNumber value="#{consultaTitulosBB.montoMinimo}" rendered="#{consultaTitulosBB.hayMonto}" size="15"/>
+                                    <h:outputLabel value="hasta:" rendered="#{consultaTitulosBB.hayMonto}"/>
+                                    <p:inputNumber value="#{consultaTitulosBB.montoMaximo}" rendered="#{consultaTitulosBB.hayMonto}" size="15"/>
+                                    <p:outputLabel value="TODOS" rendered="#{!consultaTitulosBB.hayMonto}"/>
+                                </h:panelGrid>
+                                <f:facet name="footer">
+                                    <p:commandButton actionListener="#{consultaTitulosBB.buscarTituloPorTipo}"
+                                                     icon="fa fa-search"
+                                                     value="Buscar"
+                                                     update="grupoConsultaTitulos"
+                                                     id="btnTipoTitulo"
+                                                     style="float:right;">
+                                    </p:commandButton>
+                                </f:facet>
                             </h:panelGrid>
 
-                            
-
-                            <p:commandButton actionListener="#{consultaTitulosBB.buscarTituloPorTipo}"
-                                             icon="fa fa-search"
-                                             value="Buscar"
-                                             update="grupoConsultaTitulos"
-                                             id="btnTipoTitulo">
-                            </p:commandButton>
-                        </h:panelGrid>
-
-                        <h:panelGrid>
                             <p:dataTable id="listaTitulosRegistrados" var="tituloRegistrado" widgetVar="listaTitulosRegistradosTabla"
                                          value="#{consultaTitulosBB.listaTitulosRegistrados}" rowKey="#{tituloRegistrado.codTitulos}" filteredValue="#{consultaTitulosBB.listaTitulosRegistradosFiltrados}"
                                          paginator="true" rows="10" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" 
@@ -192,6 +218,13 @@
 
 
                         </h:panelGrid>
+                        <p:dialog header="Selección de filtros" widgetVar="dlgFiltros" appendTo="@(body)" modal="true" showEffect="fade" hideEffect="fade" resizable="false" closable="true" width="550" height="400">
+                            <p:growl id="messagesServicios" showDetail="true" escape="false"/>
+                            <p:outputPanel>
+
+                            </p:outputPanel>
+
+                        </p:dialog>
 
                     </p:outputPanel>
                 </h:form>

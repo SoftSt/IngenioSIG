@@ -75,4 +75,9 @@ public interface RentasServicio {
      * @return Lista de títulos filtrados
      */
     public List<Titulos> consultarTitulosPorTipo(EnumEstadoTitulo tipoTitulo);
+    /**
+     * Lista todos los títulos
+     * @return  lista de títulos
+     */
+    public List<Titulos> consultarTitulos();
 }
