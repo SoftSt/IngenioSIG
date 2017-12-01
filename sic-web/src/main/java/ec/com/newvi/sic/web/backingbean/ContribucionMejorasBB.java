@@ -159,7 +159,6 @@ public class ContribucionMejorasBB extends AdminContribucionMejorasBB {
     public void setListaAplicacion(EnumAplicacion[] listaAplicacion) {
         this.listaAplicacion = listaAplicacion;
     }
-    
 
     @PostConstruct
     public void init() {
@@ -339,7 +338,7 @@ public class ContribucionMejorasBB extends AdminContribucionMejorasBB {
 
     public void abrirDialogPredios(int codObras) throws NewviExcepcion {
         contribucionMejoras = contribucionMejorasServicio.seleccionarContribucionMejoras(codObras);
-        actualizarListadoPrediosParaDialog((List<ObrasDetalle>) contribucionMejoras.getObrasdetalleCollection());
+        actualizarListadoPrediosParaDialog((List<ObrasDetalle>) contribucionMejoras.getListaBeneficiarios());
         WebUtils.obtenerContextoPeticion().execute("PF('dlgPredios').show()");
     }
 
@@ -361,7 +360,7 @@ public class ContribucionMejorasBB extends AdminContribucionMejorasBB {
         Predios predioEvento = (Predios) event.getObject();
         generarNuevoDetalleObra(crearObjetoObraDetalle(predioEvento));
         contribucionMejoras = contribucionMejorasServicio.seleccionarContribucionMejoras(contribucionMejoras.getCodObras());
-        actualizarListadoPrediosParaDialog((List<ObrasDetalle>) contribucionMejoras.getObrasdetalleCollection());
+        actualizarListadoPrediosParaDialog((List<ObrasDetalle>) contribucionMejoras.getListaBeneficiarios());
     }
 
     public BigDecimal realizarOperacionCEM(BigDecimal cem, BigDecimal valorACobrar, String operacion) {
@@ -396,7 +395,7 @@ public class ContribucionMejorasBB extends AdminContribucionMejorasBB {
     public void generarNuevoDetalleObra(ObrasDetalle obraDetalle) {
         try {
             contribucionMejorasServicio.generarNuevaObrasDetalle(obraDetalle, sesionBean.getSesion());
-            actualizarListadoPrediosParaDialog((List<ObrasDetalle>) contribucionMejoras.getObrasdetalleCollection());
+            actualizarListadoPrediosParaDialog((List<ObrasDetalle>) contribucionMejoras.getListaBeneficiarios());
             registrarCEMPredios(obraDetalle, "sumar");
             LoggerNewvi.getLogNewvi(this.getClass()).info(EnumNewviExcepciones.INF368.presentarMensaje(), sesionBean.getSesion());
             MensajesFaces.mensajeInformacion(EnumNewviExcepciones.INF368.presentarMensaje());
@@ -452,7 +451,7 @@ public class ContribucionMejorasBB extends AdminContribucionMejorasBB {
     }
 
     public void eliminarTodosPredioObra() {
-        List<ObrasDetalle> listaDetalleObraActual = (List<ObrasDetalle>) contribucionMejoras.getObrasdetalleCollection();
+        List<ObrasDetalle> listaDetalleObraActual = (List<ObrasDetalle>) contribucionMejoras.getListaBeneficiarios();
         for (ObrasDetalle obrasDetalleActual : listaDetalleObraActual) {
             eliminarDetalleObra(obrasDetalleActual.getCodObrasdetalle());
         }
@@ -461,16 +460,87 @@ public class ContribucionMejorasBB extends AdminContribucionMejorasBB {
     }
 
     private void actualizarValorCEM(Integer codObras, BigDecimal valActual) throws NewviExcepcion {
-        List<ObrasDetalle> listaDetallesObraAntiguo = (List<ObrasDetalle>) contribucionMejorasServicio.seleccionarContribucionMejoras(codObras).getObrasdetalleCollection();
+        List<ObrasDetalle> listaDetallesObraAntiguo = (List<ObrasDetalle>) contribucionMejorasServicio.seleccionarContribucionMejoras(codObras).getListaBeneficiarios();
 
         for (ObrasDetalle detallesAntiguos : listaDetallesObraAntiguo) {
-            if(detallesAntiguos.getObdEstado().equals(EnumEstadoRegistro.A)){
+            if (detallesAntiguos.getObdEstado().equals(EnumEstadoRegistro.A)) {
                 detallesAntiguos.getCodCatastral().setValCem(realizarOperacionCEM(detallesAntiguos.getCodCatastral().getValCem(), detallesAntiguos.getCodObras().getValAcobrar(), "restar"));
                 detallesAntiguos.getCodCatastral().setValCem(realizarOperacionCEM(detallesAntiguos.getCodCatastral().getValCem(), valActual, "sumar"));
                 catastroServicio.actualizarPredio(detallesAntiguos.getCodCatastral(), sesionBean.getSesion());
             }
         }
+    }
 
+    private List<ObrasDetalle> incluirValorCobradoObras(BigDecimal valorACobrar, List<ObrasDetalle> beneficiarios) {
+        if (ComunUtil.esNulo(beneficiarios)) {
+            for (ObrasDetalle beneficiario : beneficiarios) {
+                beneficiario.setObrValor(valorACobrar);
+            }
+        }
+        return beneficiarios;
+    }
+
+    private BigDecimal obtenerValorACobrarObra(ContribucionMejoras obraActual, BigDecimal valorObra, BigDecimal valorPorcentaje, BigDecimal aniosDepreciacion, BigDecimal numeroBeneficiarios) {
+        try {
+            return (valorObra.divide(aniosDepreciacion).multiply(valorPorcentaje.divide(new BigDecimal(100)))).divide(numeroBeneficiarios);
+        } catch (Exception e) {
+            return BigDecimal.ZERO;
+        }
+    }
+
+    private void actualizarValorACobrar(ContribucionMejoras obraActual, BigDecimal valorACobrar) {
+        obraActual.setValAcobrar(valorACobrar);
+        try {
+            contribucionMejorasServicio.actualizarContribucionMejoras(obraActual, sesionBean.getSesion());
+            LoggerNewvi.getLogNewvi(this.getClass()).info(EnumNewviExcepciones.INF504.presentarMensaje(), sesionBean.getSesion());
+            MensajesFaces.mensajeInformacion(EnumNewviExcepciones.INF504.presentarMensaje());
+        } catch (NewviExcepcion e) {
+            LoggerNewvi.getLogNewvi(this.getClass()).error(e, sesionBean.getSesion());
+            MensajesFaces.mensajeError(e.getMessage());
+        } catch (Exception e) {
+            LoggerNewvi.getLogNewvi(this.getClass()).error(EnumNewviExcepciones.ERR000.presentarMensajeCodigo(), e, sesionBean.getSesion());
+            MensajesFaces.mensajeError(e.getMessage());
+        }
+
+    }
+
+    private void actualizarValorACobrarObraTotal(ContribucionMejoras obraActual, BigDecimal valorObra, BigDecimal valorPorcentaje, BigDecimal aniosDepreciacion) {
+        BigDecimal valorACobrar;
+        Integer numeroBeneficiarios;
+        numeroBeneficiarios = catastroServicio.obtenerNumeroPredios();
+        valorACobrar = obtenerValorACobrarObra(obraActual, valorObra, valorPorcentaje, aniosDepreciacion, new BigDecimal(numeroBeneficiarios));
+        actualizarValorACobrar(obraActual, valorACobrar);
+    }
+
+    private void actualizarValorACobrarObraParcial(ContribucionMejoras obraActual, BigDecimal valorObra, BigDecimal valorPorcentaje, BigDecimal aniosDepreciacion) {
+        BigDecimal valorACobrar;
+        Integer numeroBeneficiarios;
+        numeroBeneficiarios = ComunUtil.esNulo(obraActual.getListaBeneficiarios()) ? obraActual.getListaBeneficiarios().size() : 0;
+        valorACobrar = obtenerValorACobrarObra(obraActual, valorObra, valorPorcentaje, aniosDepreciacion, new BigDecimal(numeroBeneficiarios));
+        obraActual.setListaBeneficiarios(incluirValorCobradoObras(valorACobrar, obraActual.getListaBeneficiarios()));
+        actualizarValorACobrar(obraActual, valorACobrar);
+    }
+
+    public void obtenerValorCEM(Integer codObras) {
+        //Integer anioObra;
+        Integer aniosDepreciacion;
+        BigDecimal valorObra;
+        BigDecimal valorPorcentaje;
+        EnumAplicacion tipoAplicacionObra;
+
+        for (ContribucionMejoras obraActual : this.listaContribucionMejoras) {
+            //anioObra = !ComunUtil.esNulo(obraActual.getValAnioobra()) ? obraActual.getValAnioobra() : 0;
+            tipoAplicacionObra = !ComunUtil.esNulo(obraActual.getStsAplicacionforma()) ? obraActual.getStsAplicacionforma() : EnumAplicacion.Total;
+            valorObra = !ComunUtil.esNulo(obraActual.getValValor()) ? obraActual.getValValor() : BigDecimal.ZERO;
+            aniosDepreciacion = !ComunUtil.esNulo(obraActual.getValAniodeprecia()) ? obraActual.getValAniodeprecia() : 0;
+            valorPorcentaje = !ComunUtil.esNulo(obraActual.getValPorcentaje()) ? obraActual.getValPorcentaje() : BigDecimal.ZERO;
+
+            if (tipoAplicacionObra.equals(EnumAplicacion.Parcial)) {
+                actualizarValorACobrarObraParcial(obraActual, valorObra, valorPorcentaje, new BigDecimal(aniosDepreciacion));
+            } else {
+                actualizarValorACobrarObraTotal(obraActual, valorObra, valorPorcentaje, new BigDecimal(aniosDepreciacion));
+            }
+        }
     }
 
 }

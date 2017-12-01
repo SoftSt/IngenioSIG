@@ -159,6 +159,10 @@ public class CatastroServicioImpl implements CatastroServicio {
         predio.setCatEstado(EnumEstadoRegistro.E);
         return actualizarPredio(predio, sesion);
     }
+    
+    public Integer obtenerNumeroPredios(){
+        return prediosFacade.obtenerNumeroPredios();
+    }
 
     /*------------------------------------------------------------Bloques------------------------------------------------------------*/
     @Override

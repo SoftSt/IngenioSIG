@@ -12,6 +12,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -36,7 +37,7 @@ public class ContribucionMejoras implements Serializable {
 
     
     @OneToMany(mappedBy = "codObras")
-    private Collection<ObrasDetalle> obrasdetalleCollection;
+    private List<ObrasDetalle> listaBeneficiarios;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -290,12 +291,12 @@ public class ContribucionMejoras implements Serializable {
         return (!ComunUtil.esNulo(this.obrEstado));
     }
 
-    public Collection<ObrasDetalle> getObrasdetalleCollection() {
-        return obrasdetalleCollection;
+    public List<ObrasDetalle> getListaBeneficiarios() {
+        return listaBeneficiarios;
     }
 
-    public void setObrasdetalleCollection(Collection<ObrasDetalle> obrasdetalleCollection) {
-        this.obrasdetalleCollection = obrasdetalleCollection;
+    public void setListaBeneficiarios(List<ObrasDetalle> listaBeneficiarios) {
+        this.listaBeneficiarios = listaBeneficiarios;
     }
-    
+
 }

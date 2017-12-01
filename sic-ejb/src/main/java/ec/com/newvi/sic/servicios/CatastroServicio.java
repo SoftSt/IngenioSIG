@@ -98,6 +98,11 @@ public interface CatastroServicio {
      * @throws NewviExcepcion 
      */
     public Predios actualizarValoresUbicacion(Predios predioActualizable, SesionDto sesion) throws NewviExcepcion;
+    /**
+     * Obtiene el número total de predios
+     * @return número total de predios
+     */
+    public Integer obtenerNumeroPredios();
 
     /*------------------------------------------------------------Bloques------------------------------------------------------------*/
     /**
