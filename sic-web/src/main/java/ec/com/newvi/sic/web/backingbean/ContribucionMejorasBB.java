@@ -5,6 +5,7 @@
  */
 package ec.com.newvi.sic.web.backingbean;
 
+import ec.com.newvi.sic.dto.FichaCatastralDto;
 import ec.com.newvi.sic.enums.EnumAplicacion;
 import ec.com.newvi.sic.enums.EnumEstadoRegistro;
 import ec.com.newvi.sic.enums.EnumNewviExcepciones;
@@ -20,7 +21,6 @@ import ec.com.newvi.sic.web.enums.EnumPantallaMantenimiento;
 import ec.com.newvi.sic.web.utils.ValidacionUtils;
 import ec.com.newvi.sic.web.utils.WebUtils;
 import java.math.BigDecimal;
-import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -30,7 +30,6 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
-import org.primefaces.event.NodeSelectEvent;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.event.UnselectEvent;
 
@@ -55,6 +54,7 @@ public class ContribucionMejorasBB extends AdminContribucionMejorasBB {
     private Predios predioSeleccionado;
     private EnumPantallaMantenimiento pantallaActual;
     private EnumAplicacion[] listaAplicacion;
+    private Boolean aplicaOrdenanza;
 
     public List<Predios> getListaPrediosActualizados() {
         return listaPrediosActualizados;
@@ -160,6 +160,14 @@ public class ContribucionMejorasBB extends AdminContribucionMejorasBB {
         this.listaAplicacion = listaAplicacion;
     }
 
+    public Boolean getAplicaOrdenanza() {
+        return aplicaOrdenanza;
+    }
+
+    public void setAplicaOrdenanza(Boolean aplicaOrdenanza) {
+        this.aplicaOrdenanza = aplicaOrdenanza;
+    }
+
     @PostConstruct
     public void init() {
         this.contribucionMejoras = new ContribucionMejoras();
@@ -171,6 +179,7 @@ public class ContribucionMejorasBB extends AdminContribucionMejorasBB {
         establecerTitulo(EnumEtiquetas.CONTRIBUCION_MEJORAS_LISTA_TITULO,
                 EnumEtiquetas.CONTRIBUCION_MEJORAS_LISTA_ICONO,
                 EnumEtiquetas.CONTRIBUCION_MEJORAS_LISTA_DESCRIPCION);
+        this.aplicaOrdenanza = false;
     }
 
     private void actualizarListadoContribucionMejoras() {
@@ -348,10 +357,10 @@ public class ContribucionMejorasBB extends AdminContribucionMejorasBB {
         nuevaObraDetalle.setCodCatastral(predioObra);
         //nuevaObraDetalle.setCodPredio(predio.getCodPredio());
         nuevaObraDetalle.setNomCodigocatastral(predioObra);
-        nuevaObraDetalle.setObrValor(contribucionMejoras.getValValor());
-        nuevaObraDetalle.setValAreafrente(predioObra.getValAreaFrente());
-        nuevaObraDetalle.setValPredio(predioObra.getValPredio());
-        nuevaObraDetalle.setValPredio(predioObra.getValPredio());
+        nuevaObraDetalle.setObrValor(BigDecimal.ZERO);
+        nuevaObraDetalle.setValAreafrente(!ComunUtil.esNulo(predioObra.getValAreaFrente()) ? predioObra.getValAreaFrente() : BigDecimal.ZERO);
+        nuevaObraDetalle.setValPredio(!ComunUtil.esNulo(predioObra.getValPredio()) ? predioObra.getValPredio() : BigDecimal.ZERO);
+        //nuevaObraDetalle.setValPredio(predioObra.getValPredio());
         nuevaObraDetalle.setObdEstado(EnumEstadoRegistro.A);
         return nuevaObraDetalle;
     }
@@ -472,17 +481,34 @@ public class ContribucionMejorasBB extends AdminContribucionMejorasBB {
     }
 
     private List<ObrasDetalle> incluirValorCobradoObras(BigDecimal valorACobrar, List<ObrasDetalle> beneficiarios) {
-        if (ComunUtil.esNulo(beneficiarios)) {
+        if (!ComunUtil.esNulo(beneficiarios)) {
             for (ObrasDetalle beneficiario : beneficiarios) {
                 beneficiario.setObrValor(valorACobrar);
+                actualizarValorACobrarBeneficiarios(beneficiario);
             }
         }
         return beneficiarios;
     }
 
-    private BigDecimal obtenerValorACobrarObra(ContribucionMejoras obraActual, BigDecimal valorObra, BigDecimal valorPorcentaje, BigDecimal aniosDepreciacion, BigDecimal numeroBeneficiarios) {
+    private BigDecimal obtenerValorTotalObra(BigDecimal valorObra, BigDecimal valorPorcentaje, BigDecimal aniosDepreciacion) {
         try {
-            return (valorObra.divide(aniosDepreciacion).multiply(valorPorcentaje.divide(new BigDecimal(100)))).divide(numeroBeneficiarios);
+            return (valorObra.divide(aniosDepreciacion).multiply(valorPorcentaje.divide(new BigDecimal(100))));
+        } catch (Exception e) {
+            return BigDecimal.ZERO;
+        }
+    }
+
+    private BigDecimal obtenerValorACobrarObra(BigDecimal valorTotalObra, BigDecimal numeroBeneficiarios) {
+        try {
+            return (valorTotalObra).divide(numeroBeneficiarios);
+        } catch (Exception e) {
+            return BigDecimal.ZERO;
+        }
+    }
+
+    private BigDecimal obtenerValorACobrarObraPorOrdenanza(BigDecimal valorTotalObra, BigDecimal valorFrente, BigDecimal totalValorFrente) {
+        try {
+            return ((valorTotalObra).multiply(valorFrente)).divide(totalValorFrente);
         } catch (Exception e) {
             return BigDecimal.ZERO;
         }
@@ -493,7 +519,20 @@ public class ContribucionMejorasBB extends AdminContribucionMejorasBB {
         try {
             contribucionMejorasServicio.actualizarContribucionMejoras(obraActual, sesionBean.getSesion());
             LoggerNewvi.getLogNewvi(this.getClass()).info(EnumNewviExcepciones.INF504.presentarMensaje(), sesionBean.getSesion());
-            MensajesFaces.mensajeInformacion(EnumNewviExcepciones.INF504.presentarMensaje());
+        } catch (NewviExcepcion e) {
+            LoggerNewvi.getLogNewvi(this.getClass()).error(e, sesionBean.getSesion());
+            MensajesFaces.mensajeError(e.getMessage());
+        } catch (Exception e) {
+            LoggerNewvi.getLogNewvi(this.getClass()).error(EnumNewviExcepciones.ERR000.presentarMensajeCodigo(), e, sesionBean.getSesion());
+            MensajesFaces.mensajeError(e.getMessage());
+        }
+
+    }
+
+    private void actualizarValorACobrarBeneficiarios(ObrasDetalle beneficiario) {
+        try {
+            contribucionMejorasServicio.actualizarObrasDetalle(beneficiario, sesionBean.getSesion());
+            LoggerNewvi.getLogNewvi(this.getClass()).info(EnumNewviExcepciones.INF505.presentarMensaje(), sesionBean.getSesion());
         } catch (NewviExcepcion e) {
             LoggerNewvi.getLogNewvi(this.getClass()).error(e, sesionBean.getSesion());
             MensajesFaces.mensajeError(e.getMessage());
@@ -508,39 +547,125 @@ public class ContribucionMejorasBB extends AdminContribucionMejorasBB {
         BigDecimal valorACobrar;
         Integer numeroBeneficiarios;
         numeroBeneficiarios = catastroServicio.obtenerNumeroPredios();
-        valorACobrar = obtenerValorACobrarObra(obraActual, valorObra, valorPorcentaje, aniosDepreciacion, new BigDecimal(numeroBeneficiarios));
+        valorACobrar = obtenerValorACobrarObra(obtenerValorTotalObra(valorObra, valorPorcentaje, aniosDepreciacion), new BigDecimal(numeroBeneficiarios));
         actualizarValorACobrar(obraActual, valorACobrar);
     }
 
     private void actualizarValorACobrarObraParcial(ContribucionMejoras obraActual, BigDecimal valorObra, BigDecimal valorPorcentaje, BigDecimal aniosDepreciacion) {
         BigDecimal valorACobrar;
         Integer numeroBeneficiarios;
-        numeroBeneficiarios = ComunUtil.esNulo(obraActual.getListaBeneficiarios()) ? obraActual.getListaBeneficiarios().size() : 0;
-        valorACobrar = obtenerValorACobrarObra(obraActual, valorObra, valorPorcentaje, aniosDepreciacion, new BigDecimal(numeroBeneficiarios));
+        numeroBeneficiarios = !ComunUtil.esNulo(obraActual.getListaBeneficiarios()) ? obraActual.getListaBeneficiarios().size() : 0;
+        valorACobrar = obtenerValorACobrarObra(obtenerValorTotalObra(valorObra, valorPorcentaje, aniosDepreciacion), new BigDecimal(numeroBeneficiarios));
         obraActual.setListaBeneficiarios(incluirValorCobradoObras(valorACobrar, obraActual.getListaBeneficiarios()));
         actualizarValorACobrar(obraActual, valorACobrar);
     }
 
-    public void obtenerValorCEM(Integer codObras) {
-        //Integer anioObra;
+    private BigDecimal sumatoriaValorFrente(List<ObrasDetalle> ListaBeneficiarios) {
+        BigDecimal valorTotalFrente = BigDecimal.ZERO;
+        if (!ComunUtil.esNulo(ListaBeneficiarios)) {
+            for (ObrasDetalle beneficiario : ListaBeneficiarios) {
+                valorTotalFrente = valorTotalFrente.add(beneficiario.getValAreafrente());
+            }
+        }
+        return valorTotalFrente;
+    }
+
+    private BigDecimal sumatoriaValorAvaluo(List<ObrasDetalle> ListaBeneficiarios) {
+        BigDecimal valorTotalAvaluo = BigDecimal.ZERO;
+        if (!ComunUtil.esNulo(ListaBeneficiarios)) {
+            for (ObrasDetalle beneficiario : ListaBeneficiarios) {
+                valorTotalAvaluo = valorTotalAvaluo.add(beneficiario.getValPredio());
+            }
+        }
+        return valorTotalAvaluo;
+    }
+
+    private BigDecimal obtenerValorACobrarSinRecargos(BigDecimal valorTotalObra, BigDecimal valorPorcentajeFrente) {
+        try {
+            return valorTotalObra.multiply(valorPorcentajeFrente.divide(new BigDecimal(100)));
+        } catch (Exception e) {
+            return BigDecimal.ZERO;
+        }
+    }
+
+    private List<ObrasDetalle> incluirValorCobradoObrasPorOrdenanza(List<ObrasDetalle> listaBeneficiarios, BigDecimal valorTotalElemento, BigDecimal valorTotalObra, BigDecimal valorPorcentaje) {
+        BigDecimal valorACobrar;
+        for (ObrasDetalle beneficiario : listaBeneficiarios) {
+            valorACobrar = obtenerValorACobrarObraPorOrdenanza(obtenerValorACobrarSinRecargos(valorTotalObra, valorPorcentaje), beneficiario.getValAreafrente(), valorTotalElemento);
+            beneficiario.setObrValor(valorACobrar);
+
+            actualizarValorACobrarBeneficiarios(beneficiario);
+        }
+        return listaBeneficiarios;
+    }
+
+    private ContribucionMejoras setearListaBeneficiarios(ContribucionMejoras obraActual, BigDecimal valorTotalObra) {
+        BigDecimal valorTotalFrente;
+        BigDecimal valorTotalAvaluo;
+        BigDecimal valorPorcentajeFrente;
+        BigDecimal valorPorcentajeAvaluo;
+
+        valorPorcentajeAvaluo = !ComunUtil.esNulo(obraActual.getValPorcentajeavaluo()) ? obraActual.getValPorcentajeavaluo() : BigDecimal.ZERO;
+        valorPorcentajeFrente = !ComunUtil.esNulo(obraActual.getValPorcentajefrentistas()) ? obraActual.getValPorcentajefrentistas() : BigDecimal.ZERO;
+
+        if (valorPorcentajeFrente.compareTo(BigDecimal.ZERO) == 0) {
+            valorTotalFrente = !ComunUtil.esNulo(obraActual.getListaBeneficiarios()) ? sumatoriaValorFrente(obraActual.getListaBeneficiarios()) : BigDecimal.ZERO;
+            obraActual.setListaBeneficiarios(incluirValorCobradoObrasPorOrdenanza(obraActual.getListaBeneficiarios(), valorTotalFrente, valorTotalObra, valorPorcentajeFrente));
+        } else if (valorPorcentajeAvaluo.compareTo(BigDecimal.ZERO) == 0) {
+            valorTotalAvaluo = !ComunUtil.esNulo(obraActual.getListaBeneficiarios()) ? sumatoriaValorAvaluo(obraActual.getListaBeneficiarios()) : BigDecimal.ZERO;
+            obraActual.setListaBeneficiarios(incluirValorCobradoObrasPorOrdenanza(obraActual.getListaBeneficiarios(), valorTotalAvaluo, valorTotalObra, valorPorcentajeAvaluo));
+        }
+
+        return obraActual;
+    }
+
+    private void actulizarValorACobrarObraPorOrdenanza(ContribucionMejoras obraActual, EnumAplicacion tipoAplicacionObra, BigDecimal valorObra, BigDecimal valorPorcentaje, BigDecimal aniosDepreciacion) {
+        BigDecimal valorTotalObra;
+        if (tipoAplicacionObra.equals(EnumAplicacion.Parcial)) {
+            valorTotalObra = obtenerValorTotalObra(valorObra, valorPorcentaje, aniosDepreciacion);
+            actualizarValorACobrar(setearListaBeneficiarios(obraActual, valorTotalObra), BigDecimal.ZERO);
+        }
+
+    }
+
+    public void actualizarBeficiarios(ObrasDetalle Beneficiario) {
+        try {
+            contribucionMejorasServicio.actualizarObrasDetalle(Beneficiario, sesionBean.getSesion());
+        } catch (NewviExcepcion e) {
+            LoggerNewvi.getLogNewvi(this.getClass()).error(e, sesionBean.getSesion());
+            MensajesFaces.mensajeError(e.getMessage());
+        } catch (Exception e) {
+            LoggerNewvi.getLogNewvi(this.getClass()).error(EnumNewviExcepciones.ERR000.presentarMensajeCodigo(), e, sesionBean.getSesion());
+            MensajesFaces.mensajeError(e.getMessage());
+        }
+    }
+
+    public void obtenerValorCEM() {
         Integer aniosDepreciacion;
         BigDecimal valorObra;
         BigDecimal valorPorcentaje;
+
         EnumAplicacion tipoAplicacionObra;
 
         for (ContribucionMejoras obraActual : this.listaContribucionMejoras) {
-            //anioObra = !ComunUtil.esNulo(obraActual.getValAnioobra()) ? obraActual.getValAnioobra() : 0;
             tipoAplicacionObra = !ComunUtil.esNulo(obraActual.getStsAplicacionforma()) ? obraActual.getStsAplicacionforma() : EnumAplicacion.Total;
             valorObra = !ComunUtil.esNulo(obraActual.getValValor()) ? obraActual.getValValor() : BigDecimal.ZERO;
             aniosDepreciacion = !ComunUtil.esNulo(obraActual.getValAniodeprecia()) ? obraActual.getValAniodeprecia() : 0;
             valorPorcentaje = !ComunUtil.esNulo(obraActual.getValPorcentaje()) ? obraActual.getValPorcentaje() : BigDecimal.ZERO;
 
-            if (tipoAplicacionObra.equals(EnumAplicacion.Parcial)) {
-                actualizarValorACobrarObraParcial(obraActual, valorObra, valorPorcentaje, new BigDecimal(aniosDepreciacion));
+            if (!aplicaOrdenanza) {
+                if (tipoAplicacionObra.equals(EnumAplicacion.Parcial)) {
+                    actualizarValorACobrarObraParcial(obraActual, valorObra, valorPorcentaje, new BigDecimal(aniosDepreciacion));
+                } else {
+                    actualizarValorACobrarObraTotal(obraActual, valorObra, valorPorcentaje, new BigDecimal(aniosDepreciacion));
+                }
+                MensajesFaces.mensajeInformacion(EnumNewviExcepciones.INF504.presentarMensaje());
+
             } else {
-                actualizarValorACobrarObraTotal(obraActual, valorObra, valorPorcentaje, new BigDecimal(aniosDepreciacion));
+                actulizarValorACobrarObraPorOrdenanza(obraActual, tipoAplicacionObra, valorObra, valorPorcentaje, new BigDecimal(aniosDepreciacion));
+                MensajesFaces.mensajeInformacion(EnumNewviExcepciones.INF505.presentarMensaje());
             }
+
         }
     }
-
 }

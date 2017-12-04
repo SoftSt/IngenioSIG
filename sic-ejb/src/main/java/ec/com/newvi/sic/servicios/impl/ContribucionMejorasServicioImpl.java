@@ -144,7 +144,7 @@ public class ContribucionMejorasServicioImpl implements ContribucionMejorasServi
 
         obrasDetalleFacade.edit(obrasDetalle);
         // Si todo marcha bien enviar nombre del predio
-        return obrasDetalle.getNomCodigocatastral().getNomCodigocatastral();
+        return obrasDetalle.getCodObrasdetalle().toString();
     }
 
     @Override

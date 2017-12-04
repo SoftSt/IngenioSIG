@@ -135,7 +135,8 @@ public enum EnumNewviExcepciones {
     ERR502("ERR502", "Atributo no encontrado.", "No se pudo encontrar el atributo [atributo]. Por favor contacte con el administrador."),
     INF501("INF501", "Valoración finalizada", "El proceso de valoración ha finalizado."),
     INF503("INF503", "Proceso terminado", "El proceso de registro de elementos al predio ha finalizado."),
-    INF504("INF504", "Aplicación de CEM", "La aplicacación de CEM se ha realizado con éxito."),
+    INF504("INF504", "Aplicación de CEM", "La aplicación de CEM se ha realizado con éxito."),
+    INF505("INF505", "Aplicación de CEM por Ordenanza", "La aplicacación de CEM por ordenanza se ha realizado con éxito."),
     // 601 al 700 excepciones de Rentas
     INF601("INF601", "Títulos generados", "Proceso finalizado. Se han generado [ntitulos] titulos."),
     INF602("INF602", "Títulos registrados", "Proceso finalizado. Se han registrado [ntitulos] titulos."),

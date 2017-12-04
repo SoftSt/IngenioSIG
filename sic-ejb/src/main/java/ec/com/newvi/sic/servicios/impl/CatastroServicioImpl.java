@@ -132,7 +132,7 @@ public class CatastroServicioImpl implements CatastroServicio {
         predio.setAudModUsu(sesion.getUsuarioRegistrado().getUsuPalabraclave().trim());
         predio.setAudModFec(fechaModificacion);
 
-        predio.setCodManzana(predio.getCodManzana().trim());
+        //predio.setCodManzana(predio.getCodManzana().trim());
 
         prediosFacade.edit(predio);
 

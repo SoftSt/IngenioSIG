@@ -27,6 +27,14 @@
                             <p:ajax update="toolTipInsert" process="@this" />  
                         </p:commandButton>
                         <p:tooltip id="toolTipInsert" for="ingresarContribucionMejoras" value="Ingresar un nuevo contribucion" showEffect="fade" hideEffect="fade" position="bottom"/>
+                        <p:commandButton value="Calculo CEM" icon="fa fa-calculator" 
+                                         update="grupoContribucionMejoras"
+                                         id="btnCalcularCEM"
+                                         actionListener="#{contribucionMejorasBB.obtenerValorCEM()}">
+                            <p:ajax update="toolTipCalCEM" process="@this" />  
+                        </p:commandButton>
+                        <p:tooltip id="toolTipCalCEM" for="btnCalcularCEM" value="Generar calculo CEM" showEffect="fade" hideEffect="fade" position="bottom"/>
+                        <p:selectBooleanCheckbox value="#{contribucionMejorasBB.aplicaOrdenanza}"/>
 
                     </p>
                     <p:dataTable id="listaContribucionMejoras" var="contribucionMejoras" widgetVar="listaContribucionMejorasTabla"
@@ -85,7 +93,7 @@
                     </p:confirmDialog>
                 </h:form>
 
-                <p:dialog header="Agregar predios a CEM" modal="true" widgetVar="dlgPredios" showEffect="fade" hideEffect="fade" resizable="false" closable="true" width="640" height="440">
+                <p:dialog header="Agregar predios a CEM" modal="true" widgetVar="dlgPredios" appendTo="@(body)" showEffect="fade" hideEffect="fade" resizable="false" closable="true" width="640" height="440">
                     <p:dataTable id="listaPrediosAfectados" var="predios" widgetVar="listaPrediosTabla"
                                  value="#{contribucionMejorasBB.listaPrediosActualizados}"  filteredValue="#{contribucionMejorasBB.listaPrediosFiltrado}"
                                  paginator="true" rows="5" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" 
@@ -163,7 +171,7 @@
                             <p:inputNumber id="valValor" value="#{contribucionMejorasBB.contribucionMejoras.valValor}" label="Valor Total" size="50"/>
                             <p:message for="valValor" display="tooltip"/>
 
-                            
+
 
 
                             <h:outputLabel for="cem" value="Forma de apliación" style="font-weight: bold;"/>
@@ -172,8 +180,8 @@
                                 <f:selectItems value="#{contribucionMejorasBB.listaAplicacion}" var="tipoAplicacion" itemValue="#{tipoAplicacion}" itemLabel="#{tipoAplicacion.aplicacion}"/>
                             </p:selectOneMenu>
                             <p:message for="cem" display="tooltip"/>
-                            
-                            
+
+
 
                             <h:outputLabel for="valAcobrar" value="Valor a cobrar" style="font-weight: bold;"/>
                             <p:inputNumber id="valAcobrar" value="#{contribucionMejorasBB.contribucionMejoras.valAcobrar}" label="Valor a cobrar" size="50"/>
