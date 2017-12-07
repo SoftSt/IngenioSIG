@@ -21,11 +21,13 @@ import ec.com.newvi.sic.web.enums.EnumPantallaMantenimiento;
 import ec.com.newvi.sic.web.utils.ValidacionUtils;
 import ec.com.newvi.sic.web.utils.WebUtils;
 import java.math.BigDecimal;
+import java.math.MathContext;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.component.UIComponent;
@@ -42,6 +44,7 @@ import org.primefaces.event.UnselectEvent;
 public class ContribucionMejorasBB extends AdminContribucionMejorasBB {
 
     private ContribucionMejoras contribucionMejoras;
+    private ContribucionMejoras ObraActual;
     private ObrasDetalle obrasDetalle;
     private List<ContribucionMejoras> listaContribucionMejoras;
     private List<ContribucionMejoras> listaContribucionMejorasFiltrado;
@@ -166,6 +169,14 @@ public class ContribucionMejorasBB extends AdminContribucionMejorasBB {
 
     public void setAplicaOrdenanza(Boolean aplicaOrdenanza) {
         this.aplicaOrdenanza = aplicaOrdenanza;
+    }
+
+    public ContribucionMejoras getObraActual() {
+        return ObraActual;
+    }
+
+    public void setObraActual(ContribucionMejoras ObraActual) {
+        this.ObraActual = ObraActual;
     }
 
     @PostConstruct
@@ -492,7 +503,7 @@ public class ContribucionMejorasBB extends AdminContribucionMejorasBB {
 
     private BigDecimal obtenerValorTotalObra(BigDecimal valorObra, BigDecimal valorPorcentaje, BigDecimal aniosDepreciacion) {
         try {
-            return (valorObra.divide(aniosDepreciacion).multiply(valorPorcentaje.divide(new BigDecimal(100))));
+            return (valorObra.divide(aniosDepreciacion, MathContext.DECIMAL32).multiply(valorPorcentaje.divide(new BigDecimal(100), MathContext.DECIMAL32)));
         } catch (Exception e) {
             return BigDecimal.ZERO;
         }
@@ -500,7 +511,7 @@ public class ContribucionMejorasBB extends AdminContribucionMejorasBB {
 
     private BigDecimal obtenerValorACobrarObra(BigDecimal valorTotalObra, BigDecimal numeroBeneficiarios) {
         try {
-            return (valorTotalObra).divide(numeroBeneficiarios);
+            return (valorTotalObra).divide(numeroBeneficiarios, MathContext.DECIMAL32);
         } catch (Exception e) {
             return BigDecimal.ZERO;
         }
@@ -508,7 +519,7 @@ public class ContribucionMejorasBB extends AdminContribucionMejorasBB {
 
     private BigDecimal obtenerValorACobrarObraPorOrdenanza(BigDecimal valorTotalObra, BigDecimal valorFrente, BigDecimal totalValorFrente) {
         try {
-            return ((valorTotalObra).multiply(valorFrente)).divide(totalValorFrente);
+            return ((valorTotalObra).multiply(valorFrente)).divide(totalValorFrente, MathContext.DECIMAL32);
         } catch (Exception e) {
             return BigDecimal.ZERO;
         }
@@ -564,7 +575,7 @@ public class ContribucionMejorasBB extends AdminContribucionMejorasBB {
         BigDecimal valorTotalFrente = BigDecimal.ZERO;
         if (!ComunUtil.esNulo(ListaBeneficiarios)) {
             for (ObrasDetalle beneficiario : ListaBeneficiarios) {
-                valorTotalFrente = valorTotalFrente.add(beneficiario.getValAreafrente());
+                valorTotalFrente = valorTotalFrente.add(!ComunUtil.esNulo(beneficiario.getValAreafrente()) ? beneficiario.getValAreafrente() : BigDecimal.ZERO);
             }
         }
         return valorTotalFrente;
@@ -574,7 +585,7 @@ public class ContribucionMejorasBB extends AdminContribucionMejorasBB {
         BigDecimal valorTotalAvaluo = BigDecimal.ZERO;
         if (!ComunUtil.esNulo(ListaBeneficiarios)) {
             for (ObrasDetalle beneficiario : ListaBeneficiarios) {
-                valorTotalAvaluo = valorTotalAvaluo.add(beneficiario.getValPredio());
+                valorTotalAvaluo = valorTotalAvaluo.add(!ComunUtil.esNulo(beneficiario.getValPredio()) ? beneficiario.getValPredio() : BigDecimal.ZERO);
             }
         }
         return valorTotalAvaluo;
@@ -582,7 +593,7 @@ public class ContribucionMejorasBB extends AdminContribucionMejorasBB {
 
     private BigDecimal obtenerValorACobrarSinRecargos(BigDecimal valorTotalObra, BigDecimal valorPorcentajeFrente) {
         try {
-            return valorTotalObra.multiply(valorPorcentajeFrente.divide(new BigDecimal(100)));
+            return valorTotalObra.multiply(valorPorcentajeFrente.divide(new BigDecimal(100), MathContext.DECIMAL32));
         } catch (Exception e) {
             return BigDecimal.ZERO;
         }
@@ -608,10 +619,11 @@ public class ContribucionMejorasBB extends AdminContribucionMejorasBB {
         valorPorcentajeAvaluo = !ComunUtil.esNulo(obraActual.getValPorcentajeavaluo()) ? obraActual.getValPorcentajeavaluo() : BigDecimal.ZERO;
         valorPorcentajeFrente = !ComunUtil.esNulo(obraActual.getValPorcentajefrentistas()) ? obraActual.getValPorcentajefrentistas() : BigDecimal.ZERO;
 
-        if (valorPorcentajeFrente.compareTo(BigDecimal.ZERO) == 0) {
+        if (valorPorcentajeFrente.compareTo(BigDecimal.ZERO) == 1) {
             valorTotalFrente = !ComunUtil.esNulo(obraActual.getListaBeneficiarios()) ? sumatoriaValorFrente(obraActual.getListaBeneficiarios()) : BigDecimal.ZERO;
             obraActual.setListaBeneficiarios(incluirValorCobradoObrasPorOrdenanza(obraActual.getListaBeneficiarios(), valorTotalFrente, valorTotalObra, valorPorcentajeFrente));
-        } else if (valorPorcentajeAvaluo.compareTo(BigDecimal.ZERO) == 0) {
+        }
+        if (valorPorcentajeAvaluo.compareTo(BigDecimal.ZERO) == 1) {
             valorTotalAvaluo = !ComunUtil.esNulo(obraActual.getListaBeneficiarios()) ? sumatoriaValorAvaluo(obraActual.getListaBeneficiarios()) : BigDecimal.ZERO;
             obraActual.setListaBeneficiarios(incluirValorCobradoObrasPorOrdenanza(obraActual.getListaBeneficiarios(), valorTotalAvaluo, valorTotalObra, valorPorcentajeAvaluo));
         }
@@ -640,14 +652,13 @@ public class ContribucionMejorasBB extends AdminContribucionMejorasBB {
         }
     }
 
-    public void obtenerValorCEM() {
+    public void obtenerValorCEM(ContribucionMejoras obraActual) {
         Integer aniosDepreciacion;
         BigDecimal valorObra;
         BigDecimal valorPorcentaje;
 
         EnumAplicacion tipoAplicacionObra;
 
-        for (ContribucionMejoras obraActual : this.listaContribucionMejoras) {
             tipoAplicacionObra = !ComunUtil.esNulo(obraActual.getStsAplicacionforma()) ? obraActual.getStsAplicacionforma() : EnumAplicacion.Total;
             valorObra = !ComunUtil.esNulo(obraActual.getValValor()) ? obraActual.getValValor() : BigDecimal.ZERO;
             aniosDepreciacion = !ComunUtil.esNulo(obraActual.getValAniodeprecia()) ? obraActual.getValAniodeprecia() : 0;
@@ -666,6 +677,21 @@ public class ContribucionMejorasBB extends AdminContribucionMejorasBB {
                 MensajesFaces.mensajeInformacion(EnumNewviExcepciones.INF505.presentarMensaje());
             }
 
+    }
+
+    public void obtenerValorCEMGeneral() {
+        for (ContribucionMejoras obraActual : this.listaContribucionMejoras) {
+            obtenerValorCEM(obraActual);
         }
+    }
+
+    public void onRowSelects(SelectEvent event) {
+        FacesMessage msg = new FacesMessage("Car Selected");
+        FacesContext.getCurrentInstance().addMessage(null, msg);
+    }
+
+    public void onRowUnselects(UnselectEvent event) {
+        FacesMessage msg = new FacesMessage("Car Unselected");
+        FacesContext.getCurrentInstance().addMessage(null, msg);
     }
 }

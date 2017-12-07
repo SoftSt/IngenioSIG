@@ -72,7 +72,7 @@ public class ContribucionMejoras implements Serializable {
     @Column(name = "val_porcentajeavaluo")
     private BigDecimal valPorcentajeavaluo;
     @Column(name = "sts_porcentajeaplica")
-    private Short stsPorcentajeaplica;
+    private Boolean stsPorcentajeaplica;
     @Enumerated(EnumType.STRING)
     @Column(name = "obr_estado")
     private EnumEstadoRegistro obrEstado;
@@ -198,11 +198,11 @@ public class ContribucionMejoras implements Serializable {
         this.valPorcentajeavaluo = valPorcentajeavaluo;
     }
 
-    public Short getStsPorcentajeaplica() {
+    public Boolean getStsPorcentajeaplica() {
         return stsPorcentajeaplica;
     }
 
-    public void setStsPorcentajeaplica(Short stsPorcentajeaplica) {
+    public void setStsPorcentajeaplica(Boolean stsPorcentajeaplica) {
         this.stsPorcentajeaplica = stsPorcentajeaplica;
     }
 
