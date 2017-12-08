@@ -298,5 +298,18 @@ public class ContribucionMejoras implements Serializable {
     public void setListaBeneficiarios(List<ObrasDetalle> listaBeneficiarios) {
         this.listaBeneficiarios = listaBeneficiarios;
     }
+    
+    public BigDecimal complementoFrentistas(){
+        if (this.valPorcentajefrentistas.compareTo(this.valPorcentajeavaluo)>0) {
+            return new BigDecimal(100).subtract(this.valPorcentajefrentistas); 
+        }
+        return new BigDecimal(100).subtract(this.valPorcentajeavaluo);
+    }
+    public BigDecimal complementoAvaluo(){
+        if (this.valPorcentajeavaluo.compareTo(this.valPorcentajefrentistas)>0) {
+            return new BigDecimal(100).subtract(this.valPorcentajeavaluo); 
+        }
+        return new BigDecimal(100).subtract(this.valPorcentajefrentistas);
+    }
 
 }

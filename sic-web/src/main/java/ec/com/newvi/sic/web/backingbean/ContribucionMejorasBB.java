@@ -599,11 +599,12 @@ public class ContribucionMejorasBB extends AdminContribucionMejorasBB {
         }
     }
 
-    private List<ObrasDetalle> incluirValorCobradoObrasPorOrdenanza(List<ObrasDetalle> listaBeneficiarios, BigDecimal valorTotalElemento, BigDecimal valorTotalObra, BigDecimal valorPorcentaje) {
+    private List<ObrasDetalle> incluirValorCobradoObrasPorOrdenanza(List<ObrasDetalle> listaBeneficiarios, BigDecimal valorTotalElemento, BigDecimal valorTotalObra, BigDecimal valorPorcentaje, Boolean hayValorCobrado) {
         BigDecimal valorACobrar;
         for (ObrasDetalle beneficiario : listaBeneficiarios) {
             valorACobrar = obtenerValorACobrarObraPorOrdenanza(obtenerValorACobrarSinRecargos(valorTotalObra, valorPorcentaje), beneficiario.getValAreafrente(), valorTotalElemento);
-            beneficiario.setObrValor(valorACobrar);
+
+            beneficiario.setObrValor(hayValorCobrado ? beneficiario.getObrValor().add(valorACobrar) : valorACobrar);
 
             actualizarValorACobrarBeneficiarios(beneficiario);
         }
@@ -615,17 +616,19 @@ public class ContribucionMejorasBB extends AdminContribucionMejorasBB {
         BigDecimal valorTotalAvaluo;
         BigDecimal valorPorcentajeFrente;
         BigDecimal valorPorcentajeAvaluo;
+        Boolean hayValorCobrado = Boolean.FALSE;
 
         valorPorcentajeAvaluo = !ComunUtil.esNulo(obraActual.getValPorcentajeavaluo()) ? obraActual.getValPorcentajeavaluo() : BigDecimal.ZERO;
         valorPorcentajeFrente = !ComunUtil.esNulo(obraActual.getValPorcentajefrentistas()) ? obraActual.getValPorcentajefrentistas() : BigDecimal.ZERO;
 
         if (valorPorcentajeFrente.compareTo(BigDecimal.ZERO) == 1) {
             valorTotalFrente = !ComunUtil.esNulo(obraActual.getListaBeneficiarios()) ? sumatoriaValorFrente(obraActual.getListaBeneficiarios()) : BigDecimal.ZERO;
-            obraActual.setListaBeneficiarios(incluirValorCobradoObrasPorOrdenanza(obraActual.getListaBeneficiarios(), valorTotalFrente, valorTotalObra, valorPorcentajeFrente));
+            obraActual.setListaBeneficiarios(incluirValorCobradoObrasPorOrdenanza(obraActual.getListaBeneficiarios(), valorTotalFrente, valorTotalObra, valorPorcentajeFrente, hayValorCobrado));
+            hayValorCobrado = Boolean.TRUE;
         }
         if (valorPorcentajeAvaluo.compareTo(BigDecimal.ZERO) == 1) {
             valorTotalAvaluo = !ComunUtil.esNulo(obraActual.getListaBeneficiarios()) ? sumatoriaValorAvaluo(obraActual.getListaBeneficiarios()) : BigDecimal.ZERO;
-            obraActual.setListaBeneficiarios(incluirValorCobradoObrasPorOrdenanza(obraActual.getListaBeneficiarios(), valorTotalAvaluo, valorTotalObra, valorPorcentajeAvaluo));
+            obraActual.setListaBeneficiarios(incluirValorCobradoObrasPorOrdenanza(obraActual.getListaBeneficiarios(), valorTotalAvaluo, valorTotalObra, valorPorcentajeAvaluo, hayValorCobrado));
         }
 
         return obraActual;
@@ -659,24 +662,23 @@ public class ContribucionMejorasBB extends AdminContribucionMejorasBB {
 
         EnumAplicacion tipoAplicacionObra;
 
-            tipoAplicacionObra = !ComunUtil.esNulo(obraActual.getStsAplicacionforma()) ? obraActual.getStsAplicacionforma() : EnumAplicacion.Total;
-            valorObra = !ComunUtil.esNulo(obraActual.getValValor()) ? obraActual.getValValor() : BigDecimal.ZERO;
-            aniosDepreciacion = !ComunUtil.esNulo(obraActual.getValAniodeprecia()) ? obraActual.getValAniodeprecia() : 0;
-            valorPorcentaje = !ComunUtil.esNulo(obraActual.getValPorcentaje()) ? obraActual.getValPorcentaje() : BigDecimal.ZERO;
+        tipoAplicacionObra = !ComunUtil.esNulo(obraActual.getStsAplicacionforma()) ? obraActual.getStsAplicacionforma() : EnumAplicacion.Total;
+        valorObra = !ComunUtil.esNulo(obraActual.getValValor()) ? obraActual.getValValor() : BigDecimal.ZERO;
+        aniosDepreciacion = !ComunUtil.esNulo(obraActual.getValAniodeprecia()) ? obraActual.getValAniodeprecia() : 0;
+        valorPorcentaje = !ComunUtil.esNulo(obraActual.getValPorcentaje()) ? obraActual.getValPorcentaje() : BigDecimal.ZERO;
 
-            if (!aplicaOrdenanza) {
-                if (tipoAplicacionObra.equals(EnumAplicacion.Parcial)) {
-                    actualizarValorACobrarObraParcial(obraActual, valorObra, valorPorcentaje, new BigDecimal(aniosDepreciacion));
-                } else {
-                    actualizarValorACobrarObraTotal(obraActual, valorObra, valorPorcentaje, new BigDecimal(aniosDepreciacion));
-                }
-                MensajesFaces.mensajeInformacion(EnumNewviExcepciones.INF504.presentarMensaje());
-
+        if (!obraActual.getStsPorcentajeaplica()) {
+            if (tipoAplicacionObra.equals(EnumAplicacion.Parcial)) {
+                actualizarValorACobrarObraParcial(obraActual, valorObra, valorPorcentaje, new BigDecimal(aniosDepreciacion));
             } else {
-                actulizarValorACobrarObraPorOrdenanza(obraActual, tipoAplicacionObra, valorObra, valorPorcentaje, new BigDecimal(aniosDepreciacion));
-                MensajesFaces.mensajeInformacion(EnumNewviExcepciones.INF505.presentarMensaje());
+                actualizarValorACobrarObraTotal(obraActual, valorObra, valorPorcentaje, new BigDecimal(aniosDepreciacion));
             }
+            MensajesFaces.mensajeInformacion(EnumNewviExcepciones.INF504.presentarMensaje());
 
+        } else {
+            actulizarValorACobrarObraPorOrdenanza(obraActual, tipoAplicacionObra, valorObra, valorPorcentaje, new BigDecimal(aniosDepreciacion));
+            MensajesFaces.mensajeInformacion(EnumNewviExcepciones.INF505.presentarMensaje());
+        }
     }
 
     public void obtenerValorCEMGeneral() {
@@ -685,13 +687,4 @@ public class ContribucionMejorasBB extends AdminContribucionMejorasBB {
         }
     }
 
-    public void onRowSelects(SelectEvent event) {
-        FacesMessage msg = new FacesMessage("Car Selected");
-        FacesContext.getCurrentInstance().addMessage(null, msg);
-    }
-
-    public void onRowUnselects(UnselectEvent event) {
-        FacesMessage msg = new FacesMessage("Car Unselected");
-        FacesContext.getCurrentInstance().addMessage(null, msg);
-    }
 }

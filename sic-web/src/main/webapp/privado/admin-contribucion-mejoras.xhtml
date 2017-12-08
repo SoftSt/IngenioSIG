@@ -51,7 +51,6 @@
                                  selection="#{contribucionMejorasBB.obraActual}">
 
                         <p:ajax event="rowSelect" update="grupoContribucionMejoras"/>
-                        <p:ajax event="rowUnselect" listener="#{contribucionMejorasBB.onRowUnselects}" update="formularioListaContribucionMejoras"/>
 
                         <p:column style="width:16px">
                             <p:rowToggler />
@@ -90,26 +89,36 @@
                         </p:column>
 
                         <p:rowExpansion>
-                            <p style="font-weight:bold;">Forma de ejecución</p>
 
-                            <div class="ui-g">
-                                <div class="ui-g-6">
-                                    <p:selectOneRadio id="console" layout="grid" columns="1" value="#{contribucionMejoras.stsPorcentajeaplica}">
-                                        <f:selectItem itemLabel="Distribución según Ordenanza" itemValue="#{true}" />
-                                        <f:selectItem itemLabel="Distribución Homogenea"  itemValue="#{false}" />
+                            <h:panelGrid id="pnSeleccion" columns="1">
+                                <h:panelGrid>
+                                    <p style="font-weight:bold;">Forma de ejecución</p>
+                                    <p:selectOneRadio id="seleccionEjecucion" style="width: 35%" layout="pageDirection" columns="1" value="#{contribucionMejoras.stsPorcentajeaplica}">
+                                        <f:selectItem itemLabel="Distribución Homogenea"  itemValue="#{false}"/>
+                                        <f:selectItem itemLabel="Distribución según Ordenanza" itemValue="#{true}"/>
+                                        <p:ajax update="pnSeleccion"/>
                                     </p:selectOneRadio>
-                                </div>
-                                <div class="ui-g-6">
-                                    <h:panelGrid columns="2">
+                                </h:panelGrid>
+                                <h:panelGrid id="pnPorcentajes" rendered="#{contribucionMejoras.stsPorcentajeaplica}">
+                                    <p style="font-weight:bold;">Factores de aplicación</p>
+                                    <h:panelGrid columns="4">
                                         <h:outputLabel for="valPorcentajeFrente" value="% frentistas" style="font-weight: bold;"/>
                                         <p:inputNumber id="valPorcentajeFrente" value="#{contribucionMejoras.valPorcentajefrentistas}" />
-                                        <h:outputLabel for="valPorcentajeAvaluo" value="% avaluo" style="font-size:0.8em;font-weight: bold;"/>
+                                        <h:outputLabel for="valPorcentajeAvaluo" value="% avaluo" style="font-weight: bold;"/>
                                         <p:inputNumber id="valPorcentajeAvaluo" value="#{contribucionMejoras.valPorcentajeavaluo}"/>
                                     </h:panelGrid>
-
-                                </div>
-                            </div>
-
+                                </h:panelGrid>
+                                <f:facet name="footer">
+                                    <p:commandButton value="Calcular CEM"
+                                                     id="btnCalcularCEM"
+                                                     update="listaObrasDetalleP"
+                                                     actionListener="#{contribucionMejorasBB.obtenerValorCEM(contribucionMejoras)}"
+                                                     icon="fa fa-calculator"
+                                                     style="float:right;">
+                                    </p:commandButton>
+                                </f:facet>
+                            </h:panelGrid>
+                            <p style="font-weight:bold;">Beneficiarios</p>
 
 
                             <p:dataTable id="listaObrasDetalleP" var="obrasDetalle" widgetVar="listaObrasDetalleTabla"

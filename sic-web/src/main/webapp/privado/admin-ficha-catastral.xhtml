@@ -772,12 +772,12 @@
                 </h:form>
 
                 <p:dialog header="Agregar detalles al piso" widgetVar="dlgDetallePiso" appendTo="@(body)" modal="true" showEffect="fade" hideEffect="fade" resizable="false" closable="true" width="550" height="400">
-                    <p:growl id="messages" showDetail="true" escape="false"/>
+                    <p:growl id="messages2" showDetail="true" escape="false"/>
                     <p:treeTable value="#{fichaCatastralBB.listaArbolPisosDetalle}"
                                  id="listaArbolPisosDetalle" var="dominio"
                                  selectionMode="single" selection="#{fichaCatastralBB.pisosDetalleSeleccionado}"
                                  style="margin-top:0">
-                        <p:ajax event="select" listener="#{fichaCatastralBB.agregarDetallePiso}" update="messages" />
+                        <p:ajax event="select" listener="#{fichaCatastralBB.agregarDetallePiso}"/>
 
                         <p:column headerText="Descripcion" sortBy="#{dominio.descripcion}">
                             <h:outputText value="#{dominio.descripcion}"/>
@@ -786,7 +786,7 @@
                 </p:dialog>
 
                 <p:dialog header="Agregar nuevos servicios" widgetVar="dlgServicios" appendTo="@(body)" modal="true" showEffect="fade" hideEffect="fade" resizable="false" closable="true" width="550" height="400">
-                    <p:growl id="messages" showDetail="true" escape="false"/>
+                    <p:growl id="messages3" showDetail="true" escape="false"/>
                     <p:treeTable value="#{fichaCatastralBB.listaArbolServicios}"
                                  id="listaArbolServicios" var="servicio"
                                  selectionMode="single" selection="#{fichaCatastralBB.servicioSeleccionado}" >
