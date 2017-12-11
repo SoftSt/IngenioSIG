@@ -636,6 +636,7 @@ public class ContribucionMejorasBB extends AdminContribucionMejorasBB {
 
     private void actulizarValorACobrarObraPorOrdenanza(ContribucionMejoras obraActual, EnumAplicacion tipoAplicacionObra, BigDecimal valorObra, BigDecimal valorPorcentaje, BigDecimal aniosDepreciacion) {
         BigDecimal valorTotalObra;
+
         if (tipoAplicacionObra.equals(EnumAplicacion.Parcial)) {
             valorTotalObra = obtenerValorTotalObra(valorObra, valorPorcentaje, aniosDepreciacion);
             actualizarValorACobrar(setearListaBeneficiarios(obraActual, valorTotalObra), BigDecimal.ZERO);
@@ -646,6 +647,18 @@ public class ContribucionMejorasBB extends AdminContribucionMejorasBB {
     public void actualizarBeficiarios(ObrasDetalle Beneficiario) {
         try {
             contribucionMejorasServicio.actualizarObrasDetalle(Beneficiario, sesionBean.getSesion());
+        } catch (NewviExcepcion e) {
+            LoggerNewvi.getLogNewvi(this.getClass()).error(e, sesionBean.getSesion());
+            MensajesFaces.mensajeError(e.getMessage());
+        } catch (Exception e) {
+            LoggerNewvi.getLogNewvi(this.getClass()).error(EnumNewviExcepciones.ERR000.presentarMensajeCodigo(), e, sesionBean.getSesion());
+            MensajesFaces.mensajeError(e.getMessage());
+        }
+    }
+
+    public void actualizarObraActual(ContribucionMejoras ObraActual) {
+        try {
+            contribucionMejorasServicio.actualizarContribucionMejoras(ObraActual, sesionBean.getSesion());
         } catch (NewviExcepcion e) {
             LoggerNewvi.getLogNewvi(this.getClass()).error(e, sesionBean.getSesion());
             MensajesFaces.mensajeError(e.getMessage());
@@ -676,6 +689,7 @@ public class ContribucionMejorasBB extends AdminContribucionMejorasBB {
             MensajesFaces.mensajeInformacion(EnumNewviExcepciones.INF504.presentarMensaje());
 
         } else {
+            //actualizarObraActual(obraActual);
             actulizarValorACobrarObraPorOrdenanza(obraActual, tipoAplicacionObra, valorObra, valorPorcentaje, new BigDecimal(aniosDepreciacion));
             MensajesFaces.mensajeInformacion(EnumNewviExcepciones.INF505.presentarMensaje());
         }
@@ -685,6 +699,10 @@ public class ContribucionMejorasBB extends AdminContribucionMejorasBB {
         for (ContribucionMejoras obraActual : this.listaContribucionMejoras) {
             obtenerValorCEM(obraActual);
         }
+    }
+
+    public Boolean hayBeneficiarios(List<ObrasDetalle> beneficiarios) {
+        return (!ComunUtil.esNulo(beneficiarios) && beneficiarios.size() > 0) ? Boolean.TRUE : Boolean.FALSE;
     }
 
 }

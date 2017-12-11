@@ -47,10 +47,7 @@
                                  emptyMessage="No se han encontrado resultados" 
                                  paginatorPosition="bottom"
                                  style="font-size: 0.8em;"
-                                 selectionMode="single"
                                  selection="#{contribucionMejorasBB.obraActual}">
-
-                        <p:ajax event="rowSelect" update="grupoContribucionMejoras"/>
 
                         <p:column style="width:16px">
                             <p:rowToggler />
@@ -90,7 +87,7 @@
 
                         <p:rowExpansion>
 
-                            <h:panelGrid id="pnSeleccion" columns="1">
+                            <h:panelGrid id="pnSeleccion" rendered="#{contribucionMejorasBB.hayBeneficiarios(contribucionMejoras.listaBeneficiarios)}" columns="1">
                                 <h:panelGrid>
                                     <p style="font-weight:bold;">Forma de ejecución</p>
                                     <p:selectOneRadio id="seleccionEjecucion" style="width: 35%" layout="pageDirection" columns="1" value="#{contribucionMejoras.stsPorcentajeaplica}">
@@ -112,6 +109,7 @@
                                     <p:commandButton value="Calcular CEM"
                                                      id="btnCalcularCEM"
                                                      update="listaObrasDetalleP"
+                                                     process="@parent"
                                                      actionListener="#{contribucionMejorasBB.obtenerValorCEM(contribucionMejoras)}"
                                                      icon="fa fa-calculator"
                                                      style="float:right;">
@@ -119,7 +117,6 @@
                                 </f:facet>
                             </h:panelGrid>
                             <p style="font-weight:bold;">Beneficiarios</p>
-
 
                             <p:dataTable id="listaObrasDetalleP" var="obrasDetalle" widgetVar="listaObrasDetalleTabla"
                                          value="#{contribucionMejoras.listaBeneficiarios}" rowKey="#{obrasDetalle.codObras}" filteredValue="#{contribucionMejorasBB.listaObrasDetalleFiltrado}"

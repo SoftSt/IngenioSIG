@@ -140,7 +140,7 @@ public class Dominios implements Serializable {
     }
 
     public String getDomiCodigo() {
-        return domiCodigo.trim();
+        return domiCodigo;
     }
 
     public void setDomiCodigo(String domiCodigo) {
@@ -180,7 +180,7 @@ public class Dominios implements Serializable {
     }
 
     public String getDomiCalculo() {
-        return domiCalculo.trim();
+        return domiCalculo;
     }
 
     public void setDomiCalculo(String domiCalculo) {

@@ -7,6 +7,7 @@ package ec.com.newvi.sic.servicios.impl;
 
 import ec.com.newvi.sic.dao.AvaluoFacade;
 import ec.com.newvi.sic.dao.BloquesFacade;
+import ec.com.newvi.sic.dao.ContribucionMejorasFacade;
 import ec.com.newvi.sic.dao.DetallesAvaluoFacade;
 import ec.com.newvi.sic.dao.FechaAvaluoFacade;
 import ec.com.newvi.sic.dao.FotosFacade;
@@ -27,6 +28,7 @@ import ec.com.newvi.sic.enums.EnumZonaInfluencia;
 import ec.com.newvi.sic.modelo.Avaluo;
 import ec.com.newvi.sic.modelo.Bloques;
 import ec.com.newvi.sic.modelo.ConstantesImpuestos;
+import ec.com.newvi.sic.modelo.ContribucionMejoras;
 import ec.com.newvi.sic.modelo.DetallesAvaluo;
 import ec.com.newvi.sic.modelo.Dominios;
 import ec.com.newvi.sic.modelo.FechaAvaluo;
@@ -89,6 +91,8 @@ public class CatastroServicioImpl implements CatastroServicio {
     LogPredioFacade logPredioFacade;
     @EJB
     ServicioFacade servicioFacade;
+    @EJB
+    ContribucionMejorasFacade cemFacade;
 
 
     /*------------------------------------------------------------Predios------------------------------------------------------------*/
@@ -133,7 +137,6 @@ public class CatastroServicioImpl implements CatastroServicio {
         predio.setAudModFec(fechaModificacion);
 
         //predio.setCodManzana(predio.getCodManzana().trim());
-
         prediosFacade.edit(predio);
 
         // Si todo marcha bien enviar nombre de la predio
@@ -159,8 +162,8 @@ public class CatastroServicioImpl implements CatastroServicio {
         predio.setCatEstado(EnumEstadoRegistro.E);
         return actualizarPredio(predio, sesion);
     }
-    
-    public Integer obtenerNumeroPredios(){
+
+    public Integer obtenerNumeroPredios() {
         return prediosFacade.obtenerNumeroPredios();
     }
 
@@ -400,8 +403,9 @@ public class CatastroServicioImpl implements CatastroServicio {
     public Pisos buscarPisosPorCodigoBloque(Integer codBloques) {
         return pisosFacade.buscarPisosPorCodigoBloque(codBloques);
     }
+
     @Override
-    public List<Pisos> consultarStsEstadoPiso(){
+    public List<Pisos> consultarStsEstadoPiso() {
         return pisosFacade.buscarStsEstadoPisos();
     }
 
@@ -477,7 +481,7 @@ public class CatastroServicioImpl implements CatastroServicio {
     private BigDecimal obtenerCoeficienteDetallePiso(PisoDetalle detalle, String domiCalculo, List<Dominios> dominios) {
         BigDecimal totalDetalle = BigDecimal.ZERO;
         for (Dominios dominio : dominios) {
-            if (!ComunUtil.esNulo(dominio.getDomiCodigo()) && dominio.getDomiCodigo().contains(detalle.getCodigo().trim())
+            if (!ComunUtil.esNulo(dominio.getDomiCodigo()) && dominio.getDomiCodigo().contains(!ComunUtil.esNulo(detalle.getCodigo()) ? detalle.getCodigo().trim() : "")
                     && !ComunUtil.esNulo(dominio.getDomiGrupos()) && dominio.getDomiGrupos().contains("DESCRIPCION EDIFICACION")
                     && !ComunUtil.esNulo(dominio.getDomiCalculo()) && dominio.getDomiCalculo().contains(domiCalculo)) {
                 totalDetalle = totalDetalle.add(BigDecimal.valueOf(dominio.getDomiCoefic()));
@@ -545,9 +549,9 @@ public class CatastroServicioImpl implements CatastroServicio {
             throw new NewviExcepcion(EnumNewviExcepciones.ERR011);
         }
     }
-    
+
     @Override
-    public List<PisoDetalle> consultarStsEstadoDetallePiso(){
+    public List<PisoDetalle> consultarStsEstadoDetallePiso() {
         return pisosDetalleFacade.buscarStsEstadoDetallePisos();
     }
 
@@ -667,8 +671,10 @@ public class CatastroServicioImpl implements CatastroServicio {
     public List<Dominios> obtenerDominiosPorCodigoYCalculo(List<Dominios> dominios, String codigo, String calculo) {
         List<Dominios> dominiosFiltrados = new ArrayList<>();
         for (Dominios dominioObtenido : dominios) {
-            if ((dominioObtenido.getDomiCodigo().trim()).contains(codigo)
-                    && (dominioObtenido.getDomiCalculo().trim()).contains(calculo)) {
+            String codigoDominio = !ComunUtil.esNulo(dominioObtenido.getDomiCodigo()) ? dominioObtenido.getDomiCodigo().trim() : "";
+            String calculoDominio = !ComunUtil.esNulo(dominioObtenido.getDomiCalculo()) ? dominioObtenido.getDomiCalculo().trim() : "";
+            if ((codigoDominio).contains(codigo)
+                    && (calculoDominio).contains(calculo)) {
                 dominiosFiltrados.add(dominioObtenido);
             }
         }
@@ -681,7 +687,7 @@ public class CatastroServicioImpl implements CatastroServicio {
         BigDecimal promedioCoeficientes = BigDecimal.ZERO;
         Integer totalCoeficientesTerreno = 0;
         for (Terreno terreno : predio.getCaracteristicasTerrenoActivas()) {
-            listaDominiosTerreno = obtenerDominiosPorCodigoYCalculo(dominios, terreno.getStsCodigo().trim(), domiCalculo);
+            listaDominiosTerreno = obtenerDominiosPorCodigoYCalculo(dominios, !ComunUtil.esNulo(terreno.getStsCodigo()) ? terreno.getStsCodigo().trim() : "", domiCalculo);
             for (Dominios dominio : listaDominiosTerreno) {
                 totalCoeficienteCalculo = totalCoeficienteCalculo.add(BigDecimal.valueOf(dominio.getDomiCoefic()));
                 totalCoeficientesTerreno++;
@@ -699,7 +705,7 @@ public class CatastroServicioImpl implements CatastroServicio {
         BigDecimal promedioCoeficientes = BigDecimal.ZERO;
         Integer totalCoeficientesServicios = 0;
         for (Servicios servicio : predio.getServicosActivos()) {
-            listaDominiosServicio = obtenerDominiosPorCodigoYCalculo(dominios, servicio.getStsCodigo().trim(), domiCalculo);
+            listaDominiosServicio = obtenerDominiosPorCodigoYCalculo(dominios, !ComunUtil.esNulo(servicio.getStsCodigo()) ? servicio.getStsCodigo().trim() : "", domiCalculo);
             for (Dominios dominio : listaDominiosServicio) {
                 totalCoeficienteCalculo = totalCoeficienteCalculo.add(BigDecimal.valueOf(dominio.getDomiCoefic()));
                 totalCoeficientesServicios++;
@@ -897,7 +903,7 @@ public class CatastroServicioImpl implements CatastroServicio {
         BigDecimal totalExoneraciones = obtenerValorElementoAvaluoPorDescripcion(listaExoneraciones, EnumCaracteristicasAvaluo.IMPUESTOS_EXONERACIONES_TOTAL.getTitulo(), formatoMonedaSistema);
 
         BigDecimal aPagar = valorImpuestoPredial.subtract(totalExoneraciones);
-        
+
         List<AvaluoDto> listaOtrosRubros = determinarOtrosRubros(predio, avaluo, dominios, constantesImpuestos, formatoMonedaSistema);
         BigDecimal totalOtrosRubros = obtenerValorElementoAvaluoPorDescripcion(listaOtrosRubros, EnumCaracteristicasAvaluo.IMPUESTOS_OTROS_VALORES_TOTAL.getTitulo(), formatoMonedaSistema);
 
@@ -913,6 +919,24 @@ public class CatastroServicioImpl implements CatastroServicio {
         return listaImpuestosPredio;
     }
 
+    private BigDecimal obtenerValorCEMActual(Predios codCatastral) {
+        Calendar cal;
+        int anioActual;
+        BigDecimal valorTotalCEM;
+
+        cal = Calendar.getInstance();
+        anioActual = cal.get(Calendar.YEAR);
+        valorTotalCEM = BigDecimal.ZERO;
+
+        List<ContribucionMejoras> listaObrasCEM = cemFacade.buscarContribucionMejorasPorAnio(anioActual);
+        if (!ComunUtil.esNulo(listaObrasCEM)) {
+            for (ContribucionMejoras obraActual : listaObrasCEM) {
+                valorTotalCEM = valorTotalCEM.add(obraActual.obtenerValorCEM(codCatastral));
+            }
+        }
+        return valorTotalCEM;
+    }
+
     private List<AvaluoDto> determinarOtrosRubros(Predios predio, BigDecimal avaluo, List<Dominios> dominios, ConstantesImpuestos constantesImpuestos, String formatoMonedaSistema) throws NewviExcepcion {
 
         List<AvaluoDto> listaOtrosRubros = new ArrayList<>();
@@ -920,7 +944,7 @@ public class CatastroServicioImpl implements CatastroServicio {
         // Constantes catastro urbano
         BigDecimal tasaImpuestoBomberos = constantesImpuestos.getValBomberos();
         BigDecimal valorServiciosAdministrativos = constantesImpuestos.getValServiciosadministrativos();
-        BigDecimal valorContribucionEspecialMejoras = constantesImpuestos.getValCem();
+        BigDecimal valorContribucionEspecialMejoras = obtenerValorCEMActual(predio);
         BigDecimal valorServiciosAmbientales = constantesImpuestos.getValAmbientales();
 
         // Solar no edificado

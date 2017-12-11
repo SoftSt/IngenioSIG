@@ -32,5 +32,13 @@ public class ContribucionMejorasFacade extends AbstractFacade<ContribucionMejora
         //@return listado de dominios
         return q.getResultList();
     }
+    public List<ContribucionMejoras> buscarContribucionMejorasPorAnio(Integer anioActual) {
+        // Busca un listado de dominios
+        Query q = this.getEntityManager().createQuery("SELECT contribuciones FROM ContribucionMejoras contribuciones where contribuciones.obrEstado = :ESTADO and contribuciones.valAnioobra = :ANIOACTUAL");
+        q.setParameter("ESTADO", EnumEstadoRegistro.A);
+        q.setParameter("ANIOACTUAL", anioActual);
+        //@return listado de dominios
+        return q.getResultList();
+    }
     
 }

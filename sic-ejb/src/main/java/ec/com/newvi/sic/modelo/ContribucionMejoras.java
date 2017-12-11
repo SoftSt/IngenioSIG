@@ -35,7 +35,6 @@ import javax.validation.constraints.Size;
 
 public class ContribucionMejoras implements Serializable {
 
-    
     @OneToMany(mappedBy = "codObras")
     private List<ObrasDetalle> listaBeneficiarios;
 
@@ -62,7 +61,7 @@ public class ContribucionMejoras implements Serializable {
     private BigDecimal valPorcentaje;
     @Column(name = "val_valor")
     private BigDecimal valValor;
-    
+
     @Column(name = "sts_aplicacionforma")
     private String stsAplicacionforma;
     @Column(name = "val_acobrar")
@@ -286,8 +285,8 @@ public class ContribucionMejoras implements Serializable {
     public String toString() {
         return "ec.com.newvi.sic.modelo.ContribucionMejoras[ codObras=" + codObras + " ]";
     }
-    
-    public Boolean esContribucionValida(){
+
+    public Boolean esContribucionValida() {
         return (!ComunUtil.esNulo(this.obrEstado));
     }
 
@@ -298,18 +297,29 @@ public class ContribucionMejoras implements Serializable {
     public void setListaBeneficiarios(List<ObrasDetalle> listaBeneficiarios) {
         this.listaBeneficiarios = listaBeneficiarios;
     }
-    
-    public BigDecimal complementoFrentistas(){
-        if (this.valPorcentajefrentistas.compareTo(this.valPorcentajeavaluo)>0) {
-            return new BigDecimal(100).subtract(this.valPorcentajefrentistas); 
+
+    public BigDecimal complementoFrentistas() {
+        if (this.valPorcentajefrentistas.compareTo(this.valPorcentajeavaluo) > 0) {
+            return new BigDecimal(100).subtract(this.valPorcentajefrentistas);
         }
         return new BigDecimal(100).subtract(this.valPorcentajeavaluo);
     }
-    public BigDecimal complementoAvaluo(){
-        if (this.valPorcentajeavaluo.compareTo(this.valPorcentajefrentistas)>0) {
-            return new BigDecimal(100).subtract(this.valPorcentajeavaluo); 
+
+    public BigDecimal complementoAvaluo() {
+        if (this.valPorcentajeavaluo.compareTo(this.valPorcentajefrentistas) > 0) {
+            return new BigDecimal(100).subtract(this.valPorcentajeavaluo);
         }
         return new BigDecimal(100).subtract(this.valPorcentajefrentistas);
+    }
+
+    public BigDecimal obtenerValorCEM(Predios codCatastral) {
+        BigDecimal valorCEM = BigDecimal.ZERO;
+        for (ObrasDetalle beneficiarios : this.listaBeneficiarios) {
+            if(!ComunUtil.esNulo(beneficiarios.getCodCatastral())&&beneficiarios.getCodCatastral().equals(codCatastral)){
+                valorCEM = valorCEM.add(beneficiarios.getObrValor());
+            }
+        }
+        return valorCEM;
     }
 
 }

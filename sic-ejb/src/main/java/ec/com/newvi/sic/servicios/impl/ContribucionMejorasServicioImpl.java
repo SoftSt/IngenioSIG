@@ -101,6 +101,11 @@ public class ContribucionMejorasServicioImpl implements ContribucionMejorasServi
         contribucionMejoras.setObrEstado(EnumEstadoRegistro.E);
         return actualizarContribucionMejoras(contribucionMejoras, sesion);
     }
+    
+    @Override
+    public List<ContribucionMejoras> obtenerListaCEMActual(Integer anioActual){
+        return contribucionMejorasFacade.buscarContribucionMejorasPorAnio(anioActual);
+    }
 
     /*------------------------------------------------------------ObrasDetalle------------------------------------------------------------*/
     @Override

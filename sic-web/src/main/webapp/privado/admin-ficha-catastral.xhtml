@@ -714,7 +714,8 @@
                                     <p:separator />
 
                                     <p:treeTable value="#{fichaCatastralBB.listaArbolAvaluo}"
-                                                 id="listaArbolAvaluo" var="avaluo">
+                                                 id="listaArbolAvaluo" var="avaluo"
+                                                 emptyMessage="No se han encontrado resultados">
 
                                         <p:column headerText="Descripcion">
                                             <h:outputText value="#{avaluo.descripcion}"/>

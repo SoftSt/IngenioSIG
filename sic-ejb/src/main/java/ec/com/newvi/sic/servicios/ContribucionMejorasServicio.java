@@ -67,6 +67,12 @@ public interface ContribucionMejorasServicio {
      * @throws NewviExcepcion
      */
     public String eliminarContribucionMejoras(ContribucionMejoras contribucionMejoras, SesionDto sesion) throws NewviExcepcion;
+    /**
+     * Obtiene una lista de contribuiciones del año actual
+     * @param anioActual año por el cual se consultará
+     * @return lista de CEM por año actual
+     */
+    public List<ContribucionMejoras> obtenerListaCEMActual(Integer anioActual);
     
     /*------------------------------------------------------------ObrasDetalle------------------------------------------------------------*/
     /**
