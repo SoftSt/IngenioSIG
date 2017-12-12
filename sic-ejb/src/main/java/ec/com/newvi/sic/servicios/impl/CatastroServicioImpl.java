@@ -282,7 +282,7 @@ public class CatastroServicioImpl implements CatastroServicio {
     @Override
     public List<AvaluoDto> obtenerAvaluoPisos(Pisos pisoEnviado, BigDecimal promedioFactores, List<Dominios> dominios, String formatoMonedaSistema, SesionDto sesion) throws NewviExcepcion {
         Pisos piso = pisoEnviado;
-        BigDecimal areapiso = piso.getValAreapiso();
+        BigDecimal areapiso = !ComunUtil.esNulo(piso.getValAreapiso()) ? piso.getValAreapiso() : BigDecimal.ZERO;
         BigDecimal edad = new BigDecimal(piso.obtenerEdadPiso());
         BigDecimal valorDepreciacion;
         String estado = piso.getStsEstado();
@@ -502,7 +502,7 @@ public class CatastroServicioImpl implements CatastroServicio {
         BigDecimal v1 = obtenerValorElementoAvaluoPorDescripcion(listaDetallesEstructura, EnumCaracteristicasAvaluo.DETALLE_COSTO_METRO_REFERENCIAL.getTitulo(), formatoMonedaSistema);
         BigDecimal v2 = obtenerValorElementoAvaluoPorDescripcion(listaDetallesAcabado, EnumCaracteristicasAvaluo.DETALLE_COSTO_METRO_REFERENCIAL.getTitulo(), formatoMonedaSistema);
         BigDecimal v3 = obtenerValorElementoAvaluoPorDescripcion(listaDetallesExtras, EnumCaracteristicasAvaluo.DETALLE_COSTO_METRO_REFERENCIAL.getTitulo(), formatoMonedaSistema);
-        BigDecimal areaPiso = piso.getValAreapiso();
+        BigDecimal areaPiso = !ComunUtil.esNulo(piso.getValAreapiso()) ? piso.getValAreapiso() : BigDecimal.ZERO;
 
         // Factos de costos del pios es igual a la suma de los factores por el área menos la depreciación del bien por edad y estado
         BigDecimal sumaFactores = areaPiso.multiply((coeficienteEstructura.multiply(v1)).add(coeficienteAcabado.multiply(v2)).add(coeficienteExtras.multiply(v3)));

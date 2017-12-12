@@ -117,8 +117,8 @@ public class GenerarTituloBB extends AdminFichaCatastralBB {
         return listaAvaluosProcesadosFiltrados;
     }
 
-    public void setListaAvaluosprocesadosFiltrados(List<Avaluo> listaAvaluosFiltrados) {
-        this.listaAvaluosProcesadosFiltrados = listaAvaluosFiltrados;
+    public void setListaAvaluosProcesadosFiltrados(List<Avaluo> listaAvaluosProcesadosFiltrados) {
+        this.listaAvaluosProcesadosFiltrados = listaAvaluosProcesadosFiltrados;
     }
 
     public List<Avaluo> getListaAvaluosSeleccionados() {

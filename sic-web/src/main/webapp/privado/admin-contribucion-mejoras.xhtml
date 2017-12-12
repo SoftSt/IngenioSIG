@@ -20,7 +20,7 @@
                     </p>
                     <p>#{contribucionMejorasBB.descripcionPantalla.textoEtiqueta}</p>
                     <p>
-                        <h:panelGrid columns="4">
+                        <h:panelGrid id="pnCabecera" columns="4">
                             <p:commandButton value="Nueva contribución" icon="fa fa-user-plus" 
                                              update="messages grupoContribucionMejoras"
                                              id="ingresarContribucionMejoras"
@@ -38,178 +38,174 @@
 
                         </h:panelGrid>
                     </p>
+                    <h:panelGrid id="pnTabla">
 
 
-                    <p:dataTable id="listaContribucionMejoras" var="contribucionMejoras" widgetVar="listaContribucionMejorasTabla"
-                                 value="#{contribucionMejorasBB.listaContribucionMejoras}" rowKey="#{contribucionMejoras.codObras}" filteredValue="#{contribucionMejorasBB.listaContribucionMejorasFiltrado}"
-                                 paginator="true" rows="10" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" 
-                                 rowsPerPageTemplate="10,15,20" 
-                                 emptyMessage="No se han encontrado resultados" 
-                                 paginatorPosition="bottom"
-                                 style="font-size: 0.8em;"
-                                 selection="#{contribucionMejorasBB.obraActual}">
+                        <p:dataTable id="listaContribucionMejoras" var="contribucionMejoras" widgetVar="listaContribucionMejorasTabla"
+                                     value="#{contribucionMejorasBB.listaContribucionMejoras}" rowKey="#{contribucionMejoras.codObras}" filteredValue="#{contribucionMejorasBB.listaContribucionMejorasFiltrado}"
+                                     paginator="true" rows="10" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" 
+                                     rowsPerPageTemplate="10,15,20" 
+                                     emptyMessage="No se han encontrado resultados" 
+                                     paginatorPosition="bottom"
+                                     style="font-size: 0.8em;"
+                                     selection="#{contribucionMejorasBB.obraActual}">
 
-                        <p:column style="width:16px">
-                            <p:rowToggler />
-                        </p:column>
+                            <p:column style="width:16px">
+                                <p:rowToggler />
+                            </p:column>
 
-                        <p:column headerText="Nombre Obra" width="200">
-                            <h:outputText value="#{contribucionMejoras.nomObras}" />
-                        </p:column>
+                            <p:column headerText="Nombre Obra" width="200">
+                                <h:outputText value="#{contribucionMejoras.nomObras}" />
+                            </p:column>
 
-                        <p:column headerText="Año de contrucción" width="45" sortBy="#{contribucionMejoras.valAnioobra}">
-                            <h:outputText value="#{contribucionMejoras.valAnioobra}" />
-                        </p:column>
+                            <p:column headerText="Año de contrucción" width="45" sortBy="#{contribucionMejoras.valAnioobra}">
+                                <h:outputText value="#{contribucionMejoras.valAnioobra}" />
+                            </p:column>
 
-                        <p:column headerText="Años de depreciación" width="45">
-                            <h:outputText value="#{contribucionMejoras.valAniodeprecia}" />
-                        </p:column>
+                            <p:column headerText="Años de depreciación" width="45">
+                                <h:outputText value="#{contribucionMejoras.valAniodeprecia}" />
+                            </p:column>
 
-                        <p:column headerText="% aplicación" width="45">
-                            <h:outputText value="#{contribucionMejoras.valPorcentaje}" />
-                        </p:column>
-                        <p:column headerText="Aplicación" width="45">
-                            <h:outputText value="#{contribucionMejoras.stsAplicacionforma}" />
-                        </p:column>
+                            <p:column headerText="% aplicación" width="45">
+                                <h:outputText value="#{contribucionMejoras.valPorcentaje}" />
+                            </p:column>
+                            <p:column headerText="Aplicación" width="45">
+                                <h:outputText value="#{contribucionMejoras.stsAplicacionforma}" />
+                            </p:column>
 
-                        <p:column width="40">
-                            <p:commandButton id="btnAccionesCEM" type="button" icon="fa fa-ellipsis-v" />
-                            <p:tieredMenu overlay="true" trigger="btnAccionesCEM" my="left top" at="left bottom" style="width:200px">
-                                <p:menuitem icon="fa fa-trash" value="Eliminar CEM" actionListener="#{contribucionMejorasBB.eliminarContribucionMejoras(contribucionMejoras.codObras)}" update="listaContribucionMejoras :formularioListaContribucionMejoras:growl :formularioListaContribucionMejoras:messages">
-                                    <p:confirm header="Eliminar Contribución" message="¿Está seguro?" icon="ui-icon-alert" />
-                                    <p:ajax update="toolTipDelete" process="@this" /> 
-                                </p:menuitem>
-                                <p:menuitem icon="fa fa-edit" value="Editar CEM" process="listaContribucionMejoras" update="grupoContribucionMejoras" actionListener="#{contribucionMejorasBB.seleccionarContribucionMejoras(contribucionMejoras.codObras)}"/>
-                                <p:menuitem icon="fa fa-sitemap" value="Agregar Predios" update="grupoContribucionMejoras" actionListener="#{contribucionMejorasBB.abrirDialogPredios(contribucionMejoras.codObras)}"/>
-                            </p:tieredMenu>
-                            <p:tooltip id="toolTipAccionesCEM" for="btnAccionesCEM" value="Acciones con Obras" showEffect="fade" hideEffect="fade" position="bottom"/>
-                        </p:column>
-
-                        <p:rowExpansion>
-
-                            <h:panelGrid id="pnSeleccion" rendered="#{contribucionMejorasBB.hayBeneficiarios(contribucionMejoras.listaBeneficiarios)}" columns="1">
-                                <h:panelGrid>
-                                    <p style="font-weight:bold;">Forma de ejecución</p>
-                                    <p:selectOneRadio id="seleccionEjecucion" style="width: 35%" layout="pageDirection" columns="1" value="#{contribucionMejoras.stsPorcentajeaplica}">
-                                        <f:selectItem itemLabel="Distribución Homogenea"  itemValue="#{false}"/>
-                                        <f:selectItem itemLabel="Distribución según Ordenanza" itemValue="#{true}"/>
-                                        <p:ajax update="pnSeleccion"/>
-                                    </p:selectOneRadio>
-                                </h:panelGrid>
-                                <h:panelGrid id="pnPorcentajes" rendered="#{contribucionMejoras.stsPorcentajeaplica}">
-                                    <p style="font-weight:bold;">Factores de aplicación</p>
-                                    <h:panelGrid columns="4">
-                                        <h:outputLabel for="valPorcentajeFrente" value="% frentistas" style="font-weight: bold;"/>
-                                        <p:inputNumber id="valPorcentajeFrente" value="#{contribucionMejoras.valPorcentajefrentistas}" />
-                                        <h:outputLabel for="valPorcentajeAvaluo" value="% avaluo" style="font-weight: bold;"/>
-                                        <p:inputNumber id="valPorcentajeAvaluo" value="#{contribucionMejoras.valPorcentajeavaluo}"/>
-                                    </h:panelGrid>
-                                </h:panelGrid>
-                                <f:facet name="footer">
-                                    <p:commandButton value="Calcular CEM"
-                                                     id="btnCalcularCEM"
-                                                     update="listaObrasDetalleP"
-                                                     process="@parent"
-                                                     actionListener="#{contribucionMejorasBB.obtenerValorCEM(contribucionMejoras)}"
-                                                     icon="fa fa-calculator"
-                                                     style="float:right;">
-                                    </p:commandButton>
-                                </f:facet>
-                            </h:panelGrid>
-                            <p style="font-weight:bold;">Beneficiarios</p>
-
-                            <p:dataTable id="listaObrasDetalleP" var="obrasDetalle" widgetVar="listaObrasDetalleTabla"
-                                         value="#{contribucionMejoras.listaBeneficiarios}" rowKey="#{obrasDetalle.codObras}" filteredValue="#{contribucionMejorasBB.listaObrasDetalleFiltrado}"
-                                         paginator="true" rows="10" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" 
-                                         rowsPerPageTemplate="10,15,20"
-                                         emptyMessage="No se han encontrado resultados" 
-                                         paginatorPosition="bottom">
-
-                                <p:column headerText="Código Catastral">
-                                    <h:outputText value="#{obrasDetalle.nomCodigocatastral.nomCodigocatastral}" />
-                                </p:column>
-
-                                <p:column headerText="Valor Frente">
-                                    <h:outputText value="#{obrasDetalle.valAreafrente}" />
-                                </p:column>
-
-                                <p:column headerText="Valor Predio">
-                                    <h:outputText value="#{obrasDetalle.valPredio}" />
-                                </p:column>
-
-                                <p:column headerText="Valor a Pagar">
-                                    <h:outputText value="#{obrasDetalle.obrValor}" />
-                                </p:column>
-
-                                <p:column width="40">
-                                    <p:commandButton actionListener="#{contribucionMejorasBB.eliminarPredioObra(obrasDetalle.codObrasdetalle)}"                                              
-                                                     icon="fa fa-remove"
-                                                     id="eliminarPredioObraP"
-                                                     update="listaObrasDetalleP">
-                                        <p:confirm header="Eliminar el predio asignado a la obra" message="¿Está seguro?" icon="ui-icon-alert" />
+                            <p:column width="40">
+                                <p:commandButton id="btnAccionesCEM" type="button" icon="fa fa-ellipsis-v" />
+                                <p:tieredMenu overlay="true" trigger="btnAccionesCEM" my="left top" at="left bottom" style="width:200px">
+                                    <p:menuitem icon="fa fa-trash" value="Eliminar CEM" actionListener="#{contribucionMejorasBB.eliminarContribucionMejoras(contribucionMejoras.codObras)}" update="listaContribucionMejoras :formularioListaContribucionMejoras:growl :formularioListaContribucionMejoras:messages">
+                                        <p:confirm header="Eliminar Contribución" message="¿Está seguro?" icon="ui-icon-alert" />
                                         <p:ajax update="toolTipDelete" process="@this" /> 
-                                    </p:commandButton>
-                                    <p:tooltip id="toolTipDelete" for="eliminarPredioObraP" value="Eliminar Predio de obra" showEffect="fade" hideEffect="fade" position="bottom"/>
+                                    </p:menuitem>
+                                    <p:menuitem icon="fa fa-edit" value="Editar CEM" process="listaContribucionMejoras" update="grupoContribucionMejoras" actionListener="#{contribucionMejorasBB.seleccionarContribucionMejoras(contribucionMejoras.codObras)}"/>
+                                    <p:menuitem icon="fa fa-sitemap" value="Agregar Predios" update="grupoContribucionMejoras" actionListener="#{contribucionMejorasBB.abrirDialogPredios(contribucionMejoras.codObras)}"/>
+                                </p:tieredMenu>
+                                <p:tooltip id="toolTipAccionesCEM" for="btnAccionesCEM" value="Acciones con Obras" showEffect="fade" hideEffect="fade" position="bottom"/>
+                            </p:column>
 
-                                </p:column>
+                            <p:rowExpansion>
 
-                                <f:facet name="footer">
-                                    <p:commandButton actionListener="#{contribucionMejorasBB.eliminarTodosPredioObra()}"
-                                                     icon="fa fa-trash"
-                                                     value="Eliminar todos"
-                                                     id="eliminarTodosPredioObraP"
-                                                     update="listaObrasDetalleP">
-                                        <p:confirm header="Eliminar todos los predio asignado a la obra" message="¿Está seguro?" icon="ui-icon-alert" />
-                                        <p:ajax update="toolTipDeleteAllP" process="@this" />                                                
-                                    </p:commandButton>
-                                    <p:tooltip id="toolTipDeleteAllP" for="eliminarTodosPredioObraP" value="Eliminar todos los predios de obra" showEffect="fade" hideEffect="fade" position="bottom"/>
-                                </f:facet>
-                            </p:dataTable>
-                        </p:rowExpansion>
-                    </p:dataTable>        
+                                <h:panelGrid id="pnSeleccion" rendered="#{contribucionMejorasBB.hayBeneficiarios(contribucionMejoras.listaBeneficiarios)}" columns="1">
+                                    <h:panelGrid>
+                                        <p style="font-weight:bold;">Forma de ejecución</p>
+                                        <p:selectOneRadio id="seleccionEjecucion" style="width: 35%" layout="pageDirection" columns="1" value="#{contribucionMejoras.stsPorcentajeaplica}">
+                                            <f:selectItem itemLabel="Distribución Homogenea"  itemValue="#{false}"/>
+                                            <f:selectItem itemLabel="Distribución según Ordenanza" itemValue="#{true}"/>
+                                            <p:ajax update="pnSeleccion"/>
+                                        </p:selectOneRadio>
+                                    </h:panelGrid>
+                                    <h:panelGrid id="pnPorcentajes" rendered="#{contribucionMejoras.stsPorcentajeaplica}">
+                                        <p style="font-weight:bold;">Factores de aplicación</p>
+                                        <h:panelGrid columns="4">
+                                            <h:outputLabel for="valPorcentajeFrente" value="% frentistas" style="font-weight: bold;"/>
+                                            <p:inputNumber id="valPorcentajeFrente" value="#{contribucionMejoras.valPorcentajefrentistas}" />
+                                            <h:outputLabel for="valPorcentajeAvaluo" value="% avaluo" style="font-weight: bold;"/>
+                                            <p:inputNumber id="valPorcentajeAvaluo" value="#{contribucionMejoras.valPorcentajeavaluo}"/>
+                                        </h:panelGrid>
+                                    </h:panelGrid>
+                                    <f:facet name="footer">
+                                        <p:commandButton value="Calcular CEM"
+                                                         id="btnCalcularCEM"
+                                                         update="listaObrasDetalleP"
+                                                         process="@parent"
+                                                         actionListener="#{contribucionMejorasBB.obtenerValorCEM(contribucionMejoras)}"
+                                                         icon="fa fa-calculator"
+                                                         style="float:right;">
+                                        </p:commandButton>
+                                    </f:facet>
+                                </h:panelGrid>
+                                <p style="font-weight:bold;">Beneficiarios</p>
 
+                                <p:dataTable id="listaObrasDetalleP" var="obrasDetalle" widgetVar="listaObrasDetalleTabla"
+                                             value="#{contribucionMejoras.listaBeneficiarios}" rowKey="#{obrasDetalle.codObras}" filteredValue="#{contribucionMejorasBB.listaObrasDetalleFiltrado}"
+                                             paginator="true" rows="10" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" 
+                                             rowsPerPageTemplate="10,15,20"
+                                             emptyMessage="No se han encontrado resultados" 
+                                             paginatorPosition="bottom">
 
+                                    <p:column headerText="Código Catastral">
+                                        <h:outputText value="#{obrasDetalle.nomCodigocatastral.nomCodigocatastral}" />
+                                    </p:column>
 
+                                    <p:column headerText="Valor Frente">
+                                        <h:outputText value="#{obrasDetalle.valAreafrente}" />
+                                    </p:column>
 
-                    <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
-                        <p:commandButton value="Si" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
-                        <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
-                    </p:confirmDialog>
+                                    <p:column headerText="Valor Predio">
+                                        <h:outputText value="#{obrasDetalle.valPredio}" />
+                                    </p:column>
+
+                                    <p:column headerText="Valor a Pagar">
+                                        <h:outputText value="#{obrasDetalle.obrValor}" />
+                                    </p:column>
+
+                                    <p:column width="40">
+                                        <p:commandButton actionListener="#{contribucionMejorasBB.eliminarPredioObra(obrasDetalle.codObrasdetalle)}"                                              
+                                                         icon="fa fa-remove"
+                                                         id="eliminarPredioObraP"
+                                                         update="listaObrasDetalleP">
+                                            <p:confirm header="Eliminar el predio asignado a la obra" message="¿Está seguro?" icon="ui-icon-alert" />
+                                            <p:ajax update="toolTipDelete" process="@this" /> 
+                                        </p:commandButton>
+                                        <p:tooltip id="toolTipDelete" for="eliminarPredioObraP" value="Eliminar Predio de obra" showEffect="fade" hideEffect="fade" position="bottom"/>
+
+                                    </p:column>
+
+                                    <f:facet name="footer">
+                                        <p:commandButton actionListener="#{contribucionMejorasBB.eliminarTodosPredioObra()}"
+                                                         icon="fa fa-trash"
+                                                         value="Eliminar todos"
+                                                         id="eliminarTodosPredioObraP"
+                                                         update="listaObrasDetalleP">
+                                            <p:confirm header="Eliminar todos los predio asignado a la obra" message="¿Está seguro?" icon="ui-icon-alert" />
+                                            <p:ajax update="toolTipDeleteAllP" process="@this" />                                                
+                                        </p:commandButton>
+                                        <p:tooltip id="toolTipDeleteAllP" for="eliminarTodosPredioObraP" value="Eliminar todos los predios de obra" showEffect="fade" hideEffect="fade" position="bottom"/>
+                                    </f:facet>
+                                </p:dataTable>
+                            </p:rowExpansion>
+                        </p:dataTable>        
+
+                    </h:panelGrid>
+
+                    <p:dialog header="Agregar predios a CEM" modal="true" widgetVar="dlgPredios" appendTo="@(body)" showEffect="fade" hideEffect="fade" resizable="false" closable="true" width="640" height="440">
+                        <p:dataTable id="listaPrediosAfectados" var="predios" widgetVar="listaPrediosTabla"
+                                     value="#{contribucionMejorasBB.listaPrediosActualizados}"  filteredValue="#{contribucionMejorasBB.listaPrediosFiltrado}"
+                                     paginator="true" rows="5" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" 
+                                     rowsPerPageTemplate="5,10,15" 
+                                     emptyMessage="No se han encontrado resultados" 
+                                     paginatorPosition="bottom"
+                                     selectionMode="single"
+                                     selection="#{contribucionMejorasBB.predioSeleccionado}"
+                                     rowKey="#{predios.codCatastral}">
+
+                            <p:ajax event="rowSelect" listener="#{contribucionMejorasBB.onRowSelect}" update="formularioListaContribucionMejoras:listaContribucionMejoras" />
+                            <p:ajax event="rowUnselect" listener="#{contribucionMejorasBB.onRowUnselect}" update="listaPrediosAfectados" />
+
+                            <p:column headerText="Catastro" sortBy="#{predios.codCatastral}">
+                                <h:outputText value="#{predios.codCatastral}" />
+                            </p:column>
+
+                            <p:column headerText="Código predio" sortBy="#{predios.codPredio}">
+                                <h:outputText value="#{predios.codPredio}" />
+                            </p:column>
+                            <p:column headerText="Código catastral" sortBy="#{predios.nomCodigocatastral}">
+                                <h:outputText value="#{predios.nomCodigocatastral}" />
+                            </p:column>
+                            <p:column headerText="Valor del frente" sortBy="#{predios.valAreaFrente}">
+                                <h:outputText value="#{predios.valAreaFrente}" />
+                            </p:column>
+                            <p:column headerText="Valor Predio" sortBy="#{predios.valPredio}">
+                                <h:outputText value="#{predios.valPredio}" />
+                            </p:column>
+
+                        </p:dataTable>
+                    </p:dialog>
                 </h:form>
 
-                <p:dialog header="Agregar predios a CEM" modal="true" widgetVar="dlgPredios" appendTo="@(body)" showEffect="fade" hideEffect="fade" resizable="false" closable="true" width="640" height="440">
-                    <p:dataTable id="listaPrediosAfectados" var="predios" widgetVar="listaPrediosTabla"
-                                 value="#{contribucionMejorasBB.listaPrediosActualizados}"  filteredValue="#{contribucionMejorasBB.listaPrediosFiltrado}"
-                                 paginator="true" rows="5" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" 
-                                 rowsPerPageTemplate="5,10,15" 
-                                 emptyMessage="No se han encontrado resultados" 
-                                 paginatorPosition="bottom"
-                                 selectionMode="single"
-                                 selection="#{contribucionMejorasBB.predioSeleccionado}"
-                                 rowKey="#{predios.codCatastral}">
-
-                        <p:ajax event="rowSelect" listener="#{contribucionMejorasBB.onRowSelect}" update="listaPrediosAfectados" />
-                        <p:ajax event="rowUnselect" listener="#{contribucionMejorasBB.onRowUnselect}" update="listaPrediosAfectados" />
-
-                        <p:column headerText="Catastro" sortBy="#{predios.codCatastral}">
-                            <h:outputText value="#{predios.codCatastral}" />
-                        </p:column>
-
-                        <p:column headerText="Código predio" sortBy="#{predios.codPredio}">
-                            <h:outputText value="#{predios.codPredio}" />
-                        </p:column>
-                        <p:column headerText="Código catastral" sortBy="#{predios.nomCodigocatastral}">
-                            <h:outputText value="#{predios.nomCodigocatastral}" />
-                        </p:column>
-                        <p:column headerText="Valor del frente" sortBy="#{predios.valAreaFrente}">
-                            <h:outputText value="#{predios.valAreaFrente}" />
-                        </p:column>
-                        <p:column headerText="Valor Predio" sortBy="#{predios.valPredio}">
-                            <h:outputText value="#{predios.valPredio}" />
-                        </p:column>
-
-                    </p:dataTable>
-                </p:dialog>
             </p:panel>
             <p:panel id="panelContribucionMejoras" rendered="#{contribucionMejorasBB.esPantallaActual('PANTALLA_EDICION')}">
                 <h:form id="formularioContribucionMejoras">

@@ -120,7 +120,7 @@ public abstract class AdminFichaCatastralBB extends AdminSistemaBB {
 
     protected void actualizarListadoPredios() {
         List<Predios> listaPredios = catastroServicio.consultarPredios();
-        String sql = ComunUtil.generarScriptTenencia(listaPredios, parametrosServicio);
+        //String sql = ComunUtil.generarScriptTenencia(listaPredios, parametrosServicio);
         listaFichas = new ArrayList<>();
         listaPredios.forEach((elementoPredio) -> {
             listaFichas.add(new FichaCatastralDto(elementoPredio));
