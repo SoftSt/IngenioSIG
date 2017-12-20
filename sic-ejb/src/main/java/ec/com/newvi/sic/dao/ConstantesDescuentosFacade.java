@@ -6,7 +6,7 @@
 package ec.com.newvi.sic.dao;
 
 import ec.com.newvi.sic.enums.EnumEstadoRegistro;
-import ec.com.newvi.sic.modelo.CatConConstantesdescuentos;
+import ec.com.newvi.sic.modelo.ConstantesDescuentos;
 import java.io.Serializable;
 import java.util.List;
 import javax.annotation.security.PermitAll;
@@ -19,14 +19,14 @@ import javax.persistence.Query;
  */
 @Stateless
 @PermitAll
-public class ConstantesDescuentosFacade extends AbstractFacade<CatConConstantesdescuentos, Integer>  implements Serializable{
+public class ConstantesDescuentosFacade extends AbstractFacade<ConstantesDescuentos, Integer>  implements Serializable{
 
     public ConstantesDescuentosFacade() {
-        super(CatConConstantesdescuentos.class, Integer.class);
+        super(ConstantesDescuentos.class, Integer.class);
     }
     
-    public List<CatConConstantesdescuentos> buscarDescuentos(){      
-        Query q = this.getEntityManager().createQuery("SELECT descuentos FROM CatConConstantesdescuentos descuentos WHERE descuentos.stsEstado =:ESTADO ORDER BY descuentos.codConstantesdescuentos ASC");
+    public List<ConstantesDescuentos> buscarDescuentos(){      
+        Query q = this.getEntityManager().createQuery("SELECT descuentos FROM ConstantesDescuentos descuentos WHERE descuentos.estadoDescuento =:ESTADO ORDER BY descuentos.codConstantesdescuentos ASC");
         q.setParameter("ESTADO", EnumEstadoRegistro.A);
         return q.getResultList();
     }

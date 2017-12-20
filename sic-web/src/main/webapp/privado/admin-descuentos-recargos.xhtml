@@ -20,21 +20,21 @@
                     <p>#{descuentosBB.descripcionPantalla.textoEtiqueta}</p>
                     
                     <p:dataTable id="listaDescuentos" var="descuentos" widgetVar="listaDescuentosTabla"
-                                 value="#{descuentosBB.listacatConConstantesdescuentos}" rowKey="#{descuentos.codConstantesdescuentos}" 
+                                 value="#{descuentosBB.listaConstantesDescuentos}" rowKey="#{descuentos.codConstantesdescuentos}" 
                                  paginator="true" rows="10" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" 
                                  rowsPerPageTemplate="10,15,20" 
                                  emptyMessage="No se han encontrado resultados" 
                                  paginatorPosition="bottom">
 
-                        <p:column headerText="Año" sortBy="#{descuentos.stsAnio}" filterBy="#{descuentos.stsAnio}">
-                            <h:outputText value="#{descuentos.stsAnio}"/>
-                        </p:column>
-
-                        <p:column headerText="Nombre Propietario" sortBy="#{descuentos.stsMes}" filterBy="#{descuentos.stsMes}" >
+                        <p:column headerText="Mes de  Aplicación" sortBy="#{descuentos.stsMes}" >
                             <h:outputText value="#{descuentos.stsMes}"/>
                         </p:column>
                         
-                        <p:column headerText="Valor" sortBy="#{descuentos.valValor}" filterBy="#{descuentos.valValor}" >
+                        <p:column headerText="Quincena" sortBy="#{descuentos.stsQuincena}" >
+                            <h:outputText value="#{descuentos.stsQuincena}"/>
+                        </p:column>
+                        
+                        <p:column headerText="Valor" sortBy="#{descuentos.valValor}" >
                             <h:outputText value="#{descuentos.valValor}"/>
                         </p:column>
                         <p:column width="80">                            
@@ -69,20 +69,20 @@
                             <div style="font-size:1.2em;font-weight:bold;">Datos del Descuento</div>
                             <p:separator />
                             
-                            <h:outputLabel for="stsAnio" value="Anio" style="font-weight: bold;"/>
-                            <p:inputText id="stsAnio" value="#{descuentosBB.catConConstantesdescuentos.stsAnio}" label="Cargo" size="50"/>
+                            <h:outputLabel for="stsAnio" value="Año" style="font-weight: bold;"/>
+                            <p:inputText id="stsAnio" value="#{descuentosBB.constantesDescuentos.stsAnio}" label="Cargo" size="50"/>
                             <p:message for="stsAnio" display="tooltip"/>
                             
                             <h:outputLabel for="stsMes" value="Mes" style="font-weight: bold;"/>
-                            <p:inputText id="stsMes" value="#{descuentosBB.catConConstantesdescuentos.stsMes}" label="Cargo" size="50"/>
+                            <p:inputText id="stsMes" value="#{descuentosBB.constantesDescuentos.stsMes}" label="Cargo" size="50"/>
                             <p:message for="stsMes" display="tooltip"/>
                             
                             <h:outputLabel for="stsQuincena" value="Quincena" style="font-weight: bold;"/>
-                            <p:inputText id="stsQuincena" value="#{descuentosBB.catConConstantesdescuentos.stsQuincena}" label="Cargo" size="50"/>
+                            <p:inputText id="stsQuincena" value="#{descuentosBB.constantesDescuentos.stsQuincena}" label="Cargo" size="50"/>
                             <p:message for="stsQuincena" display="tooltip"/>
                             
                             <h:outputLabel for="valValor" value="Valor" style="font-weight: bold;"/>
-                            <p:inputText id="valValor" value="#{descuentosBB.catConConstantesdescuentos.valValor}" label="Cargo" size="50"/>
+                            <p:inputText id="valValor" value="#{descuentosBB.constantesDescuentos.valValor}" label="Cargo" size="50"/>
                             <p:message for="valValor" display="tooltip"/>
                         </h:panelGrid>
                         <h:panelGrid columns="4">

@@ -6,7 +6,7 @@
 package ec.com.newvi.sic.web.backingbean;
 
 import ec.com.newvi.sic.enums.EnumNewviExcepciones;
-import ec.com.newvi.sic.modelo.CatConConstantesdescuentos;
+import ec.com.newvi.sic.modelo.ConstantesDescuentos;
 import ec.com.newvi.sic.util.ComunUtil;
 import ec.com.newvi.sic.util.excepciones.NewviExcepcion;
 import ec.com.newvi.sic.util.logs.LoggerNewvi;
@@ -27,26 +27,28 @@ import javax.faces.bean.ViewScoped;
 @ViewScoped
 public class DescuentosBB extends AdminTesoreriaBB {
     
-    private CatConConstantesdescuentos catConConstantesdescuentos;
-    private List<CatConConstantesdescuentos> listacatConConstantesdescuentos;    
+    //private ConstantesDescuentos catConConstantesdescuentos;
+    private ConstantesDescuentos constantesDescuentos;
+    //private List<ConstantesDescuentos> listacatConConstantesdescuentos;    
+    private List<ConstantesDescuentos> listaConstantesDescuentos;    
     private EnumPantallaMantenimiento pantallaActual;
 
-    public CatConConstantesdescuentos getCatConConstantesdescuentos() {
-        return catConConstantesdescuentos;
+    public ConstantesDescuentos getConstantesDescuentos() {
+        return constantesDescuentos;
     }
 
-    public void setCatConConstantesdescuentos(CatConConstantesdescuentos catConConstantesdescuentos) {
-        this.catConConstantesdescuentos = catConConstantesdescuentos;
+    public void setConstantesDescuentos(ConstantesDescuentos constantesDescuentos) {
+        this.constantesDescuentos = constantesDescuentos;
     }
 
-    public List<CatConConstantesdescuentos> getListacatConConstantesdescuentos() {
-        return listacatConConstantesdescuentos;
+    public List<ConstantesDescuentos> getListaConstantesDescuentos() {
+        return listaConstantesDescuentos;
     }
 
-    public void setListacatConConstantesdescuentos(List<CatConConstantesdescuentos> listacatConConstantesdescuentos) {
-        this.listacatConConstantesdescuentos = listacatConConstantesdescuentos;
+    public void setListaConstantesDescuentos(List<ConstantesDescuentos> listaConstantesDescuentos) {
+        this.listaConstantesDescuentos = listaConstantesDescuentos;
     }
-
+    
     public EnumPantallaMantenimiento getPantallaActual() {
         return pantallaActual;
     }
@@ -57,7 +59,7 @@ public class DescuentosBB extends AdminTesoreriaBB {
     
     @PostConstruct
     public void init() {
-        this.catConConstantesdescuentos = new CatConConstantesdescuentos();
+        this.constantesDescuentos = new ConstantesDescuentos();
         actualizarListadoDescuentos();
         conmutarPantalla(EnumPantallaMantenimiento.PANTALLA_LISTADO);
         establecerTitulo(EnumEtiquetas.DESCUENTO_LISTA_TITULO, 
@@ -66,7 +68,7 @@ public class DescuentosBB extends AdminTesoreriaBB {
     }
 
     private void actualizarListadoDescuentos() {
-        listacatConConstantesdescuentos = parametrosTesoreria.consultarDescuentos();
+        this.listaConstantesDescuentos = parametrosTesoreria.consultarDescuentos();
     }
     
     private void conmutarPantalla(EnumPantallaMantenimiento nuevaPantalla) {
@@ -99,15 +101,15 @@ public class DescuentosBB extends AdminTesoreriaBB {
     }
 
     private void seleccionarDescuentoPorCodigo(Integer idDescuento) throws NewviExcepcion {
-        this.catConConstantesdescuentos = parametrosTesoreria.seleccionarDescuento(idDescuento);
+        this.constantesDescuentos = parametrosTesoreria.seleccionarDescuento(idDescuento);
     }
     
     public void actualizarDescuento() {
-        if (!ComunUtil.esNumeroPositivo(this.catConConstantesdescuentos.getCodConstantesdescuentos())) {
+        if (!ComunUtil.esNumeroPositivo(this.constantesDescuentos.getCodConstantesdescuentos())) {
             insertarDescuento();
         } else {
             try {
-                parametrosTesoreria.actualizarDescuento(catConConstantesdescuentos, sesionBean.getSesion());
+                parametrosTesoreria.actualizarDescuento(constantesDescuentos, sesionBean.getSesion());
                 actualizarListadoDescuentos();
                 LoggerNewvi.getLogNewvi(this.getClass()).info(EnumNewviExcepciones.INF700.presentarMensaje(), sesionBean.getSesion());
                 MensajesFaces.mensajeInformacion(EnumNewviExcepciones.INF700.presentarMensaje());
@@ -127,7 +129,7 @@ public class DescuentosBB extends AdminTesoreriaBB {
     
     public void insertarDescuento() {
         try {
-            parametrosTesoreria.generarNuevoDescuentos(catConConstantesdescuentos, sesionBean.getSesion());
+            parametrosTesoreria.generarNuevoDescuentos(constantesDescuentos, sesionBean.getSesion());
             LoggerNewvi.getLogNewvi(this.getClass()).info(EnumNewviExcepciones.INF302.presentarMensaje(), sesionBean.getSesion());
             MensajesFaces.mensajeInformacion(EnumNewviExcepciones.INF302.presentarMensaje());
             actualizarListadoDescuentos();

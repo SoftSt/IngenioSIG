@@ -9,8 +9,8 @@ import ec.com.newvi.sic.dao.ConstantesDescuentosFacade;
 import ec.com.newvi.sic.dao.ConstantesInteresMoraFacade;
 import ec.com.newvi.sic.dto.SesionDto;
 import ec.com.newvi.sic.enums.EnumNewviExcepciones;
-import ec.com.newvi.sic.modelo.CatConConstantesdescuentos;
-import ec.com.newvi.sic.modelo.CatConConstantesinteresmora;
+import ec.com.newvi.sic.modelo.ConstantesDescuentos;
+import ec.com.newvi.sic.modelo.ConstantesInteresMora;
 import ec.com.newvi.sic.servicios.TesoreriaServicio;
 import ec.com.newvi.sic.util.ComunUtil;
 import ec.com.newvi.sic.util.excepciones.NewviExcepcion;
@@ -35,12 +35,12 @@ public class TesoreriaServicioImpl implements TesoreriaServicio {
     private ConstantesInteresMoraFacade constantesInteresMoraFacade;
 
     @Override
-    public List<CatConConstantesdescuentos> consultarDescuentos() {
+    public List<ConstantesDescuentos> consultarDescuentos() {
         return constantesDescuentosFacade.buscarDescuentos();
     }
 
     @Override
-    public CatConConstantesdescuentos seleccionarDescuento(Integer idDescuento) throws NewviExcepcion {
+    public ConstantesDescuentos seleccionarDescuento(Integer idDescuento) throws NewviExcepcion {
         if (ComunUtil.esNumeroPositivo(idDescuento)) {
             return constantesDescuentosFacade.find(idDescuento);
         } else {
@@ -49,7 +49,7 @@ public class TesoreriaServicioImpl implements TesoreriaServicio {
     }
 
     @Override
-    public void actualizarDescuento(CatConConstantesdescuentos catConConstantesdescuentos, SesionDto sesion) throws NewviExcepcion {
+    public void actualizarDescuento(ConstantesDescuentos catConConstantesdescuentos, SesionDto sesion) throws NewviExcepcion {
         
         // Validar que los datos no sean incorrectos
         LoggerNewvi.getLogNewvi(this.getClass()).debug("Validando multa...", sesion);
@@ -68,7 +68,7 @@ public class TesoreriaServicioImpl implements TesoreriaServicio {
     }
 
     @Override
-    public void generarNuevoDescuentos(CatConConstantesdescuentos catConConstantesdescuentos, SesionDto sesion) throws NewviExcepcion {
+    public void generarNuevoDescuentos(ConstantesDescuentos catConConstantesdescuentos, SesionDto sesion) throws NewviExcepcion {
         // Validar que los datos no sean incorrectos
         LoggerNewvi.getLogNewvi(this.getClass()).debug("Validando multa...", sesion);
         if (!catConConstantesdescuentos.esDescuentoValido()) {
@@ -86,12 +86,12 @@ public class TesoreriaServicioImpl implements TesoreriaServicio {
     }
 
     @Override
-    public List<CatConConstantesinteresmora> consultarMultas() {
+    public List<ConstantesInteresMora> consultarMultas() {
         return constantesInteresMoraFacade.buscarMultas();
     }
 
     @Override
-    public CatConConstantesinteresmora seleccionarMulta(Integer idMulta) throws NewviExcepcion {
+    public ConstantesInteresMora seleccionarMulta(Integer idMulta) throws NewviExcepcion {
         if (ComunUtil.esNumeroPositivo(idMulta)) {
             return constantesInteresMoraFacade.find(idMulta);
         } else {
@@ -100,7 +100,7 @@ public class TesoreriaServicioImpl implements TesoreriaServicio {
     }
 
     @Override
-    public void actualizarDescuento(CatConConstantesinteresmora constantesInteresMora, SesionDto sesion) throws NewviExcepcion {
+    public void actualizarDescuento(ConstantesInteresMora constantesInteresMora, SesionDto sesion) throws NewviExcepcion {
         
         // Actualizar el descuento
         LoggerNewvi.getLogNewvi(this.getClass()).debug("Editando multa...", sesion);
@@ -113,7 +113,7 @@ public class TesoreriaServicioImpl implements TesoreriaServicio {
     }
 
     @Override
-    public void generarNuevaMulta(CatConConstantesinteresmora constantesInteresMora, SesionDto sesion) throws NewviExcepcion {
+    public void generarNuevaMulta(ConstantesInteresMora constantesInteresMora, SesionDto sesion) throws NewviExcepcion {
         // Actualizar el descuento
         LoggerNewvi.getLogNewvi(this.getClass()).debug("Editando multa...", sesion);
         

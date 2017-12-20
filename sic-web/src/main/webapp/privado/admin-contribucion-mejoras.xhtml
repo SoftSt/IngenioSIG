@@ -20,21 +20,11 @@
                     </p>
                     <p>#{contribucionMejorasBB.descripcionPantalla.textoEtiqueta}</p>
                     <p>
-                        <h:panelGrid id="pnCabecera" columns="4">
-                            <p:commandButton value="Nueva contribución" icon="fa fa-user-plus" 
-                                             update="messages grupoContribucionMejoras"
-                                             id="ingresarContribucionMejoras"
-                                             actionListener="#{contribucionMejorasBB.crearNuevaContribucionMejoras()}">
-                                <p:ajax update="toolTipInsert" process="@this" />  
-                            </p:commandButton>
-                            <p:tooltip id="toolTipInsert" for="ingresarContribucionMejoras" value="Ingresar un nuevo contribución" showEffect="fade" hideEffect="fade" position="bottom"/>
-                            <p:commandButton value="Ordenanza General" icon="fa fa-calculator" 
-                                             update="grupoContribucionMejoras"
-                                             id="btnCalcularCEM"
-                                             actionListener="#{contribucionMejorasBB.obtenerValorCEMGeneral()}">
-                                <p:ajax update="toolTipCalCEM" process="@this" />  
-                            </p:commandButton>
-                            <p:tooltip id="toolTipCalCEM" for="btnCalcularCEM" value="Realizar el cálculo" showEffect="fade" hideEffect="fade" position="bottom"/>
+                        <h:panelGrid id="pnCabecera" >
+                            <p:splitButton value="Opciones">
+                                <p:menuitem value="Nueva CEM" actionListener="#{contribucionMejorasBB.crearNuevaContribucionMejoras()}" update="messages grupoContribucionMejoras" icon="fa fa-plus-circle" />
+                                <p:menuitem value="Aplicar CEM General" process="@parent" actionListener="#{contribucionMejorasBB.obtenerValorCEMGeneral()}" update="listaContribucionMejoras" icon="fa fa-calculator" />
+                            </p:splitButton>
 
                         </h:panelGrid>
                     </p>
@@ -92,8 +82,8 @@
                                     <h:panelGrid>
                                         <p style="font-weight:bold;">Forma de ejecución</p>
                                         <p:selectOneRadio id="seleccionEjecucion" style="width: 35%" layout="pageDirection" columns="1" value="#{contribucionMejoras.stsPorcentajeaplica}">
-                                            <f:selectItem itemLabel="Distribución Homogenea"  itemValue="#{false}"/>
-                                            <f:selectItem itemLabel="Distribución según Ordenanza" itemValue="#{true}"/>
+                                            <f:selectItem itemLabel="Distribución Homogenea"  itemValue="#{true}"/>
+                                            <f:selectItem itemLabel="Distribución según Ordenanza" itemValue="#{false}"/>
                                             <p:ajax update="pnSeleccion"/>
                                         </p:selectOneRadio>
                                     </h:panelGrid>
@@ -142,29 +132,6 @@
                                         <h:outputText value="#{obrasDetalle.obrValor}" />
                                     </p:column>
 
-                                    <p:column width="40">
-                                        <p:commandButton actionListener="#{contribucionMejorasBB.eliminarPredioObra(obrasDetalle.codObrasdetalle)}"                                              
-                                                         icon="fa fa-remove"
-                                                         id="eliminarPredioObraP"
-                                                         update="listaObrasDetalleP">
-                                            <p:confirm header="Eliminar el predio asignado a la obra" message="¿Está seguro?" icon="ui-icon-alert" />
-                                            <p:ajax update="toolTipDelete" process="@this" /> 
-                                        </p:commandButton>
-                                        <p:tooltip id="toolTipDelete" for="eliminarPredioObraP" value="Eliminar Predio de obra" showEffect="fade" hideEffect="fade" position="bottom"/>
-
-                                    </p:column>
-
-                                    <f:facet name="footer">
-                                        <p:commandButton actionListener="#{contribucionMejorasBB.eliminarTodosPredioObra()}"
-                                                         icon="fa fa-trash"
-                                                         value="Eliminar todos"
-                                                         id="eliminarTodosPredioObraP"
-                                                         update="listaObrasDetalleP">
-                                            <p:confirm header="Eliminar todos los predio asignado a la obra" message="¿Está seguro?" icon="ui-icon-alert" />
-                                            <p:ajax update="toolTipDeleteAllP" process="@this" />                                                
-                                        </p:commandButton>
-                                        <p:tooltip id="toolTipDeleteAllP" for="eliminarTodosPredioObraP" value="Eliminar todos los predios de obra" showEffect="fade" hideEffect="fade" position="bottom"/>
-                                    </f:facet>
                                 </p:dataTable>
                             </p:rowExpansion>
                         </p:dataTable>        
@@ -219,26 +186,28 @@
                     <p:messages id="mensajeFormulario" showDetail="true" autoUpdate="true" closable="true" />
                     <p:tooltip />
                     <p:outputPanel id="opDetalleContribucionMejoras">
-                        <h:panelGrid columns="1">
-
-                            <h:outputLabel for="nomObras" value="Nombre de la Obra" style="font-weight: bold;"/>
-                            <p:inputText id="nomObras" value="#{contribucionMejorasBB.contribucionMejoras.nomObras}" required="true" label="Nombre de la Obra" size="50">
-                                <f:validateLength minimum="1" maximum="250"/>
-                            </p:inputText>
-                            <p:message for="nomObras" display="tooltip"/>
-
-                            <h:outputLabel for="valAnioaplicacion" value="Año de aplicación" style="font-weight: bold;"/>
-                            <p:inputNumber id="valAnioaplicacion" value="#{contribucionMejorasBB.contribucionMejoras.valAnioaplicacion}" label="Año de aplicación" maxValue="9999" minValue="0" thousandSeparator="" decimalSeparator="" size="50"/>
-                            <p:message for="valAnioaplicacion" display="tooltip"/>
-
-                            <h:outputLabel for="valAnioobra" value="Año de la obra" style="font-weight: bold;"/>
-                            <p:inputNumber id="valAnioobra" value="#{contribucionMejorasBB.contribucionMejoras.valAnioobra}" label="Año de la obra" maxValue="9999" minValue="0" thousandSeparator="" decimalSeparator="" size="50"/>
-                            <p:message for="valAnioobra" display="tooltip"/>
-
-                            <h:outputLabel for="valAniodeprecia" value="Años de depreciacion" style="font-weight: bold;"/>
-                            <p:inputNumber id="valAniodeprecia" value="#{contribucionMejorasBB.contribucionMejoras.valAniodeprecia}" label="Años de depreciacion" maxValue="9999" thousandSeparator="" decimalSeparator="" minValue="0" size="50"/>
-                            <p:message for="valAniodeprecia" display="tooltip"/>
-
+                        <br/>
+                        <div style="font-size:1.2em;font-weight:bold;">Información de la obra</div>
+                        <p:separator />
+                        <div class="ui-g">
+                            <div class="ui-g-6">
+                                <h:outputLabel for="nomObras" value="Nombre de la Obra" style="font-weight: bold;"/>
+                                <p:inputTextarea id="nomObras" value="#{contribucionMejorasBB.contribucionMejoras.nomObras}" style="width: 300px" required="true" cols="100" rows="3" label="Nombre de la Obra">
+                                    <f:validateLength minimum="1" maximum="250"/>
+                                </p:inputTextarea>
+                                <p:message for="nomObras" display="tooltip"/>
+                            </div>
+                            <div class="ui-g-6">
+                                <h:outputLabel for="valAnioobra" value="Año de la obra" style="font-weight: bold;"/>
+                                <p:spinner id="valAnioobra" value="#{contribucionMejorasBB.contribucionMejoras.valAnioobra}" label="Año de la obra" size="10"/>
+                                <p:message for="valAnioobra" display="tooltip"/>
+                                
+                                <h:outputLabel for="valAniodeprecia" value="Años de depreciacion" style="font-weight: bold;"/>
+                                <p:spinner id="valAniodeprecia" value="#{contribucionMejorasBB.contribucionMejoras.valAniodeprecia}" min="0" max="20" size="10"/>
+                                <p:message for="valAniodeprecia" display="tooltip"/>
+                            </div>
+                        </div>
+                        <h:panelGrid>
                             <h:outputLabel for="txtDetalle" value="Detalle" style="font-weight: bold;"/>
                             <p:inputTextarea id="txtDetalle" value="#{contribucionMejorasBB.contribucionMejoras.txtDetalle}" label="Detalle" rows="3" cols="50"/>
                             <p:message for="txtDetalle" display="tooltip"/>
@@ -250,9 +219,6 @@
                             <h:outputLabel for="valValor" value="Valor Total" style="font-weight: bold;"/>
                             <p:inputNumber id="valValor" value="#{contribucionMejorasBB.contribucionMejoras.valValor}" label="Valor Total" size="50"/>
                             <p:message for="valValor" display="tooltip"/>
-
-
-
 
                             <h:outputLabel for="cem" value="Forma de apliación" style="font-weight: bold;"/>
                             <p:selectOneMenu id="cem" value="#{contribucionMejorasBB.contribucionMejoras.stsAplicacionforma}" style="width:125px" >
@@ -276,10 +242,11 @@
                             <p:message for="valPorcentajeavaluo" display="tooltip"/>
 
                             <h:outputLabel for="stsPorcentajeaplica" value="Porcentaje aplicacion" style="font-weight: bold;"/>
-                            <p:inputNumber id="stsPorcentajeaplica" value="#{contribucionMejorasBB.contribucionMejoras.stsPorcentajeaplica}" label="Porcentaje aplicacion" size="50"/>
+                            <p:inputText id="stsPorcentajeaplica" value="#{contribucionMejorasBB.contribucionMejoras.stsPorcentajeaplica}" label="Porcentaje aplicacion" size="50"/>
                             <p:message for="stsPorcentajeaplica" display="tooltip"/>
-
                         </h:panelGrid>
+
+
                         <h:panelGrid columns="4">
 
                             <p:commandButton actionListener="#{contribucionMejorasBB.actualizarContribucionMejoras()}" 

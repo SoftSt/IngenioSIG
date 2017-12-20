@@ -5,8 +5,8 @@
  */
 package ec.com.newvi.sic.web.backingbean;
 
-import ec.com.newvi.sic.dto.FichaCatastralDto;
 import ec.com.newvi.sic.enums.EnumAplicacion;
+import ec.com.newvi.sic.enums.EnumAplicacionCEM;
 import ec.com.newvi.sic.enums.EnumEstadoRegistro;
 import ec.com.newvi.sic.enums.EnumNewviExcepciones;
 import ec.com.newvi.sic.modelo.ContribucionMejoras;
@@ -24,10 +24,7 @@ import java.math.BigDecimal;
 import java.math.MathContext;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
-import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.component.UIComponent;
@@ -703,6 +700,10 @@ public class ContribucionMejorasBB extends AdminContribucionMejorasBB {
 
     public Boolean hayBeneficiarios(List<ObrasDetalle> beneficiarios) {
         return (!ComunUtil.esNulo(beneficiarios) && beneficiarios.size() > 0) ? Boolean.TRUE : Boolean.FALSE;
+    }
+    
+    public Boolean obtenerEstadoAplicacionCEM(String aplicacionPorcentajesCEM){
+        return EnumAplicacionCEM.obtenerEstadoAplicacionCEM(aplicacionPorcentajesCEM);
     }
 
 }

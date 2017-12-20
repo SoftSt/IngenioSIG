@@ -6,7 +6,7 @@
 package ec.com.newvi.sic.web.backingbean;
 
 import ec.com.newvi.sic.enums.EnumNewviExcepciones;
-import ec.com.newvi.sic.modelo.CatConConstantesinteresmora;
+import ec.com.newvi.sic.modelo.ConstantesInteresMora;
 import ec.com.newvi.sic.util.ComunUtil;
 import ec.com.newvi.sic.util.excepciones.NewviExcepcion;
 import ec.com.newvi.sic.util.logs.LoggerNewvi;
@@ -27,23 +27,23 @@ import javax.faces.bean.ViewScoped;
 @ViewScoped
 public class MultasBB extends AdminTesoreriaBB {
     
-    private CatConConstantesinteresmora constantesInteresMora;
-    private List<CatConConstantesinteresmora> listaConstantesInteresMora;    
+    private ConstantesInteresMora constantesInteresMora;
+    private List<ConstantesInteresMora> listaConstantesInteresMora;    
     private EnumPantallaMantenimiento pantallaActual;
 
-    public CatConConstantesinteresmora getConstantesInteresMora() {
+    public ConstantesInteresMora getConstantesInteresMora() {
         return constantesInteresMora;
     }
 
-    public void setConstantesInteresMora(CatConConstantesinteresmora constantesInteresMora) {
+    public void setConstantesInteresMora(ConstantesInteresMora constantesInteresMora) {
         this.constantesInteresMora = constantesInteresMora;
     }
 
-    public List<CatConConstantesinteresmora> getListaConstantesInteresMora() {
+    public List<ConstantesInteresMora> getListaConstantesInteresMora() {
         return listaConstantesInteresMora;
     }
 
-    public void setListaConstantesInteresMora(List<CatConConstantesinteresmora> listaConstantesInteresMora) {
+    public void setListaConstantesInteresMora(List<ConstantesInteresMora> listaConstantesInteresMora) {
         this.listaConstantesInteresMora = listaConstantesInteresMora;
     }
     
@@ -57,7 +57,7 @@ public class MultasBB extends AdminTesoreriaBB {
     
     @PostConstruct
     public void init() {
-        this.constantesInteresMora = new CatConConstantesinteresmora();
+        this.constantesInteresMora = new ConstantesInteresMora();
         actualizarListadoDescuentos();
         conmutarPantalla(EnumPantallaMantenimiento.PANTALLA_LISTADO);
         establecerTitulo(EnumEtiquetas.MULTA_LISTA_TITULO, 

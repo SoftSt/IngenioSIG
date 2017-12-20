@@ -6,6 +6,7 @@
 package ec.com.newvi.sic.modelo;
 
 import ec.com.newvi.sic.enums.EnumAplicacion;
+import ec.com.newvi.sic.enums.EnumAplicacionCEM;
 import ec.com.newvi.sic.enums.EnumEstadoRegistro;
 import ec.com.newvi.sic.util.ComunUtil;
 import java.io.Serializable;
@@ -170,7 +171,7 @@ public class ContribucionMejoras implements Serializable {
     }
 
     public void setStsAplicacionforma(EnumAplicacion stsAplicacionforma) {
-        this.stsAplicacionforma = stsAplicacionforma.toString();
+        this.stsAplicacionforma = stsAplicacionforma.getAplicacion();
     }
 
     public BigDecimal getValAcobrar() {
@@ -315,7 +316,7 @@ public class ContribucionMejoras implements Serializable {
     public BigDecimal obtenerValorCEM(Predios codCatastral) {
         BigDecimal valorCEM = BigDecimal.ZERO;
         for (ObrasDetalle beneficiarios : this.listaBeneficiarios) {
-            if(!ComunUtil.esNulo(beneficiarios.getCodCatastral())&&beneficiarios.getCodCatastral().equals(codCatastral)){
+            if (!ComunUtil.esNulo(beneficiarios.getCodCatastral()) && beneficiarios.getCodCatastral().equals(codCatastral)) {
                 valorCEM = valorCEM.add(beneficiarios.getObrValor());
             }
         }
