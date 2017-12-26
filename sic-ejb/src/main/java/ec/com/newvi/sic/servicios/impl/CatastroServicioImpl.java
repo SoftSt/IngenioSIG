@@ -24,6 +24,7 @@ import ec.com.newvi.sic.enums.EnumCaracteristicasAvaluo;
 import ec.com.newvi.sic.enums.EnumEstadoRegistro;
 import ec.com.newvi.sic.enums.EnumNewviExcepciones;
 import ec.com.newvi.sic.enums.EnumParametroSistema;
+import ec.com.newvi.sic.enums.EnumSiNo;
 import ec.com.newvi.sic.enums.EnumZonaInfluencia;
 import ec.com.newvi.sic.modelo.Avaluo;
 import ec.com.newvi.sic.modelo.Bloques;
@@ -975,6 +976,11 @@ public class CatastroServicioImpl implements CatastroServicio {
         return listaOtrosRubros;
     }
 
+    private List<Dominios> unirListas(List<Dominios> a, List<Dominios> b) {
+        a.addAll(b);
+        return a;
+    }
+
     private List<AvaluoDto> determinarDescuentosYExoneraciones(Predios predio, BigDecimal aPagar, List<Dominios> dominios, String formatoMonedaSistema) throws NewviExcepcion {
         BigDecimal totalImpuesto = aPagar;
         BigDecimal totalDescuento;
@@ -982,8 +988,8 @@ public class CatastroServicioImpl implements CatastroServicio {
         AvaluoDto nuevoExoneracion;
         List<AvaluoDto> listaDescuentos = new ArrayList<>();
         FichaCatastralDto fichaPredio = new FichaCatastralDto(predio);
-        for (Dominios dominio : obtenerListaDominiosDeTenencia(fichaPredio.getPropiedad().getTenenciasActivas(), obtenerDominiosPorCodigoYCalculo(dominios, "1205", "DESCUENTOS ESPECIALES CATASTRO"))) {
-            nuevoExoneracion = generarElementoArbolAvaluo(dominio.getDomiDescripcion(), null, dominio.getDomiCoefic().toString(), null);
+        for (Dominios dominio : obtenerListaDominiosDeTenencia(fichaPredio.getPropiedad().getTenenciasActivas(), dominios)) {
+            nuevoExoneracion = generarElementoArbolAvaluo(dominio.getDomiCalculo(), null, null, null);
             listaDescuentos.add(nuevoExoneracion);
             if ((new BigDecimal(dominio.getDomiCoefic())).compareTo(factorDescuento) >= 0) {
                 factorDescuento = new BigDecimal(dominio.getDomiCoefic());
@@ -995,8 +1001,13 @@ public class CatastroServicioImpl implements CatastroServicio {
         return listaDescuentos;
     }
 
-    private List<Dominios> obtenerListaDominiosDeTenencia(List<Tenencia> tenencias, List<Dominios> dominios) {
-        List<Dominios> listaDominios = obtenerDominiosPorCodigoYCalculo(dominios, "1205", "DESCUENTOS ESPECIALES CATASTRO");
+    private List<Dominios> obtenerExoneracionPorCodigoYCalculo(List<Tenencia> tenencias, List<Dominios> dominios, String codigo, String calculo) {
+        //List<Dominios> listaDominiosExoneracion = obtenerDominiosPorCodigoYCalculo(dominios, "1206", "DESCUENTO URBANO MARGINAL");
+        List<Dominios> listaDominiosExoneracion = obtenerDominiosPorCodigoYCalculo(dominios, codigo, calculo);
+        return obtenerDominioDeExoneracion(tenencias, listaDominiosExoneracion);
+    }
+
+    private List<Dominios> obtenerDominioDeExoneracion(List<Tenencia> tenencias, List<Dominios> listaDominios) {
         List<Dominios> listaFiltradaExoneraciones = new ArrayList<>();
         for (Tenencia tenencia : tenencias) {
             for (Dominios dominio : listaDominios) {
@@ -1005,6 +1016,14 @@ public class CatastroServicioImpl implements CatastroServicio {
                 }
             }
         }
+        return listaFiltradaExoneraciones;
+    }
+
+    private List<Dominios> obtenerListaDominiosDeTenencia(List<Tenencia> tenencias, List<Dominios> dominios) {
+        List<Dominios> listaFiltradaExoneraciones;
+        listaFiltradaExoneraciones = obtenerExoneracionPorCodigoYCalculo(tenencias, dominios, "1206", "DESCUENTO URBANO MARGINAL");
+        listaFiltradaExoneraciones = listaFiltradaExoneraciones.get(0).getDomiDescripcion().equals("NO") ? obtenerExoneracionPorCodigoYCalculo(tenencias, dominios, "1205", "DESCUENTOS ESPECIALES CATASTRO") : listaFiltradaExoneraciones;
+
         return listaFiltradaExoneraciones;
     }
 

@@ -23,6 +23,7 @@ public enum EnumParametroSistema {
     IMAGEN_LOGO_MUNICIPIO_1("IMAGEN_LOGO_MUNICIPIO_1", "Ubicación de la imagen del primer logo del municipio", "[DIRECCION_IMAGENES_SISTEMA]/logo_1.png", EnumGrupoParametroSistema.DATOS_SISTEMA, EnumTipoParametro.IMAGEN, null),
     IMAGEN_LOGO_MUNICIPIO_2("IMAGEN_LOGO_MUNICIPIO_2", "Ubicación de la imagen del segundo logo del municipio", "[DIRECCION_IMAGENES_SISTEMA]/logo_2.png", EnumGrupoParametroSistema.DATOS_SISTEMA, EnumTipoParametro.IMAGEN, null),
     FORMATO_MONEDAS("FORMATO_MONEDAS", "Formato para la representación de las monedas en el sistema.", "$ ###,###.00", EnumGrupoParametroSistema.DATOS_SISTEMA, EnumTipoParametro.VALOR, null),
+    TASA_RBU("TASA_RBU", "Valor de veinticinco Remuneraciones Básicas Unificadas (RBU).", "234375.00", EnumGrupoParametroSistema.DATOS_SISTEMA, EnumTipoParametro.VALOR, null),
     NIVEL_ZONAS_HOMOGENEAS("NIVEL_ZONAS_HOMOGENEAS", "Nivel zonas homogeneas", "[Zonas Homogeneas]", EnumGrupoParametroSistema.DATOS_SISTEMA, EnumTipoParametro.LISTA, EnumZonasHomeneas.values()),
     // MUNICIPIO
     NOMBRE_COMPLETO_MUNICIPIO("NOMBRE_COMPLETO_MUNICIPIO", "Nombre completo del municipio", "[Municipio]", EnumGrupoParametroSistema.DATOS_MUNICIPIO, EnumTipoParametro.VALOR, null),

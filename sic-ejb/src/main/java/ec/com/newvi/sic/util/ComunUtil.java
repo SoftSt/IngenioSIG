@@ -139,11 +139,13 @@ public class ComunUtil {
             String tenencia = propiedad.getStsTenencia().getStsTenencia();
             String escritura = propiedad.getStsEscritura().getStsEscritura();
             String descuento = obtenerDescuento(a.getContribuyentePropiedad());
+            String urbanoMarginal = "NO";
             sql += "\ninsert into cat_ciu_tenencia VALUES (" + (++cont) + "," + propiedad.getCodPropiedad() + ",'" + obtenerCodigoTenencia(dominios, transDomi, "1201") + "','TENENCIA','TRANSFERENCIA DOMINIO','" + transDomi + "', 'A', NULL, NULL, NULL, NULL, NULL, NULL);"
                     + "\ninsert into cat_ciu_tenencia VALUES (" + (++cont) + "," + propiedad.getCodPropiedad() + ",'" + obtenerCodigoTenencia(dominios, sitAct, "1202") + "','TENENCIA','SITUACION ACTUAL','" + sitAct + "', 'A', NULL, NULL, NULL, NULL, NULL, NULL);"
                     + "\ninsert into cat_ciu_tenencia VALUES (" + (++cont) + "," + propiedad.getCodPropiedad() + ",'" + obtenerCodigoTenencia(dominios, tenencia, "1203") + "','TENENCIA','TENENCIA DOMINIO','" + tenencia + "', 'A', NULL, NULL, NULL, NULL, NULL, NULL);"
                     + "\ninsert into cat_ciu_tenencia VALUES (" + (++cont) + "," + propiedad.getCodPropiedad() + ",'" + obtenerCodigoTenencia(dominios, escritura, "1204") + "','TENENCIA','ESCRITURA','" + escritura + "', 'A', NULL, NULL, NULL, NULL, NULL, NULL);"
-                    + "\ninsert into cat_ciu_tenencia VALUES (" + (++cont) + "," + propiedad.getCodPropiedad() + ",'" + obtenerCodigoTenencia(dominios, descuento, "1205") + "','TENENCIA','Descuentos Especiales','" + descuento + "', 'A', NULL, NULL, NULL, NULL, NULL, NULL);";
+                    + "\ninsert into cat_ciu_tenencia VALUES (" + (++cont) + "," + propiedad.getCodPropiedad() + ",'" + obtenerCodigoTenencia(dominios, descuento, "1205") + "','TENENCIA','Descuentos Especiales','" + descuento + "', 'A', NULL, NULL, NULL, NULL, NULL, NULL);"
+                    + "\ninsert into cat_ciu_tenencia VALUES (" + (++cont) + "," + propiedad.getCodPropiedad() + ",'" + obtenerCodigoTenencia(dominios, urbanoMarginal, "1206") + "','TENENCIA','URBANO MARGINAL','" + urbanoMarginal + "', 'A', NULL, NULL, NULL, NULL, NULL, NULL);";
         }
 
         return sql;
