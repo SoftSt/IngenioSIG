@@ -1020,9 +1020,11 @@ public class CatastroServicioImpl implements CatastroServicio {
     }
 
     private List<Dominios> obtenerListaDominiosDeTenencia(List<Tenencia> tenencias, List<Dominios> dominios) {
-        List<Dominios> listaFiltradaExoneraciones;
-        listaFiltradaExoneraciones = obtenerExoneracionPorCodigoYCalculo(tenencias, dominios, "1206", "DESCUENTO URBANO MARGINAL");
-        listaFiltradaExoneraciones = listaFiltradaExoneraciones.get(0).getDomiDescripcion().equals("NO") ? obtenerExoneracionPorCodigoYCalculo(tenencias, dominios, "1205", "DESCUENTOS ESPECIALES CATASTRO") : listaFiltradaExoneraciones;
+        List<Dominios> listaFiltradaExoneraciones = new ArrayList<>();
+        if (!ComunUtil.esNulo(tenencias) && !tenencias.isEmpty()) {
+            listaFiltradaExoneraciones = obtenerExoneracionPorCodigoYCalculo(tenencias, dominios, "1206", "DESCUENTO URBANO MARGINAL");
+            listaFiltradaExoneraciones = !listaFiltradaExoneraciones.isEmpty() && listaFiltradaExoneraciones.get(0).getDomiDescripcion().equals("NO") ? obtenerExoneracionPorCodigoYCalculo(tenencias, dominios, "1205", "DESCUENTOS ESPECIALES CATASTRO") : listaFiltradaExoneraciones;
+        }
 
         return listaFiltradaExoneraciones;
     }

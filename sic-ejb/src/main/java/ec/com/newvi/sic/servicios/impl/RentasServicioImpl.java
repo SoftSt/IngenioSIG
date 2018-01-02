@@ -11,6 +11,7 @@ import ec.com.newvi.sic.enums.EnumEstadoRegistro;
 import ec.com.newvi.sic.enums.EnumEstadoTitulo;
 import ec.com.newvi.sic.enums.EnumNewviExcepciones;
 import ec.com.newvi.sic.modelo.Avaluo;
+import ec.com.newvi.sic.modelo.Propiedad;
 import ec.com.newvi.sic.modelo.Titulos;
 import ec.com.newvi.sic.servicios.ContribuyentesServicio;
 import ec.com.newvi.sic.servicios.RentasServicio;
@@ -50,15 +51,17 @@ public class RentasServicioImpl implements RentasServicio {
         for (Avaluo avaluo : listadoAvaluos) {
             Titulos nuevoTitulo = obtenerTituloDesdeAvaluo(avaluo);
 
-            // Registrar datos del nuevo titulo
-            nuevoTitulo.setFecEmision(fechaEmision);
+            if (!ComunUtil.esNulo(nuevoTitulo)) {
+                // Registrar datos del nuevo titulo
+                nuevoTitulo.setFecEmision(fechaEmision);
 
-            //Registramos la auditoria de ingreso
-            nuevoTitulo.setAudIngIp(sesion.getDireccionIP());
-            nuevoTitulo.setAudIngUsu(sesion.getUsuarioRegistrado().getUsuPalabraclave().trim());
-            nuevoTitulo.setAudIngFec(fechaEmision);
+                //Registramos la auditoria de ingreso
+                nuevoTitulo.setAudIngIp(sesion.getDireccionIP());
+                nuevoTitulo.setAudIngUsu(sesion.getUsuarioRegistrado().getUsuPalabraclave().trim());
+                nuevoTitulo.setAudIngFec(fechaEmision);
 
-            listaTitulosGenerados.add(nuevoTitulo);
+                listaTitulosGenerados.add(nuevoTitulo);
+            }
 
         }
 
@@ -70,7 +73,13 @@ public class RentasServicioImpl implements RentasServicio {
         nuevoTitulo.setCodCatastral(avaluo.getCodCatastral());
         nuevoTitulo.setNomCodigocatastral(avaluo.getNomCodigocatastral());
         try {
-            nuevoTitulo.setCodPropietarios(contribuyentesServicio.consultarUltimoPropiedad(avaluo.getCodCatastral()));
+            Propiedad ultimoPropietario = contribuyentesServicio.consultarUltimoPropiedad(avaluo.getCodCatastral());
+
+            if (!ComunUtil.esNulo(ultimoPropietario)) {
+                nuevoTitulo.setCodPropietarios(ultimoPropietario);
+            } else {
+                return null;
+            }
         } catch (NewviExcepcion ex) {
             Map<String, String> variables = new HashMap<>();
             variables.put("predio", avaluo.getCodCatastral().getNomCodigocatastral());
@@ -162,10 +171,10 @@ public class RentasServicioImpl implements RentasServicio {
     public List<Titulos> consultarTitulosPorTipo(EnumEstadoTitulo tipoTitulo) {
         return tituloFacade.buscarTitulosPorTipo(tipoTitulo);
     }
-    
+
     @Override
-    public List<Titulos> consultarTitulos(){
-        return  tituloFacade.buscarTitulos();
+    public List<Titulos> consultarTitulos() {
+        return tituloFacade.buscarTitulos();
     }
 
 }
