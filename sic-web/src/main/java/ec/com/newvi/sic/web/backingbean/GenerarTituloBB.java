@@ -320,10 +320,7 @@ public class GenerarTituloBB extends AdminFichaCatastralBB {
     }
 
     private String generarCodSecuencial(Titulos tituloGenerado) {
-
-        Calendar fechaEmision = Calendar.getInstance();
-        fechaEmision.setTime(tituloGenerado.getFecEmision());
-        return fechaEmision.get(Calendar.YEAR) + "-" + generarSerial(tituloGenerado.getCodCatastral().getCodCatastral().toString()) + "-PU";
+        return ComunUtil.obtenerAnioDesdeFecha(tituloGenerado.getFecEmision()) + "-" + generarSerial(tituloGenerado.getCodCatastral().getCodCatastral().toString()) + "-PU";
     }
 
     public void actualizarListadoTitulosRegistrados() {

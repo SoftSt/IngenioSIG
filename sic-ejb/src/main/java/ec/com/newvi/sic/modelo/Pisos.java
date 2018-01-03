@@ -319,9 +319,8 @@ public class Pisos implements Serializable {
     }
 
     public Integer obtenerEdadPiso() {
-        Calendar cal = Calendar.getInstance();
         if (!ComunUtil.esNulo(this.getValAnioconstruccion())) {
-            return cal.get(Calendar.YEAR) - this.getValAnioconstruccion() + 1;
+            return ComunUtil.obtenerAnioDesdeFecha(null) - this.getValAnioconstruccion() + 1;
         } else {
             return 0;
         }

@@ -155,4 +155,12 @@ public class ComunUtil {
         Date fechaIngreso = Calendar.getInstance().getTime();
         return fechaIngreso;
     }
+
+    public static Integer obtenerAnioDesdeFecha(Date fecha) {
+        Calendar calendar = Calendar.getInstance();
+        if (!ComunUtil.esNulo(fecha)) {
+            calendar.setTime(fecha);
+        }
+        return calendar.get(Calendar.YEAR);
+    }
 }

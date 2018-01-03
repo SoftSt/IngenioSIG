@@ -925,8 +925,7 @@ public class CatastroServicioImpl implements CatastroServicio {
         int anioActual;
         BigDecimal valorTotalCEM;
 
-        cal = Calendar.getInstance();
-        anioActual = cal.get(Calendar.YEAR);
+        anioActual = ComunUtil.obtenerAnioDesdeFecha(null);
         valorTotalCEM = BigDecimal.ZERO;
 
         List<ContribucionMejoras> listaObrasCEM = cemFacade.buscarContribucionMejorasPorAnio(anioActual);

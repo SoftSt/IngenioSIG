@@ -587,6 +587,10 @@ public class Titulos implements Serializable {
         this.valContruccionObsoleta = valContruccionObsoleta;
     }
     
+    public Integer anioEmision(){
+       return ComunUtil.obtenerAnioDesdeFecha(this.fecEmision);
+    }
+    
     @Override
     public int hashCode() {
         int hash = 0;
