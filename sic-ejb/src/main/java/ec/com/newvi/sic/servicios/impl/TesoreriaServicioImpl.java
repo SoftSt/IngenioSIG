@@ -30,7 +30,7 @@ public class TesoreriaServicioImpl implements TesoreriaServicio {
 
     @EJB
     private ConstantesDescuentosFacade constantesDescuentosFacade;
-    
+
     @EJB
     private ConstantesInteresMoraFacade constantesInteresMoraFacade;
 
@@ -50,7 +50,7 @@ public class TesoreriaServicioImpl implements TesoreriaServicio {
 
     @Override
     public void actualizarDescuento(ConstantesDescuentos catConConstantesdescuentos, SesionDto sesion) throws NewviExcepcion {
-        
+
         // Validar que los datos no sean incorrectos
         LoggerNewvi.getLogNewvi(this.getClass()).debug("Validando multa...", sesion);
         if (!catConConstantesdescuentos.esDescuentoValido()) {
@@ -58,12 +58,12 @@ public class TesoreriaServicioImpl implements TesoreriaServicio {
         }
         // Actualizar el descuento
         LoggerNewvi.getLogNewvi(this.getClass()).debug("Editando multa...", sesion);
-        
+
         catConConstantesdescuentos.setStsAnio(catConConstantesdescuentos.getStsAnio());
         catConConstantesdescuentos.setStsMes(catConConstantesdescuentos.getStsMes());
         catConConstantesdescuentos.setStsQuincena(catConConstantesdescuentos.getStsQuincena());
         catConConstantesdescuentos.setValValor(catConConstantesdescuentos.getValValor());
-        
+
         constantesDescuentosFacade.edit(catConConstantesdescuentos);
     }
 
@@ -76,13 +76,18 @@ public class TesoreriaServicioImpl implements TesoreriaServicio {
         }
         // Actualizar el descuento
         LoggerNewvi.getLogNewvi(this.getClass()).debug("Creando multa...", sesion);
-        
+
         catConConstantesdescuentos.setStsAnio(catConConstantesdescuentos.getStsAnio());
         catConConstantesdescuentos.setStsMes(catConConstantesdescuentos.getStsMes());
         catConConstantesdescuentos.setStsQuincena(catConConstantesdescuentos.getStsQuincena());
         catConConstantesdescuentos.setValValor(catConConstantesdescuentos.getValValor());
-        
+
         constantesDescuentosFacade.create(catConConstantesdescuentos);
+    }
+
+    @Override
+    public ConstantesDescuentos buscarDescuentoRecargoPorMesYQuincena(String mes, String quincena) {
+        return constantesDescuentosFacade.buscarDescuentoRecargoPorMesYQuincena(mes, quincena);
     }
 
     @Override
@@ -101,14 +106,14 @@ public class TesoreriaServicioImpl implements TesoreriaServicio {
 
     @Override
     public void actualizarDescuento(ConstantesInteresMora constantesInteresMora, SesionDto sesion) throws NewviExcepcion {
-        
+
         // Actualizar el descuento
         LoggerNewvi.getLogNewvi(this.getClass()).debug("Editando multa...", sesion);
-        
+
         constantesInteresMora.setStsAnio(constantesInteresMora.getStsAnio());
         constantesInteresMora.setStsAnioaplica(constantesInteresMora.getStsAnioaplica());
         constantesInteresMora.setValMonto(constantesInteresMora.getValMonto());
-        
+
         constantesInteresMoraFacade.edit(constantesInteresMora);
     }
 
@@ -116,11 +121,11 @@ public class TesoreriaServicioImpl implements TesoreriaServicio {
     public void generarNuevaMulta(ConstantesInteresMora constantesInteresMora, SesionDto sesion) throws NewviExcepcion {
         // Actualizar el descuento
         LoggerNewvi.getLogNewvi(this.getClass()).debug("Editando multa...", sesion);
-        
+
         constantesInteresMora.setStsAnio(constantesInteresMora.getStsAnio());
         constantesInteresMora.setStsAnioaplica(constantesInteresMora.getStsAnioaplica());
         constantesInteresMora.setValMonto(constantesInteresMora.getValMonto());
-        
+
         constantesInteresMoraFacade.create(constantesInteresMora);
     }
 }

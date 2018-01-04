@@ -19,15 +19,23 @@ import javax.persistence.Query;
  */
 @Stateless
 @PermitAll
-public class ConstantesDescuentosFacade extends AbstractFacade<ConstantesDescuentos, Integer>  implements Serializable{
+public class ConstantesDescuentosFacade extends AbstractFacade<ConstantesDescuentos, Integer> implements Serializable {
 
     public ConstantesDescuentosFacade() {
         super(ConstantesDescuentos.class, Integer.class);
     }
-    
-    public List<ConstantesDescuentos> buscarDescuentos(){      
+
+    public List<ConstantesDescuentos> buscarDescuentos() {
         Query q = this.getEntityManager().createQuery("SELECT descuentos FROM ConstantesDescuentos descuentos WHERE descuentos.estadoDescuento =:ESTADO ORDER BY descuentos.codConstantesdescuentos ASC");
         q.setParameter("ESTADO", EnumEstadoRegistro.A);
         return q.getResultList();
+    }
+
+    public ConstantesDescuentos buscarDescuentoRecargoPorMesYQuincena(String mes, String quincena) {
+        Query q = this.getEntityManager().createQuery("SELECT descuentos FROM ConstantesDescuentos descuentos WHERE descuentos.stsMes =:MES AND descuentos.stsQuincena =:QUINCENA AND descuentos.estadoDescuento =:ESTADO");
+        q.setParameter("MES", mes);
+        q.setParameter("QUINCENA", quincena);
+        q.setParameter("ESTADO", EnumEstadoRegistro.A);
+        return (ConstantesDescuentos) q.getSingleResult();
     }
 }

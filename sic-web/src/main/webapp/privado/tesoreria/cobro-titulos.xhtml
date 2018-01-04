@@ -125,16 +125,52 @@
                                 <p:column>
                                     <p:commandButton id="btnAccionesTitulos" type="button" icon="fa fa-ellipsis-v" />
                                     <p:tieredMenu overlay="true" trigger="btnAccionesTitulos" my="left top" at="left bottom" style="width:200px">
+                                        <p:menuitem icon="fa fa-calculator" value="Calcular Intereses/Recargos" actionListener="#{cobroTituloBB.calcularDescuentosIntereses(tituloRegistrado.codTitulos)}" update="listaTitulosRegistrados"/>
                                         <p:menuitem icon="fa fa-trash" value="Eliminar título" actionListener="#{cobroTituloBB.eliminarTitulo(tituloRegistrado.codTitulos)}" update="listaTitulosRegistrados"/>
-                                        <p:menuitem icon="fa fa-print" value="Imprimir reporte" ajax="false" update="grupoGestionTitulo" onclick="PrimeFaces.monitorDownload(start, stop);">
-                                            <p:fileDownload value="#{cobroTituloBB.imprimir('TITULO_GENERADO',tituloRegistrado.codTitulos)}"/>
-                                        </p:menuitem>
                                     </p:tieredMenu>
                                 </p:column>
-                                
+
                                 <p:rowExpansion>
-                                    <h:panelGrid >
-                                        <p>holaaa</p>
+
+                                    <h:panelGrid columns="3">
+                                        <h:panelGrid/>
+                                        <h:panelGrid/>
+                                        <h:panelGrid columns="2">
+                                            <h:outputLabel for="estadoTitulo" value="Estado Título:" style="font-weight: bold;"/>
+                                            <h:outputText id="estadoTitulo" value="#{tituloRegistrado.stsEstado.estadoTitulo}"/>
+                                            <h:outputLabel for="interesMora" value="Interes por mora:" style="font-weight: bold;"/>
+                                            <h:outputText id="interesMora" value="#{tituloRegistrado.valInteresaplicado}">
+                                                <f:convertNumber pattern="###,###.00"/>
+                                            </h:outputText>
+                                            <h:outputLabel for="desRecargo" value="Decuento/Recargo:" style="font-weight: bold;"/>
+                                            <h:outputText id="desRecargo" value="#{tituloRegistrado.valDescuentoaplicado}">
+                                                <f:convertNumber pattern="###,###.00"/>
+                                            </h:outputText>
+                                            <h:outputLabel for="valPagar" value="Valor a pagar:" style="font-weight: bold;"/>
+                                            <h:outputText id="valPagar" value="#{tituloRegistrado.valPagado}">
+                                                <f:convertNumber pattern="###,###.00"/>
+                                            </h:outputText>
+
+                                            <f:facet name="footer">
+                                                <p:commandButton actionListener="#{cobroTituloBB.cancelarTitulo()}"
+                                                                 icon="fa fa-credit-card"
+                                                                 value="Efectuar Pago"
+                                                                 style="float: right"
+                                                                 id="btnCancelarTitulo"
+                                                                 update="grupoCobroDeTitulo">
+                                                </p:commandButton>
+                                                <p:commandButton icon="fa fa-print" 
+                                                                 value="Imprimir reporte" 
+                                                                 ajax="false" 
+                                                                 style="float: right"
+                                                                 rendered="false"
+                                                                 update="grupoGestionTitulo" 
+                                                                 onclick="PrimeFaces.monitorDownload(start, stop);">
+
+                                                    <p:fileDownload value="#{cobroTituloBB.imprimir('TITULO_GENERADO',tituloRegistrado.codTitulos)}"/>
+                                                </p:commandButton>
+                                            </f:facet>
+                                        </h:panelGrid>
                                     </h:panelGrid>
                                 </p:rowExpansion>
                             </p:dataTable>

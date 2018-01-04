@@ -11,15 +11,20 @@ import ec.com.newvi.sic.dto.PresentacionFichaCatastralDto;
 import ec.com.newvi.sic.enums.EnumEstadoTitulo;
 import ec.com.newvi.sic.enums.EnumNewviExcepciones;
 import ec.com.newvi.sic.enums.EnumReporte;
+import ec.com.newvi.sic.modelo.ConstantesDescuentos;
 import ec.com.newvi.sic.modelo.Titulos;
 import ec.com.newvi.sic.servicios.RentasServicio;
+import ec.com.newvi.sic.servicios.TesoreriaServicio;
+import ec.com.newvi.sic.util.ComunUtil;
 import ec.com.newvi.sic.util.excepciones.NewviExcepcion;
 import ec.com.newvi.sic.util.logs.LoggerNewvi;
 import ec.com.newvi.sic.web.MensajesFaces;
 import ec.com.newvi.sic.web.enums.EnumEtiquetas;
 import ec.com.newvi.sic.web.enums.EnumPantallaMantenimiento;
 import ec.com.newvi.sic.web.utils.WebUtils;
+import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -37,6 +42,8 @@ public class CobroTituloBB extends AdminFichaCatastralBB {
 
     @EJB
     private RentasServicio rentasServicio;
+    @EJB
+    private TesoreriaServicio tesoreriaServicio;
 
     private EnumPantallaMantenimiento pantallaActual;
     private List<Titulos> listaTitulosRegistrados;
@@ -115,6 +122,25 @@ public class CobroTituloBB extends AdminFichaCatastralBB {
         return tituloEliminable;
     }
 
+    private String obtenerNumeroQuincena(Integer dia) {
+        return dia <= 15 ? "1" : "2";
+    }
+    
+    private BigDecimal calcularDescuentoRecargo(Titulos titulo){
+        String mesEmision = ComunUtil.obtenerMesDesdeFecha(titulo.getFecEmision());
+        Integer diaEmision = ComunUtil.obtenerDiaDesdeFecha(titulo.getFecEmision());
+        ConstantesDescuentos descuentos = tesoreriaServicio.buscarDescuentoRecargoPorMesYQuincena(mesEmision, obtenerNumeroQuincena(diaEmision));
+        
+        return descuentos.getStsEstado().equals("d") ? descuentos.getValValor(): descuentos.getValValor().negate();
+    }
+
+    public void calcularDescuentosIntereses(Integer codTitulo) {
+        Titulos tituloEditable = seleccionarTitulo(codTitulo);
+        tituloEditable.setValDescuentoaplicado(calcularDescuentoRecargo(tituloEditable));
+        Integer a = 12;
+
+    }
+
     public void eliminarTitulo(Integer codTitulo) {
         Titulos tituloEliminable = seleccionarTitulo(codTitulo);
         tituloEliminable.setStsEstado(EnumEstadoTitulo.TITULO_ANULADO);
@@ -154,5 +180,8 @@ public class CobroTituloBB extends AdminFichaCatastralBB {
         establecerTitulo(EnumEtiquetas.COBRO_TITULO_LISTA_TITULO,
                 EnumEtiquetas.COBRO_TITULO_LISTA_ICONO,
                 EnumEtiquetas.COBRO_TITULO_LISTA_DESCRIPCION);
+    }
+
+    public void cancelarTitulo() {
     }
 }

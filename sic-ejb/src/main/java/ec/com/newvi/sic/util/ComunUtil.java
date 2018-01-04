@@ -7,6 +7,7 @@ package ec.com.newvi.sic.util;
 
 import ec.com.newvi.sic.dto.DominioDto;
 import ec.com.newvi.sic.dto.FichaCatastralDto;
+import ec.com.newvi.sic.enums.EnumMeses;
 import ec.com.newvi.sic.enums.EnumNewviExcepciones;
 import ec.com.newvi.sic.modelo.Contribuyentes;
 import ec.com.newvi.sic.modelo.Predios;
@@ -162,5 +163,19 @@ public class ComunUtil {
             calendar.setTime(fecha);
         }
         return calendar.get(Calendar.YEAR);
+    }
+    public static String obtenerMesDesdeFecha(Date fecha) {
+        Calendar calendar = Calendar.getInstance();
+        if (!ComunUtil.esNulo(fecha)) {
+            calendar.setTime(fecha);
+        }
+        return EnumMeses.obtenerDescripcionMes(calendar.get(Calendar.MONTH));
+    }
+    public static Integer obtenerDiaDesdeFecha(Date fecha) {
+        Calendar calendar = Calendar.getInstance();
+        if (!ComunUtil.esNulo(fecha)) {
+            calendar.setTime(fecha);
+        }
+        return calendar.get(Calendar.DAY_OF_YEAR);
     }
 }

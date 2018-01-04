@@ -452,7 +452,7 @@ public class Titulos implements Serializable {
     }
 
     public BigDecimal getValPagado() {
-        return valPagado;
+        return !ComunUtil.esNulo(valPagado) ? valPagado : BigDecimal.ZERO;
     }
 
     public void setValPagado(BigDecimal valPagado) {
@@ -476,7 +476,7 @@ public class Titulos implements Serializable {
     }
 
     public BigDecimal getValInteresaplicado() {
-        return valInteresaplicado;
+        return !ComunUtil.esNulo(valInteresaplicado) ? valInteresaplicado : BigDecimal.ZERO;
     }
 
     public void setValInteresaplicado(BigDecimal valInteresaplicado) {
@@ -484,7 +484,7 @@ public class Titulos implements Serializable {
     }
 
     public BigDecimal getValDescuentoaplicado() {
-        return valDescuentoaplicado;
+        return !ComunUtil.esNulo(valDescuentoaplicado) ? valDescuentoaplicado : BigDecimal.ZERO;
     }
 
     public void setValDescuentoaplicado(BigDecimal valDescuentoaplicado) {
@@ -586,11 +586,11 @@ public class Titulos implements Serializable {
     public void setValContruccionObsoleta(BigDecimal valContruccionObsoleta) {
         this.valContruccionObsoleta = valContruccionObsoleta;
     }
-    
-    public Integer anioEmision(){
-       return ComunUtil.obtenerAnioDesdeFecha(this.fecEmision);
+
+    public Integer anioEmision() {
+        return ComunUtil.obtenerAnioDesdeFecha(this.fecEmision);
     }
-    
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -615,9 +615,9 @@ public class Titulos implements Serializable {
     public String toString() {
         return "ec.com.newvi.sic.modelo.Titulos[ codTitulos=" + codTitulos + " ]";
     }
-    
+
     public Boolean esTituloValido() {
         return (!ComunUtil.esNulo(this.tituloEstado));
     }
-    
+
 }

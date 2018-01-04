@@ -27,7 +27,7 @@ public interface TesoreriaServicio {
      * @return Listado de Descuentos
      */
     public List<ConstantesDescuentos> consultarDescuentos();
-    
+
     /**
      * Devuelve un Descuentos dado una id
      *
@@ -38,49 +38,62 @@ public interface TesoreriaServicio {
     public ConstantesDescuentos seleccionarDescuento(Integer idDescuento) throws NewviExcepcion;
 
     /**
-     * Actualiza un Descuento existente. 
-     * 
+     * Actualiza un Descuento existente.
+     *
      * @param catConConstantesdescuentos
      * @param sesion
-     * @throws NewviExcepcion 
+     * @throws NewviExcepcion
      */
     public void actualizarDescuento(ConstantesDescuentos catConConstantesdescuentos, SesionDto sesion) throws NewviExcepcion;
 
     /**
      * Genera un nuevo Descuento, de acuerdo a un objeto entregado.
-     * 
+     *
      * @param catConConstantesdescuentos
-     * @param sesion 
+     * @param sesion
      */
     public void generarNuevoDescuentos(ConstantesDescuentos catConConstantesdescuentos, SesionDto sesion) throws NewviExcepcion;
 
     /**
+     * Obtiene el Descuento/Recargo por el mes y número de quincena
+     *
+     * @param mes mes por el que se consultará
+     * @param quincena número de quincena por el que se consultará
+     * @return el Descuento/Recargo obtenido
+     */
+    public ConstantesDescuentos buscarDescuentoRecargoPorMesYQuincena(String mes, String quincena);
+
+    /**
      * Devuelve un listado de Multa.
-     * @return 
+     *
+     * @return
      */
     public List<ConstantesInteresMora> consultarMultas();
 
     /**
      * Devuelve un Multa dado una id
+     *
      * @param idMulta
-     * @return 
+     * @return
      */
     public ConstantesInteresMora seleccionarMulta(Integer idMulta) throws NewviExcepcion;
 
     /**
-     * Actualiza un Multa existente. 
+     * Actualiza un Multa existente.
+     *
      * @param constantesInteresMora
      * @param sesion
-     * @throws NewviExcepcion 
+     * @throws NewviExcepcion
      */
     public void actualizarDescuento(ConstantesInteresMora constantesInteresMora, SesionDto sesion) throws NewviExcepcion;
 
     /**
      * Genera un nuevo Multa, de acuerdo a un objeto entregado.
+     *
      * @param constantesInteresMora
      * @param sesion
-     * @throws NewviExcepcion 
+     * @throws NewviExcepcion
      */
     public void generarNuevaMulta(ConstantesInteresMora constantesInteresMora, SesionDto sesion) throws NewviExcepcion;
-    
+
 }
