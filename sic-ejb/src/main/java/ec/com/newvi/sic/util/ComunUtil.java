@@ -169,7 +169,11 @@ public class ComunUtil {
         if (!ComunUtil.esNulo(fecha)) {
             calendar.setTime(fecha);
         }
-        return EnumMeses.obtenerDescripcionMes(calendar.get(Calendar.MONTH));
+        Integer dia = calendar.get(Calendar.DAY_OF_YEAR);
+        Integer dia2 = calendar.get(Calendar.DAY_OF_MONTH);
+        Integer mes = calendar.get(Calendar.MONTH)+1;
+        
+        return EnumMeses.obtenerDescripcionMes(calendar.get(Calendar.MONTH)+1);
     }
     public static Integer obtenerDiaDesdeFecha(Date fecha) {
         Calendar calendar = Calendar.getInstance();

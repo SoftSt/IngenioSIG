@@ -128,4 +128,8 @@ public class TesoreriaServicioImpl implements TesoreriaServicio {
 
         constantesInteresMoraFacade.create(constantesInteresMora);
     }
+    @Override
+    public ConstantesInteresMora buscarInteresPorNumeroAnios(Integer numeroAnios){
+        return constantesInteresMoraFacade.buscarInteresPorNumeroAnios(numeroAnios);
+    }
 }

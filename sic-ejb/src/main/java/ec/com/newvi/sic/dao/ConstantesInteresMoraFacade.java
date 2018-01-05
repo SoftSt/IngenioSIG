@@ -19,15 +19,23 @@ import javax.persistence.Query;
  */
 @Stateless
 @PermitAll
-public class ConstantesInteresMoraFacade extends AbstractFacade<ConstantesInteresMora, Integer>  implements Serializable{
+public class ConstantesInteresMoraFacade extends AbstractFacade<ConstantesInteresMora, Integer> implements Serializable {
 
     public ConstantesInteresMoraFacade() {
         super(ConstantesInteresMora.class, Integer.class);
     }
-    
-    public List<ConstantesInteresMora> buscarMultas(){      
+
+    public List<ConstantesInteresMora> buscarMultas() {
         Query q = this.getEntityManager().createQuery("SELECT interesmora FROM ConstantesInteresMora interesmora where interesmora.estadointeresmora =:ESTADO ORDER BY interesmora.codInteresmora ASC ");
         q.setParameter("ESTADO", EnumEstadoRegistro.A);
         return q.getResultList();
     }
+
+    public ConstantesInteresMora buscarInteresPorNumeroAnios(Integer numeroAnios) {
+        Query q = this.getEntityManager().createQuery("SELECT interesmora FROM ConstantesInteresMora interesmora where interesmora.estadointeresmora =:ESTADO and interesmora.numeroAnios =:NUMEROANIOS");
+        q.setParameter("ESTADO", EnumEstadoRegistro.A);
+        q.setParameter("NUMEROANIOS", numeroAnios);
+        return (ConstantesInteresMora) q.getSingleResult();
+    }
+
 }

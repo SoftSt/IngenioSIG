@@ -125,8 +125,9 @@
                                 <p:column>
                                     <p:commandButton id="btnAccionesTitulos" type="button" icon="fa fa-ellipsis-v" />
                                     <p:tieredMenu overlay="true" trigger="btnAccionesTitulos" my="left top" at="left bottom" style="width:200px">
-                                        <p:menuitem icon="fa fa-calculator" value="Calcular Intereses/Recargos" actionListener="#{cobroTituloBB.calcularDescuentosIntereses(tituloRegistrado.codTitulos)}" update="listaTitulosRegistrados"/>
+                                        <p:menuitem icon="fa fa-calculator" value="Calcular Intereses/Recargos" actionListener="#{cobroTituloBB.calcularDescuentosIntereses(tituloRegistrado.codTitulos)}" update="grupoCobroDeTitulo"/>
                                         <p:menuitem icon="fa fa-trash" value="Eliminar título" actionListener="#{cobroTituloBB.eliminarTitulo(tituloRegistrado.codTitulos)}" update="listaTitulosRegistrados"/>
+                                        <p:menuitem icon="fa fa-plus" value="abrir" onclick="PF('dlgResumenTitulos').show();"/>
                                     </p:tieredMenu>
                                 </p:column>
 
@@ -184,6 +185,45 @@
                                                  style="float:left;">
                                 </p:commandButton>
                             </f:facet>
+
+                            <p:dialog header="Resumen del título" widgetVar="dlgResumenTitulos" appendTo="@(body)" width="600" height="500" modal="true" showEffect="fade" hideEffect="fade" resizable="false" closable="true">
+                                <h:panelGrid columns="2">
+                                    <h:panelGrid>
+                                        <div style="font-size:1em;font-weight:bold;">Avaluo</div>
+                                        <h:panelGrid columns="2">
+                                            <h:outputLabel for="valTerreno" value="Terreno ($):" style="font-weight: bold;"/>
+                                            <h:outputText id="valTerreno" value="#{cobroTituloBB.tituloActual.valValorterreno}"/>
+                                            <h:outputLabel for="valConstruccion" value="Construcción ($):" style="font-weight: bold;"/>
+                                            <h:outputText id="valConstruccion" value="#{cobroTituloBB.tituloActual.valConstruccion}"/>
+                                            <p:separator /><p:separator />  
+                                            <h:outputLabel for="valPropiedad" value="Valor Propiedad ($):" style="font-weight: bold;"/>
+                                            <h:outputText id="valPropiedad" value="#{cobroTituloBB.tituloActual.valBaseimponible}"/>
+                                            <h:outputLabel for="fecEmision" value="Fecha Emisión:" style="font-weight: bold;"/>
+                                            <h:outputText id="fecEmision" value="#{cobroTituloBB.tituloActual.fecEmision}"/>
+                                        </h:panelGrid>
+                                    </h:panelGrid>
+                                    <h:panelGrid columns="2">
+                                        <h:panelGrid>
+                                            <div style="font-size:1em;font-weight:bold;">RUBROS</div>
+                                            <h:outputLabel for="valImpuestoPredial" value="Impuesto Predial ($):" style="font-weight: bold;"/>
+                                            <h:outputLabel for="servAdmistrativos" value="Serv. Admin. ($):" style="font-weight: bold;"/>
+                                            <h:outputLabel for="valNoconstruido" value="Imp. Solar No Efi. ($):" style="font-weight: bold;"/>
+                                            <h:outputLabel for="valObsoleto" value="Const. Obsoleta. ($):" style="font-weight: bold;"/>
+                                            <h:outputLabel for="valBomberos" value="Bomberos. ($):" style="font-weight: bold;"/>
+                                        </h:panelGrid>
+                                        <h:panelGrid>
+                                            <div style="font-size:1em;font-weight:bold;">VALORES</div>
+                                            <h:outputText id="valImpuestoPredial" value="#{cobroTituloBB.tituloActual.valImpuestopredial}"/>
+                                            <h:outputText id="servAdmistrativos" value="#{cobroTituloBB.tituloActual.valServiciosadministrativos}"/>
+                                            <h:outputText id="valNoconstruido" value="#{cobroTituloBB.tituloActual.valNoconstruido}"/>
+                                            <h:outputText id="valObsoleto" value="#{cobroTituloBB.tituloActual.valSaludpublica}"/>
+                                            <h:outputText id="valBomberos" value="#{cobroTituloBB.tituloActual.valBomberos}"/>
+                                        </h:panelGrid>
+
+
+                                    </h:panelGrid>
+                                </h:panelGrid>
+                            </p:dialog>
                         </h:panelGrid>
 
                     </p:outputPanel>

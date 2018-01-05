@@ -12,6 +12,7 @@ import ec.com.newvi.sic.enums.EnumEstadoTitulo;
 import ec.com.newvi.sic.enums.EnumNewviExcepciones;
 import ec.com.newvi.sic.enums.EnumReporte;
 import ec.com.newvi.sic.modelo.ConstantesDescuentos;
+import ec.com.newvi.sic.modelo.ConstantesInteresMora;
 import ec.com.newvi.sic.modelo.Titulos;
 import ec.com.newvi.sic.servicios.RentasServicio;
 import ec.com.newvi.sic.servicios.TesoreriaServicio;
@@ -26,6 +27,8 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
@@ -125,19 +128,52 @@ public class CobroTituloBB extends AdminFichaCatastralBB {
     private String obtenerNumeroQuincena(Integer dia) {
         return dia <= 15 ? "1" : "2";
     }
-    
-    private BigDecimal calcularDescuentoRecargo(Titulos titulo){
-        String mesEmision = ComunUtil.obtenerMesDesdeFecha(titulo.getFecEmision());
-        Integer diaEmision = ComunUtil.obtenerDiaDesdeFecha(titulo.getFecEmision());
-        ConstantesDescuentos descuentos = tesoreriaServicio.buscarDescuentoRecargoPorMesYQuincena(mesEmision, obtenerNumeroQuincena(diaEmision));
-        
-        return descuentos.getStsEstado().equals("d") ? descuentos.getValValor(): descuentos.getValValor().negate();
+
+    private BigDecimal calcularInteresMora(Titulos titulo) {
+        Integer aniosMora = obtenerDiferenciaAniosActualEmision(titulo);
+        ConstantesInteresMora interesMora = tesoreriaServicio.buscarInteresPorNumeroAnios(aniosMora);
+        return interesMora.getValMonto();
+    }
+
+    private BigDecimal calcularDescuentoRecargo(Titulos titulo) {
+        String mesEmision;
+        Integer diaEmision;
+        BigDecimal valorBase;
+        BigDecimal tasaDescuento;
+        ConstantesDescuentos objetoDescuentos;
+
+        valorBase = titulo.getValTotalapagar();
+        mesEmision = ComunUtil.obtenerMesDesdeFecha(titulo.getFecEmision());
+        diaEmision = ComunUtil.obtenerDiaDesdeFecha(titulo.getFecEmision());
+        objetoDescuentos = tesoreriaServicio.buscarDescuentoRecargoPorMesYQuincena(mesEmision, obtenerNumeroQuincena(diaEmision));
+        tasaDescuento = objetoDescuentos.getValValor().divide(new BigDecimal(100));
+
+        return objetoDescuentos.getStsEstado().trim().equals("r") ? valorBase.multiply(tasaDescuento) : valorBase.multiply(tasaDescuento).negate();
+    }
+
+    private Integer obtenerDiferenciaAniosActualEmision(Titulos titulo) {
+        Integer anioActual = ComunUtil.obtenerAnioDesdeFecha(ComunUtil.hoy());
+        Integer anioEmision = ComunUtil.obtenerAnioDesdeFecha(titulo.getFecEmision());
+        return anioActual - anioEmision;
+
+    }
+
+    private Boolean esDescuento(Titulos titulo) {
+        return obtenerDiferenciaAniosActualEmision(titulo) > 1 ? Boolean.FALSE : Boolean.TRUE;
     }
 
     public void calcularDescuentosIntereses(Integer codTitulo) {
-        Titulos tituloEditable = seleccionarTitulo(codTitulo);
-        tituloEditable.setValDescuentoaplicado(calcularDescuentoRecargo(tituloEditable));
-        Integer a = 12;
+        this.tituloActual = seleccionarTitulo(codTitulo);
+        if (esDescuento(this.tituloActual)) {
+            this.tituloActual.setValDescuentoaplicado(calcularDescuentoRecargo(this.tituloActual));
+            this.tituloActual.setValInteresaplicado(BigDecimal.ZERO);
+        } else {
+            this.tituloActual.setValInteresaplicado(calcularInteresMora(this.tituloActual));
+            this.tituloActual.setValDescuentoaplicado(BigDecimal.ZERO);
+        }
+        this.tituloActual.setValPagado(this.tituloActual.getValTotalapagar().add(this.tituloActual.getValDescuentoaplicado()).add(this.tituloActual.getValInteresaplicado()));
+
+        WebUtils.obtenerContextoPeticion().execute("PF('dlgResumenTitulos').show()");
 
     }
 

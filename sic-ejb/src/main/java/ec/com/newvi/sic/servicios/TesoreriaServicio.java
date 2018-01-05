@@ -95,5 +95,11 @@ public interface TesoreriaServicio {
      * @throws NewviExcepcion
      */
     public void generarNuevaMulta(ConstantesInteresMora constantesInteresMora, SesionDto sesion) throws NewviExcepcion;
+    /**
+     * Obtiene el interes generado
+     * @param numeroAnios numero de anios por los cuales se va ha bucar el interes
+     * @return interes generado
+     */
+    public ConstantesInteresMora buscarInteresPorNumeroAnios(Integer numeroAnios);
 
 }

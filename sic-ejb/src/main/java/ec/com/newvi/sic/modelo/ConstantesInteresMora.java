@@ -65,6 +65,8 @@ public class ConstantesInteresMora implements Serializable {
     @Size(max = 30)
     @Column(name = "aud_mod_ip")
     private String audModIp;
+    @Column(name = "num_anios")
+    private Integer numeroAnios;
 
     public ConstantesInteresMora() {
     }
@@ -159,6 +161,14 @@ public class ConstantesInteresMora implements Serializable {
 
     public void setAudModIp(String audModIp) {
         this.audModIp = audModIp;
+    }
+
+    public Integer getNumeroAnios() {
+        return numeroAnios;
+    }
+
+    public void setNumeroAnios(Integer numeroAnios) {
+        this.numeroAnios = numeroAnios;
     }
     
     @Override
