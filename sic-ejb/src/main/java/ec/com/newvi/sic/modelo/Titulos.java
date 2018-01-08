@@ -10,6 +10,7 @@ import ec.com.newvi.sic.enums.EnumEstadoTitulo;
 import ec.com.newvi.sic.util.ComunUtil;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -71,7 +72,7 @@ public class Titulos implements Serializable {
     private EnumEstadoTitulo stsEstado;
     @Column(name = "val_nroimpresion")
     private Integer valNroimpresion;
-    @Size(max = 100)
+    @Size(max = 150)
     @Column(name = "txt_barrio")
     private String txtBarrio;
     @Size(max = 100)
@@ -589,6 +590,20 @@ public class Titulos implements Serializable {
 
     public Integer anioEmision() {
         return ComunUtil.obtenerAnioDesdeFecha(this.fecEmision);
+    }
+
+    public String obtenerFechaEmision() {
+        SimpleDateFormat formateador = new SimpleDateFormat("dd-MM-yyyy");
+        return !ComunUtil.esNulo(this.fecEmision) ? formateador.format(this.fecEmision) : null;
+    }
+
+    public String obtenerFechaRecaudacion() {
+        SimpleDateFormat formateador = new SimpleDateFormat("dd-MM-yyyy");
+        return !ComunUtil.esNulo(this.fecFpago) ? formateador.format(this.fecFpago) : null;
+    }
+
+    public Boolean esTituloPorCobrar() {
+        return this.stsEstado.equals(EnumEstadoTitulo.TITULO_EMITIDO) || this.stsEstado.equals(EnumEstadoTitulo.TITULO_PENDIENTE) ? Boolean.TRUE : Boolean.FALSE;
     }
 
     @Override

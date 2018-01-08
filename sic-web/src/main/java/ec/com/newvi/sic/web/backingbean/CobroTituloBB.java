@@ -164,6 +164,8 @@ public class CobroTituloBB extends AdminFichaCatastralBB {
 
     public void calcularDescuentosIntereses(Integer codTitulo) {
         this.tituloActual = seleccionarTitulo(codTitulo);
+        this.predio = this.tituloActual.getCodCatastral();
+        this.fichaCatastral = new FichaCatastralDto(this.predio);
         if (esDescuento(this.tituloActual)) {
             this.tituloActual.setValDescuentoaplicado(calcularDescuentoRecargo(this.tituloActual));
             this.tituloActual.setValInteresaplicado(BigDecimal.ZERO);

@@ -18,7 +18,6 @@ import ec.com.newvi.sic.servicios.RentasServicio;
 import ec.com.newvi.sic.util.ComunUtil;
 import ec.com.newvi.sic.util.excepciones.NewviExcepcion;
 import ec.com.newvi.sic.util.logs.LoggerNewvi;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -85,6 +84,9 @@ public class RentasServicioImpl implements RentasServicio {
             variables.put("predio", avaluo.getCodCatastral().getNomCodigocatastral());
             throw new NewviExcepcion(EnumNewviExcepciones.ERR601, variables, ex);
         }
+        nuevoTitulo.setTxtDireccion(avaluo.getTxtDireccion());
+        nuevoTitulo.setTxtBarrio(avaluo.getStsBarrio());
+        nuevoTitulo.setValDescuentoExoneracion(avaluo.getValDescuentosExoneraciones());
         nuevoTitulo.setValAreaterreno(avaluo.getValAreapredio());
         nuevoTitulo.setValValorterreno(avaluo.getValTerreno());
         nuevoTitulo.setValAreaconstruccion(avaluo.getValAreaconstruccion());
