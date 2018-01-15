@@ -113,6 +113,9 @@ public class Predios implements Serializable {
     @Size(max = 4)
     @Column(name = "cod_predio")
     private String codPredio;
+    @Size(max = 10)
+    @Column(name = "cod_campo")
+    private String codCampo;
     @Size(max = 2)
     @Column(name = "cod_regimentenencia")
     private String codRegimentenencia;
@@ -655,6 +658,14 @@ public class Predios implements Serializable {
         this.codZonaInfluencia = codZonaInfluencia;
     }
 
+    public String getCodCampo() {
+        return codCampo;
+    }
+
+    public void setCodCampo(String codCampo) {
+        this.codCampo = codCampo;
+    }
+    
     @Override
     public int hashCode() {
         int hash = 0;

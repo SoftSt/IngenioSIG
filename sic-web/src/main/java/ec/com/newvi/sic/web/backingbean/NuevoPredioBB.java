@@ -28,6 +28,7 @@ public class NuevoPredioBB extends AdminFichaCatastralBB {
 
     private EnumPantallaMantenimiento pantallaActual;
     private List<GeoPredio> listaPrediosHuerfanos;
+    private List<GeoPredio> listaPrediosHuerfanosFiltrados;
 
     public EnumPantallaMantenimiento getPantallaActual() {
         return pantallaActual;
@@ -37,6 +38,22 @@ public class NuevoPredioBB extends AdminFichaCatastralBB {
         this.pantallaActual = pantallaActual;
     }
 
+    public List<GeoPredio> getListaPrediosHuerfanos() {
+        return listaPrediosHuerfanos;
+    }
+
+    public void setListaPrediosHuerfanos(List<GeoPredio> listaPrediosHuerfanos) {
+        this.listaPrediosHuerfanos = listaPrediosHuerfanos;
+    }
+
+    public List<GeoPredio> getListaPrediosHuerfanosFiltrados() {
+        return listaPrediosHuerfanosFiltrados;
+    }
+
+    public void setListaPrediosHuerfanosFiltrados(List<GeoPredio> listaPrediosHuerfanosFiltrados) {
+        this.listaPrediosHuerfanosFiltrados = listaPrediosHuerfanosFiltrados;
+    }
+    
     @PostConstruct
     public void init() {
         conmutarPantalla(EnumPantallaMantenimiento.PANTALLA_BUSQUEDA);

@@ -358,6 +358,7 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
     
     @PostConstruct
     public void init() {
+        
         this.predio = new Predios();
         deshabilitarPantallas();
         seleccionPantallas();
@@ -1134,12 +1135,18 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
             actualizarListadoPredios();
 
         } else if (cadenaAccion.equals(EnumTipoPantalla.nuevaFicha.getTipoPantalla())) {
-            this.esPantallaNueva = false;
+            /*this.esPantallaNueva = false;
             actualizarCaracteristicasPredios();
             establecerTitulo(EnumEtiquetas.FICHA_CATASTRAL_NUEVO_TITULO,
                     EnumEtiquetas.FICHA_CATASTRAL_NUEVO_ICONO,
                     EnumEtiquetas.FICHA_CATASTRAL_NUEVO_DESCRIPCION);
-            crearNuevoPredio();
+            crearNuevoPredio();*/
+            this.esPantallaFormularios = true;
+            this.esPantallaLista = true;
+            conmutarPantalla(EnumPantallaMantenimiento.PANTALLA_GENERACION);
+            establecerTitulo(EnumEtiquetas.FICHA_CATASTRAL_NUEVO_TITULO,
+                    EnumEtiquetas.FICHA_CATASTRAL_NUEVO_ICONO,
+                    EnumEtiquetas.FICHA_CATASTRAL_NUEVO_DESCRIPCION);
 
         }
     }

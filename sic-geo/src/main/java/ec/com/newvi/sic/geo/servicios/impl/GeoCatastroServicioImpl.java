@@ -56,7 +56,7 @@ public class GeoCatastroServicioImpl implements GeoCatastroServicio {
     private List<String> obtenerCodigosPredios(List<Predios> prediosRegistrados) {
         List<String> listaCodigosPredios = new ArrayList<>();
         prediosRegistrados.forEach((predioRegistrado) -> {
-            listaCodigosPredios.add(predioRegistrado.getNomCodigocatastral());
+            listaCodigosPredios.add(predioRegistrado.getCodCampo().trim());
         });
         return listaCodigosPredios;
     }

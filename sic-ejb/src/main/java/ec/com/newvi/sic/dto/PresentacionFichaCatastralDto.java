@@ -12,6 +12,7 @@ import ec.com.newvi.sic.modelo.Propiedad;
 import ec.com.newvi.sic.modelo.Servicios;
 import ec.com.newvi.sic.modelo.Terreno;
 import ec.com.newvi.sic.modelo.Titulos;
+import ec.com.newvi.sic.util.ComunUtil;
 import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -61,10 +62,14 @@ public class PresentacionFichaCatastralDto {
     private BigDecimal valImppredial;
     private BigDecimal valContruccionObsoleta;
     private BigDecimal valDescuentoExoneracion;
+    private BigDecimal valInteresaplicado;
+    private BigDecimal valDescuentoaplicado;
+    private BigDecimal valPagado;
     private String txtNorte;
     private String txtSur;
     private String txtEste;
     private String txtOeste;
+    private String contribuyente;
 
     private String stsTenencia;
     private String stsTenenciaotro;
@@ -93,6 +98,7 @@ public class PresentacionFichaCatastralDto {
     private String cedulaRepresentante;
     private String direccionRepresentante;
     private String fecEmision;
+    private String fecPago;
     private String anioEmision;
 
     private List<Terreno> listaDescripcionTerreno;
@@ -656,9 +662,47 @@ public class PresentacionFichaCatastralDto {
     public void setAnioEmision(String anioEmision) {
         this.anioEmision = anioEmision;
     }
-    
-    
-    
+
+    public BigDecimal getValInteresaplicado() {
+        return valInteresaplicado;
+    }
+
+    public void setValInteresaplicado(BigDecimal valInteresaplicado) {
+        this.valInteresaplicado = valInteresaplicado;
+    }
+
+    public BigDecimal getValDescuentoaplicado() {
+        return valDescuentoaplicado;
+    }
+
+    public void setValDescuentoaplicado(BigDecimal valDescuentoaplicado) {
+        this.valDescuentoaplicado = valDescuentoaplicado;
+    }
+
+    public BigDecimal getValPagado() {
+        return valPagado;
+    }
+
+    public void setValPagado(BigDecimal valPagado) {
+        this.valPagado = valPagado;
+    }
+
+    public String getFecPago() {
+        return fecPago;
+    }
+
+    public void setFecPago(String fecPago) {
+        this.fecPago = fecPago;
+    }
+
+    public String getContribuyente() {
+        return contribuyente;
+    }
+
+    public void setContribuyente(String contribuyente) {
+        this.contribuyente = contribuyente;
+    }
+
     public PresentacionFichaCatastralDto(Predios predio) {
         FichaCatastralDto fichaCatastralDto = new FichaCatastralDto(predio);
         setearDatosPredio(fichaCatastralDto.getPredio());
@@ -679,8 +723,8 @@ public class PresentacionFichaCatastralDto {
     }
 
     private void setearDatosPredioTitulo(Predios predio) {
-        this.txtCallePrincipal = predio.getTxtDireccion();
-        this.stsBarrio = predio.getStsBarrio();
+        //this.txtCallePrincipal = predio.getTxtDireccion();
+        //this.stsBarrio = predio.getStsBarrio();
         this.nomNumero = predio.getNomNumero();
         //this.nomCodigocatastral = predio.getNomCodigocatastralanterior();
     }
@@ -729,6 +773,7 @@ public class PresentacionFichaCatastralDto {
         this.codCedularuc = contribuyentePropiedad.getCodCedularuc();
         this.nomApellidos = contribuyentePropiedad.getNomApellidos();
         this.nomNombres = contribuyentePropiedad.getNomNombres();
+        this.contribuyente = contribuyentePropiedad.getNomApellidos().trim() + ' ' + contribuyentePropiedad.getNomNombres().trim();
         this.txtTelefono = contribuyentePropiedad.getTxtTelefono();
         this.txtDireccion = contribuyentePropiedad.getTxtDireccion();
         this.txtEmail = contribuyentePropiedad.getTxtEmail();
@@ -743,12 +788,14 @@ public class PresentacionFichaCatastralDto {
         this.stsTenenciaotro = propiedad.getStsTenenciaotro();
         this.stsTransferenciadominio = propiedad.getStsTransferenciadominio().getStsTransferenciadominio();
     }
-    
-    public String generarHora(Date fechaEmision){
-        DateFormat format = new SimpleDateFormat("MM/dd/yyyy");
-        return format.format(fechaEmision);
+
+    public String generarHora(Date fechaEmision) {
+        DateFormat format = new SimpleDateFormat("yyyy/MM/dd");
+        //return format.format(fechaEmision);
+        return !ComunUtil.esNulo(fechaEmision) ? format.format(fechaEmision) : null;
     }
-    public String generarAnio(Date fechaEmision){
+
+    public String generarAnio(Date fechaEmision) {
         DateFormat format = new SimpleDateFormat("yyyy");
         return format.format(fechaEmision);
     }
@@ -769,7 +816,13 @@ public class PresentacionFichaCatastralDto {
         this.valContruccionObsoleta = titulo.getValContruccionObsoleta();
         this.valDescuentoExoneracion = titulo.getValDescuentoExoneracion();
         this.anioEmision = generarAnio(titulo.getFecEmision());
-        this.nomCodigocatastral =  titulo.getNomCodigocatastral();
+        this.nomCodigocatastral = titulo.getNomCodigocatastral();
+        this.valDescuentoaplicado = titulo.getValDescuentoaplicado();
+        this.valInteresaplicado = titulo.getValInteresaplicado();
+        this.valPagado = titulo.getValPagado();
+        this.txtCallePrincipal = titulo.getTxtDireccion();
+        this.stsBarrio = titulo.getTxtBarrio();
+        this.fecPago = generarHora(titulo.getFecFpago());
     }
 
 }

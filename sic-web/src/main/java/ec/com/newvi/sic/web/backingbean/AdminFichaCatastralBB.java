@@ -14,6 +14,7 @@ import ec.com.newvi.sic.dto.TablaCatastralDto;
 import ec.com.newvi.sic.enums.EnumNewviExcepciones;
 import ec.com.newvi.sic.enums.EnumParametroSistema;
 import ec.com.newvi.sic.enums.EnumReporte;
+import ec.com.newvi.sic.geo.modelo.GeoPredio;
 import ec.com.newvi.sic.geo.servicios.GeoCatastroServicio;
 import ec.com.newvi.sic.modelo.Avaluo;
 import ec.com.newvi.sic.modelo.Contribuyentes;
@@ -35,6 +36,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.EJB;
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.LazyDataModel;
@@ -126,6 +129,13 @@ public abstract class AdminFichaCatastralBB extends AdminSistemaBB {
             listaFichas.add(new FichaCatastralDto(elementoPredio));
         });
         listaFichasLazy = new ModeloPredioLazy(listaFichas);
+        
+        try {
+            List<GeoPredio> nuevoPre =  geoCatastroServicio.obtenerListadoGeoPrediosHuerfanos(listaPredios, sesionBean.getSesion());
+            nuevoPre.size();
+        } catch (NewviExcepcion ex) {
+            Logger.getLogger(AdminFichaCatastralBB.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     protected void actualizarListadoContribuyentes() {

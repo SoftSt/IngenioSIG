@@ -19,11 +19,42 @@
                     </h2>
                 </p>
                 <p>#{nuevoPredioBB.descripcionPantalla.textoEtiqueta}</p>
+
+                <p:dataTable id="listaPrediosNuevos" var="listaPrediosHuerfanos" widgetVar="listaPrediosNuevosTabla"
+                             value="#{nuevoPredioBB.listaPrediosHuerfanos}" rowKey="#{listaPrediosHuerfanos.codigoCampoPredio}" filteredValue="#{nuevoPredioBB.listaPrediosHuerfanosFiltrados}"
+                             paginator="true" rows="20" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" 
+                             rowsPerPageTemplate="10,15,20" 
+                             emptyMessage="No se han encontrado resultados" 
+                             paginatorPosition="bottom">
+
+                    <p:column headerText="ID">
+                        <h:outputText value="#{listaPrediosHuerfanos.id}"/>
+                    </p:column>
+
+                    <p:column headerText="Codigo Campo" >
+                        <h:outputText value="#{listaPrediosHuerfanos.codigoCampoPredio}" />
+                    </p:column>
+
+                    <p:column headerText="Manzana">
+                        <h:outputText value="#{listaPrediosHuerfanos.codigoManzana}"/>
+                    </p:column>
+                    <p:column headerText="Predio">
+                        <h:outputText value="#{listaPrediosHuerfanos.codigoPredio}"/>
+                    </p:column>
+                    <p:column headerText="Sector">
+                        <h:outputText value="#{listaPrediosHuerfanos.codigoSector}"/>
+                    </p:column>
+                    <p:column headerText="Zona">
+                        <h:outputText value="#{listaPrediosHuerfanos.codigoZona}"/>
+                    </p:column>
+
+
+                </p:dataTable>
             </p:panel>
 
 
             <p:panel id="panelFichaCatastral" rendered="#{nuevoPredioBB.esPantallaActual('PANTALLA_SELECCION')}">
-                
+
                 <p:messages id="mensajeSeleccion" showDetail="true" autoUpdate="true" closable="true" />
                 <p>
                     <h2>
@@ -33,10 +64,12 @@
                 </p>
                 <p>#{fichaCatastralBB.descripcionPantalla.textoEtiqueta}</p>
 
+
+
             </p:panel>
 
             <p:panel id="panelFichaCatastralAsignacion" rendered="#{nuevoPredioBB.esPantallaActual('PANTALLA_GENERACION')}">
-                
+
                 <p:messages id="mensajeGeneracion" showDetail="true" autoUpdate="true" closable="true" />
                 <p>
                     <h2>

@@ -51,7 +51,7 @@ public class Propiedad implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
-    @SequenceGenerator(name = "PROPIETARIO_CODIGO_GENERATOR", initialValue = 1, allocationSize = 1, sequenceName = "cat_ciu_propietario_cod_propietarios_seq", schema = "public")
+    @SequenceGenerator(name = "PROPIETARIO_CODIGO_GENERATOR", initialValue = 1, allocationSize = 1, sequenceName = "cat_ciu_propietario_copia_cod_propietarios_seq", schema = "public")
     @GeneratedValue(generator = "PROPIETARIO_CODIGO_GENERATOR")
     @Column(name = "cod_propietarios")
     private Integer codPropiedad;

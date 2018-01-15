@@ -29,57 +29,77 @@ public class GeoPredio implements Serializable {
     private static final long serialVersionUID = -1L;
     
     @Id
-    @SequenceGenerator(name = "GEOPREDIO_CODIGO_GENERATOR", initialValue = 1, allocationSize = 1, sequenceName = "he007_predio_gid_seq", schema = "public")
+    @SequenceGenerator(name = "GEOPREDIO_CODIGO_GENERATOR", initialValue = 1, allocationSize = 1, sequenceName = "he002_lote_id_seq", schema = "public")
     @GeneratedValue(generator = "GEOPREDIO_CODIGO_GENERATOR")
-    @Column(name = "gid")
-    private Integer gId;
+    @Column(name = "id")
+    private Integer id;
     
-    @Size(max = 6)
+    /*@Size(max = 6)
     @Column(name = "dpa_codigo")
-    private String codigoDPA;
+    private String codigoDPA;*/
 
     @Size(max = 2)
-    @Column(name = "zon_codigo")
+    @Column(name = "zona")
     private String codigoZona;
     
     @Size(max = 2)
-    @Column(name = "sec_codigo")
+    @Column(name = "sector")
     private String codigoSector;
     
     @Size(max = 2)
-    @Column(name = "man_codigo")
+    @Column(name = "manzana")
     private String codigoManzana;
     
-    @Size(max = 4)
+    /*@Size(max = 4)
     @Column(name = "lot_numero")
     private String numeroLote;
-    
+    */
     @Size(max = 24)
-    @Column(name = "lot_codigo")
+    @Column(name = "cod_catast")
     private String codigoPredio;
     
-    @Enumerated(EnumType.STRING)
+    @Size(max = 10)
+    @Column(name = "cod_campo")
+    private String codigoCampoPredio;
+    
+    /*@Enumerated(EnumType.STRING)
     @Column(name = "lot_regim")
-    private EnumTipoPredio tipoPredio;
+    private EnumTipoPredio tipoPredio;*/
     
     /*@Column(name = "geom")
     private Polygon geom;*/
 
-    public Integer getgId() {
+    /*public Integer getgId() {
         return gId;
     }
 
     public void setgId(Integer gId) {
         this.gId = gId;
+    }*/
+
+    public Integer getId() {
+        return id;
     }
 
-    public String getCodigoDPA() {
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getCodigoCampoPredio() {
+        return codigoCampoPredio;
+    }
+
+    public void setCodigoCampoPredio(String codigoCampoPredio) {
+        this.codigoCampoPredio = codigoCampoPredio;
+    }
+    
+    /*public String getCodigoDPA() {
         return codigoDPA;
     }
 
     public void setCodigoDPA(String codigoDPA) {
         this.codigoDPA = codigoDPA;
-    }
+    }*/
 
     public String getCodigoZona() {
         return codigoZona;
@@ -105,13 +125,13 @@ public class GeoPredio implements Serializable {
         this.codigoManzana = codigoManzana;
     }
 
-    public String getNumeroLote() {
+    /*public String getNumeroLote() {
         return numeroLote;
     }
 
     public void setNumeroLote(String numeroLote) {
         this.numeroLote = numeroLote;
-    }
+    }*/
 
     public String getCodigoPredio() {
         return codigoPredio;
@@ -121,13 +141,13 @@ public class GeoPredio implements Serializable {
         this.codigoPredio = codigoPredio;
     }
 
-    public EnumTipoPredio getTipoPredio() {
+    /*public EnumTipoPredio getTipoPredio() {
         return tipoPredio;
     }
 
     public void setTipoPredio(EnumTipoPredio tipoPredio) {
         this.tipoPredio = tipoPredio;
-    }
+    }*/
 
 /*    public Polygon getGeom() {
         return geom;

@@ -1343,6 +1343,33 @@
                 </h:form>
 
             </p:panel>
+            <p:panel id="panelListaFichaCatastral2" rendered="#{fichaCatastralBB.esPantallaActual('PANTALLA_GENERACION')}">
+                <h:form id="formularioListaFichaCatastral2">  
+
+                    <p:growl id="growl2" showDetail="true" sticky="true" life="800"/>
+                    <p:messages id="messages2" showDetail="true" autoUpdate="true" closable="true" />
+                    <p>
+                        <h2>
+                            <h:outputText styleClass="#{fichaCatastralBB.iconoPantalla.textoEtiqueta}"/>
+                            <h:outputText value=" #{fichaCatastralBB.tituloPantalla.textoEtiqueta}"/>
+                        </h2>
+                    </p>
+                    <p>#{fichaCatastralBB.descripcionPantalla.textoEtiqueta}</p>
+                    <p>
+                        <p:commandButton value="Nuevo ficha Catastral" icon="fa fa-user-plus" 
+                                         update="messages grupoFichaCatastral"
+                                         id="ingresarFichaCatastral2"
+                                         actionListener="#{fichaCatastralBB.crearNuevoPredio()}">
+                            <p:ajax update="toolTipInsert2" process="@this" />  
+                        </p:commandButton>
+                        <p:tooltip id="toolTipInsert2" for="ingresarFichaCatastral2" value="Ingresar un nuevo ficha Catastral" showEffect="fade" hideEffect="fade" position="bottom"/>
+
+                    </p>
+                    
+
+                    
+                </h:form>
+            </p:panel>
 
         </h:panelGroup>
 

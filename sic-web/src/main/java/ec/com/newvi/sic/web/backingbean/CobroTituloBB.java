@@ -220,6 +220,20 @@ public class CobroTituloBB extends AdminFichaCatastralBB {
                 EnumEtiquetas.COBRO_TITULO_LISTA_DESCRIPCION);
     }
 
-    public void cancelarTitulo() {
+    public void cobrarTitulo() {
+        this.tituloActual.setStsEstado(EnumEstadoTitulo.TITULO_COBRADO);
+        this.tituloActual.setFecFpago(ComunUtil.hoy());
+
+        try {
+            rentasServicio.actualizarTitulo(this.tituloActual, sesionBean.getSesion());
+            LoggerNewvi.getLogNewvi(this.getClass()).info(EnumNewviExcepciones.INF604.presentarMensaje(), sesionBean.getSesion());
+            MensajesFaces.mensajeInformacion(EnumNewviExcepciones.INF604.presentarMensaje());
+        } catch (NewviExcepcion e) {
+            LoggerNewvi.getLogNewvi(this.getClass()).error(e, sesionBean.getSesion());
+            MensajesFaces.mensajeError(e.getMessage());
+        } catch (Exception e) {
+            LoggerNewvi.getLogNewvi(this.getClass()).error(EnumNewviExcepciones.ERR000.presentarMensajeCodigo(), e, sesionBean.getSesion());
+            MensajesFaces.mensajeError(e.getMessage());
+        }
     }
 }

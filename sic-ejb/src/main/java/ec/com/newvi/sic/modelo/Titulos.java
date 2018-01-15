@@ -593,17 +593,21 @@ public class Titulos implements Serializable {
     }
 
     public String obtenerFechaEmision() {
-        SimpleDateFormat formateador = new SimpleDateFormat("dd-MM-yyyy");
+        SimpleDateFormat formateador = new SimpleDateFormat("yyyy-MM-dd");
         return !ComunUtil.esNulo(this.fecEmision) ? formateador.format(this.fecEmision) : null;
     }
 
     public String obtenerFechaRecaudacion() {
-        SimpleDateFormat formateador = new SimpleDateFormat("dd-MM-yyyy");
+        SimpleDateFormat formateador = new SimpleDateFormat("yyyy-MM-dd");
         return !ComunUtil.esNulo(this.fecFpago) ? formateador.format(this.fecFpago) : null;
     }
 
     public Boolean esTituloPorCobrar() {
-        return this.stsEstado.equals(EnumEstadoTitulo.TITULO_EMITIDO) || this.stsEstado.equals(EnumEstadoTitulo.TITULO_PENDIENTE) ? Boolean.TRUE : Boolean.FALSE;
+        if (this.stsEstado.equals(EnumEstadoTitulo.TITULO_COBRADO)) {
+            return Boolean.FALSE;
+        }else{
+            return Boolean.TRUE;
+        }
     }
 
     @Override

@@ -52,7 +52,7 @@ public class GeoPredioFacade extends AbstractFacade<GeoPredio, Integer> implemen
     }
     
     public List<GeoPredio> obtenerListadoPrediosHuerfanos(List<String> listaCodigosPrediosRegistrados, SesionDto sesion) throws NewviExcepcion {
-        Query q = this.getEntityManager().createQuery("SELECT geoPredioHuerfano FROM GeoPredio geoPredioHuerfano WHERE geoPredioHuerfano.codigoPredio NOT IN :PREDIOSREGISTRADOS ");
+        Query q = this.getEntityManager().createQuery("SELECT geoPredioHuerfano FROM GeoPredio geoPredioHuerfano WHERE TRIM(geoPredioHuerfano.codigoCampoPredio) NOT IN :PREDIOSREGISTRADOS ");
         q.setParameter("PREDIOSREGISTRADOS", listaCodigosPrediosRegistrados);
         try {
             return q.getResultList();
