@@ -81,6 +81,7 @@ public interface SeguridadesServicio {
     /**
      * Verifica si el usuario no se encuentra registrado en el sistema
      * @param usuUsuario El usuario a ser verificado
+     * @param idUsuario Sesión que hace la consulta
      * @return False si el usuario no se encuentra registrado
      * @throws NewviExcepcion 
      */

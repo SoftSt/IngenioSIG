@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                template="/WEB-INF/templates/default.xhtml"
+                xmlns:p="http://primefaces.org/ui">
+    <ui:define name="content">
+        <div class="div-mensaje-web">
+            <div class="texto">
+                
+                <div class="logo">
+                    <h:outputText styleClass="fa fa-exclamation-circle"/>
+                </div>
+                <h1>
+                    <h:outputText value="Error 500: "/><h:outputText value=" Error interno del servidor "/>
+                </h1>                
+                <p>
+                    <h:outputText value=" Mil disculpas, ocurrió un error en la aplicación que no nos permite servirte. "/>
+                </p>
+                <h3 style="text-align: left;">
+                    <h:outputText value="¿Y ahora qué?"/>
+                </h3>
+                <p>
+                    <h:outputText value="Puedes reintentar la acción, tal vez el error es momentáneo."/>
+                </p>
+                <p>
+                    <h:outputText value="Si deseas, también puedes revisar la documentación adjunta por si hay alguna solución rápida."/>
+                </p>
+                <p>
+                    <h:outputText value="Además puedes contactar con el administrador del sistema para determinar la causa del error."/>
+                </p>
+            </div>
+        </div>
+    </ui:define>
+</ui:composition>

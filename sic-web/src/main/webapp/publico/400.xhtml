@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                template="/WEB-INF/templates/default.xhtml"
+                xmlns:p="http://primefaces.org/ui">
+    <ui:define name="content">
+        <div class="div-mensaje-web">
+            <div class="texto">
+                <div class="logo">
+                    <h:outputText styleClass="fa fa-times-circle"/>
+                </div>
+                <h1>
+                    <h:outputText value=" Error 400: "/><h:outputText value=" Mala solicitud"/>
+                </h1>
+                <p>
+                    <h:outputText value=" Has intentado realizar una solicitud mal formada o incorrecta. "/>
+                </p>
+                <h3 style="text-align: left;">
+                    <h:outputText value="¿Y ahora qué?"/>
+                </h3>
+                <p>
+                    <h:outputText value="Posiblemente hayas intentado hacer una solicitud manualmente, o un virus imposibilita tu trabajo."/>
+                </p>
+                <p>
+                    <h:outputText value="Para nosotros esto no es correcto, ya que puede ser un ataque desde tu computador."/>
+                </p>
+                <p>
+                    <h:outputText value="Si lo hiciste de manera intencional, por favor no lo hagas. Si esto no es normal contacta a la brevedad con el administrador."/>
+                </p>
+            </div>
+        </div>
+    </ui:define>
+</ui:composition>

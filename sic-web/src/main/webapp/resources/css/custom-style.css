@@ -97,10 +97,9 @@ body {
 
 .div-mensaje-web .texto .logo {
     text-align: center;
-    font-size: 4em;
+    font-size: 5em;
     width: 100%;
 }
-
 
 .ui-layout-north {
     z-index:20 !important;

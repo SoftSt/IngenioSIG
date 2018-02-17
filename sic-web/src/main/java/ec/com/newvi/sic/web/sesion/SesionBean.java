@@ -8,7 +8,6 @@ package ec.com.newvi.sic.web.sesion;
 import ec.com.newvi.sic.dto.SesionDto;
 import ec.com.newvi.sic.enums.EnumNewviExcepciones;
 import ec.com.newvi.sic.modelo.Usuarios;
-import ec.com.newvi.sic.servicios.ParametrosServicio;
 import ec.com.newvi.sic.servicios.SeguridadesServicio;
 import ec.com.newvi.sic.util.ComunUtil;
 import ec.com.newvi.sic.util.excepciones.NewviExcepcion;
