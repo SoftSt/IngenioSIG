@@ -37,7 +37,7 @@
                                  paginatorPosition="bottom">
 
                         <p:column headerText="Personeria" sortBy="#{contribuyente.stsTipopersoneria}">
-                        <h:outputText value="#{contribuyente.stsTipopersoneria}" />
+                            <h:outputText value="#{contribuyente.stsTipopersoneria}" />
                         </p:column>
 
                         <p:column headerText="Cédula/RUC" sortBy="#{contribuyente.codCedularuc}" filterBy="#{contribuyente.codCedularuc}">
@@ -74,7 +74,7 @@
                     </p:confirmDialog>
                 </h:form>
             </p:panel>
-            <p:panel id="panelContribuyente" rendered="#{contribuyentesBB.esPantallaActual('PANTALLA_EDICION')}">
+            <p:panel id="panelContribuyente" rendered="#{contribuyentesBB.esPantallaActual('PANTALLA_EDICION')}" >
                 <h:form id="formularioContribuyente">
                     <p>
                         <h2>
@@ -86,96 +86,91 @@
                     <p:messages id="mensajeFormulario" showDetail="true" autoUpdate="true" closable="true" />
                     <p:tooltip />
                     <p:outputPanel id="opDetalleContribuyentes">
-                        <h:panelGrid columns="1">
+                        <h:panelGrid columns="2">
+                            <h:panelGrid columns="1">
+                                <h:outputLabel for="stsTipopersoneria" value="Tipo Contribuyente" style="font-weight: bold;"/>
+                                <p:selectOneMenu id="stsTipopersoneria" value="#{contribuyentesBB.contribuyente.stsTipopersoneria}" required="true" style="width:125px" >
+                                    <f:selectItem itemLabel="Seleccione tipo de contribuyente..." itemValue="null" />
+                                    <f:selectItems value="#{contribuyentesBB.listaTipoPersoneria}" var="tipoPersoneria" itemValue="#{tipoPersoneria}" itemLabel="#{tipoPersoneria.descripcionTipoPersoneria}"/>
+                                </p:selectOneMenu>
+                                <p:message for="stsTipopersoneria" display="tooltip"/>
 
-                            <h:outputLabel for="stsTipopersoneria" value="Tipo Contribuyente" style="font-weight: bold;"/>
-                            <p:selectOneMenu id="stsTipopersoneria" value="#{contribuyentesBB.contribuyente.stsTipopersoneria}" required="true" style="width:125px" >
-                                <f:selectItem itemLabel="Seleccione tipo de contribuyente..." itemValue="null" />
-                                <f:selectItems value="#{contribuyentesBB.listaTipoPersoneria}" var="tipoPersoneria" itemValue="#{tipoPersoneria}" itemLabel="#{tipoPersoneria.descripcionTipoPersoneria}"/>
-                            </p:selectOneMenu>
-                            <p:message for="stsTipopersoneria" display="tooltip"/>
+                                <h:outputLabel for="nomApellidos" value="Apellidos" style="font-weight: bold;"/>
+                                <p:inputText id="nomApellidos" value="#{contribuyentesBB.contribuyente.nomApellidos}" required="true" label="Apellidos" size="50">
+                                    <f:validateLength minimum="1" maximum="50" />
+                                </p:inputText>
+                                <p:message for="nomApellidos" display="tooltip"/>
 
+                                <h:outputLabel for="nomNombres" value="Nombres" style="font-weight: bold;"/>
+                                <p:inputText id="nomNombres" value="#{contribuyentesBB.contribuyente.nomNombres}" required="true" label="Nombres" size="50">
+                                    <f:validateLength minimum="1" maximum="50" />
+                                </p:inputText>
+                                <p:message for="nomNombres" display="tooltip"/>
 
-                            <h:outputLabel for="codCedularuc" value="Cedula/RUC" style="font-weight: bold;"/>
-                            <p:inputNumber id="codCedularuc" value="#{contribuyentesBB.contribuyente.codCedularuc}" maxValue="999999999999999" minValue="0" label="Cedula/RUC" size="50" thousandSeparator="" decimalSeparator=""/>
-                            <p:message for="codCedularuc" display="tooltip"/>
+                                <h:outputLabel for="codCedularuc" value="Cedula/RUC" style="font-weight: bold;"/>
+                                <p:inputNumber id="codCedularuc" value="#{contribuyentesBB.contribuyente.codCedularuc}" maxValue="999999999999999" minValue="0" label="Cedula/RUC" size="50" thousandSeparator="" decimalSeparator=""/>
+                                <p:message for="codCedularuc" display="tooltip"/>
 
+                                <h:outputLabel value="Fecha de nacimiento" style="font-weight: bold;"/>
+                                <p:calendar id="fecNacimiento" navigator="true" value="#{contribuyentesBB.contribuyente.fecNacimiento}" label="Fecha de nacimiento" 
+                                            showOn="button" pattern="dd/MM/yyyy" mask="true" >
+                                    <p:watermark for="fecNacimiento" value="dd/mm/aaaa"/>
+                                </p:calendar>
+                                <p:message for="fecNacimiento" display="tooltip"/>
+                            </h:panelGrid>
+                            <h:panelGrid columns="1" style="margin-top: 0">
+                                <h:outputLabel for="txtEmail" value="Correo electrónico" style="font-weight: bold;"/>
+                                <p:inputText id="txtEmail" value="#{contribuyentesBB.contribuyente.txtEmail}" label="Correo electrónico" 
+                                             validator="#{contribuyentesBB.validarEmail}" required="true" size="50"/>
+                                <p:message for="txtEmail" display="tooltip"/>
 
-                            <h:outputLabel for="nomApellidos" value="Apellidos" style="font-weight: bold;"/>
-                            <p:inputText id="nomApellidos" value="#{contribuyentesBB.contribuyente.nomApellidos}" required="true" label="Apellidos" size="50">
-                                <f:validateLength minimum="1" maximum="50" />
-                            </p:inputText>
-                            <p:message for="nomApellidos" display="tooltip"/>
+                                <h:outputLabel for="nomRazonsocial" value="Razón Social" style="font-weight: bold;"/>
+                                <p:inputText id="nomRazonsocial" value="#{contribuyentesBB.contribuyente.nomRazonsocial}" required="true" label="Razón Social" size="50">
+                                    <f:validateLength minimum="0" maximum="100" />
+                                </p:inputText>
+                                <p:message for="nomRazonsocial" display="tooltip"/>
 
-                            <h:outputLabel for="nomNombres" value="Nombres" style="font-weight: bold;"/>
-                            <p:inputText id="nomNombres" value="#{contribuyentesBB.contribuyente.nomNombres}" required="true" label="Nombres" size="50">
-                                <f:validateLength minimum="1" maximum="50" />
-                            </p:inputText>
-                            <p:message for="nomNombres" display="tooltip"/>
+                                <h:outputLabel for="stsEstadocivil" value="Estado civil" style="font-weight: bold;"/>
+                                <p:inputText id="stsEstadocivil" value="#{contribuyentesBB.contribuyente.stsEstadocivil}" label="Estado civil" size="50">
+                                    <f:validateLength minimum="0" maximum="20" />
+                                </p:inputText>
+                                <p:message for="stsEstadocivil" display="tooltip"/>
 
+                                <h:outputLabel for="txtTelefono" value="Teléfono" style="font-weight: bold;"/>
+                                <p:inputText id="txtTelefono" value="#{contribuyentesBB.contribuyente.txtTelefono}" label="Teléfono" size="50"/>
+                                <p:message for="txtTelefono" display="tooltip"/>
+                                
+                                <h:outputLabel for="txtDireccion" value="Dirección" style="font-weight: bold;"/>
+                                <p:inputText id="txtDireccion" value="#{contribuyentesBB.contribuyente.txtDireccion}" label="Dirección" size="50"/>
+                                <p:message for="txtDireccion" display="tooltip"/>
+                                
+                            </h:panelGrid>
 
-                            <h:outputLabel for="nomRazonsocial" value="Razón Social" style="font-weight: bold;"/>
-                            <p:inputText id="nomRazonsocial" value="#{contribuyentesBB.contribuyente.nomRazonsocial}" required="true" label="Razón Social" size="50">
-                                <f:validateLength minimum="1" maximum="100" />
-                            </p:inputText>
-                            <p:message for="nomRazonsocial" display="tooltip"/>
+                            <f:facet name="footer">
+                                <p:commandButton actionListener="#{contribuyentesBB.actualizarContribuyente()}" 
+                                                 update="grupoContribuyentes" 
+                                                 icon="fa fa-check"
+                                                 style="float:right;"
+                                                 id="guardarContribuyente"
+                                                 value="Guardar">
+                                    <p:ajax update="toolTipSave" process="@this" /> 
+                                </p:commandButton>
+                                <p:tooltip id="toolTipSave" for="guardarContribuyente" value="Guardar cambios en contribuyente" showEffect="fade" hideEffect="fade" position="top"/>
 
-                            <h:outputLabel for="txtNacionalidad" value="Nacionalidad" style="font-weight: bold;"/>
-                            <p:inputText id="txtNacionalidad" value="#{contribuyentesBB.contribuyente.txtNacionalidad}" label="Nacionalidad" size="50">
-                                <f:validateLength minimum="0" maximum="50" />
-                            </p:inputText>
-                            <p:message for="txtNacionalidad" display="tooltip"/>
-
-                            <h:outputLabel value="Fecha de nacimiento" style="font-weight: bold;"/>
-                            <p:calendar id="fecNacimiento" navigator="true" value="#{contribuyentesBB.contribuyente.fecNacimiento}" label="Fecha de nacimiento" 
-                                        showOn="button" size="10" pattern="dd/MM/yyyy" mask="true" >
-                                <p:watermark for="fecNacimiento" value="dd/mm/aaaa"/>
-                            </p:calendar>
-                            <p:message for="fecNacimiento" display="tooltip"/>
-
-
-                            <h:outputLabel for="stsEstadocivil" value="Estado civil" style="font-weight: bold;"/>
-                            <p:inputText id="stsEstadocivil" value="#{contribuyentesBB.contribuyente.stsEstadocivil}" label="Estado civil" size="50">
-                                <f:validateLength minimum="0" maximum="20" />
-                            </p:inputText>
-                            <p:message for="stsEstadocivil" display="tooltip"/>
-
-                            <h:outputLabel for="txtDireccion" value="Dirección" style="font-weight: bold;"/>
-                            <p:inputTextarea id="txtDireccion" value="#{contribuyentesBB.contribuyente.txtDireccion}" label="Dirección" rows="3" cols="50"/>
-                            <p:message for="txtDireccion" display="tooltip"/>
-
-                            <h:outputLabel for="txtTelefono" value="Teléfono" style="font-weight: bold;"/>
-                            <p:inputText id="txtTelefono" value="#{contribuyentesBB.contribuyente.txtTelefono}" label="Teléfono" size="50"/>
-                            <p:message for="txtTelefono" display="tooltip"/>
-
-                            <h:outputLabel for="txtEmail" value="Correo electrónico" style="font-weight: bold;"/>
-                            <p:inputText id="txtEmail" value="#{contribuyentesBB.contribuyente.txtEmail}" label="Correo electrónico" 
-                                         validator="#{contribuyentesBB.validarEmail}" required="true" size="50"/>
-                            <p:message for="txtEmail" display="tooltip"/>
-
+                                <p:commandButton icon="fa fa-close" 
+                                                 value="Cerrar"
+                                                 id="cancelar"
+                                                 update="grupoContribuyentes" 
+                                                 process="@this" 
+                                                 style="float:left;"
+                                                 actionListener="#{contribuyentesBB.cancelarEdicion()}">
+                                    <p:ajax update="toolTipCancel" process="@this" />
+                                    <p:resetInput target="panelContribuyente" />
+                                </p:commandButton>
+                                <p:tooltip id="toolTipCancel" for="cancelar" value="Regresar sin guardar cambios" showEffect="fade" hideEffect="fade" position="top"/>
+                            </f:facet>
                         </h:panelGrid>
-                        <h:panelGrid columns="4">
 
-                            <p:commandButton actionListener="#{contribuyentesBB.actualizarContribuyente()}" 
-                                             update="grupoContribuyentes" 
-                                             icon="fa fa-check"
-                                             id="guardarContribuyente"
-                                             value="Guardar">
-                                <p:ajax update="toolTipSave" process="@this" /> 
-                            </p:commandButton>
-                            <p:tooltip id="toolTipSave" for="guardarContribuyente" value="Guardar cambios en contribuyente" showEffect="fade" hideEffect="fade" position="top"/>
-
-                            <p:commandButton icon="fa fa-close" 
-                                             value="Cerrar"
-                                             id="cancelar"
-                                             update="grupoContribuyentes" 
-                                             process="@this" 
-                                             actionListener="#{contribuyentesBB.cancelarEdicion()}">
-                                <p:ajax update="toolTipCancel" process="@this" />
-                                <p:resetInput target="panelContribuyente" />
-                            </p:commandButton>
-                            <p:tooltip id="toolTipCancel" for="cancelar" value="Regresar sin guardar cambios" showEffect="fade" hideEffect="fade" position="top"/>
-                        </h:panelGrid>
                     </p:outputPanel>
                 </h:form>
             </p:panel>

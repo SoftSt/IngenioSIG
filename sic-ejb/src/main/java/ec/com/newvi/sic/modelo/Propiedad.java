@@ -17,10 +17,12 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -57,7 +59,7 @@ public class Propiedad implements Serializable {
     private Integer codPropiedad;
 
     @JoinColumn(name = "cod_catastral", referencedColumnName = "cod_catastral")
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)/*(cascade = CascadeType.ALL, fetch = FetchType.EAGER)*/
     private Predios codCatastral;
 
     @JoinColumn(name = "cod_personeria", referencedColumnName = "cod_personeria")

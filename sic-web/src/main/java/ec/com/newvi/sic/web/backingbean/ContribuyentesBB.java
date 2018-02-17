@@ -35,6 +35,18 @@ public class ContribuyentesBB extends AdminFichaCatastralBB {
 
     private EnumPantallaMantenimiento pantallaActual;
     private EnumTipoPersoneria[] listaTipoPersoneria; 
+    
+    private List<Contribuyentes> listaContribuyentesFiltrado;
+
+    public List<Contribuyentes> getListaContribuyentesFiltrado() {
+        return listaContribuyentesFiltrado;
+    }
+
+    public void setListaContribuyentesFiltrado(List<Contribuyentes> listaContribuyentesFiltrado) {
+        this.listaContribuyentesFiltrado = listaContribuyentesFiltrado;
+    }
+    
+    
 
     public EnumPantallaMantenimiento getPantallaActual() {
         return pantallaActual;
@@ -66,6 +78,8 @@ public class ContribuyentesBB extends AdminFichaCatastralBB {
     public void crearNuevoContribuyente() {
         this.contribuyente = new Contribuyentes();
         this.contribuyente.setStsPersoneria(EnumEstadoRegistro.A);
+        this.contribuyente.setStsTipopersoneria(EnumTipoPersoneria.Natural);
+        
         conmutarPantalla(EnumPantallaMantenimiento.PANTALLA_EDICION);
         establecerTitulo(EnumEtiquetas.CONTRIBUYENTES_NUEVO_TITULO,
                 EnumEtiquetas.CONTRIBUYENTES_NUEVO_ICONO,

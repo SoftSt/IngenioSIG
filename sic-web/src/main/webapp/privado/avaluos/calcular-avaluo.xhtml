@@ -53,7 +53,7 @@
                                                     onclick="PrimeFaces.monitorDownload(start, stop);">
                                             <p:fileDownload value="#{avaluoBB.imprimir('TABLA_CATASTRAL_URBANA', 'XLSX')}" />
                                         </p:menuitem>
-                                        <p:menuitem value="Tabla Catastral - Impresión" ajax="false"
+                                        <p:menuitem value="Tabla Catastral - Impresión" ajax="false" rendered="false"
                                                     update="grupoAvaluos" icon="fa fa-print" 
                                                     onclick="PrimeFaces.monitorDownload(start, stop);">
                                             <p:fileDownload value="#{avaluoBB.imprimir('TABLA_CATASTRAL_URBANA_PAGINADA', 'PDF')}" />
@@ -66,12 +66,12 @@
                                                      actionListener="#{avaluoBB.reiniciarCalculo()}">
                                     </p:commandButton>
                                 </h:panelGrid>
-
+                                
                                 <h:panelGrid>
                                     <p:dataTable id="listaAvaluos" var="avaluo" widgetVar="listaAvaluoTabla"
                                                  value="#{avaluoBB.listaAvaluos}" rowKey="#{avaluo.avalId}" filteredValue="#{avaluoBB.listaAvaluosFiltrados}"
-                                                 paginator="true" rows="10" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" 
-                                                 rowsPerPageTemplate="10,30,50" 
+                                                 paginator="true" rows="5" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" 
+                                                 rowsPerPageTemplate="5,10,20" 
                                                  resizableColumns="true"
                                                  style="font-size: 0.8em;" sortBy="#{avaluo.nomCodigocatastral}"
                                                  emptyMessage="No se han encontrado resultados" 
@@ -201,7 +201,7 @@
                                                     onclick="PrimeFaces.monitorDownload(start, stop);">
                                             <p:fileDownload value="#{avaluoBB.imprimirConsultado('TABLA_CATASTRAL_URBANA', 'XLSX')}" />
                                         </p:menuitem>
-                                        <p:menuitem value="Tabla Catastral - Impresión" ajax="false"
+                                        <p:menuitem value="Tabla Catastral - Impresión" ajax="false" rendered="false"
                                                     update="grupoAvaluos" icon="fa fa-print" 
                                                     onclick="PrimeFaces.monitorDownload(start, stop);">
                                             <p:fileDownload value="#{avaluoBB.imprimirConsultado('TABLA_CATASTRAL_URBANA_PAGINADA', 'PDF')}" />
@@ -217,8 +217,8 @@
                                 <h:panelGrid>
                                     <p:dataTable id="listaAvaluosProcesados" var="avaluoProcesado" widgetVar="listaAvaluoProcesadoTabla"
                                                  value="#{avaluoBB.listaAvaluosProcesados}" rowKey="#{avaluoProcesado.avalId}" filteredValue="#{avaluoBB.listaAvaluosProcesadosFiltrados}"
-                                                 paginator="true" rows="10" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" 
-                                                 rowsPerPageTemplate="10,30,50" 
+                                                 paginator="true" rows="5" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" 
+                                                 rowsPerPageTemplate="5,10,20" 
                                                  resizableColumns="true"
                                                  style="font-size: 0.8em;" sortBy="#{avaluoProcesado.nomCodigocatastral}"
                                                  emptyMessage="No se han encontrado resultados" 

@@ -226,7 +226,7 @@ public class Predios implements Serializable {
     private List<Bloques> bloques;
     @ElementCollection
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "codCatastral", fetch = FetchType.LAZY)
-    private Collection<Propiedad> historicoPropiedad;
+    private List<Propiedad> historicoPropiedad;
 
     public Predios() {
     }
@@ -643,11 +643,11 @@ public class Predios implements Serializable {
         this.bloques = bloques;
     }
 
-    public Collection<Propiedad> getHistoricoPropiedad() {
+    public List<Propiedad> getHistoricoPropiedad() {
         return historicoPropiedad;
     }
 
-    public void setHistoricoPropiedad(Collection<Propiedad> historicoPropiedad) {
+    public void setHistoricoPropiedad(List<Propiedad> historicoPropiedad) {
         this.historicoPropiedad = historicoPropiedad;
     }
     public EnumZonaInfluencia getCodZonaInfluencia() {

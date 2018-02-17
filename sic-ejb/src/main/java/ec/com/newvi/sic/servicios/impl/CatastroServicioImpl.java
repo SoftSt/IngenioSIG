@@ -98,7 +98,7 @@ public class CatastroServicioImpl implements CatastroServicio {
 
     /*------------------------------------------------------------Predios------------------------------------------------------------*/
     @Override
-    public String generarNuevoPredio(Predios nuevoPredio, SesionDto sesion) throws NewviExcepcion {
+    public Integer generarNuevoPredio(Predios nuevoPredio, SesionDto sesion) throws NewviExcepcion {
 
         // Validar que los datos no sean incorrectos
         LoggerNewvi.getLogNewvi(this.getClass()).debug("Validando predio...", sesion);
@@ -116,12 +116,12 @@ public class CatastroServicioImpl implements CatastroServicio {
 
         prediosFacade.create(nuevoPredio);
         // Si todo marcha bien enviar nombre del predio
-        return nuevoPredio.getNomCodigocatastral();
+        return nuevoPredio.getCodCatastral();
 
     }
 
     @Override
-    public String actualizarPredio(Predios predio, SesionDto sesion) throws NewviExcepcion {
+    public Integer actualizarPredio(Predios predio, SesionDto sesion) throws NewviExcepcion {
         //generarLogPredio(predio);
         // Validar que los datos no sean incorrectos
         LoggerNewvi.getLogNewvi(this.getClass()).debug("Validando predio...", sesion);
@@ -141,7 +141,7 @@ public class CatastroServicioImpl implements CatastroServicio {
         prediosFacade.edit(predio);
 
         // Si todo marcha bien enviar nombre de la predio
-        return predio.getNomCodigocatastral();
+        return predio.getCodCatastral();
     }
 
     @Override
@@ -161,7 +161,8 @@ public class CatastroServicioImpl implements CatastroServicio {
     @Override
     public String eliminarPredio(Predios predio, SesionDto sesion) throws NewviExcepcion {
         predio.setCatEstado(EnumEstadoRegistro.E);
-        return actualizarPredio(predio, sesion);
+        actualizarPredio(predio, sesion);
+        return predio.getNomCodigocatastral();
     }
 
     public Integer obtenerNumeroPredios() {

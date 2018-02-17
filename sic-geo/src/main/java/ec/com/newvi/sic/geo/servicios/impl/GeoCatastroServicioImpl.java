@@ -8,15 +8,21 @@ package ec.com.newvi.sic.geo.servicios.impl;
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
 import ec.com.newvi.sic.dto.SesionDto;
+import ec.com.newvi.sic.enums.EnumNewviExcepciones;
 import ec.com.newvi.sic.geo.dao.GeoPredioFacade;
 import ec.com.newvi.sic.geo.modelo.GeoPredio;
 import ec.com.newvi.sic.geo.servicios.GeoCatastroServicio;
 import ec.com.newvi.sic.geo.utils.UtilGeografico;
 import ec.com.newvi.sic.modelo.Predios;
+import ec.com.newvi.sic.util.ComunUtil;
 import ec.com.newvi.sic.util.excepciones.NewviExcepcion;
+import ec.com.newvi.sic.util.logs.LoggerNewvi;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.security.PermitAll;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -44,7 +50,7 @@ public class GeoCatastroServicioImpl implements GeoCatastroServicio {
     }
 
     private Geometry obtenerGeometriaPredio(Predios predio, SesionDto sesion) throws NewviExcepcion {
-        String wktPredio = geoPredioFacade.obtenerBordePredio(predio.getNomCodigocatastral(), sesion);
+        String wktPredio = geoPredioFacade.obtenerBordePredio(predio.getCodCampo(), sesion);
         return UtilGeografico.obtenerGeometriaDeTexto(wktPredio);
     }
 
@@ -52,7 +58,7 @@ public class GeoCatastroServicioImpl implements GeoCatastroServicio {
     public List<GeoPredio> obtenerListadoGeoPrediosHuerfanos(List<Predios> prediosRegistrados, SesionDto sesion) throws NewviExcepcion {
         return geoPredioFacade.obtenerListadoPrediosHuerfanos(obtenerCodigosPredios(prediosRegistrados), sesion);
     }
-    
+
     private List<String> obtenerCodigosPredios(List<Predios> prediosRegistrados) {
         List<String> listaCodigosPredios = new ArrayList<>();
         prediosRegistrados.forEach((predioRegistrado) -> {
@@ -60,5 +66,45 @@ public class GeoCatastroServicioImpl implements GeoCatastroServicio {
         });
         return listaCodigosPredios;
     }
-    
+
+    private Predios obtenerPredioDesdeGeoPredio(GeoPredio geoPredio, SesionDto sesion) throws NewviExcepcion {
+        Predios nuevoPredio = new Predios();
+        //nuevoPredio.setCodCatastral(geoPredio.getId());
+        nuevoPredio.setCodDpa(geoPredio.getCodigoDPA());
+        nuevoPredio.setCodZona(geoPredio.getCodigoZona());
+        nuevoPredio.setCodSector(geoPredio.getCodigoSector());
+        nuevoPredio.setCodManzana(geoPredio.getCodigoManzana());
+        nuevoPredio.setCodPredio(geoPredio.getNumeroLote());
+        nuevoPredio.setNomCodigocatastral(geoPredio.getCodigoPredio());
+        //nuevoPredio.setValAreaPredio(!ComunUtil.esNulo(geoPredio.getAreaPredio())? new BigDecimal(geoPredio.getAreaPredio()): null);
+        nuevoPredio.setValAreaPredio(geoPredioFacade.obtenerAreaPredioDesdeGeometria(geoPredio.getCodigoCampoPredio(), sesion));
+        nuevoPredio.setCodCampo(geoPredio.getCodigoCampoPredio());
+        return nuevoPredio;
+    }
+
+    @Override
+    public List<Predios> obtenerListaPrediosDesdeGeoPredio(List<GeoPredio> geoPredios, SesionDto sesion) {
+        List<Predios> listaNuevosPredios = new ArrayList<>();
+        Date fechaCreacion = ComunUtil.hoy();
+
+            try {
+                for (GeoPredio geoPredio : geoPredios) {
+                    Predios nuevoPredio;
+                nuevoPredio = obtenerPredioDesdeGeoPredio(geoPredio, sesion);
+                    if (!ComunUtil.esNulo(nuevoPredio)) {
+                        //Registramos la auditoria de ingreso
+                        nuevoPredio.setAudIngIp(sesion.getDireccionIP());
+                        nuevoPredio.setAudIngUsu(sesion.getUsuarioRegistrado().getUsuPalabraclave().trim());
+                        nuevoPredio.setAudIngFec(fechaCreacion);
+                        listaNuevosPredios.add(nuevoPredio);
+                    }
+                }
+            } catch (NewviExcepcion ex) {
+                LoggerNewvi.getLogNewvi(this.getClass()).error(ex, sesion);
+            }
+
+
+        return listaNuevosPredios;
+    }
+
 }

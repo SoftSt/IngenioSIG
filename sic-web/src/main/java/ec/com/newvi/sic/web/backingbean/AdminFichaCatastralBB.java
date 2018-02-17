@@ -60,7 +60,7 @@ public abstract class AdminFichaCatastralBB extends AdminSistemaBB {
     protected LazyDataModel<FichaCatastralDto> listaFichasLazy;
 
     protected List<Contribuyentes> listaContribuyentes;
-    protected List<Contribuyentes> listaContribuyentesFiltrado;
+    
 
     protected Predios predio;
     protected Contribuyentes contribuyente;
@@ -113,13 +113,13 @@ public abstract class AdminFichaCatastralBB extends AdminSistemaBB {
         this.listaContribuyentes = listaContribuyentes;
     }
 
-    public List<Contribuyentes> getlistaContribuyentesFiltrado() {
+    /*public List<Contribuyentes> getlistaContribuyentesFiltrado() {
         return listaContribuyentesFiltrado;
     }
 
     public void setlistaContribuyentesFiltrado(List<Contribuyentes> listaContribuyentesFiltrado) {
         this.listaContribuyentesFiltrado = listaContribuyentesFiltrado;
-    }
+    }*/
 
     protected void actualizarListadoPredios() {
         List<Predios> listaPredios = catastroServicio.consultarPredios();

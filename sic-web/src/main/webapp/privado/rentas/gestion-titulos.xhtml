@@ -54,12 +54,9 @@
                 </h:form>
             </p:panel>
 
-            <p:dialog header="Títulos del predio" widgetVar="dlgTitulos" position="relative" modal="true" showEffect="fade" hideEffect="fade" resizable="false" closable="true" width="750" height="500">
+            <p:dialog header="Títulos del predio" widgetVar="dlgTitulos" position="relative" modal="true" appendTo="@(body)" showEffect="fade" hideEffect="fade" resizable="false" closable="true" width="750" height="500">
                 <h:form id="dialogTitulos">
                     <p:growl id="messagesw" showDetail="true" escape="false"/>
-
-                    <!--<div style="font-size:1.2em;font-weight:bold;">Selección titulo predio</div>-->
-
                     <h:panelGrid >
                         <h:outputLabel for="claveCatastral" value="Clave catastral" style="font-weight: bold;"/>
                         <h:outputText id="claveCatastral" value="#{gestionarTituloBB.fichaCatastral.predio.nomCodigocatastralanterior}"/>

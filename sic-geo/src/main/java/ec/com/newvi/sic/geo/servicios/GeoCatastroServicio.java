@@ -45,5 +45,12 @@ public interface GeoCatastroServicio {
      * @throws NewviExcepcion
      */
     public List<GeoPredio> obtenerListadoGeoPrediosHuerfanos(List<Predios> prediosRegistrados, SesionDto sesion) throws NewviExcepcion;
+    /**
+     * Genera un listado de predios a partir de un GeoPredio
+     * @param geoPredios lista de GeoPredios a ser generados
+     * @param sesion usuario que realiza la acción
+     * @return lista de predios generados
+     */
+    public List<Predios> obtenerListaPrediosDesdeGeoPredio(List<GeoPredio> geoPredios, SesionDto sesion);
 
 }

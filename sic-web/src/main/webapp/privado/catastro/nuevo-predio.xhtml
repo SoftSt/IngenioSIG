@@ -7,81 +7,212 @@
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:newvi="http://ec.com.newvi.faces/ui">
     <ui:define name="content">
-        <h:panelGroup id="grupoFichaCatastral">
+
+        <h:panelGroup id="grupoPrediosHuerfanos">
 
             <p:panel id="panelListaFichaCatastral" rendered="#{nuevoPredioBB.esPantallaActual('PANTALLA_BUSQUEDA')}">
-                <p:growl id="growl" showDetail="true" sticky="true" life="800"/>
-                <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
-                <p>
-                    <h2>
-                        <h:outputText styleClass="#{nuevoPredioBB.iconoPantalla.textoEtiqueta}"/>
-                        <h:outputText value=" #{nuevoPredioBB.tituloPantalla.textoEtiqueta}"/>
-                    </h2>
-                </p>
-                <p>#{nuevoPredioBB.descripcionPantalla.textoEtiqueta}</p>
+                <h:form id="formularioListaPrediosHuerfanos">
+                    <p:growl id="growl" showDetail="true" sticky="true" life="800"/>
+                    <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+                    <p>
+                        <h2>
+                            <h:outputText styleClass="#{nuevoPredioBB.iconoPantalla.textoEtiqueta}"/>
+                            <h:outputText value=" #{nuevoPredioBB.tituloPantalla.textoEtiqueta}"/>
+                        </h2>
+                    </p>
+                    <p>#{nuevoPredioBB.descripcionPantalla.textoEtiqueta}</p>
+                    <p:outputPanel id="opListaPrediosHuerfanos">
+                        <h:panelGrid columns="2">
+                            <p:commandButton value="Seleccionar todos" icon="fa fa-check-square-o" 
+                                             id="btnSeleccionarTodosTitulos"
+                                             update="listaGeoPredios"
+                                             actionListener="#{nuevoPredioBB.seleccionarTodosPrediosHuerfanos()}">
+                            </p:commandButton>
+                            <p:commandButton value="Generar predios" icon="fa fa-bolt"
+                                             update="grupoPrediosHuerfanos"
+                                             onclick="PF('statusDialog').show();"
+                                             oncomplete="PF('statusDialog').hide();"
+                                             actionListener="#{nuevoPredioBB.generarPrediosHuerfanos()}"
+                                             id="btnGenerarPredios">
+                            </p:commandButton>
+                        </h:panelGrid>
+                        <h:panelGrid>
+                            <p:dataTable id="listaGeoPredios" var="predioHuerfano" widgetVar="listaPrediosHuerfanosTabla" selection="#{nuevoPredioBB.listaPrediosHuerfanosSeleccionados}"
+                                         value="#{nuevoPredioBB.listaPrediosHuerfanos}" rowKey="#{predioHuerfano.codigoCampoPredio}" filteredValue="#{nuevoPredioBB.listaPrediosHuerfanosFiltrados}"
+                                         paginator="true" rows="20" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" 
+                                         rowsPerPageTemplate="10,15,20" 
+                                         resizableColumns="true"
+                                         emptyMessage="No se han encontrado resultados" 
+                                         paginatorPosition="bottom">
 
-                <p:dataTable id="listaPrediosNuevos" var="listaPrediosHuerfanos" widgetVar="listaPrediosNuevosTabla"
-                             value="#{nuevoPredioBB.listaPrediosHuerfanos}" rowKey="#{listaPrediosHuerfanos.codigoCampoPredio}" filteredValue="#{nuevoPredioBB.listaPrediosHuerfanosFiltrados}"
-                             paginator="true" rows="20" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" 
-                             rowsPerPageTemplate="10,15,20" 
-                             emptyMessage="No se han encontrado resultados" 
-                             paginatorPosition="bottom">
+                                <p:column selectionMode="multiple" width="20" style="text-align:center" priority="1"/>
+                                <p:column headerText="Id">
+                                    <h:outputText value="#{predioHuerfano.id}"/>
+                                </p:column>
 
-                    <p:column headerText="ID">
-                        <h:outputText value="#{listaPrediosHuerfanos.id}"/>
-                    </p:column>
+                                <p:column headerText="Código Catastral" >
+                                    <h:outputText value="#{predioHuerfano.codigoPredio}" />
+                                </p:column>
 
-                    <p:column headerText="Codigo Campo" >
-                        <h:outputText value="#{listaPrediosHuerfanos.codigoCampoPredio}" />
-                    </p:column>
+                            </p:dataTable>
+                        </h:panelGrid>
 
-                    <p:column headerText="Manzana">
-                        <h:outputText value="#{listaPrediosHuerfanos.codigoManzana}"/>
-                    </p:column>
-                    <p:column headerText="Predio">
-                        <h:outputText value="#{listaPrediosHuerfanos.codigoPredio}"/>
-                    </p:column>
-                    <p:column headerText="Sector">
-                        <h:outputText value="#{listaPrediosHuerfanos.codigoSector}"/>
-                    </p:column>
-                    <p:column headerText="Zona">
-                        <h:outputText value="#{listaPrediosHuerfanos.codigoZona}"/>
-                    </p:column>
+                        <h:panelGrid style="float:right;" id="pgFooter">
+                            <f:facet name="footer">
+                                <p:commandButton value="Incluir contribuyente"
+                                                 id="btnContinuar"
+                                                 update="grupoPrediosHuerfanos"
+                                                 icon="fa fa-arrow-right"
+                                                 actionListener="#{nuevoPredioBB.avanzarPaginaSiguiente()}"
+                                                 style="float:right;"/>
+                            </f:facet>
 
+                        </h:panelGrid>
+                    </p:outputPanel>
+                </h:form>
 
-                </p:dataTable>
             </p:panel>
 
 
-            <p:panel id="panelFichaCatastral" rendered="#{nuevoPredioBB.esPantallaActual('PANTALLA_SELECCION')}">
+            <p:panel id="panelFichaCatastral2" rendered="#{nuevoPredioBB.esPantallaActual('PANTALLA_EDICION')}">
+                <h:form id="formularioListaPrediosGenerados">
+                    <p:messages id="mensajeSeleccion" showDetail="true" autoUpdate="true" closable="true" />
+                    <p>
+                        <h2>
+                            <h:outputText styleClass="#{nuevoPredioBB.iconoPantalla.textoEtiqueta}"/>
+                            <h:outputText value=" #{nuevoPredioBB.tituloPantalla.textoEtiqueta}"/>
+                        </h2>
+                    </p>
+                    <p>#{nuevoPredioBB.descripcionPantalla.textoEtiqueta}</p>
+                    <p:outputPanel id="opListaPrediosGenerados">
+                        
+                        <h:panelGrid>
+                            <p:dataTable id="listaPrediosGenerados" var="listaPrediosGenerados" widgetVar="listaPrediosGeneradosTabla"
+                                         value="#{nuevoPredioBB.listaPrediosGenerados}" rowKey="#{listaPrediosGenerados.codCatastral}" filteredValue="#{nuevoPredioBB.listaPrediosGeneradosFiltrados}"
+                                         paginator="true" rows="20" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" 
+                                         rowsPerPageTemplate="10,15,20" 
+                                         emptyMessage="No se han encontrado resultados" 
+                                         paginatorPosition="bottom">
 
-                <p:messages id="mensajeSeleccion" showDetail="true" autoUpdate="true" closable="true" />
-                <p>
-                    <h2>
-                        <h:outputText styleClass="#{fichaCatastralBB.iconoPantalla.textoEtiqueta}"/>
-                        <h:outputText value=" #{fichaCatastralBB.tituloPantalla.textoEtiqueta}"/>
-                    </h2>
-                </p>
-                <p>#{fichaCatastralBB.descripcionPantalla.textoEtiqueta}</p>
+                                <p:column headerText="Codigo Catastral" >
+                                    <h:outputText value="#{listaPrediosGenerados.nomCodigocatastral}" />
+                                </p:column>
 
+                                <p:column headerText="Area">
+                                    <h:outputText value="#{listaPrediosGenerados.valAreaPredio}"/>
+                                </p:column>
+                                <p:column>
+                                    <p:commandButton icon="fa fa-user-plus" 
+                                                     actionListener="#{nuevoPredioBB.abrirListadoContribuyentes(listaPrediosGenerados.codCampo)}" 
+                                                     update="grupoPrediosHuerfanos"
+                                                     />
+                                </p:column>
+
+                            </p:dataTable>
+
+                            <f:facet name="footer">
+                                <p:commandButton value="Regresar generacion predios"
+                                                 id="btnRegresarDominios"
+                                                 update="grupoPrediosHuerfanos"
+                                                 icon="fa fa-arrow-left"
+                                                 actionListener="#{nuevoPredioBB.regresarPaginaAnterior()}"
+                                                 style="float:left;">
+                                </p:commandButton>
+                            </f:facet>
+                        </h:panelGrid>
+
+
+                    </p:outputPanel>
+
+
+                </h:form>
+                <p:dialog header="Agregar contribuyente al predio seleccionado" widgetVar="dlgContribuyentePredio"  appendTo="@(body)" modal="true" showEffect="fade" hideEffect="fade" resizable="false" closable="true" width="550" height="400">
+                    <h:form>
+                        <p:dataTable id="listaContribuyentes" var="contribuyente" widgetVar="listaContribuyentesTabla"
+                                     value="#{nuevoPredioBB.listaContribuyentes}" rowKey="#{contribuyente.codPersoneria}" filteredValue="#{nuevoPredioBB.listaContribuyentesFiltrado}"
+                                     paginator="true" rows="10" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" 
+                                     rowsPerPageTemplate="10,15,20" 
+                                     emptyMessage="No se han encontrado resultados" 
+                                     paginatorPosition="bottom">
+
+                            <p:column headerText="Personeria" sortBy="#{contribuyente.stsTipopersoneria}">
+                                <h:outputText value="#{contribuyente.stsTipopersoneria}" />
+                            </p:column>
+
+                            <p:column headerText="Cédula/RUC" sortBy="#{contribuyente.codCedularuc}" filterBy="#{contribuyente.codCedularuc}">
+                                <h:outputText value="#{contribuyente.codCedularuc}" />
+                            </p:column>
+
+                            <p:column headerText="Nombres Completos" sortBy="#{contribuyente.nomApellidos.concat(' ').concat(contribuyente.nomNombres)}" filterBy="#{contribuyente.nomApellidos.concat(' ').concat(contribuyente.nomNombres)}">
+                                <h:outputText value="#{contribuyente.nomApellidos.concat(' ').concat(contribuyente.nomNombres)}" />
+                            </p:column>
+
+                            <p:column width="80">
+                                <p:commandButton process="listaContribuyentes" 
+                                                 icon="fa fa-check"
+                                                 actionListener="#{nuevoPredioBB.agregarContribuyente(contribuyente.codPersoneria)}"
+                                                 id="editarContribuyente">
+                                    <p:ajax update="toolTipEdit" process="@this" /> 
+                                </p:commandButton>
+                                <p:tooltip id="toolTipEdit" for="editarContribuyente" value="Agregar Contribuyente" showEffect="fade" hideEffect="fade" position="bottom"/>
+                            </p:column>            
+                        </p:dataTable>
+                    </h:form>
+                </p:dialog>
 
 
             </p:panel>
 
-            <p:panel id="panelFichaCatastralAsignacion" rendered="#{nuevoPredioBB.esPantallaActual('PANTALLA_GENERACION')}">
 
-                <p:messages id="mensajeGeneracion" showDetail="true" autoUpdate="true" closable="true" />
-                <p>
-                    <h2>
-                        <h:outputText styleClass="#{fichaCatastralBB.iconoPantalla.textoEtiqueta}"/>
-                        <h:outputText value=" #{fichaCatastralBB.tituloPantalla.textoEtiqueta}"/>
-                    </h2>
-                </p>
-                <p>#{fichaCatastralBB.descripcionPantalla.textoEtiqueta}</p>
+
+            <p:panel id="panelFichaCatastralAsignacion2" rendered="#{nuevoPredioBB.esPantallaActual('PANTALLA_ASIGNACION')}">
+                <h:form id="formularioListaPrediosRegistrados">
+                    <p:messages id="mensajeGeneracion" showDetail="true" autoUpdate="true" closable="true" />
+                    <p>
+                        <h2>
+                            <h:outputText styleClass="#{nuevoPredioBB.iconoPantalla.textoEtiqueta}"/>
+                            <h:outputText value=" #{nuevoPredioBB.tituloPantalla.textoEtiqueta}"/>
+                        </h2>
+                    </p>
+                    <p>#{nuevoPredioBB.descripcionPantalla.textoEtiqueta}</p>
+                    <p:outputPanel id="opListaPrediosRegistrados">
+                        <h:panelGrid>
+                            <p:dataTable id="listaPrediosRegistrados" var="listaPrediosRegistrados" widgetVar="listaPrediosRegistradosTabla"
+                                         value="#{nuevoPredioBB.listaPrediosHuerfanosRegistrados}" rowKey="#{listaPrediosRegistrados.predio.codCatastral}" filteredValue="#{nuevoPredioBB.listaPrediosHuerfanosRegistrados}"
+                                         paginator="true" rows="20" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" 
+                                         rowsPerPageTemplate="10,15,20" 
+                                         emptyMessage="No se han encontrado resultados" 
+                                         paginatorPosition="bottom">
+
+                                <p:column headerText="Codigo" sortBy="#{fichaCatastral.predio.nomCodigocatastral}" filterBy="#{fichaCatastral.predio.nomCodigocatastral}">
+                                    <h:outputText value="#{fichaCatastral.predio.nomCodigocatastral}" />
+                                </p:column>
+
+                                <p:column headerText="Propietario CI/RUC" sortBy="#{fichaCatastral.contribuyentePropiedad.codCedularuc}" filterBy="#{fichaCatastral.contribuyentePropiedad.codCedularuc}">
+                                    <h:outputText value="#{fichaCatastral.contribuyentePropiedad.codCedularuc}"/>
+                                </p:column>
+
+                                <p:column headerText="Nombre Propietario" sortBy="#{fichaCatastral.contribuyentePropiedad.nomApellidos} #{fichaCatastral.contribuyentePropiedad.nomNombres}" filterBy="#{fichaCatastral.contribuyentePropiedad.nomApellidos} #{fichaCatastral.contribuyentePropiedad.nomNombres}" >
+                                    <h:outputText value="#{fichaCatastral.contribuyentePropiedad.nomApellidos} #{fichaCatastral.contribuyentePropiedad.nomNombres}"/>
+                                </p:column>
+
+                            </p:dataTable>
+
+                            <f:facet name="footer">
+
+                                <p:commandButton value="Regresar Seleccion Predios"
+                                                 id="btnRegresae"
+                                                 update="grupoPrediosHuerfanos"
+                                                 icon="fa fa-arrow-left"
+                                                 actionListener="#{nuevoPredioBB.avanzarPaginaSiguiente()}"
+                                                 style="float:left;">
+                                </p:commandButton>
+                            </f:facet>
+                        </h:panelGrid>
+                    </p:outputPanel>
+                </h:form>
             </p:panel>
 
         </h:panelGroup>
-
-
     </ui:define>
 </ui:composition>

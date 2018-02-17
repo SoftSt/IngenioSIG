@@ -118,6 +118,8 @@ public enum EnumNewviExcepciones {
     INF372("INF372", "Bloque eliminado.", "El bloque se ha eliminado correctamente."),
     INF373("INF373", "Piso eliminado.", "El piso se ha eliminado correctamente."),
     INF374("INF374", "Detalle Piso eliminado.", "El detalle del piso se ha eliminado correctamente."),
+    
+    INF375("INF375", "Contribuyente asignado.", "El contribuyente se ha asignado al predio correspondiente."),
     // 400 al 450 excepciones de impresión
     ERR400("ERR400", "Error al acceder al reporte", "No se pudo acceder al archivo de reporte. Por favor, compruebe que existe en la carpeta del servidor."),
     ERR401("ERR401", "Error al interpretar el reporte", "El reporte generado no está correctamente formado. Revise los archivos de LOG o contacte con el administrador."),
@@ -137,6 +139,8 @@ public enum EnumNewviExcepciones {
     INF503("INF503", "Proceso terminado", "El proceso de registro de elementos al predio ha finalizado."),
     INF504("INF504", "Aplicación de CEM", "La aplicación de CEM se ha realizado con éxito."),
     INF505("INF505", "Aplicación de CEM por Ordenanza", "La aplicacación de CEM por ordenanza se ha realizado con éxito."),
+    INF506("INF506", "Predios generados", "Proceso finalizado. Se han generado [npredios] predios."),
+    INF507("INF507", "Predios registrados", "Proceso finalizado. Se han registrado [npredios] predios."),
     // 601 al 700 excepciones de Rentas
     INF601("INF601", "Títulos generados", "Proceso finalizado. Se han generado [ntitulos] titulos."),
     INF602("INF602", "Títulos registrados", "Proceso finalizado. Se han registrado [ntitulos] titulos."),

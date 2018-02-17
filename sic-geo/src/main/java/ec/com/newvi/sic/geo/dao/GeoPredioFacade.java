@@ -11,6 +11,8 @@ import ec.com.newvi.sic.geo.modelo.GeoPredio;
 import ec.com.newvi.sic.util.excepciones.NewviExcepcion;
 import ec.com.newvi.sic.util.logs.LoggerNewvi;
 import java.io.Serializable;
+import java.math.BigDecimal;
+import java.math.MathContext;
 import java.util.List;
 import javax.annotation.security.PermitAll;
 import javax.ejb.Stateless;
@@ -31,10 +33,11 @@ public class GeoPredioFacade extends AbstractFacade<GeoPredio, Integer> implemen
     }
 
     public String obtenerBordePredio(String codigoPredio, SesionDto sesion) throws NewviExcepcion {
-        String codPredio =codigoPredio.trim().substring(0, 16);
+        //String codPredio =codigoPredio.trim().substring(0, 16);
+        String codPredio =codigoPredio.trim();
         Query q = this.getEntityManager().createNativeQuery("SELECT ST_AsText(ST_Transform(ST_SetSRID(ST_Expand(ST_Extent(geom),5),32717),3857)) "
                 + " FROM public.he002_lote as predio "
-                + " WHERE predio.lot_codigo = :CODIGOPREDIO");
+                + " WHERE TRIM(predio.cod_campo) = :CODIGOPREDIO");
         q.setParameter("CODIGOPREDIO",codPredio);
         try {
             Object caja = q.getSingleResult();
@@ -51,8 +54,28 @@ public class GeoPredioFacade extends AbstractFacade<GeoPredio, Integer> implemen
 
     }
     
+    public BigDecimal obtenerAreaPredioDesdeGeometria(String codigoPredio, SesionDto sesion) throws NewviExcepcion {
+        //String codPredio =codigoPredio.trim().substring(0, 16);
+        String codPredio =codigoPredio.trim();
+        Query q = this.getEntityManager().createNativeQuery("SELECT ST_Area(geom)"
+                + " FROM public.he002_lote as predio "
+                + " WHERE TRIM(predio.cod_campo) = :CODIGOPREDIO");
+        q.setParameter("CODIGOPREDIO",codPredio);
+        try {
+            //return new BigDecimal((Double)q.getSingleResult());
+            return  new BigDecimal((Double)q.getSingleResult(), MathContext.DECIMAL32);
+        } catch (Exception ex) {
+            LoggerNewvi.getLogNewvi(this.getClass()).error(ex, sesion);
+            throw new NewviExcepcion(EnumNewviExcepciones.ERR000, ex);
+        }
+
+    }
+    
+    
+    
+    
     public List<GeoPredio> obtenerListadoPrediosHuerfanos(List<String> listaCodigosPrediosRegistrados, SesionDto sesion) throws NewviExcepcion {
-        Query q = this.getEntityManager().createQuery("SELECT geoPredioHuerfano FROM GeoPredio geoPredioHuerfano WHERE TRIM(geoPredioHuerfano.codigoCampoPredio) NOT IN :PREDIOSREGISTRADOS ");
+        Query q = this.getEntityManager().createQuery("SELECT geoPredioHuerfano FROM GeoPredio geoPredioHuerfano WHERE TRIM(geoPredioHuerfano.codigoCampoPredio) NOT IN :PREDIOSREGISTRADOS");
         q.setParameter("PREDIOSREGISTRADOS", listaCodigosPrediosRegistrados);
         try {
             return q.getResultList();

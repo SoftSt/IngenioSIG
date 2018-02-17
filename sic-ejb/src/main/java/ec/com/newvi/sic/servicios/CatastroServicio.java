@@ -44,17 +44,17 @@ public interface CatastroServicio {
      * @return Nombre del nuevo Predio.
      * @throws NewviExcepcion
      */
-    public String generarNuevoPredio(Predios nuevoPredio, SesionDto sesion) throws NewviExcepcion;
+    public Integer generarNuevoPredio(Predios nuevoPredio, SesionDto sesion) throws NewviExcepcion;
 
     /**
      * Actualiza un Predio existente.
      *
      * @param predio El Predio a actualizar
      * @param sesion Sesion que realiza la operación
-     * @return Nombre del predio actualizado
+     * @return ID del predio actualizado
      * @throws NewviExcepcion
      */
-    public String actualizarPredio(Predios predio, SesionDto sesion) throws NewviExcepcion;
+    public Integer actualizarPredio(Predios predio, SesionDto sesion) throws NewviExcepcion;
 
     /**
      * Devuelve un predio dado un id

@@ -25,6 +25,7 @@
                         <p:commandButton value="Nuevo ficha Catastral" icon="fa fa-user-plus" 
                                          update="messages grupoFichaCatastral"
                                          id="ingresarFichaCatastral"
+                                         rendered="false"
                                          actionListener="#{fichaCatastralBB.crearNuevoPredio()}">
                             <p:ajax update="toolTipInsert" process="@this" />  
                         </p:commandButton>
