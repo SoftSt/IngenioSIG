@@ -7,6 +7,7 @@ package ec.com.newvi.sic.dto;
 
 import ec.com.newvi.sic.modelo.Bloques;
 import ec.com.newvi.sic.modelo.Contribuyentes;
+import ec.com.newvi.sic.modelo.LogPredio;
 import ec.com.newvi.sic.modelo.Predios;
 import ec.com.newvi.sic.modelo.Propiedad;
 import ec.com.newvi.sic.modelo.Servicios;
@@ -101,11 +102,58 @@ public class PresentacionFichaCatastralDto {
     private String fecPago;
     private String anioEmision;
 
+    /*LogPredio*/
+    private String codUsu;
+    private String fecLog;
+    private String nomIp;
+    private String txtLog;
+    private String logAccion;
+
     private List<Terreno> listaDescripcionTerreno;
 
     private List<Bloques> listaBloques;
 
     private List<Servicios> listaServicios;
+
+    public String getCodUsu() {
+        return codUsu;
+    }
+
+    public void setCodUsu(String codUsu) {
+        this.codUsu = codUsu;
+    }
+
+    public String getFecLog() {
+        return fecLog;
+    }
+
+    public void setFecLog(String fecLog) {
+        this.fecLog = fecLog;
+    }
+
+    public String getNomIp() {
+        return nomIp;
+    }
+
+    public void setNomIp(String nomIp) {
+        this.nomIp = nomIp;
+    }
+
+    public String getTxtLog() {
+        return txtLog;
+    }
+
+    public void setTxtLog(String txtLog) {
+        this.txtLog = txtLog;
+    }
+
+    public String getLogAccion() {
+        return logAccion;
+    }
+
+    public void setLogAccion(String logAccion) {
+        this.logAccion = logAccion;
+    }
 
     public List<Bloques> getListaBloques() {
         return listaBloques;
@@ -711,6 +759,23 @@ public class PresentacionFichaCatastralDto {
         this.listaBloques = (List<Bloques>) fichaCatastralDto.getPredio().getBloques();
         this.listaServicios = (List<Servicios>) fichaCatastralDto.getPredio().getServicios();
         setearDatosPropiedad(fichaCatastralDto.getPropiedad());
+
+    }
+
+    private void setearDatosLogPredio(LogPredio logPredio) {
+        this.codUsu = logPredio.getCodUsu();
+        this.fecLog = generarHora(logPredio.getFecLog());
+        this.nomIp = logPredio.getNomIp();
+        this.txtLog = logPredio.getTxtLog();
+        this.logAccion = logPredio.getLogAccion().getAccion();
+
+    }
+
+    public PresentacionFichaCatastralDto(LogPredio logPredio) {
+        FichaCatastralDto fichaCatastralDto = new FichaCatastralDto(logPredio.getCodCatastral());
+        setearDatosContribuyente(fichaCatastralDto.getContribuyentePropiedad());
+        setearDatosLogPredio(logPredio);
+        this.nomCodigocatastral = fichaCatastralDto.getPredio().getNomCodigocatastral();
 
     }
 

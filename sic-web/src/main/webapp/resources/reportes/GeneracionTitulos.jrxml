@@ -2,18 +2,18 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="69177265-d393-4ac5-a206-cec09fcc8acd">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="13"/>
+	<property name="ireport.y" value="0"/>
 	<field name="propietario" class="java.lang.String"/>
 	<field name="nomApellidos" class="java.lang.String"/>
 	<field name="ciRuc" class="java.lang.String"/>
 	<field name="codigoCatastral" class="java.lang.String"/>
-	<field name="barrio" class="java.lang.String"/>
+	<field name="stsBarrio" class="java.lang.String"/>
 	<field name="direccion" class="java.lang.String"/>
 	<field name="avaluoPredio" class="java.lang.String"/>
 	<field name="avaluoTerreno" class="java.lang.String"/>
 	<field name="avaluoEdificacion" class="java.lang.String"/>
 	<field name="serviciosAmbientales" class="java.lang.String"/>
-	<field name="nombreCodigoCatastral" class="java.lang.String"/>
+	<field name="nombreCodigocatastral" class="java.lang.String"/>
 	<field name="nomNumero" class="java.lang.String"/>
 	<field name="impuestoPredial" class="java.lang.String"/>
 	<field name="contribucionEspecialMejoras" class="java.lang.String"/>
@@ -21,6 +21,14 @@
 	<field name="costoEmision" class="java.lang.String"/>
 	<field name="tasaBomberos" class="java.lang.String"/>
 	<field name="totalAPagar" class="java.lang.String"/>
+	<field name="contribuyente" class="java.lang.String"/>
+	<field name="fecEmision" class="java.lang.String"/>
+	<field name="fecPago" class="java.lang.String"/>
+	<field name="txtCallePrincipal" class="java.lang.String"/>
+	<field name="valDescuentoaplicado" class="java.lang.String"/>
+	<field name="valInteresaplicado" class="java.lang.String"/>
+	<field name="valPagado" class="java.lang.String"/>
+	<field name="nomNombres" class="java.lang.String"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -156,21 +164,21 @@
 				<textElement textAlignment="Right">
 					<font fontName="SansSerif" size="9"/>
 				</textElement>
-				<textFieldExpression><![CDATA[]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{avaluoPredio}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="135" y="200" width="95" height="15" uuid="830fa5f2-4843-450e-8675-aa268df3f7da"/>
-				<textElement>
+				<textElement textAlignment="Right">
 					<font fontName="SansSerif" size="9"/>
 				</textElement>
-				<textFieldExpression><![CDATA[]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{fecPago}]]></textFieldExpression>
 			</textField>
 			<textField pattern="dd/MM/yy">
 				<reportElement x="135" y="185" width="95" height="15" uuid="b59efc5f-0986-4e71-87cc-8f43ada77ed2"/>
-				<textElement verticalAlignment="Top">
+				<textElement textAlignment="Right" verticalAlignment="Top">
 					<font fontName="SansSerif" size="9" isBold="false"/>
 				</textElement>
-				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{fecEmision}]]></textFieldExpression>
 			</textField>
 			<line>
 				<reportElement x="0" y="134" width="240" height="1" uuid="8dac25f6-491c-459e-8fca-7ff74547810b"/>
@@ -369,21 +377,21 @@
 				<textElement textAlignment="Right">
 					<font fontName="SansSerif" size="9"/>
 				</textElement>
-				<textFieldExpression><![CDATA[]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{valDescuentoaplicado}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="435" y="258" width="120" height="15" uuid="d5c26854-a670-460e-8c07-c59a8c1ce978"/>
 				<textElement textAlignment="Right">
 					<font fontName="SansSerif" size="9" isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{valPagado}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="435" y="230" width="120" height="15" uuid="2ac2cb3f-916f-4b55-985f-3a799124765e"/>
 				<textElement textAlignment="Right">
 					<font fontName="SansSerif" size="9"/>
 				</textElement>
-				<textFieldExpression><![CDATA[]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{valInteresaplicado}]]></textFieldExpression>
 			</textField>
 			<line>
 				<reportElement x="275" y="199" width="280" height="1" uuid="5d20d653-a1e1-42e4-9f0e-9f641caf42f1"/>
@@ -442,7 +450,7 @@
 				<textElement>
 					<font fontName="SansSerif" size="9" isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{propietario}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{nomApellidos}.trim()+" "+$F{nomNombres}.trim()]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="115" y="45" width="160" height="30" uuid="e3782d79-3ce6-4c0e-8cf9-556796bde32c"/>
@@ -456,14 +464,14 @@
 				<textElement>
 					<font fontName="SansSerif" size="9"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{direccion}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{txtCallePrincipal}]]></textFieldExpression>
 			</textField>
 			<textField pattern="dd/MM/yy" isBlankWhenNull="true">
 				<reportElement x="403" y="30" width="152" height="15" uuid="ed52dfbb-80f6-4f0e-8474-9dc160f1a672"/>
 				<textElement verticalAlignment="Top">
 					<font fontName="SansSerif" size="9" isBold="false"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{barrio}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{stsBarrio}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="115" y="30" width="160" height="15" uuid="ef650b50-4397-4a56-8658-ab03701998e0"/>
@@ -477,7 +485,7 @@
 				<textElement>
 					<font fontName="SansSerif" size="9" isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{nombreCodigoCatastral}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{nombreCodigocatastral}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="403" y="60" width="152" height="15" uuid="4903dbe0-61a3-41d1-9f03-eb1cbf251663"/>

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                template="/WEB-INF/templates/default.xhtml"
+                xmlns:p="http://primefaces.org/ui">
+    <ui:define name="content">
+        <h:panelGroup id="grupoLogPredios">
+            <p:panel id="panelListaLogPredios" rendered="#{logPrediosBB.esPantallaActual('PANTALLA_LISTADO')}">
+                <h:form id="formularioListaLogPredios">
+
+                    <p:growl id="growl" showDetail="true"/>
+                    <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true"/>
+                    <p>
+                        <h2>
+                            <h:outputText styleClass="#{logPrediosBB.iconoPantalla.textoEtiqueta}"/>
+                            <h:outputText value=" #{logPrediosBB.tituloPantalla.textoEtiqueta}"/>
+                        </h2>
+                    </p>
+                    <p>#{logPrediosBB.descripcionPantalla.textoEtiqueta}</p>
+                    <p:tooltip />
+                    <p:outputPanel id="opListaConsultaTitulos">
+
+                        <h:panelGrid class="ui-g-12">
+                            <h:panelGrid columns="2">
+                                <p:splitButton id="imprimir" value="Imprimir" icon="fa fa-print">
+                                    <p:menuitem icon="fa fa-file-pdf-o" value="Imprimir en PDF" ajax="false" update="grupoConsultaTitulos" onclick="PrimeFaces.monitorDownload(start, stop);">
+                                        <p:fileDownload value="#{logPrediosBB.imprimir('LISTA_LOG_PREDIOS','PDF')}"/>
+                                    </p:menuitem>
+                                </p:splitButton>
+                            </h:panelGrid>
+
+                            <p:dataTable id="listaLogPredios" var="logPredios" widgetVar="listaLogPrediosTabla"
+                                         value="#{logPrediosBB.listaLogPredios}" rowKey="#{logPredios.codLogPredio}" filteredValue="#{logPrediosBB.listaLogPrediosFiltrados}"
+                                         paginator="true" rows="5" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" 
+                                         rowsPerPageTemplate="5,10,20" 
+                                         resizableColumns="true"
+                                         style="font-size: 0.8em;" sortBy="#{logPredios.codLogPredio}"
+                                         emptyMessage="No se han encontrado resultados" 
+                                         paginatorPosition="bottom">
+
+                                <p:column headerText="Código Catastral" sortBy="#{logPredios.codCatastral.nomCodigocatastral}" filterBy="#{logPredios.codCatastral.nomCodigocatastral}" width="50">
+                                    <h:outputText value="#{logPredios.codCatastral.nomCodigocatastral}" />
+                                </p:column>
+
+                                <p:column headerText="Contribuyente" sortBy="#{logPredios.obtenerContribuyente().nomApellidos} #{logPredios.obtenerContribuyente().nomNombres}" filterBy="#{logPredios.obtenerContribuyente().nomApellidos} #{logPredios.obtenerContribuyente().nomNombres}" width="50">
+                                    <h:outputText value="#{logPredios.obtenerContribuyente().nomApellidos} #{logPredios.obtenerContribuyente().nomNombres}" />
+                                </p:column>
+
+                                <p:column headerText="Usuario"  sortBy="#{logPredios.codUsu}" filterBy="#{logPredios.codUsu}" width="40">
+                                    <h:outputText value="#{logPredios.codUsu}" />
+                                </p:column>
+
+                                <p:column headerText="Ip" sortBy="#{logPredios.nomIp}" filterBy="#{logPredios.nomIp}" width="40">
+                                    <h:outputText value="#{logPredios.nomIp}" />
+                                </p:column>
+
+                                <p:column headerText="Fecha" sortBy="#{logPredios.fecLog}" width="20">
+                                    <h:outputText value="#{logPredios.fecLog}"/>
+                                </p:column>
+
+                                <p:column headerText="Acción" width="80">
+                                    <h:outputText value="#{logPredios.logAccion.accion}"/>
+                                </p:column>
+
+                                <p:column headerText="Descripción" width="200">
+                                    <h:outputText value="#{logPredios.txtLog}" />
+                                </p:column>
+
+                            </p:dataTable>
+                        </h:panelGrid>
+                    </p:outputPanel>
+                </h:form>
+
+            </p:panel>
+        </h:panelGroup>
+    </ui:define>
+</ui:composition>

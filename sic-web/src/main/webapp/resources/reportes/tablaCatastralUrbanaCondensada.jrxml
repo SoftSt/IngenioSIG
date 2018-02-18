@@ -384,13 +384,6 @@
 	</detail>
 	<pageFooter>
 		<band height="15" splitType="Stretch">
-			<textField>
-				<reportElement x="0" y="0" width="401" height="15" uuid="8547f0d9-696c-4a96-88de-6372618f381b"/>
-				<textElement textAlignment="Right">
-					<font fontName="SansSerif" size="8"/>
-				</textElement>
-				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
-			</textField>
 			<textField evaluationTime="Report">
 				<reportElement x="401" y="0" width="401" height="15" uuid="24da6db5-cb74-47b8-bb12-2767c7e641ae"/>
 				<textElement>

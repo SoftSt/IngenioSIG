@@ -5,6 +5,7 @@
  */
 package ec.com.newvi.sic.modelo;
 
+import ec.com.newvi.sic.dto.FichaCatastralDto;
 import ec.com.newvi.sic.enums.EnumAcciones;
 import ec.com.newvi.sic.enums.EnumEstadoRegistro;
 import ec.com.newvi.sic.util.ComunUtil;
@@ -59,7 +60,7 @@ public class LogPredio implements Serializable{
     @Enumerated(EnumType.STRING)
     @Column(name = "log_estado")
     private EnumEstadoRegistro logEstado;
-
+    
     public LogPredio() {
     }
 
@@ -158,6 +159,12 @@ public class LogPredio implements Serializable{
     
     public Boolean esLogPredioValido() {
         return (!ComunUtil.esNulo(this.logEstado));
+    }
+    
+    public Contribuyentes obtenerContribuyente(){
+        FichaCatastralDto ficha = new FichaCatastralDto(this.codCatastral);
+        return ficha.getContribuyentePropiedad();
+        //return contribuyente.getNomApellidos().concat(" ").concat(contribuyente.getNomApellidos());
     }
     
 }

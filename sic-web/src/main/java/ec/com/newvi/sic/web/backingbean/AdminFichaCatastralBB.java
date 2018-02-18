@@ -18,6 +18,7 @@ import ec.com.newvi.sic.geo.modelo.GeoPredio;
 import ec.com.newvi.sic.geo.servicios.GeoCatastroServicio;
 import ec.com.newvi.sic.modelo.Avaluo;
 import ec.com.newvi.sic.modelo.Contribuyentes;
+import ec.com.newvi.sic.modelo.LogPredio;
 import ec.com.newvi.sic.modelo.ModeloPredioLazy;
 import ec.com.newvi.sic.modelo.Predios;
 import ec.com.newvi.sic.modelo.Propiedad;
@@ -226,6 +227,13 @@ public abstract class AdminFichaCatastralBB extends AdminSistemaBB {
         List<PresentacionFichaCatastralDto> tablita = new ArrayList<>();
         for (Titulos titulo : listaTitulos) {
             tablita.add(new PresentacionFichaCatastralDto(titulo));
+        }
+        return tablita;
+    }
+    protected List<PresentacionFichaCatastralDto> obtenerDatosReporteListaLogPredios(List<LogPredio> listaLogPredios) {
+        List<PresentacionFichaCatastralDto> tablita = new ArrayList<>();
+        for (LogPredio logPredio : listaLogPredios) {
+            tablita.add(new PresentacionFichaCatastralDto(logPredio));
         }
         return tablita;
     }
