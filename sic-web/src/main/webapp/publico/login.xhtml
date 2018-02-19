@@ -7,25 +7,40 @@
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:pe="http://primefaces.org/ui/extensions">
     <ui:define name="content">
-        <h:form id="formLogin">					
-            <p:growl id="growl" showDetail="true" sticky="true" showSummary="false" />
-            <center>
+        <div class="div-login">
+            <div class="texto">
                 <p:panel styleClass="panelLogin">
-                    <h:panelGrid id="grid" columns="2" styleClass="separatorTop w100" columnClasses="w66, field_mrg">
-                        <h:panelGrid columns="2" styleClass="w100" columnClasses="w33 bold, field_mrg">
-                            <p:outputLabel for="usuario" value="Usuario" styleClass="labelMain" />
-                            <p:inputText value="#{loginBB.usuario}" id="usuario" required="true" requiredMessage="Ingrese el usuario" styleClass="w100" autocomplete="off" >
-                            </p:inputText>
-                            <p:outputLabel for="clave" value="Clave" styleClass="labelMain" />
-                            <p:password value="#{loginBB.clave}" id="clave" required="true" requiredMessage="Ingrese la contraseña" styleClass="w100" autocomplete="off">
-                            </p:password>
-                        </h:panelGrid>
-                        <p:commandButton id="loginButton" icon="fa fa-sign-in" value="Ingresar" action="#{loginBB.login()}" update=":formLogin" styleClass="buttonLogin w100" />
-                    </h:panelGrid>
-                    <br />
-                </p:panel>	
-            </center>
+                    <h:form id="formLogin" style="text-align: center">					
+                        <div class="titulo">
+                            <p:outputLabel value="#{sistemaBean.tituloSistema}"/>
+                        </div>
 
-        </h:form>
+                        <h1>
+                            <p:outputLabel value="Ingreso"/>
+                        </h1>
+
+                        <p:growl id="growl" showDetail="true" sticky="true" showSummary="false" />
+                        <div style="text-align: center; font-size: 1.1em; font-weight: bold;">
+                            <h:panelGrid id="grid" columns="1">
+                                <h:panelGrid columns="2">
+                                    <h:outputText styleClass="fa fa-user"/>
+                                    <p:outputLabel for="usuario" value="Usuario"/>
+                                </h:panelGrid>
+                                <p:inputText value="#{loginBB.usuario}" id="usuario" required="true" requiredMessage="Ingrese el usuario" styleClass="w200" autocomplete="off" />
+                                <h:panelGrid columns="2">
+                                    <h:outputText styleClass="fa fa-lock"/>
+                                    <p:outputLabel for="clave" value="Clave" />
+                                </h:panelGrid>
+                                <p:password value="#{loginBB.clave}" id="clave" required="true" requiredMessage="Ingrese la contraseña" styleClass="w200" autocomplete="off"/>
+                            </h:panelGrid>
+                            <br/>
+                            <p:commandButton id="loginButton" icon="fa fa-sign-in" value="Ingresar" action="#{loginBB.login()}" update=":formLogin" styleClass="buttonLogin w100" />
+                            <br/>
+                            <br/>
+                        </div>
+                    </h:form>
+                </p:panel>
+            </div>
+        </div>
     </ui:define>
 </ui:composition>

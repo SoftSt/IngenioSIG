@@ -12,10 +12,7 @@
     </h:head>
     <h:body>
         <p:layout fullPage="true">
-            <p:layoutUnit class="cabecera" position="north" size="42" gutter="0">
-                <ui:include src="/WEB-INF/templates/cabecera.xhtml" />
-            </p:layoutUnit>
-            <p:layoutUnit class="principal principal-publico" position="center">
+            <p:layoutUnit position="center">
                 <ui:insert name="content"></ui:insert>
             </p:layoutUnit>
         </p:layout>

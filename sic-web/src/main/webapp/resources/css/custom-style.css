@@ -81,18 +81,37 @@ body {
     margin-top: -5px;
 }
 
-.div-mensaje-web { 
+.div-mensaje-web, .div-login { 
     height: 100%;
     width: 100%;
 }
 
-.div-mensaje-web .texto {
+.div-login { 
+    background: #186ba0;
+    color: #fff;
+}
+
+.div-mensaje-web .texto, .div-login .texto {
     margin: 0;
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -70%);
     color: #6f6f6f;
+}
+
+.div-login .texto {
+    background: #fafafa;
+    color: #333;
+    padding: 10px;
+    border-radius: 4px;
+    -moz-box-shadow: 0 5px 10px rgba(0,0,0,0.8);
+    -webkit-box-shadow: 0 5px 10px rgba(0,0,0,0.8);
+    box-shadow: 0 5px 10px rgba(0,0,0,0.8);
+}
+
+.div-login .texto .titulo {
+    margin-bottom: 15px;
 }
 
 .div-mensaje-web .texto .logo {
