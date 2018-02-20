@@ -189,63 +189,58 @@
                         <br/>
                         <div style="font-size:1.2em;font-weight:bold;">Información de la obra</div>
                         <p:separator />
-                        <div class="ui-g">
-                            <div class="ui-g-6">
+                        <h:panelGrid columns="2">
+                            <h:panelGrid>
                                 <h:outputLabel for="nomObras" value="Nombre de la Obra" style="font-weight: bold;"/>
                                 <p:inputTextarea id="nomObras" value="#{contribucionMejorasBB.contribucionMejoras.nomObras}" style="width: 300px" required="true" cols="100" rows="3" label="Nombre de la Obra">
                                     <f:validateLength minimum="1" maximum="250"/>
                                 </p:inputTextarea>
                                 <p:message for="nomObras" display="tooltip"/>
-                            </div>
-                            <div class="ui-g-6">
+
+                                <h:panelGrid columns="3">
+                                    <h:outputLabel for="valValor" value="Valor Total" style="font-weight: bold;"/>
+                                    <h:outputLabel for="valPorcentajefrentistas" value="% frentistas" style="font-weight: bold;"/>
+                                    <h:outputLabel for="valPorcentajeavaluo" value="% avaluo" style="font-weight: bold;"/>
+
+                                    <p:inputNumber id="valValor" value="#{contribucionMejorasBB.contribucionMejoras.valValor}" label="Valor Total" size="15"/>
+                                    <p:inputNumber id="valPorcentajefrentistas" value="#{contribucionMejorasBB.contribucionMejoras.valPorcentajefrentistas}" label="Porcentaje frentistas" size="10"/>
+                                    <p:inputNumber id="valPorcentajeavaluo" value="#{contribucionMejorasBB.contribucionMejoras.valPorcentajeavaluo}" label="Porcentaje avaluo" size="10"/>
+
+                                    <p:message for="valValor" display="tooltip"/>
+                                    <p:message for="valPorcentajefrentistas" display="tooltip"/>
+                                    <p:message for="valPorcentajeavaluo" display="tooltip"/>
+                                </h:panelGrid>
+
+                                <h:panelGrid columns="2">
+                                    <h:outputLabel for="cem" value="Apliación" style="font-weight: bold;"/>
+                                    <h:outputLabel for="valPorcentaje" value="% Aplicación" style="font-weight: bold;"/>
+
+                                    <p:selectOneMenu id="cem" value="#{contribucionMejorasBB.contribucionMejoras.stsAplicacionforma}" style="width:35px" >
+                                        <f:selectItem itemLabel="Seleccione forma de aplicación..." itemValue="null" />
+                                        <f:selectItems value="#{contribucionMejorasBB.listaAplicacion}" var="tipoAplicacion" itemValue="#{tipoAplicacion}" itemLabel="#{tipoAplicacion.aplicacion}"/>
+                                    </p:selectOneMenu>
+                                    <p:inputNumber id="valPorcentaje" value="#{contribucionMejorasBB.contribucionMejoras.valPorcentaje}" label="Porcentaje" size="10"/>
+
+                                    <p:message for="cem" display="tooltip"/>
+                                    <p:message for="valPorcentaje" display="tooltip"/>
+
+                                </h:panelGrid>
+
+                            </h:panelGrid>
+                            <h:panelGrid>
+                                <h:outputLabel for="txtDetalle" value="Detalle" style="font-weight: bold;"/>
+                                <p:inputTextarea id="txtDetalle" value="#{contribucionMejorasBB.contribucionMejoras.txtDetalle}" label="Detalle" rows="3" cols="50"/>
+                                <p:message for="txtDetalle" display="tooltip"/>
+
                                 <h:outputLabel for="valAnioobra" value="Año de la obra" style="font-weight: bold;"/>
-                                <p:spinner id="valAnioobra" value="#{contribucionMejorasBB.contribucionMejoras.valAnioobra}" label="Año de la obra" size="10"/>
+                                <p:inputText id="valAnioobra" value="#{contribucionMejorasBB.contribucionMejoras.valAnioobra}" />
                                 <p:message for="valAnioobra" display="tooltip"/>
-                                
+
                                 <h:outputLabel for="valAniodeprecia" value="Años de depreciacion" style="font-weight: bold;"/>
-                                <p:spinner id="valAniodeprecia" value="#{contribucionMejorasBB.contribucionMejoras.valAniodeprecia}" min="0" max="20" size="10"/>
+                                <p:inputText id="valAniodeprecia" value="#{contribucionMejorasBB.contribucionMejoras.valAniodeprecia}" />
                                 <p:message for="valAniodeprecia" display="tooltip"/>
-                            </div>
-                        </div>
-                        <h:panelGrid>
-                            <h:outputLabel for="txtDetalle" value="Detalle" style="font-weight: bold;"/>
-                            <p:inputTextarea id="txtDetalle" value="#{contribucionMejorasBB.contribucionMejoras.txtDetalle}" label="Detalle" rows="3" cols="50"/>
-                            <p:message for="txtDetalle" display="tooltip"/>
-
-                            <h:outputLabel for="valPorcentaje" value="Porcentaje" style="font-weight: bold;"/>
-                            <p:inputNumber id="valPorcentaje" value="#{contribucionMejorasBB.contribucionMejoras.valPorcentaje}" label="Porcentaje" size="50"/>
-                            <p:message for="valPorcentaje" display="tooltip"/>
-
-                            <h:outputLabel for="valValor" value="Valor Total" style="font-weight: bold;"/>
-                            <p:inputNumber id="valValor" value="#{contribucionMejorasBB.contribucionMejoras.valValor}" label="Valor Total" size="50"/>
-                            <p:message for="valValor" display="tooltip"/>
-
-                            <h:outputLabel for="cem" value="Forma de apliación" style="font-weight: bold;"/>
-                            <p:selectOneMenu id="cem" value="#{contribucionMejorasBB.contribucionMejoras.stsAplicacionforma}" style="width:125px" >
-                                <f:selectItem itemLabel="Seleccione forma de aplicación..." itemValue="null" />
-                                <f:selectItems value="#{contribucionMejorasBB.listaAplicacion}" var="tipoAplicacion" itemValue="#{tipoAplicacion}" itemLabel="#{tipoAplicacion.aplicacion}"/>
-                            </p:selectOneMenu>
-                            <p:message for="cem" display="tooltip"/>
-
-
-
-                            <h:outputLabel for="valAcobrar" value="Valor a cobrar" style="font-weight: bold;"/>
-                            <p:inputNumber id="valAcobrar" value="#{contribucionMejorasBB.contribucionMejoras.valAcobrar}" label="Valor a cobrar" size="50"/>
-                            <p:message for="valAcobrar" display="tooltip"/>
-
-                            <h:outputLabel for="valPorcentajefrentistas" value="Porcentaje frentistas" style="font-weight: bold;"/>
-                            <p:inputNumber id="valPorcentajefrentistas" value="#{contribucionMejorasBB.contribucionMejoras.valPorcentajefrentistas}" label="Porcentaje frentistas" size="50"/>
-                            <p:message for="valPorcentajefrentistas" display="tooltip"/>
-
-                            <h:outputLabel for="valPorcentajeavaluo" value="Porcentaje avaluo" style="font-weight: bold;"/>
-                            <p:inputNumber id="valPorcentajeavaluo" value="#{contribucionMejorasBB.contribucionMejoras.valPorcentajeavaluo}" label="Porcentaje avaluo" size="50"/>
-                            <p:message for="valPorcentajeavaluo" display="tooltip"/>
-
-                            <h:outputLabel for="stsPorcentajeaplica" value="Porcentaje aplicacion" style="font-weight: bold;"/>
-                            <p:inputText id="stsPorcentajeaplica" value="#{contribucionMejorasBB.contribucionMejoras.stsPorcentajeaplica}" label="Porcentaje aplicacion" size="50"/>
-                            <p:message for="stsPorcentajeaplica" display="tooltip"/>
+                            </h:panelGrid>
                         </h:panelGrid>
-
 
                         <h:panelGrid columns="4">
 

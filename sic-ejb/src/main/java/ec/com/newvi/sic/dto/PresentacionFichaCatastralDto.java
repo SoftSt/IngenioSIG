@@ -791,7 +791,7 @@ public class PresentacionFichaCatastralDto {
         //this.txtCallePrincipal = predio.getTxtDireccion();
         //this.stsBarrio = predio.getStsBarrio();
         this.nomNumero = predio.getNomNumero();
-        //this.nomCodigocatastral = predio.getNomCodigocatastralanterior();
+        this.nomCodigocatastral = predio.getNomCodigocatastral();
     }
 
     private void setearDatosPredio(Predios predio) {
