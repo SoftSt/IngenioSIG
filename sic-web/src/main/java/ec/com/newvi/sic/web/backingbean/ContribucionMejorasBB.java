@@ -241,6 +241,7 @@ public class ContribucionMejorasBB extends AdminContribucionMejorasBB {
 
     public void insertarContribucionMejoras() {
         try {
+            contribucionMejoras.setStsPorcentajeaplica(Boolean.TRUE);
             contribucionMejorasServicio.generarNuevaContribucionMejoras(contribucionMejoras, sesionBean.getSesion());
             LoggerNewvi.getLogNewvi(this.getClass()).info(EnumNewviExcepciones.INF333.presentarMensaje(), sesionBean.getSesion());
             MensajesFaces.mensajeInformacion(EnumNewviExcepciones.INF333.presentarMensaje());
@@ -382,9 +383,10 @@ public class ContribucionMejorasBB extends AdminContribucionMejorasBB {
 
     public BigDecimal realizarOperacionCEM(BigDecimal cem, BigDecimal valorACobrar, String operacion) {
         if (operacion.equals("sumar")) {
-            cem = cem.add(valorACobrar);
+
+            cem = cem.add(!ComunUtil.esNulo(valorACobrar) ? valorACobrar : BigDecimal.ZERO);
         } else if (operacion.equals("restar")) {
-            cem = cem.subtract(valorACobrar);
+            cem = cem.subtract(!ComunUtil.esNulo(valorACobrar) ? valorACobrar : BigDecimal.ZERO);
         }
         return cem;
     }
@@ -701,8 +703,8 @@ public class ContribucionMejorasBB extends AdminContribucionMejorasBB {
     public Boolean hayBeneficiarios(List<ObrasDetalle> beneficiarios) {
         return (!ComunUtil.esNulo(beneficiarios) && beneficiarios.size() > 0) ? Boolean.TRUE : Boolean.FALSE;
     }
-    
-    public Boolean obtenerEstadoAplicacionCEM(String aplicacionPorcentajesCEM){
+
+    public Boolean obtenerEstadoAplicacionCEM(String aplicacionPorcentajesCEM) {
         return EnumAplicacionCEM.obtenerEstadoAplicacionCEM(aplicacionPorcentajesCEM);
     }
 

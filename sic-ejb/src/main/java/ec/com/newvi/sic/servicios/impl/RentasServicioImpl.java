@@ -52,7 +52,7 @@ public class RentasServicioImpl implements RentasServicio {
 
             if (!ComunUtil.esNulo(nuevoTitulo)) {
                 // Registrar datos del nuevo titulo
-                nuevoTitulo.setFecEmision(fechaEmision);
+                //nuevoTitulo.setFecEmision(fechaEmision);
 
                 //Registramos la auditoria de ingreso
                 nuevoTitulo.setAudIngIp(sesion.getDireccionIP());
@@ -103,6 +103,8 @@ public class RentasServicioImpl implements RentasServicio {
         nuevoTitulo.setValServiciosadministrativos(avaluo.getValEmision());
         nuevoTitulo.setValDescuentoExoneracion(avaluo.getValDescuentosExoneraciones());
         nuevoTitulo.setValContruccionObsoleta(avaluo.getValConstruccionObsoleta());
+        
+        nuevoTitulo.setFecEmision(avaluo.getFecavId().getFecavFechaavaluo());
 
         return nuevoTitulo;
     }

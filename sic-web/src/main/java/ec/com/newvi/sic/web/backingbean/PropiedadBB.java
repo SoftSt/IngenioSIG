@@ -42,6 +42,19 @@ public class PropiedadBB extends AdminFichaCatastralBB {
     private EnumSitActual[] listaTipoSitActual;
     private EnumSiNo[] listaTipoEscritura;
 
+    
+    
+     private List<Contribuyentes> listaContribuyentesFiltrado;
+
+    public List<Contribuyentes> getListaContribuyentesFiltrado() {
+        return listaContribuyentesFiltrado;
+    }
+
+    public void setListaContribuyentesFiltrado(List<Contribuyentes> listaContribuyentesFiltrado) {
+        this.listaContribuyentesFiltrado = listaContribuyentesFiltrado;
+    }
+    
+    
     public Propiedad getPropiedad() {
         return propiedad;
     }

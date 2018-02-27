@@ -25,10 +25,7 @@ import ec.com.newvi.sic.web.enums.EnumPantallaMantenimiento;
 import ec.com.newvi.sic.web.utils.WebUtils;
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
@@ -49,21 +46,107 @@ public class CobroTituloBB extends AdminFichaCatastralBB {
     private TesoreriaServicio tesoreriaServicio;
 
     private EnumPantallaMantenimiento pantallaActual;
-    private List<Titulos> listaTitulosRegistrados;
-    private List<Titulos> listaTitulosRegistradosFiltrados;
+    private List<Titulos> listaTitulosActualesSeleccionados;
+    private List<Titulos> listaTitulosVencidosSeleccionados;
+    private List<Titulos> listaTitulosPorPagar;
+    private List<Titulos> listaTitulosPorPagarFiltrados;
+    private List<Titulos> listaTitulosRegistradosActuales;
+    private List<Titulos> listaTitulosRegistradosActualesFiltrados;
+    private List<Titulos> listaTitulosRegistradosVencidos;
+    private List<Titulos> listaTitulosRegistradosVencidosFiltrados;
     private FichaCatastralDto fichaCatastral;
     private Titulos tituloActual;
 
-    public List<Titulos> getListaTitulosRegistrados() {
-        return listaTitulosRegistrados;
+    private BigDecimal totalTitulosActulales;
+    private BigDecimal totalTitulosVencidos;
+    private BigDecimal totalPorPagarTitulos;
+
+    public List<Titulos> getListaTitulosActualesSeleccionados() {
+        return listaTitulosActualesSeleccionados;
     }
 
-    public List<Titulos> getListaTitulosRegistradosFiltrados() {
-        return listaTitulosRegistradosFiltrados;
+    public void setListaTitulosActualesSeleccionados(List<Titulos> listaTitulosActualesSeleccionados) {
+        this.listaTitulosActualesSeleccionados = listaTitulosActualesSeleccionados;
     }
 
-    public void setListaTitulosRegistradosFiltrados(List<Titulos> listaTitulosRegistradosFiltrados) {
-        this.listaTitulosRegistradosFiltrados = listaTitulosRegistradosFiltrados;
+    public List<Titulos> getListaTitulosVencidosSeleccionados() {
+        return listaTitulosVencidosSeleccionados;
+    }
+
+    public void setListaTitulosVencidosSeleccionados(List<Titulos> listaTitulosVencidosSeleccionados) {
+        this.listaTitulosVencidosSeleccionados = listaTitulosVencidosSeleccionados;
+    }
+
+    public BigDecimal getTotalPorPagarTitulos() {
+        return totalPorPagarTitulos;
+    }
+
+    public void setTotalPorPagarTitulos(BigDecimal totalPorPagarTitulos) {
+        this.totalPorPagarTitulos = totalPorPagarTitulos;
+    }
+
+    public BigDecimal getTotalTitulosActulales() {
+        return totalTitulosActulales;
+    }
+
+    public void setTotalTitulosActulales(BigDecimal totalTitulosActulales) {
+        this.totalTitulosActulales = totalTitulosActulales;
+    }
+
+    public BigDecimal getTotalTitulosVencidos() {
+        return totalTitulosVencidos;
+    }
+
+    public void setTotalTitulosVencidos(BigDecimal totalTitulosVencidos) {
+        this.totalTitulosVencidos = totalTitulosVencidos;
+    }
+
+    public List<Titulos> getListaTitulosPorPagarFiltrados() {
+        return listaTitulosPorPagarFiltrados;
+    }
+
+    public void setListaTitulosPorPagarFiltrados(List<Titulos> listaTitulosPorPagarFiltrados) {
+        this.listaTitulosPorPagarFiltrados = listaTitulosPorPagarFiltrados;
+    }
+
+    public List<Titulos> getListaTitulosPorPagar() {
+        return listaTitulosPorPagar;
+    }
+
+    public void setListaTitulosPorPagar(List<Titulos> listaTitulosPorPagar) {
+        this.listaTitulosPorPagar = listaTitulosPorPagar;
+    }
+
+    public List<Titulos> getListaTitulosRegistradosActuales() {
+        return listaTitulosRegistradosActuales;
+    }
+
+    public void setListaTitulosRegistradosActuales(List<Titulos> listaTitulosRegistradosActuales) {
+        this.listaTitulosRegistradosActuales = listaTitulosRegistradosActuales;
+    }
+
+    public List<Titulos> getListaTitulosRegistradosActualesFiltrados() {
+        return listaTitulosRegistradosActualesFiltrados;
+    }
+
+    public void setListaTitulosRegistradosActualesFiltrados(List<Titulos> listaTitulosRegistradosActualesFiltrados) {
+        this.listaTitulosRegistradosActualesFiltrados = listaTitulosRegistradosActualesFiltrados;
+    }
+
+    public List<Titulos> getListaTitulosRegistradosVencidos() {
+        return listaTitulosRegistradosVencidos;
+    }
+
+    public void setListaTitulosRegistradosVencidos(List<Titulos> listaTitulosRegistradosVencidos) {
+        this.listaTitulosRegistradosVencidos = listaTitulosRegistradosVencidos;
+    }
+
+    public List<Titulos> getListaTitulosRegistradosVencidosFiltrados() {
+        return listaTitulosRegistradosVencidosFiltrados;
+    }
+
+    public void setListaTitulosRegistradosVencidosFiltrados(List<Titulos> listaTitulosRegistradosVencidosFiltrados) {
+        this.listaTitulosRegistradosVencidosFiltrados = listaTitulosRegistradosVencidosFiltrados;
     }
 
     public FichaCatastralDto getFichaCatastral() {
@@ -80,6 +163,7 @@ public class CobroTituloBB extends AdminFichaCatastralBB {
 
     @PostConstruct
     public void init() {
+        this.listaTitulosPorPagar = new ArrayList<>();
         conmutarPantalla(EnumPantallaMantenimiento.PANTALLA_LISTADO);
         establecerTitulo(EnumEtiquetas.COBRO_TITULO_LISTA_TITULO,
                 EnumEtiquetas.COBRO_TITULO_LISTA_ICONO,
@@ -101,9 +185,51 @@ public class CobroTituloBB extends AdminFichaCatastralBB {
         }
     }
 
+    public BigDecimal obtenerTotalAPagarTitulos(List<Titulos> listaTitulos) {
+        BigDecimal valAPagar = BigDecimal.ZERO;
+        for (Titulos tituloTotal : listaTitulos) {
+            valAPagar = valAPagar.add(tituloTotal.getValPagado());
+        }
+        return valAPagar;
+    }
+
+    public List<Titulos> obtenerTotales(List<Titulos> listaTitulosRecargos) {
+        if (!ComunUtil.esNulo(listaTitulosRecargos)) {
+            List<Titulos> listaAux = new ArrayList<>();
+            for (Titulos tituloRecargo : listaTitulosRecargos) {
+                listaAux.add(calcularDescuentosIntereses(tituloRecargo.getCodTitulos()));
+            }
+            listaTitulosRecargos = new ArrayList<>();
+            listaTitulosRecargos.addAll(listaAux);
+        }
+
+        return listaTitulosRecargos;
+    }
+
+    public void generarTitulosActualesYVencidos(List<Titulos> listaTitulos) {
+        this.listaTitulosRegistradosActuales = new ArrayList<>();
+        this.listaTitulosRegistradosVencidos = new ArrayList<>();
+
+        if (!ComunUtil.esNulo(listaTitulos)) {
+            for (Titulos titulo : listaTitulos) {
+                //if (titulo.getFecEmision().before(ComunUtil.hoy())) {
+                if (ComunUtil.obtenerAnioDesdeFecha(titulo.getFecEmision()) >= ComunUtil.obtenerAnioDesdeFecha(ComunUtil.hoy())) {
+                    this.listaTitulosRegistradosActuales.add(titulo);
+                } else {
+                    this.listaTitulosRegistradosVencidos.add(titulo);
+                }
+            }
+            this.listaTitulosRegistradosActuales = obtenerTotales(this.listaTitulosRegistradosActuales);
+            this.totalTitulosActulales = obtenerTotalAPagarTitulos(this.listaTitulosRegistradosActuales);
+            this.listaTitulosRegistradosVencidos = obtenerTotales(this.listaTitulosRegistradosVencidos);
+            this.totalTitulosVencidos = obtenerTotalAPagarTitulos(this.listaTitulosRegistradosVencidos);
+        }
+    }
+
     public void actualizarListaTitulosRegistrados(Integer codCatastral) {
-        this.listaTitulosRegistrados = new ArrayList<>();
-        this.listaTitulosRegistrados = rentasServicio.consultarTitulosPorCodigoCatastral(codCatastral);
+        //this.listaTitulosRegistrados = new ArrayList<>();
+        List<Titulos> listaTitulosRegistrados = rentasServicio.consultarTitulosPorCodigoCatastral(codCatastral);
+        generarTitulosActualesYVencidos(listaTitulosRegistrados);
     }
 
     public void seleccionarTituloDePredio(Integer codCatastral) throws NewviExcepcion {
@@ -162,20 +288,29 @@ public class CobroTituloBB extends AdminFichaCatastralBB {
         return obtenerDiferenciaAniosActualEmision(titulo) > 1 ? Boolean.FALSE : Boolean.TRUE;
     }
 
-    public void calcularDescuentosIntereses(Integer codTitulo) {
-        this.tituloActual = seleccionarTitulo(codTitulo);
-        this.predio = this.tituloActual.getCodCatastral();
-        this.fichaCatastral = new FichaCatastralDto(this.predio);
-        if (esDescuento(this.tituloActual)) {
-            this.tituloActual.setValDescuentoaplicado(calcularDescuentoRecargo(this.tituloActual));
-            this.tituloActual.setValInteresaplicado(BigDecimal.ZERO);
-        } else {
-            this.tituloActual.setValInteresaplicado(calcularInteresMora(this.tituloActual));
-            this.tituloActual.setValDescuentoaplicado(BigDecimal.ZERO);
-        }
-        this.tituloActual.setValPagado(this.tituloActual.getValTotalapagar().add(this.tituloActual.getValDescuentoaplicado()).add(this.tituloActual.getValInteresaplicado()));
-
+    public void abrirDialogoComprobante(Integer codTitulo) {
+        //calcularDescuentosIntereses(codTitulo);
+        this.tituloActual = calcularDescuentosIntereses(codTitulo);
+        //this.tituloActual = seleccionarTitulo(codTitulo);
         WebUtils.obtenerContextoPeticion().execute("PF('dlgResumenTitulos').show()");
+    }
+
+    public Titulos calcularDescuentosIntereses(Integer codTitulo) {
+        //this.predio = this.tituloActual.getCodCatastral();
+        //this.fichaCatastral = new FichaCatastralDto(this.predio);
+        Titulos tituloRecargo = seleccionarTitulo(codTitulo);
+
+        if (esDescuento(tituloRecargo)) {
+            tituloRecargo.setValDescuentoaplicado(calcularDescuentoRecargo(tituloRecargo));
+            tituloRecargo.setValInteresaplicado(BigDecimal.ZERO);
+        } else {
+            tituloRecargo.setValInteresaplicado(calcularInteresMora(tituloRecargo));
+            tituloRecargo.setValDescuentoaplicado(BigDecimal.ZERO);
+        }
+        tituloRecargo.setValPagado(tituloRecargo.getValTotalapagar().add(tituloRecargo.getValDescuentoaplicado()).add(tituloRecargo.getValInteresaplicado()));
+
+        return tituloRecargo;
+        //WebUtils.obtenerContextoPeticion().execute("PF('dlgResumenTitulos').show()");
 
     }
 
@@ -194,7 +329,7 @@ public class CobroTituloBB extends AdminFichaCatastralBB {
             LoggerNewvi.getLogNewvi(this.getClass()).error(EnumNewviExcepciones.ERR000.presentarMensajeCodigo(), e, sesionBean.getSesion());
             MensajesFaces.mensajeError(e.getMessage());
         }
-        this.listaTitulosRegistrados.remove(tituloEliminable);
+        //this.listaTitulosRegistrados.remove(tituloEliminable);
 
     }
 
@@ -220,6 +355,22 @@ public class CobroTituloBB extends AdminFichaCatastralBB {
                 EnumEtiquetas.COBRO_TITULO_LISTA_DESCRIPCION);
     }
 
+    public void avanzarPaginaVerificacion() {
+        seleccionarTodosTitulosAPagar();
+        conmutarPantalla(EnumPantallaMantenimiento.PANTALLA_ASIGNACION);
+        establecerTitulo(EnumEtiquetas.COBRO_TITULO_VERIFICAR_TITULO,
+                EnumEtiquetas.COBRO_TITULO_VERIFICAR_ICONO,
+                EnumEtiquetas.COBRO_TITULO_VERIFICAR_DESCRIPCION);
+    }
+
+    public void regresarSeleccionDeTitulosACobrar() {
+        this.listaTitulosPorPagar = new ArrayList<>();
+        conmutarPantalla(EnumPantallaMantenimiento.PANTALLA_EDICION);
+        establecerTitulo(EnumEtiquetas.COBRO_TITULO_EDITAR_TITULO,
+                EnumEtiquetas.COBRO_TITULO_EDITAR_ICONO,
+                EnumEtiquetas.COBRO_TITULO_EDITAR_DESCRIPCION);
+    }
+
     public void cobrarTitulo() {
         this.tituloActual.setStsEstado(EnumEstadoTitulo.TITULO_COBRADO);
         this.tituloActual.setFecFpago(ComunUtil.hoy());
@@ -236,4 +387,52 @@ public class CobroTituloBB extends AdminFichaCatastralBB {
             MensajesFaces.mensajeError(e.getMessage());
         }
     }
+
+    public void seleccionarTodosTitulosActuales() {
+        this.listaTitulosActualesSeleccionados = new ArrayList<>();
+        for (Titulos titulosAValorar : listaTitulosRegistradosActuales) {
+            this.listaTitulosActualesSeleccionados.add(titulosAValorar);
+        }
+    }
+
+    public void seleccionarTodosTitulosVencidos() {
+        this.listaTitulosVencidosSeleccionados = new ArrayList<>();
+        for (Titulos titulosAValorar : listaTitulosRegistradosVencidos) {
+            this.listaTitulosVencidosSeleccionados.add(titulosAValorar);
+        }
+    }
+
+    public List<Titulos> adjuntarTitulosALista(List<Titulos> listaTitulosBase, List<Titulos> listaTitulos) {
+        for (Titulos titulo : listaTitulos) {
+            listaTitulosBase.add(titulo);
+        }
+        return listaTitulosBase;
+    }
+
+    public void seleccionarTodosTitulosAPagar() {
+        this.listaTitulosPorPagar = new ArrayList<>();
+        List<Titulos> listaGeneral = new ArrayList<>();
+
+        listaGeneral.addAll(this.listaTitulosVencidosSeleccionados);
+        listaGeneral.addAll(this.listaTitulosActualesSeleccionados);
+        this.listaTitulosPorPagar = adjuntarTitulosALista(this.listaTitulosPorPagar, listaGeneral);
+        //this.listaTitulosPorPagar = adjuntarTitulosALista(this.listaTitulosPorPagar, listaTitulosActualesSeleccionados);
+        this.totalPorPagarTitulos = obtenerTotalAPagarTitulos(this.listaTitulosPorPagar);
+    }
+
+    public void cobrarTituloPrueba() {
+        WebUtils.obtenerContextoPeticion().execute("PF('dlgCobroTitulos').close()");
+        LoggerNewvi.getLogNewvi(this.getClass()).info(EnumNewviExcepciones.INF604.presentarMensaje(), sesionBean.getSesion());
+        MensajesFaces.mensajeInformacion(EnumNewviExcepciones.INF604.presentarMensaje());
+
+    }
+
+    public void avanzarFinal() {
+        conmutarPantalla(EnumPantallaMantenimiento.PANTALLA_BUSQUEDA);
+        establecerTitulo(EnumEtiquetas.COBRO_TITULO_EDITAR_TITULO,
+                EnumEtiquetas.COBRO_TITULO_EDITAR_ICONO,
+                EnumEtiquetas.COBRO_TITULO_EDITAR_DESCRIPCION);
+        
+    }
+
 }

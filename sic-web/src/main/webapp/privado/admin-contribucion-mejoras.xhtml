@@ -189,7 +189,7 @@
                         <br/>
                         <div style="font-size:1.2em;font-weight:bold;">Información de la obra</div>
                         <p:separator />
-                        <h:panelGrid columns="2">
+                        <h:panelGrid columns="2" style="width:100%">
                             <h:panelGrid>
                                 <h:outputLabel for="nomObras" value="Nombre de la Obra" style="font-weight: bold;"/>
                                 <p:inputTextarea id="nomObras" value="#{contribucionMejorasBB.contribucionMejoras.nomObras}" style="width: 300px" required="true" cols="100" rows="3" label="Nombre de la Obra">
@@ -240,89 +240,38 @@
                                 <p:inputText id="valAniodeprecia" value="#{contribucionMejorasBB.contribucionMejoras.valAniodeprecia}" />
                                 <p:message for="valAniodeprecia" display="tooltip"/>
                             </h:panelGrid>
-                        </h:panelGrid>
-
-                        <h:panelGrid columns="4">
-
-                            <p:commandButton actionListener="#{contribucionMejorasBB.actualizarContribucionMejoras()}" 
+                            <f:facet name="footer">
+                                
+                                <p:commandButton actionListener="#{contribucionMejorasBB.actualizarContribucionMejoras()}" 
                                              update="grupoContribucionMejoras" 
                                              icon="fa fa-check"
                                              id="guardarContribucionMejoras"
-                                             value="Guardar">
-                                <p:ajax update="toolTipSave" process="@this" /> 
+                                             value="Guardar"
+                                             style="float:right;">
+                                 
                             </p:commandButton>
-                            <p:tooltip id="toolTipSave" for="guardarContribucionMejoras" value="Guardar cambios en contribucionMejoras" showEffect="fade" hideEffect="fade" position="top"/>
+                            
 
                             <p:commandButton icon="fa fa-close" 
                                              value="Cerrar"
                                              id="cancelar"
                                              update="grupoContribucionMejoras" 
                                              process="@this"
-                                             actionListener="#{contribucionMejorasBB.cancelarEdicion()}">
-                                <p:ajax update="toolTipCancel" process="@this" />
+                                             actionListener="#{contribucionMejorasBB.cancelarEdicion()}"
+                                             style="float:left;">
                                 <p:resetInput target="panelContribucionMejoras" />
                             </p:commandButton>
-                            <p:tooltip id="toolTipCancel" for="cancelar" value="Regresar sin guardar cambios" showEffect="fade" hideEffect="fade" position="top"/>
+                            
+                            </f:facet>
+                        </h:panelGrid>
+
+                        <h:panelGrid columns="4">
+
+                            
                         </h:panelGrid>
                     </p:outputPanel>
                 </h:form>
-                <h:form id="formularioListaObrasDetalle">
-                    <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
-                    <p:dataTable id="listaObrasDetalle" var="obrasDetalle" widgetVar="listaObrasDetalleTabla"
-                                 value="#{contribucionMejorasBB.listaObrasDetalle}" rowKey="#{obrasDetalle.codObras}" filteredValue="#{contribucionMejorasBB.listaObrasDetalleFiltrado}"
-                                 paginator="true" rows="10" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" 
-                                 rowsPerPageTemplate="10,15,20" 
-                                 emptyMessage="No se han encontrado resultados" 
-                                 paginatorPosition="bottom">
-
-                        <p:column headerText="Código Obra" sortBy="#{obrasDetalle.codObras.codObras}">
-                            <h:outputText value="#{obrasDetalle.codObras.codObras}" />
-                        </p:column>
-                        <p:column headerText="Código Catastral" sortBy="#{obrasDetalle.nomCodigocatastral}" filterBy="#{obrasDetalle.nomCodigocatastral}">
-                            <h:outputText value="#{obrasDetalle.nomCodigocatastral.codCatastral}" />
-                        </p:column>
-
-                        <p:column headerText="Valor Obra" sortBy="#{obrasDetalle.obrValor}">
-                            <h:outputText value="#{obrasDetalle.obrValor}" />
-                        </p:column>
-
-                        <p:column headerText="Valor Predio" sortBy="#{obrasDetalle.valPredio}">
-                            <h:outputText value="#{obrasDetalle.valPredio}" />
-                        </p:column>
-
-                        <p:column headerText="Valor area frente" sortBy="#{obrasDetalle.valAreafrente}">
-                            <h:outputText value="#{obrasDetalle.valAreafrente}" />
-                        </p:column>
-
-                        <p:column width="80">
-                            <p:commandButton actionListener="#{contribucionMejorasBB.eliminarPredioObra(obrasDetalle.codObrasdetalle)}"                                              
-                                             icon="fa fa-remove"
-                                             id="eliminarPredioObra"
-                                             update="listaObrasDetalle">
-                                <p:confirm header="Eliminar el predio asignado a la obra" message="¿Está seguro?" icon="ui-icon-alert" />
-                                <p:ajax update="toolTipDelete" process="@this" /> 
-                            </p:commandButton>
-                            <p:tooltip id="toolTipDelete" for="eliminarPredioObra" value="Eliminar Predio de obra" showEffect="fade" hideEffect="fade" position="bottom"/>
-
-                        </p:column>
-
-                        <f:facet name="footer">
-                            <p:commandButton actionListener="#{contribucionMejorasBB.eliminarTodosPredioObra()}"
-                                             icon="fa fa-trash"
-                                             value="Eliminar todos"
-                                             id="eliminarTodosPredioObra"
-                                             update="listaObrasDetalle">
-                                <p:confirm header="Eliminar todos los predio asignado a la obra" message="¿Está seguro?" icon="ui-icon-alert" />
-                                <p:ajax update="toolTipDeleteAll" process="@this" />                                                
-                            </p:commandButton>
-                            <p:tooltip id="toolTipDeleteAll" for="eliminarTodosPredioObra" value="Eliminar todos los predios de obra" showEffect="fade" hideEffect="fade" position="bottom"/>
-                        </f:facet>
-                    </p:dataTable>
-                    <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
-                        <p:commandButton value="Si" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
-                        <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
-                    </p:confirmDialog>
-                </h:form>
+                
             </p:panel>
         </h:panelGroup>
     </ui:define>
