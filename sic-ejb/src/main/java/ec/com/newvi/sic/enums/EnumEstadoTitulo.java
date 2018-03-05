@@ -13,11 +13,12 @@ import ec.com.newvi.sic.util.ComunUtil;
  */
 public enum EnumEstadoTitulo {
     
-    TITULO_EMITIDO("Emitido"),
-    TITULO_ANULADO("Anulado"),
-    TITULO_COBRADO("Cobrado"),
-    TITULO_PENDIENTE("Pendiente"),
-    TITULO_INEXISTENTE("Inexistente"),;
+    TITULO_EMITIDO("Se ha realizado la emisión del título "),
+    TITULO_ANULADO("TITULO_ANULADO"),
+    TITULO_COBRADO("Se ha realizado la cobro del título "),
+    TITULO_IMPRESO("TITULO_IMPRESO"),
+    TITULO_DESMARCADO("Se ha desmarcado el título "),
+    TITULO_INEXISTENTE("TITULO_INEXISTENTE"),;
     
     private final String estadoTitulo;
 

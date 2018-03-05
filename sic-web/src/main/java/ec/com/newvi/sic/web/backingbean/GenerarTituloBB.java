@@ -14,6 +14,7 @@ import ec.com.newvi.sic.enums.EnumReporte;
 import ec.com.newvi.sic.modelo.Avaluo;
 import ec.com.newvi.sic.modelo.FechaAvaluo;
 import ec.com.newvi.sic.modelo.Predios;
+import ec.com.newvi.sic.modelo.TituloMovimientos;
 import ec.com.newvi.sic.modelo.Titulos;
 import ec.com.newvi.sic.servicios.RentasServicio;
 import ec.com.newvi.sic.util.ComunUtil;
@@ -165,8 +166,6 @@ public class GenerarTituloBB extends AdminFichaCatastralBB {
         return fechaAvaluo;
     }
 
-    
-
     public Titulos getTituloActual() {
         return tituloActual;
     }
@@ -182,7 +181,7 @@ public class GenerarTituloBB extends AdminFichaCatastralBB {
     public void setTipoTituloActual(String tipoTituloActual) {
         this.tipoTituloActual = tipoTituloActual;
     }
-    
+
     @PostConstruct
     public void init() {
 
@@ -221,9 +220,28 @@ public class GenerarTituloBB extends AdminFichaCatastralBB {
         listaAvaluosProcesados = catastroServicio.consultarListaAvaluosActuales();
     }
 
+    public List<Avaluo> retirarTitulosEmitidos(List<Avaluo> listaAvaluosEditable, String fechaAvaluo) {
+        List<Titulos> listaTitulosGeneral = rentasServicio.buscarTitulosGeneradosPorAnio(fechaAvaluo);
+        List<Avaluo> listaAvaluosDepurada = new ArrayList<>();
+
+        if (!ComunUtil.esNulo(listaTitulosGeneral) && !listaTitulosGeneral.isEmpty()) {
+            for (Avaluo avaluo : listaAvaluosEditable) {
+                for (Titulos tituloVerificado : listaTitulosGeneral) {
+                    if (!avaluo.getCodCatastral().getCodCatastral().equals(tituloVerificado.getCodCatastral().getCodCatastral())) {
+                        listaAvaluosDepurada.add(avaluo);
+                    }
+                }
+            }
+            return listaAvaluosDepurada;
+        } else {
+            return listaAvaluosEditable;
+        }
+    }
+
     public void actualizarListaAvaluosPorFecha(String fechaDescripcion) {
         try {
-            listaAvaluosProcesados = catastroServicio.consultarListaAvaluosPorFecha(fechaDescripcion);
+            //listaAvaluosProcesados = catastroServicio.consultarListaAvaluosPorFecha(fechaDescripcion);
+            listaAvaluosProcesados = retirarTitulosEmitidos(catastroServicio.consultarListaAvaluosPorFecha(fechaDescripcion), fechaDescripcion.substring(0, 4));
             this.totalPorCobrarConsulta = obtenerTotales(listaAvaluosProcesados);
         } catch (Exception e) {
             LoggerNewvi.getLogNewvi(this.getClass()).error(EnumNewviExcepciones.ERR001.presentarMensajeCodigo(), e, sesionBean.getSesion());
@@ -340,12 +358,38 @@ public class GenerarTituloBB extends AdminFichaCatastralBB {
         }
     }
 
+    public void registrarMovimiento(Titulos titulo) {
+        TituloMovimientos movimiento = new TituloMovimientos();
+        movimiento.setAnioEmision(ComunUtil.obtenerAnioDesdeFecha(titulo.getFecEmision()) + "");
+        movimiento.setCodTitulos(titulo);
+        movimiento.setEstadoMovimiento(EnumEstadoRegistro.A);
+        movimiento.setEstadoTitulo(titulo.getStsEstado());
+        movimiento.setFecMovimiento(ComunUtil.hoy());
+        movimiento.setIpUsu(sesionBean.getSesion().getDireccionIP());
+        movimiento.setNomUsu(sesionBean.getSesion().getNombreEquipo());
+        movimiento.setTxtMovimiento(titulo.getStsEstado().getEstadoTitulo() + titulo.getCodTitulos());
+
+        try {
+            rentasServicio.generarNuevoMovimentosTitulo(movimiento, sesionBean.getSesion());
+        } catch (NewviExcepcion e) {
+            LoggerNewvi.getLogNewvi(this.getClass()).error(e, sesionBean.getSesion());
+            MensajesFaces.mensajeError(e.getMessage());
+        } catch (Exception e) {
+            LoggerNewvi.getLogNewvi(this.getClass()).error(EnumNewviExcepciones.ERR000.presentarMensajeCodigo(), e, sesionBean.getSesion());
+            MensajesFaces.mensajeError(e.getMessage());
+        }
+    }
+
     public void registrarNuevoTitulo() throws NewviExcepcion {
+
         for (Titulos nuevoTitulo : this.listaTitulosGenerados) {
             try {
                 nuevoTitulo.setStsEstado(EnumEstadoTitulo.TITULO_EMITIDO);
                 nuevoTitulo.setCodSecuencial(generarCodSecuencial(nuevoTitulo));
-                this.fechaEmisionTitulo = rentasServicio.generarNuevoTitulo(nuevoTitulo, sesionBean.getSesion());
+                
+                Titulos tituloRegistrado = rentasServicio.seleccionarTitulo(rentasServicio.generarNuevoTitulo(nuevoTitulo, sesionBean.getSesion()));
+                registrarMovimiento(tituloRegistrado);
+                this.fechaEmisionTitulo = tituloRegistrado.getFecEmision();
                 //this.listaTitulosGenerados.remove(nuevoTitulo);
                 eliminarAvaluo(nuevoTitulo.getCodCatastral());
             } catch (NewviExcepcion e) {
@@ -369,8 +413,8 @@ public class GenerarTituloBB extends AdminFichaCatastralBB {
     public DefaultStreamedContent imprimir(EnumReporte tipoReporte) {
         return generarReporteCatastro(tipoReporte, ReporteGenerador.FormatoReporte.PDF, obtenerDatosReporteTitulos(this.tituloActual), PresentacionFichaCatastralDto.class);
     }
-    
-    public void buscarTituloPorTipo(){
+
+    public void buscarTituloPorTipo() {
         this.listaTitulosRegistrados = rentasServicio.consultarTitulosPorTipo(EnumEstadoTitulo.obtenerEstadoTitulo(this.tipoTituloActual));
         this.totalCobrardoTitulos = obtenerTotalesTitulos(this.listaTitulosRegistrados);
     }

@@ -8,6 +8,7 @@ package ec.com.newvi.sic.servicios;
 import ec.com.newvi.sic.dto.SesionDto;
 import ec.com.newvi.sic.enums.EnumEstadoTitulo;
 import ec.com.newvi.sic.modelo.Avaluo;
+import ec.com.newvi.sic.modelo.TituloMovimientos;
 import ec.com.newvi.sic.modelo.Titulos;
 import ec.com.newvi.sic.util.excepciones.NewviExcepcion;
 import java.util.Date;
@@ -38,10 +39,10 @@ public interface RentasServicio {
      * Se genera el registro del titulo
      * @param nuevoTitulo nuevo titulo a registrar
      * @param sesion Sesión que genera el registo de los nuevos títulos.
-     * @return Fecha de emisión del titulo.
+     * @return código del titulo.
      * @throws NewviExcepcion 
      */
-    public Date generarNuevoTitulo(Titulos nuevoTitulo, SesionDto sesion) throws NewviExcepcion;
+    public Integer generarNuevoTitulo(Titulos nuevoTitulo, SesionDto sesion) throws NewviExcepcion;
     /**
      * Lista todos los títulos que se han generado en una fecha determinada
      * @param fechaEmision fecha por la que se generará la consulta
@@ -80,4 +81,41 @@ public interface RentasServicio {
      * @return  lista de títulos
      */
     public List<Titulos> consultarTitulos();
+    
+    /**
+     * Genera el registro de un nuevo movimiento 
+     * @param nuevoMovimiento nuevo movimiento
+     * @param sesion Sesión que genera los nuevos movimiento.
+     * @return codigo del movimiento registrado
+     * @throws NewviExcepcion 
+     */
+    /**
+     * Lista todos los titulos del anio actual
+     * @param anio anio actual por cual se filtrará
+     * @return lista de titulos actuales
+     */
+    public List<Titulos> buscarTitulosGeneradosPorAnio(String anio);
+    
+    /*---------------------------------------------------------------Movimientos del titulo----------------------------------------------------------------------------------*/
+    public Integer generarNuevoMovimentosTitulo(TituloMovimientos nuevoMovimiento, SesionDto sesion) throws NewviExcepcion;
+    /**
+     * Selecciona un movimiento por su código
+     * @param codMovimiento código por el cual va ha ser buscado el movimiento
+     * @return el movimiento obtenido por su código
+     * @throws NewviExcepcion 
+     */
+    public Titulos seleccionarMovimentosTitulo(Integer codMovimiento)throws NewviExcepcion;
+    /**
+     * Actualiza el movimiento recibido
+     * @param movimientoTitulo movimiento ha ser actualizado
+     * @param sesion Sesión que genera la acutalización del movimiento
+     * @return el código del movimiento actualizado
+     * @throws NewviExcepcion 
+     */
+    public Integer actualizarMovimentosTitulo(TituloMovimientos movimientoTitulo, SesionDto sesion) throws NewviExcepcion;
+    /**
+     * Consuta todos los movimientos registrados 
+     * @return 
+     */
+    public List<TituloMovimientos> consultarMovimentosTitulo();
 }

@@ -44,14 +44,22 @@ public class TituloFacade extends AbstractFacade<Titulos, Integer> implements Se
         //@return listado de titulos
         return q.getResultList();
     }
+    
+    public List<Titulos> buscarTitulosGeneradosPorAnio(String anioEmision) {
+        // Busca un listado de titulos
+        Query q = this.getEntityManager().createQuery("SELECT titulo FROM Titulos titulo where cast(extract(YEAR FROM titulo.fecEmision) as text)= :ANIOEMISION AND titulo.tituloEstado = :ESTADO");
+        q.setParameter("ANIOEMISION", anioEmision);
+        q.setParameter("ESTADO", EnumEstadoRegistro.A);
+        //@return listado de titulos
+        return q.getResultList();
+    }
 
     public List<Titulos> buscarTitulosPorCodigoCatastral(Integer codCatastral) {
         // Busca un listado de titulos
-        Query q = this.getEntityManager().createQuery("SELECT titulo FROM Titulos titulo where titulo.tituloEstado = :ESTADO AND titulo.codCatastral.codCatastral = :CODCATASTRAL AND titulo.stsEstado = :ESTADOTITULO OR titulo.stsEstado = :ESTADOTITULOAUX OR titulo.stsEstado = :ESTADOTITULOAUX2");
+        Query q = this.getEntityManager().createQuery("SELECT titulo FROM Titulos titulo where titulo.tituloEstado = :ESTADO AND titulo.codCatastral.codCatastral = :CODCATASTRAL AND titulo.stsEstado = :ESTADOTITULO OR titulo.stsEstado = :ESTADOTITULOAUX");
         q.setParameter("ESTADO", EnumEstadoRegistro.A);
         q.setParameter("ESTADOTITULO", EnumEstadoTitulo.TITULO_EMITIDO);
-        q.setParameter("ESTADOTITULOAUX", EnumEstadoTitulo.TITULO_COBRADO);
-        q.setParameter("ESTADOTITULOAUX2", EnumEstadoTitulo.TITULO_PENDIENTE);
+        q.setParameter("ESTADOTITULOAUX", EnumEstadoTitulo.TITULO_DESMARCADO);
         q.setParameter("CODCATASTRAL", codCatastral);
         //@return listado de titulos
         return q.getResultList();

@@ -12,6 +12,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -20,6 +21,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -34,6 +36,11 @@ import javax.validation.constraints.Size;
 @Table(name = "cat_cat_titulos")
 
 public class Titulos implements Serializable {
+
+    
+    
+    @OneToMany(mappedBy = "codTitulos")
+    private List<TituloMovimientos> listaMovimientosTitulo;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -639,4 +646,12 @@ public class Titulos implements Serializable {
         return (!ComunUtil.esNulo(this.tituloEstado));
     }
 
+    public List<TituloMovimientos> getListaMovimientosTitulo() {
+        return listaMovimientosTitulo;
+    }
+
+    public void setListaMovimientosTitulo(List<TituloMovimientos> listaMovimientosTitulo) {
+        this.listaMovimientosTitulo = listaMovimientosTitulo;
+    }
+    
 }

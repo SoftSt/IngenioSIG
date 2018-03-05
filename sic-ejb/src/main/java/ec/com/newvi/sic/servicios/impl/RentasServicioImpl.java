@@ -6,12 +6,14 @@
 package ec.com.newvi.sic.servicios.impl;
 
 import ec.com.newvi.sic.dao.TituloFacade;
+import ec.com.newvi.sic.dao.TituloMovimientosFacade;
 import ec.com.newvi.sic.dto.SesionDto;
 import ec.com.newvi.sic.enums.EnumEstadoRegistro;
 import ec.com.newvi.sic.enums.EnumEstadoTitulo;
 import ec.com.newvi.sic.enums.EnumNewviExcepciones;
 import ec.com.newvi.sic.modelo.Avaluo;
 import ec.com.newvi.sic.modelo.Propiedad;
+import ec.com.newvi.sic.modelo.TituloMovimientos;
 import ec.com.newvi.sic.modelo.Titulos;
 import ec.com.newvi.sic.servicios.ContribuyentesServicio;
 import ec.com.newvi.sic.servicios.RentasServicio;
@@ -40,6 +42,8 @@ public class RentasServicioImpl implements RentasServicio {
     private ContribuyentesServicio contribuyentesServicio;
     @EJB
     private TituloFacade tituloFacade;
+    @EJB
+    private TituloMovimientosFacade tituloMovimientosFacade;
 
     @Override
     public List<Titulos> generarTitulosDesdeAvaluos(List<Avaluo> listadoAvaluos, SesionDto sesion) throws NewviExcepcion {
@@ -103,14 +107,14 @@ public class RentasServicioImpl implements RentasServicio {
         nuevoTitulo.setValServiciosadministrativos(avaluo.getValEmision());
         nuevoTitulo.setValDescuentoExoneracion(avaluo.getValDescuentosExoneraciones());
         nuevoTitulo.setValContruccionObsoleta(avaluo.getValConstruccionObsoleta());
-        
+
         nuevoTitulo.setFecEmision(avaluo.getFecavId().getFecavFechaavaluo());
 
         return nuevoTitulo;
     }
 
     @Override
-    public Date generarNuevoTitulo(Titulos nuevoTitulo, SesionDto sesion) throws NewviExcepcion {
+    public Integer generarNuevoTitulo(Titulos nuevoTitulo, SesionDto sesion) throws NewviExcepcion {
         // Validar que los datos no sean incorrectos
         LoggerNewvi.getLogNewvi(this.getClass()).debug("Validando título...", sesion);
         if (!nuevoTitulo.esTituloValido()) {
@@ -127,7 +131,12 @@ public class RentasServicioImpl implements RentasServicio {
 
         tituloFacade.create(nuevoTitulo);
         // Si todo marcha bien se retorna la fecha de emsion
-        return nuevoTitulo.getFecEmision();
+        return nuevoTitulo.getCodTitulos();
+    }
+
+    @Override
+    public List<Titulos> buscarTitulosGeneradosPorAnio(String anio) {
+        return tituloFacade.buscarTitulosGeneradosPorAnio(anio);
     }
 
     @Override
@@ -179,6 +188,51 @@ public class RentasServicioImpl implements RentasServicio {
     @Override
     public List<Titulos> consultarTitulos() {
         return tituloFacade.buscarTitulos();
+    }
+
+    @Override
+    public Integer generarNuevoMovimentosTitulo(TituloMovimientos nuevoMovimiento, SesionDto sesion) throws NewviExcepcion {
+        // Validar que los datos no sean incorrectos
+        LoggerNewvi.getLogNewvi(this.getClass()).debug("Validando título...", sesion);
+        if (!nuevoMovimiento.esTituloMovimientosValido()) {
+            throw new NewviExcepcion(EnumNewviExcepciones.ERR605);
+        }
+        // Crear el movimiento del titulo
+        LoggerNewvi.getLogNewvi(this.getClass()).debug("Creando movimiento del título...", sesion);
+
+        tituloMovimientosFacade.create(nuevoMovimiento);
+        // Si todo marcha bien se retorna el código del movimiento
+        return nuevoMovimiento.getCodMovimiento();
+    }
+
+    @Override
+    public Titulos seleccionarMovimentosTitulo(Integer codMovimiento) throws NewviExcepcion {
+        if (ComunUtil.esNumeroPositivo(codMovimiento)) {
+            return tituloFacade.find(codMovimiento);
+        } else {
+            throw new NewviExcepcion(EnumNewviExcepciones.ERR011);
+        }
+    }
+
+    @Override
+    public Integer actualizarMovimentosTitulo(TituloMovimientos movimientoTitulo, SesionDto sesion) throws NewviExcepcion {
+        // Validar que los datos no sean incorrectos
+        LoggerNewvi.getLogNewvi(this.getClass()).debug("Validando movimiento del título...", sesion);
+        if (!movimientoTitulo.esTituloMovimientosValido()) {
+            throw new NewviExcepcion(EnumNewviExcepciones.ERR605);
+        }
+        // Editar el movimiento del título
+        LoggerNewvi.getLogNewvi(this.getClass()).debug("Editando movimiento del título...", sesion);
+
+        tituloMovimientosFacade.edit(movimientoTitulo);
+
+        // Si todo marcha bien enviar código del movimiento del título
+        return movimientoTitulo.getCodMovimiento();
+    }
+
+    @Override
+    public List<TituloMovimientos> consultarMovimentosTitulo() {
+        return tituloMovimientosFacade.buscarMovimientosTitulo();
     }
 
 }

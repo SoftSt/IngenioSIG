@@ -24,7 +24,7 @@
                                  value="#{cobroTituloBB.listaFichas}" rowKey="#{fichaCatastral.predio.codCatastral}" filteredValue="#{cobroTituloBB.listaFichasFiltradas}"
                                  paginator="true" rows="1" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}" 
                                  rowsPerPageTemplate="5,10,15" 
-                                 emptyMessage="No se han encontrado resultados" 
+                                 emptyMessage="Utilice los filtros de busqueda para encontrar un registro" 
                                  paginatorPosition="bottom">
                         <p:column headerText="Cod. Catastral" sortBy="#{fichaCatastral.predio.nomCodigocatastral}" filterBy="#{fichaCatastral.predio.nomCodigocatastral}">
                             <h:outputText value="#{fichaCatastral.predio.nomCodigocatastral}" />
@@ -226,126 +226,9 @@
                                                  style="float:right;">
                                 </p:commandButton>
                             </f:facet>
-
-                            <p:dialog header="Resumen del título" widgetVar="dlgResumenTitulos" modal="false" showEffect="fade" hideEffect="fade" resizable="false" closable="true">
-                                <h:panelGrid>
-                                    <h:panelGrid columns="2">
-                                        <h:panelGrid columns="2" style=" padding-left: 10px">
-                                            <h:outputLabel for="contribuyente" value="CONTRIBUYENTE: " style="font-weight: bold;"/>
-                                            <h:outputText id="contribuyente" value="#{cobroTituloBB.fichaCatastral.contribuyentePropiedad.nomNombres.trim()} #{cobroTituloBB.fichaCatastral.contribuyentePropiedad.nomApellidos.trim()}"/>
-                                            <h:outputLabel for="codCedularuc" value="RUC/CC: " style="font-weight: bold;"/>
-                                            <h:outputText id="codCedularuc" value="#{cobroTituloBB.fichaCatastral.contribuyentePropiedad.codCedularuc}"/>
-                                            <h:outputLabel for="txtDireccionProp" value="DIRECCIÓN/DOMICILIO: " style="font-weight: bold;"/>
-                                            <h:outputText id="txtDireccionProp" value="#{cobroTituloBB.fichaCatastral.contribuyentePropiedad.txtDireccion}"/>
-                                            <p:separator /><p:separator />
-                                            <h:outputLabel value="AVALUO" style="font-size:1em;font-weight:bold;"/><h:outputLabel value="MONTO" style="font-size:1em;font-weight:bold;"/>
-                                            <h:outputLabel for="valTerreno" value="Terreno ($):" style="font-weight: bold; font-size: 0.9em;"/>
-                                            <h:outputText id="valTerreno" style="font-size: 0.9em;" value="#{cobroTituloBB.tituloActual.valValorterreno}">
-                                                <f:convertNumber pattern="###,###.00"/>
-                                            </h:outputText>
-                                            <h:outputLabel for="valConstruccion" value="Construcción ($):" style="font-weight: bold; font-size: 0.9em;"/>
-                                            <h:outputText id="valConstruccion" style="font-size: 0.9em;" value="#{cobroTituloBB.tituloActual.valConstruccion}">
-                                                <f:convertNumber pattern="###,###.00"/>
-                                            </h:outputText>
-                                            <p:separator /><p:separator />  
-                                            <h:outputLabel for="valPropiedad" value="Valor Propiedad ($):" style="font-weight: bold;font-size: 0.9em;"/>
-                                            <h:outputText id="valPropiedad" style="font-size: 0.9em;" value="#{cobroTituloBB.tituloActual.valBaseimponible}">
-                                                <f:convertNumber pattern="###,###.00"/>
-                                            </h:outputText>
-                                            <h:outputLabel for="valBase" value="Base Imponible ($):" style="font-weight: bold;font-size: 0.9em;"/>
-                                            <h:outputText id="valBase" style="font-size: 0.9em;" value="#{cobroTituloBB.tituloActual.valBaseimponible}">
-                                                <f:convertNumber pattern="###,###.00"/>
-                                            </h:outputText>
-                                            <h:outputLabel for="fecEmision" value="Fecha Emisión:" style="font-weight: bold;font-size: 0.9em;"/>
-                                            <h:outputText id="fecEmision" style="font-size: 0.9em;" value="#{cobroTituloBB.tituloActual.obtenerFechaEmision()}"/>
-                                            <h:outputLabel for="fecRecaudacion" value="Fecha Recaudación:" style="font-weight: bold;font-size: 0.9em;"/>
-                                            <h:outputText id="fecRecaudacion" style="font-size: 0.9em;" value="#{cobroTituloBB.tituloActual.obtenerFechaRecaudacion()}"/>
-                                        </h:panelGrid>
-                                        <h:panelGrid columns="2" style=" padding-left: 10px; padding-right: 10px" >
-                                            <h:outputLabel for="nomCodigocatastral" value="CLAVE CATASTRAL: " style="font-weight: bold;"/>
-                                            <h:outputText id="nomCodigocatastral" value="#{cobroTituloBB.tituloActual.nomCodigocatastral}"/>
-                                            <h:outputLabel for="txtBarrio" value="SITIO/BARRIO: " style="font-weight: bold;"/>
-                                            <h:outputText id="txtBarrio" value="#{cobroTituloBB.tituloActual.txtBarrio}"/>
-                                            <h:outputLabel for="txtDireccion" value="CALLE: " style="font-weight: bold;"/>
-                                            <h:outputText id="txtDireccion" value="#{cobroTituloBB.tituloActual.txtDireccion}"/>
-                                            <p:separator /><p:separator />
-                                            <h:outputLabel value="RUBROS" style="font-size:1em;font-weight:bold;"/>
-                                            <h:outputLabel value="VALORES" style="font-size:1em;font-weight:bold;float: right"/>
-                                            <h:outputLabel for="valImpuestoPredial" value="Impuesto Predial ($):" style="font-weight: bold;font-size: 0.9em;"/>
-                                            <h:outputText id="valImpuestoPredial" style="float: right;font-size: 0.9em;" value="#{cobroTituloBB.tituloActual.valImpuestopredial}">
-                                                <f:convertNumber pattern="###,###.00"/>
-                                            </h:outputText>
-                                            <h:outputLabel for="servAdmistrativos" value="Servicios Admininistrativos ($):" style="font-weight: bold;font-size: 0.9em;"/>
-                                            <h:outputText id="servAdmistrativos" style="float: right;font-size: 0.9em;" value="#{cobroTituloBB.tituloActual.valServiciosadministrativos}">
-                                                <f:convertNumber pattern="###,###.00"/>
-                                            </h:outputText>
-                                            <h:outputLabel for="valNoconstruido" value="Imp. Solar No Eficado ($):" style="font-weight: bold;font-size: 0.9em;"/>
-                                            <h:outputText id="valNoconstruido" style="float: right;font-size: 0.9em;" value="#{cobroTituloBB.tituloActual.valNoconstruido}">
-                                                <f:convertNumber pattern="###,###.00"/>
-                                            </h:outputText>
-                                            <h:outputLabel for="valDescuentoExon" value="Descuento/Exoneración ($):" style="font-weight: bold;font-size: 0.9em;"/>
-                                            <h:outputText id="valDescuentoExon" style="float: right;font-size: 0.9em;" value="#{cobroTituloBB.tituloActual.valDescuentoExoneracion}">
-                                                <f:convertNumber pattern="###,###.00"/>
-                                            </h:outputText>
-                                            <h:outputLabel for="valObsoleto" value="Construcción Obsoleta ($):" style="font-weight: bold;font-size: 0.9em;"/>
-                                            <h:outputText id="valObsoleto" style="float: right;font-size: 0.9em;" value="#{cobroTituloBB.tituloActual.valSaludpublica}">
-                                                <f:convertNumber pattern="###,###.00"/>
-                                            </h:outputText>
-                                            <h:outputLabel for="valBomberos" value="Bomberos. ($):" style="font-weight: bold;font-size: 0.9em;"/>
-                                            <h:outputText id="valBomberos" style="float: right;font-size: 0.9em;" value="#{cobroTituloBB.tituloActual.valBomberos}">
-                                                <f:convertNumber pattern="###,###.00"/>
-                                            </h:outputText>
-                                            <p:separator /><p:separator />
-                                        </h:panelGrid>
-                                        <h:panelGrid style=" padding-left: 20px"></h:panelGrid>
-                                        <h:panelGrid columns="2" width="100%" style=" padding-left: 10px; padding-right: 10px">
-                                            <h:outputLabel for="valEmitido" value="Valor Emitido:" style="font-weight: bold;font-size: 0.9em;"/>
-                                            <h:outputText id="valEmitido" style="float: right;font-size: 0.9em;" value="#{cobroTituloBB.tituloActual.valTotalapagar}">
-                                                <f:convertNumber pattern="###,###.00"/>
-                                            </h:outputText>
-                                            <h:outputLabel for="valDescuento" value="Descuento/Recargo:" style="font-weight: bold;font-size: 0.9em;"/>
-                                            <h:outputText id="valDescuento" style="float: right;font-size: 0.9em;" value="#{cobroTituloBB.tituloActual.valDescuentoaplicado}">
-                                                <f:convertNumber pattern="###,###.00"/>
-                                            </h:outputText>
-                                            <h:outputLabel for="valIntereses" value="Intereses:" style="font-weight: bold;font-size: 0.9em;"/>
-                                            <h:outputText id="valIntereses" style="float: right;font-size: 0.9em;" value="#{cobroTituloBB.tituloActual.valInteresaplicado}">
-                                                <f:convertNumber pattern="###,###.00"/>
-                                            </h:outputText>
-                                            <p:separator /><p:separator />
-                                            <h:outputLabel for="valAPagar" value="TOTAL A PAGAR:" style="font-weight: bold;font-size: 1em;"/>
-                                            <h:outputText id="valAPagar" style="float: right;" value="#{cobroTituloBB.tituloActual.valPagado}">
-                                                <f:convertNumber pattern="###,###.00"/>
-                                            </h:outputText>	
-                                        </h:panelGrid>
-                                    </h:panelGrid>
-                                    <f:facet name="footer">
-                                        <p:commandButton actionListener="#{cobroTituloBB.cobrarTitulo()}"
-                                                         icon="fa fa-credit-card"
-                                                         value="Efectuar Pago"
-                                                         type="submit"
-                                                         style="float: right;"
-                                                         disabled="#{!cobroTituloBB.tituloActual.esTituloPorCobrar()}"
-                                                         id="btnCancelarTitulo"
-                                                         update="grupoCobroDeTitulo">
-                                        </p:commandButton>
-                                        <p:commandButton icon="fa fa-print" 
-                                                         value="Imprimir reporte" 
-                                                         ajax="false" 
-                                                         style="float: left"
-                                                         disabled="#{cobroTituloBB.tituloActual.esTituloPorCobrar()}"
-                                                         update="grupoGestionTitulo" 
-                                                         onclick="PrimeFaces.monitorDownload(start, stop);">
-
-                                            <p:fileDownload value="#{cobroTituloBB.imprimir('TITULO_GENERADO',cobroTituloBB.tituloActual.codTitulos)}"/>
-                                        </p:commandButton>
-                                    </f:facet>
-                                </h:panelGrid>
-                            </p:dialog>
                         </h:panelGrid>
-
                     </p:outputPanel>
                 </h:form>
-
             </p:panel>
 
             <p:panel id="panelRevisionTitulos" rendered="#{cobroTituloBB.esPantallaActual('PANTALLA_ASIGNACION')}">
@@ -438,27 +321,31 @@
                                 </p:summaryRow>
                             </p:dataTable>
 
-
-
                             <f:facet name="footer">
                                 <p:commandButton value="Regresar Selección Títulos"
                                                  id="btnRegresarDominios"
+                                                 update="grupoCobroDeTitulo"
                                                  icon="fa fa-arrow-left"
+                                                 disabled="#{cobroTituloBB.esCobrado}"
                                                  actionListener="#{cobroTituloBB.regresarSeleccionDeTitulosACobrar()}"
                                                  style="float:left;">
                                 </p:commandButton>
                                 <p:commandButton value="Efectuar Pago"
                                                  id="btnRealizarPago"
+                                                 rendered="#{!cobroTituloBB.esCobrado}"
                                                  onclick="PF('dlgCobroTitulos').show();" update=":formDialogpPagoTitulos:oppPagoTitulos:"
                                                  icon="fa fa-money"
                                                  style="float:right;">
                                 </p:commandButton>
                                 <p:commandButton value="Finalizar"
-                                                 id="btnResumenPago" 
+                                                 id="btnResumenPago"
+                                                 rendered="#{cobroTituloBB.esCobrado}"
+                                                 update="grupoCobroDeTitulo"
                                                  actionListener="#{cobroTituloBB.avanzarFinal()}"
-                                                 icon="fa fa-arrow-left"
+                                                 icon="fa fa-arrow-right"
                                                  style="float:right;">
                                 </p:commandButton>
+
                             </f:facet>
 
                         </h:panelGrid>
@@ -466,30 +353,34 @@
                     </p:outputPanel>
                 </h:form>
 
-                <p:dialog header="Antes de continuar" widgetVar="dlgCobroTitulos" modal="true" appendTo="@(body)" 
+                <p:dialog widgetVar="dlgCobroTitulos" modal="true" appendTo="@(body)" 
                           showEffect="fade" hideEffect="fade" resizable="false" closeOnEscape="true" width="600">
                     <h:form id="formDialogpPagoTitulos">
                         <p:outputPanel id="oppPagoTitulos" style="text-align:left;">
                             <p:panelGrid id="pgPagoTitulos">
                                 <br/>
-                                <div style="font-size:1.2em;font-weight:bold;">Considere</div>
+                                <div style="font-size:1.2em;font-weight:bold;">Antes de continuar, considere:</div>
                                 <p:separator />
                                 <ul>
-                                    <li>Una vez efectuado el cobro, se requiere de autorización para cancelar la acción.</li>
-                                    <li>Verificar que el contribuyente disponga el valor completo para el pago.</li>
+                                    <br/>
+                                    <li>Una vez efectuado el cobro, se requiere de autorización para revertir la acción.</li>
+                                    <br/>
+                                    <li>Verificar que el contribuyente disponga el valor completo para el pago antes de continuar con el cobro.</li>
+                                    <br/>
                                 </ul>
 
                                 <p:commandButton value="Cancelar"
                                                  id="btnRegresarDominios"
                                                  update="grupoCobroDeTitulo"
                                                  icon="fa fa-close"
-
+                                                 onclick="PF('dlgCobroTitulos').close();"
                                                  style="float:left;">
                                 </p:commandButton>
                                 <p:commandButton value="Efectuar Pago"
                                                  id="btnRealizarPago" 
-                                                 actionListener="#{cobroTituloBB.cobrarTituloPrueba()}"
+                                                 actionListener="#{cobroTituloBB.cobrarTitulo()}"
                                                  icon="fa fa-check"
+                                                 update="grupoCobroDeTitulo"
                                                  style="float:right;">
                                 </p:commandButton>
                             </p:panelGrid>
@@ -499,7 +390,7 @@
 
 
             </p:panel>
-            
+
             <p:panel id="panelResumen" rendered="#{cobroTituloBB.esPantallaActual('PANTALLA_BUSQUEDA')}">
                 <h:form id="formularioResumenTitulos">
 
@@ -515,19 +406,245 @@
                     <p:tooltip />
                     <p:outputPanel id="opResumenTitulos">
                         <h:panelGrid>
+
                             <br/>
                             <div style="font-size:1.2em;font-weight:bold;">Características del Predio</div>
                             <p:separator />
-                            
+                            <h:panelGrid columns="2" width="100%">
+                                <h:panelGrid>
+                                    <h:outputLabel for="propietarioActualContr" value="CONTRIBUYENTE:" style="font-weight: bold;"/>
+                                    <h:outputText id="propietarioActualContr" value="#{cobroTituloBB.fichaCatastral.contribuyentePropiedad.nomNombres.trim()} #{cobroTituloBB.fichaCatastral.contribuyentePropiedad.nomApellidos.trim()}"/>
+                                    <h:outputLabel for="codCedularucContr" value="RUC/CC:" style="font-weight: bold;"/>
+                                    <h:outputText id="codCedularucContr" value="#{cobroTituloBB.fichaCatastral.contribuyentePropiedad.codCedularuc}"/>
+                                    <h:outputLabel for="txtDireccionContr" value="DIRECCION/DOMICILIO:" style="font-weight: bold;"/>
+                                    <h:outputText id="txtDireccionContr" value="#{cobroTituloBB.fichaCatastral.contribuyentePropiedad.txtDireccion}"/>
+                                </h:panelGrid>
+                                <h:panelGrid>
+                                    <h:outputLabel for="nomCodigocatastralPredio" value="CLAVE CATASTRAL:" style="font-weight: bold;"/>
+                                    <h:outputText id="nomCodigocatastralPredio" value="#{cobroTituloBB.fichaCatastral.predio.nomCodigocatastral}"/>
+                                    <h:outputLabel for="txtBarrioPredio" value="SITIO/BARRIO:" style="font-weight: bold;"/>
+                                    <h:outputText id="txtBarrioPredio" value="#{cobroTituloBB.fichaCatastral.predio.stsBarrio}"/>
+                                    <h:outputLabel for="txtDireccionPredio" value="CALLE:" style="font-weight: bold;"/>
+                                    <h:outputText id="txtDireccionPredio" value="#{cobroTituloBB.fichaCatastral.predio.txtDireccion}"/>
+                                </h:panelGrid>
+                            </h:panelGrid>
 
+                            <br/>
+                            <div style="font-size:1.2em;font-weight:bold;">Lista de Títulos Cobrados</div>
+                            <p:separator />
 
-                           
+                            <p:dataTable id="listaTitulosCobrados" var="titulosCobradosActual" widgetVar="listaTitulosRegistradosActualesTabla"
+                                         value="#{cobroTituloBB.listaTitulosCobrados}" rowKey="#{titulosCobradosActual.codTitulos}" filteredValue="#{cobroTituloBB.listaTitulosCobradosFiltrados}" 
+                                         paginator="true" rows="10" sortBy="#{tituloRegistradoActual.stsEstado}"
+                                         rowsPerPageTemplate="10,30,50"  paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+                                         resizableColumns="false"
+                                         emptyMessage="No se han encontrado resultados" 
+                                         paginatorPosition="bottom">
 
-                            
+                                <p:column headerText="Cod. Catastral" >
+                                    <h:outputText value="#{titulosCobradosActual.codCatastral.nomCodigocatastral}"/>
+                                </p:column>
+
+                                <p:column headerText="Dirección" >
+                                    <h:outputText value="#{titulosCobradosActual.txtDireccion}">
+                                        <f:convertNumber pattern="$ ###,###.00"/>
+                                    </h:outputText>
+                                </p:column>
+
+                                <p:column headerText="Subtotal">
+                                    <h:outputText value="#{titulosCobradosActual.valTotalapagar}">
+                                        <f:convertNumber pattern="###,###.00"/>
+                                    </h:outputText>
+                                </p:column>
+
+                                <p:column headerText="Desc/Rec:">
+                                    <h:outputText value="#{titulosCobradosActual.valDescuentoaplicado}">
+                                        <f:convertNumber pattern="###,###.00"/>
+                                    </h:outputText>
+                                </p:column>
+
+                                <p:column headerText="Total" >
+                                    <h:outputText value="#{titulosCobradosActual.valPagado}">
+                                        <f:convertNumber pattern="###,###.00"/>
+                                    </h:outputText>
+                                </p:column>
+
+                                <p:column headerText="Acciones" >
+                                    <p:commandButton icon="fa fa-minus-square-o"
+                                                     id="desmarcarTitulo"
+                                                     actionListener="#{cobroTituloBB.abrirDialogRazonDesmarque(titulosCobradosActual.codTitulos)}"
+                                                     update="grupoCobroDeTitulo">
+                                        <p:ajax update="toolTipDeSelect" process="@this" />
+                                    </p:commandButton>
+                                    <p:tooltip id="toolTipDeSelect" for="desmarcarTitulo" value="Desmarcar título" showEffect="fade" hideEffect="fade" position="bottom"/>
+                                    <p:commandButton icon="fa fa-search-plus"
+                                                     id="visualizarComprobante"
+                                                     actionListener="#{cobroTituloBB.abrirDialogoComprobante(titulosCobradosActual.codTitulos)}"
+                                                     update="grupoCobroDeTitulo">
+                                        <p:ajax update="toolTipResumen" process="@this" />
+                                    </p:commandButton>
+                                    <p:tooltip id="toolTipResumen" for="visualizarComprobante" value="Visualizar Comprobante" showEffect="fade" hideEffect="fade" position="bottom"/>
+                                    <p:commandButton icon="fa fa-print" 
+                                                     ajax="false" 
+                                                     id="imprimirComprobante"
+                                                     style="float: left"
+                                                     update="grupoGestionTitulo" 
+                                                     onclick="PrimeFaces.monitorDownload(start, stop);">
+
+                                        <p:fileDownload value="#{cobroTituloBB.imprimir('TITULO_GENERADO',titulosCobradosActual.codTitulos)}"/>
+                                        <p:ajax update="toolTipPrint" process="@this" />
+                                    </p:commandButton>
+                                    <p:tooltip id="toolTipPrint" for="imprimirComprobante" value="Imprimir Comprobante" showEffect="fade" hideEffect="fade" position="bottom"/>
+                                </p:column>
+                            </p:dataTable>
+
+                            <f:facet name="footer">
+                                <p:commandButton value="Regregresar al inicio"
+                                                 id="btnAvanzarRegresarCobro"
+                                                 update="grupoCobroDeTitulo"
+                                                 icon="fa fa-arrow-left"
+                                                 actionListener="#{cobroTituloBB.regresarInicio()}"
+                                                 style="float:left;">
+                                </p:commandButton>
+                            </f:facet>
                         </h:panelGrid>
 
                     </p:outputPanel>
                 </h:form>
+
+                <p:dialog header="Resumen del título" widgetVar="dlgResumenTitulos" modal="true" appendTo="@(body)" showEffect="fade" hideEffect="fade" resizable="false" closable="true">
+                    <h:panelGrid>
+                        <h:panelGrid columns="2">
+                            <h:panelGrid columns="2" style=" padding-left: 10px">
+                                <h:outputLabel for="contribuyente" value="CONTRIBUYENTE: " style="font-weight: bold;"/>
+                                <h:outputText id="contribuyente" value="#{cobroTituloBB.fichaCatastral.contribuyentePropiedad.nomNombres.trim()} #{cobroTituloBB.fichaCatastral.contribuyentePropiedad.nomApellidos.trim()}"/>
+                                <h:outputLabel for="codCedularuc" value="RUC/CC: " style="font-weight: bold;"/>
+                                <h:outputText id="codCedularuc" value="#{cobroTituloBB.fichaCatastral.contribuyentePropiedad.codCedularuc}"/>
+                                <h:outputLabel for="txtDireccionProp" value="DIRECCIÓN/DOMICILIO: " style="font-weight: bold;"/>
+                                <h:outputText id="txtDireccionProp" value="#{cobroTituloBB.fichaCatastral.contribuyentePropiedad.txtDireccion}"/>
+                                <p:separator /><p:separator />
+                                <h:outputLabel value="AVALUO" style="font-size:1em;font-weight:bold;"/><h:outputLabel value="MONTO" style="font-size:1em;font-weight:bold;"/>
+                                <h:outputLabel for="valTerreno" value="Terreno ($):" style="font-weight: bold; font-size: 0.9em;"/>
+                                <h:outputText id="valTerreno" style="font-size: 0.9em;" value="#{cobroTituloBB.tituloActual.valValorterreno}">
+                                    <f:convertNumber pattern="###,###.00"/>
+                                </h:outputText>
+                                <h:outputLabel for="valConstruccion" value="Construcción ($):" style="font-weight: bold; font-size: 0.9em;"/>
+                                <h:outputText id="valConstruccion" style="font-size: 0.9em;" value="#{cobroTituloBB.tituloActual.valConstruccion}">
+                                    <f:convertNumber pattern="###,###.00"/>
+                                </h:outputText>
+                                <p:separator /><p:separator />  
+                                <h:outputLabel for="valPropiedad" value="Valor Propiedad ($):" style="font-weight: bold;font-size: 0.9em;"/>
+                                <h:outputText id="valPropiedad" style="font-size: 0.9em;" value="#{cobroTituloBB.tituloActual.valBaseimponible}">
+                                    <f:convertNumber pattern="###,###.00"/>
+                                </h:outputText>
+                                <h:outputLabel for="valBase" value="Base Imponible ($):" style="font-weight: bold;font-size: 0.9em;"/>
+                                <h:outputText id="valBase" style="font-size: 0.9em;" value="#{cobroTituloBB.tituloActual.valBaseimponible}">
+                                    <f:convertNumber pattern="###,###.00"/>
+                                </h:outputText>
+                                <h:outputLabel for="fecEmision" value="Fecha Emisión:" style="font-weight: bold;font-size: 0.9em;"/>
+                                <h:outputText id="fecEmision" style="font-size: 0.9em;" value="#{cobroTituloBB.tituloActual.obtenerFechaEmision()}"/>
+                                <h:outputLabel for="fecRecaudacion" value="Fecha Recaudación:" style="font-weight: bold;font-size: 0.9em;"/>
+                                <h:outputText id="fecRecaudacion" style="font-size: 0.9em;" value="#{cobroTituloBB.tituloActual.obtenerFechaRecaudacion()}"/>
+                            </h:panelGrid>
+                            <h:panelGrid columns="2" style=" padding-left: 10px; padding-right: 10px" >
+                                <h:outputLabel for="nomCodigocatastral" value="CLAVE CATASTRAL: " style="font-weight: bold;"/>
+                                <h:outputText id="nomCodigocatastral" value="#{cobroTituloBB.tituloActual.nomCodigocatastral}"/>
+                                <h:outputLabel for="txtBarrio" value="SITIO/BARRIO: " style="font-weight: bold;"/>
+                                <h:outputText id="txtBarrio" value="#{cobroTituloBB.tituloActual.txtBarrio}"/>
+                                <h:outputLabel for="txtDireccion" value="CALLE: " style="font-weight: bold;"/>
+                                <h:outputText id="txtDireccion" value="#{cobroTituloBB.tituloActual.txtDireccion}"/>
+                                <p:separator /><p:separator />
+                                <h:outputLabel value="RUBROS" style="font-size:1em;font-weight:bold;"/>
+                                <h:outputLabel value="VALORES" style="font-size:1em;font-weight:bold;float: right"/>
+                                <h:outputLabel for="valImpuestoPredial" value="Impuesto Predial ($):" style="font-weight: bold;font-size: 0.9em;"/>
+                                <h:outputText id="valImpuestoPredial" style="float: right;font-size: 0.9em;" value="#{cobroTituloBB.tituloActual.valImpuestopredial}">
+                                    <f:convertNumber pattern="###,###.00"/>
+                                </h:outputText>
+                                <h:outputLabel for="servAdmistrativos" value="Servicios Admininistrativos ($):" style="font-weight: bold;font-size: 0.9em;"/>
+                                <h:outputText id="servAdmistrativos" style="float: right;font-size: 0.9em;" value="#{cobroTituloBB.tituloActual.valServiciosadministrativos}">
+                                    <f:convertNumber pattern="###,###.00"/>
+                                </h:outputText>
+                                <h:outputLabel for="valNoconstruido" value="Imp. Solar No Eficado ($):" style="font-weight: bold;font-size: 0.9em;"/>
+                                <h:outputText id="valNoconstruido" style="float: right;font-size: 0.9em;" value="#{cobroTituloBB.tituloActual.valNoconstruido}">
+                                    <f:convertNumber pattern="###,###.00"/>
+                                </h:outputText>
+                                <h:outputLabel for="valDescuentoExon" value="Descuento/Exoneración ($):" style="font-weight: bold;font-size: 0.9em;"/>
+                                <h:outputText id="valDescuentoExon" style="float: right;font-size: 0.9em;" value="#{cobroTituloBB.tituloActual.valDescuentoExoneracion}">
+                                    <f:convertNumber pattern="###,###.00"/>
+                                </h:outputText>
+                                <h:outputLabel for="valObsoleto" value="Construcción Obsoleta ($):" style="font-weight: bold;font-size: 0.9em;"/>
+                                <h:outputText id="valObsoleto" style="float: right;font-size: 0.9em;" value="#{cobroTituloBB.tituloActual.valSaludpublica}">
+                                    <f:convertNumber pattern="###,###.00"/>
+                                </h:outputText>
+                                <h:outputLabel for="valBomberos" value="Bomberos. ($):" style="font-weight: bold;font-size: 0.9em;"/>
+                                <h:outputText id="valBomberos" style="float: right;font-size: 0.9em;" value="#{cobroTituloBB.tituloActual.valBomberos}">
+                                    <f:convertNumber pattern="###,###.00"/>
+                                </h:outputText>
+                                <p:separator /><p:separator />
+                            </h:panelGrid>
+                            <h:panelGrid style=" padding-left: 20px"></h:panelGrid>
+                            <h:panelGrid columns="2" width="100%" style=" padding-left: 10px; padding-right: 10px">
+                                <h:outputLabel for="valEmitido" value="Valor Emitido:" style="font-weight: bold;font-size: 0.9em;"/>
+                                <h:outputText id="valEmitido" style="float: right;font-size: 0.9em;" value="#{cobroTituloBB.tituloActual.valTotalapagar}">
+                                    <f:convertNumber pattern="###,###.00"/>
+                                </h:outputText>
+                                <h:outputLabel for="valDescuento" value="Descuento/Recargo:" style="font-weight: bold;font-size: 0.9em;"/>
+                                <h:outputText id="valDescuento" style="float: right;font-size: 0.9em;" value="#{cobroTituloBB.tituloActual.valDescuentoaplicado}">
+                                    <f:convertNumber pattern="###,###.00"/>
+                                </h:outputText>
+                                <h:outputLabel for="valIntereses" value="Intereses:" style="font-weight: bold;font-size: 0.9em;"/>
+                                <h:outputText id="valIntereses" style="float: right;font-size: 0.9em;" value="#{cobroTituloBB.tituloActual.valInteresaplicado}">
+                                    <f:convertNumber pattern="###,###.00"/>
+                                </h:outputText>
+                                <p:separator /><p:separator />
+                                <h:outputLabel for="valAPagar" value="TOTAL A PAGAR:" style="font-weight: bold;font-size: 1em;"/>
+                                <h:outputText id="valAPagar" style="float: right;" value="#{cobroTituloBB.tituloActual.valPagado}">
+                                    <f:convertNumber pattern="###,###.00"/>
+                                </h:outputText>	
+                            </h:panelGrid>
+                        </h:panelGrid>
+
+                    </h:panelGrid>
+                </p:dialog>
+
+                <p:dialog widgetVar="dlgRazonDesmarque" modal="true" appendTo="@(body)" 
+                          showEffect="fade" hideEffect="fade" resizable="false" closeOnEscape="true" width="600">
+                    <h:form id="formDialogpRazonDesmarque">
+                        <p:outputPanel id="oppRazonDesmarque" style="text-align:left;">
+                            <p:panelGrid id="pgRazonDesmarque" >
+                                <br/>
+                                <div style="font-size:1.2em;font-weight:bold;">Antes de continuar, considere:</div>
+                                <p:separator />
+                                <ul>
+                                    <br/>
+                                    <li>El cobro del título ya se registró, esta acción eliminará este cobro.</li>
+                                    <br/>
+                                    <li>Existe una pista de auditoría en acciones como esta.</li>
+                                    <br/>
+                                    <li>Es obligatorio escribir la explicación del desmarque del título, en el siguiente campo: </li>
+                                    
+                                </ul>
+                                <p:inputTextarea  id="contribuyente" value="#{cobroTituloBB.razonTituloDesmarcado}" cols="65" rows="5"/>
+                                <br/>
+                                <br/>
+                                <p:commandButton value="Cancelar"
+                                                 id="btnCerrarDialogo"
+                                                 update="grupoCobroDeTitulo"
+                                                 icon="fa fa-close"
+                                                 onclick="PF('dlgRazonDesmarque').hide();"
+                                                 style="float:left;">
+                                </p:commandButton>
+                                <p:commandButton value="Desmarcar"
+                                                 id="btnRealizarPago" 
+                                                 actionListener="#{cobroTituloBB.desmarcarTitulo()}"
+                                                 icon="fa fa-minus-square-o"
+                                                 update="grupoCobroDeTitulo"
+                                                 style="float:right;">
+                                </p:commandButton>
+                            </p:panelGrid>
+                        </p:outputPanel>
+                    </h:form>
+                </p:dialog>
             </p:panel>
 
         </h:panelGroup>

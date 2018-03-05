@@ -149,6 +149,8 @@ public enum EnumNewviExcepciones {
     ERR602("ERR602", "Título no válido.", "El título ingresado no es válido. Por favor verifique que los datos ingresados son correctos."),
     ERR603("ERR603", "Título no encontrado.", "El título seleccionado no se encontró. Por favor verifique que los datos ingresados son correctos."),
     INF604("INF604", "Título cobrado.", "El título seleccionado se ha cobrado con éxito."),
+    INF605("INF605", "Título desmarcado.", "El título se ha desmarcado con éxito."),
+    ERR605("ERR605", "Movimiento del título no válido.", "El movimiento del título ingresado no es válido. Por favor verifique que los datos ingresados son correctos."),
 
     // 601 al 700 excepciones de Tesoreria
     INF700("INF700", "descuento editado.", "El descuento se ha editado correctamente."),

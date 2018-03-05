@@ -8,11 +8,13 @@ package ec.com.newvi.sic.web.backingbean;
 import ec.com.newvi.componente.reporte.ReporteGenerador;
 import ec.com.newvi.sic.dto.FichaCatastralDto;
 import ec.com.newvi.sic.dto.PresentacionFichaCatastralDto;
+import ec.com.newvi.sic.enums.EnumEstadoRegistro;
 import ec.com.newvi.sic.enums.EnumEstadoTitulo;
 import ec.com.newvi.sic.enums.EnumNewviExcepciones;
 import ec.com.newvi.sic.enums.EnumReporte;
 import ec.com.newvi.sic.modelo.ConstantesDescuentos;
 import ec.com.newvi.sic.modelo.ConstantesInteresMora;
+import ec.com.newvi.sic.modelo.TituloMovimientos;
 import ec.com.newvi.sic.modelo.Titulos;
 import ec.com.newvi.sic.servicios.RentasServicio;
 import ec.com.newvi.sic.servicios.TesoreriaServicio;
@@ -24,6 +26,7 @@ import ec.com.newvi.sic.web.enums.EnumEtiquetas;
 import ec.com.newvi.sic.web.enums.EnumPantallaMantenimiento;
 import ec.com.newvi.sic.web.utils.WebUtils;
 import java.math.BigDecimal;
+import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -49,6 +52,8 @@ public class CobroTituloBB extends AdminFichaCatastralBB {
     private List<Titulos> listaTitulosActualesSeleccionados;
     private List<Titulos> listaTitulosVencidosSeleccionados;
     private List<Titulos> listaTitulosPorPagar;
+    private List<Titulos> listaTitulosCobrados;
+    private List<Titulos> listaTitulosCobradosFiltrados;
     private List<Titulos> listaTitulosPorPagarFiltrados;
     private List<Titulos> listaTitulosRegistradosActuales;
     private List<Titulos> listaTitulosRegistradosActualesFiltrados;
@@ -60,6 +65,52 @@ public class CobroTituloBB extends AdminFichaCatastralBB {
     private BigDecimal totalTitulosActulales;
     private BigDecimal totalTitulosVencidos;
     private BigDecimal totalPorPagarTitulos;
+
+    private String razonTituloDesmarcado;
+
+    private Boolean esCobrado;
+
+    private Titulos tituloDesmarcadoActual;
+
+    public Titulos getTituloDesmarcadoActual() {
+        return tituloDesmarcadoActual;
+    }
+
+    public void setTituloDesmarcadoActual(Titulos tituloDesmarcadoActual) {
+        this.tituloDesmarcadoActual = tituloDesmarcadoActual;
+    }
+
+    public String getRazonTituloDesmarcado() {
+        return razonTituloDesmarcado;
+    }
+
+    public void setRazonTituloDesmarcado(String razonTituloDesmarcado) {
+        this.razonTituloDesmarcado = razonTituloDesmarcado;
+    }
+
+    public List<Titulos> getListaTitulosCobrados() {
+        return listaTitulosCobrados;
+    }
+
+    public void setListaTitulosCobrados(List<Titulos> listaTitulosCobrados) {
+        this.listaTitulosCobrados = listaTitulosCobrados;
+    }
+
+    public List<Titulos> getListaTitulosCobradosFiltrados() {
+        return listaTitulosCobradosFiltrados;
+    }
+
+    public void setListaTitulosCobradosFiltrados(List<Titulos> listaTitulosCobradosFiltrados) {
+        this.listaTitulosCobradosFiltrados = listaTitulosCobradosFiltrados;
+    }
+
+    public Boolean getEsCobrado() {
+        return esCobrado;
+    }
+
+    public void setEsCobrado(Boolean esCobrado) {
+        this.esCobrado = esCobrado;
+    }
 
     public List<Titulos> getListaTitulosActualesSeleccionados() {
         return listaTitulosActualesSeleccionados;
@@ -169,6 +220,7 @@ public class CobroTituloBB extends AdminFichaCatastralBB {
                 EnumEtiquetas.COBRO_TITULO_LISTA_ICONO,
                 EnumEtiquetas.COBRO_TITULO_LISTA_DESCRIPCION);
         actualizarListadoPredios();
+        this.esCobrado = Boolean.FALSE;
     }
 
     private void conmutarPantalla(EnumPantallaMantenimiento nuevaPantalla) {
@@ -363,6 +415,18 @@ public class CobroTituloBB extends AdminFichaCatastralBB {
                 EnumEtiquetas.COBRO_TITULO_VERIFICAR_DESCRIPCION);
     }
 
+    public void regresarInicio() {
+
+        this.listaTitulosPorPagar = new ArrayList<>();
+        this.listaTitulosRegistradosActuales = new ArrayList<>();
+        this.listaTitulosRegistradosVencidos = new ArrayList<>();
+
+        conmutarPantalla(EnumPantallaMantenimiento.PANTALLA_LISTADO);
+        establecerTitulo(EnumEtiquetas.COBRO_TITULO_LISTA_TITULO,
+                EnumEtiquetas.COBRO_TITULO_LISTA_ICONO,
+                EnumEtiquetas.COBRO_TITULO_LISTA_DESCRIPCION);
+    }
+
     public void regresarSeleccionDeTitulosACobrar() {
         this.listaTitulosPorPagar = new ArrayList<>();
         conmutarPantalla(EnumPantallaMantenimiento.PANTALLA_EDICION);
@@ -371,14 +435,20 @@ public class CobroTituloBB extends AdminFichaCatastralBB {
                 EnumEtiquetas.COBRO_TITULO_EDITAR_DESCRIPCION);
     }
 
-    public void cobrarTitulo() {
-        this.tituloActual.setStsEstado(EnumEstadoTitulo.TITULO_COBRADO);
-        this.tituloActual.setFecFpago(ComunUtil.hoy());
+    public void registrarMovimiento(Titulos titulo) {
+        TituloMovimientos movimiento = new TituloMovimientos();
+        movimiento.setAnioEmision(ComunUtil.obtenerAnioDesdeFecha(titulo.getFecEmision()) + "");
+        movimiento.setCodTitulos(titulo);
+        movimiento.setEstadoMovimiento(EnumEstadoRegistro.A);
+        movimiento.setEstadoTitulo(titulo.getStsEstado());
+        movimiento.setFecMovimiento(ComunUtil.hoy());
+        movimiento.setIpUsu(sesionBean.getSesion().getDireccionIP());
+        movimiento.setNomUsu(sesionBean.getSesion().getNombreEquipo());
+        movimiento.setTxtMovimiento(titulo.getStsEstado().getEstadoTitulo() + titulo.getCodTitulos());
+        movimiento.setRazonMovimiento(!ComunUtil.esNulo(this.razonTituloDesmarcado) ? this.razonTituloDesmarcado : "");
 
         try {
-            rentasServicio.actualizarTitulo(this.tituloActual, sesionBean.getSesion());
-            LoggerNewvi.getLogNewvi(this.getClass()).info(EnumNewviExcepciones.INF604.presentarMensaje(), sesionBean.getSesion());
-            MensajesFaces.mensajeInformacion(EnumNewviExcepciones.INF604.presentarMensaje());
+            rentasServicio.generarNuevoMovimentosTitulo(movimiento, sesionBean.getSesion());
         } catch (NewviExcepcion e) {
             LoggerNewvi.getLogNewvi(this.getClass()).error(e, sesionBean.getSesion());
             MensajesFaces.mensajeError(e.getMessage());
@@ -386,6 +456,31 @@ public class CobroTituloBB extends AdminFichaCatastralBB {
             LoggerNewvi.getLogNewvi(this.getClass()).error(EnumNewviExcepciones.ERR000.presentarMensajeCodigo(), e, sesionBean.getSesion());
             MensajesFaces.mensajeError(e.getMessage());
         }
+    }
+
+    public void cobrarTitulo() {
+
+        this.listaTitulosCobrados = new ArrayList<>();
+
+        for (Titulos tituloAPagar : this.listaTitulosPorPagar) {
+            tituloAPagar.setStsEstado(EnumEstadoTitulo.TITULO_COBRADO);
+            tituloAPagar.setFecFpago(ComunUtil.hoy());
+            try {
+                rentasServicio.actualizarTitulo(tituloAPagar, sesionBean.getSesion());
+                registrarMovimiento(tituloAPagar);
+                this.listaTitulosCobrados.add(seleccionarTitulo(tituloAPagar.getCodTitulos()));
+            } catch (NewviExcepcion e) {
+                LoggerNewvi.getLogNewvi(this.getClass()).error(e, sesionBean.getSesion());
+                MensajesFaces.mensajeError(e.getMessage());
+            } catch (Exception e) {
+                LoggerNewvi.getLogNewvi(this.getClass()).error(EnumNewviExcepciones.ERR000.presentarMensajeCodigo(), e, sesionBean.getSesion());
+                MensajesFaces.mensajeError(e.getMessage());
+            }
+        }
+        WebUtils.obtenerContextoPeticion().execute("PF('dlgCobroTitulos').hide()");
+        this.esCobrado = Boolean.TRUE;
+        LoggerNewvi.getLogNewvi(this.getClass()).info(EnumNewviExcepciones.INF604.presentarMensaje(), sesionBean.getSesion());
+        MensajesFaces.mensajeInformacion(EnumNewviExcepciones.INF604.presentarMensaje());
     }
 
     public void seleccionarTodosTitulosActuales() {
@@ -429,10 +524,34 @@ public class CobroTituloBB extends AdminFichaCatastralBB {
 
     public void avanzarFinal() {
         conmutarPantalla(EnumPantallaMantenimiento.PANTALLA_BUSQUEDA);
-        establecerTitulo(EnumEtiquetas.COBRO_TITULO_EDITAR_TITULO,
-                EnumEtiquetas.COBRO_TITULO_EDITAR_ICONO,
-                EnumEtiquetas.COBRO_TITULO_EDITAR_DESCRIPCION);
-        
+        establecerTitulo(EnumEtiquetas.COBRO_TITULO_RESUMEN_TITULO,
+                EnumEtiquetas.COBRO_TITULO_RESUMEN_ICONO,
+                EnumEtiquetas.COBRO_TITULO_RESUMEN_DESCRIPCION);
+
+    }
+
+    public void abrirDialogRazonDesmarque(Integer codTitulo) {
+        this.tituloDesmarcadoActual = seleccionarTitulo(codTitulo);
+        WebUtils.obtenerContextoPeticion().execute("PF('dlgRazonDesmarque').show()");
+    }
+
+    public void desmarcarTitulo() {
+        if(!ComunUtil.esNulo(this.razonTituloDesmarcado)){
+            this.tituloDesmarcadoActual.setStsEstado(EnumEstadoTitulo.TITULO_DESMARCADO);
+
+            try {
+                rentasServicio.actualizarTitulo(this.tituloDesmarcadoActual, sesionBean.getSesion());
+                registrarMovimiento(this.tituloDesmarcadoActual);
+                LoggerNewvi.getLogNewvi(this.getClass()).info(EnumNewviExcepciones.INF605.presentarMensaje(), sesionBean.getSesion());
+                MensajesFaces.mensajeInformacion(EnumNewviExcepciones.INF605.presentarMensaje());
+            } catch (NewviExcepcion e) {
+                LoggerNewvi.getLogNewvi(this.getClass()).error(e, sesionBean.getSesion());
+                MensajesFaces.mensajeError(e.getMessage());
+            } catch (Exception e) {
+                LoggerNewvi.getLogNewvi(this.getClass()).error(EnumNewviExcepciones.ERR000.presentarMensajeCodigo(), e, sesionBean.getSesion());
+                MensajesFaces.mensajeError(e.getMessage());
+            }
+        }
     }
 
 }
