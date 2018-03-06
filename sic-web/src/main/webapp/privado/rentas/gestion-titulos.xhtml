@@ -54,7 +54,7 @@
                 </h:form>
             </p:panel>
 
-            <p:dialog header="Títulos del predio" widgetVar="dlgTitulos" position="relative" modal="true" appendTo="@(body)" showEffect="fade" hideEffect="fade" resizable="false" closable="true" width="750" height="500">
+            <p:dialog header="Títulos del predio" widgetVar="dlgTitulos" modal="true" appendTo="@(body)" showEffect="fade" hideEffect="fade" resizable="false" closable="true" width="750" height="500">
                 <h:form id="dialogTitulos">
                     <p:growl id="messagesw" showDetail="true" escape="false"/>
                     <h:panelGrid >
@@ -74,33 +74,33 @@
                                  emptyMessage="No se han encontrado resultados" 
                                  paginatorPosition="bottom">
 
-                        <p:column headerText="Terreno ($)">
-                            <h:outputText value="#{tituloRegistrado.valValorterreno}">
+                        <p:column headerText="Cod. Catastral">
+                            <h:outputText value="#{tituloRegistrado.codCatastral.nomCodigocatastral}"/>
+                        </p:column>
+
+                        <p:column headerText="Contribuyente" >
+                            <h:outputText value="#{tituloRegistrado.codPropietarios.contribuyente.nomApellidos} #{tituloRegistrado.codPropietarios.contribuyente.nomNombres}"/>
+                        </p:column>
+
+                        <p:column headerText="Dirección" >
+                            <h:outputText value="#{tituloRegistrado.txtDireccion}"/>
+                        </p:column>
+
+                        <p:column headerText="Subtotal">
+                            <h:outputText value="#{tituloRegistrado.valTotalapagar}">
                                 <f:convertNumber pattern="###,###.00"/>
                             </h:outputText>
                         </p:column>
 
-                        <p:column headerText="Edific. ($)">
-                            <h:outputText value="#{tituloRegistrado.valConstruccion}">
+                        <p:column headerText="Desc/Rec:">
+                            <h:outputText value="#{tituloRegistrado.valDescuentoaplicado}">
                                 <f:convertNumber pattern="###,###.00"/>
                             </h:outputText>
                         </p:column>
 
-                        <p:column headerText="Valor Predio ($)" >
-                            <h:outputText value="#{tituloRegistrado.valBaseimponible}">
-                                <f:convertNumber pattern="$ ###,###.00"/>
-                            </h:outputText>
-                        </p:column>
-
-                        <p:column headerText="Imp. Predial" >
-                            <h:outputText value="#{tituloRegistrado.valImpuestopredial}">
-                                <f:convertNumber pattern="$ ###,###.00"/>
-                            </h:outputText>
-                        </p:column>
-
-                        <p:column headerText="A pagar" >
-                            <h:outputText value="#{tituloRegistrado.valTotalapagar}" >
-                                <f:convertNumber pattern="$ ###,###.00"/>
+                        <p:column headerText="Total" >
+                            <h:outputText value="#{tituloRegistrado.valPagado}">
+                                <f:convertNumber pattern="###,###.00"/>
                             </h:outputText>
                         </p:column>
                         <p:column>

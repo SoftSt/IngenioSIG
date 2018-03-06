@@ -553,5 +553,5 @@ public class CobroTituloBB extends AdminFichaCatastralBB {
             }
         }
     }
-
+    
 }

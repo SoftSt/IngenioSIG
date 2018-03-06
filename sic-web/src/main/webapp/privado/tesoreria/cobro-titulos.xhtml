@@ -139,6 +139,18 @@
                                         </h:outputText>
                                     </p:column>
 
+                                    <p:column>
+                                        <p:commandButton id="btnBajaTitulo" 
+                                                         icon="fa fa-long-arrow-down"
+                                                         actionListener="#{cobroTituloBB.eliminarTitulo(tituloRegistrado.codTitulos)}"
+                                                         update="grupoCobroDeTitulo">
+                                            <p:confirm header="Dar de Baja al Título" message="¿Está seguro?" icon="ui-icon-alert" />
+                                            <p:ajax update="toolTipDarBaja" process="@this" /> 
+                                        </p:commandButton>
+                                        <p:tooltip id="toolTipDarBaja" for="btnBajaTitulo" value="Dar de Baja" showEffect="fade" hideEffect="fade" position="bottom"/>
+
+                                    </p:column>
+
                                     <p:summaryRow>
                                         <p:column colspan="5" style="text-align:right">
                                             <h:outputText style="font-size:1.2em;font-weight: bold;" value="Subtotal Títulos:" />
@@ -622,7 +634,7 @@
                                     <li>Existe una pista de auditoría en acciones como esta.</li>
                                     <br/>
                                     <li>Es obligatorio escribir la explicación del desmarque del título, en el siguiente campo: </li>
-                                    
+
                                 </ul>
                                 <p:inputTextarea  id="contribuyente" value="#{cobroTituloBB.razonTituloDesmarcado}" cols="65" rows="5"/>
                                 <br/>

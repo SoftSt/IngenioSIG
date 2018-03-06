@@ -53,8 +53,6 @@ public abstract class AdminFichaCatastralBB extends AdminSistemaBB {
     protected CatastroServicio catastroServicio;
     @EJB
     protected ContribuyentesServicio contribuyentesServicio;
-    @EJB
-    protected GeoCatastroServicio geoCatastroServicio;
 
     protected List<FichaCatastralDto> listaFichas;
     protected List<FichaCatastralDto> listaFichasFiltradas;
@@ -63,7 +61,7 @@ public abstract class AdminFichaCatastralBB extends AdminSistemaBB {
     protected List<Contribuyentes> listaContribuyentes;
     
 
-    protected Predios predio;
+    
     protected Contribuyentes contribuyente;
 
     public Predios getPredio() {
@@ -230,6 +228,13 @@ public abstract class AdminFichaCatastralBB extends AdminSistemaBB {
         }
         return tablita;
     }
+    protected List<PresentacionFichaCatastralDto> obtenerDatosReporteListaTitulosDesmarcados(List<Titulos> listaTitulos) {
+        List<PresentacionFichaCatastralDto> tablita = new ArrayList<>();
+        for (Titulos titulo : listaTitulos) {
+            tablita.add(new PresentacionFichaCatastralDto(titulo, Boolean.TRUE));
+        }
+        return tablita;
+    }
     protected List<PresentacionFichaCatastralDto> obtenerDatosReporteListaLogPredios(List<LogPredio> listaLogPredios) {
         List<PresentacionFichaCatastralDto> tablita = new ArrayList<>();
         for (LogPredio logPredio : listaLogPredios) {
@@ -238,41 +243,6 @@ public abstract class AdminFichaCatastralBB extends AdminSistemaBB {
         return tablita;
     }
 
-    protected DefaultStreamedContent generarReporteCatastro(EnumReporte tipoReporte, ReporteGenerador.FormatoReporte formatoReporte, List datosImpresion, Class claseImpresion) {
-        try {
-
-            CaracteristicasEdificacionesDto bloques;
-            Map<String, Object> parametrosReporte = new HashMap<>();
-
-            parametrosReporte.put(EnumParametrosReporte.NOMBRE_MODULO.getNombre(), "CATASTRO PREDIAL URBANO");
-
-            String xPath = "/lista".concat(claseImpresion.getSimpleName()).concat("//").concat(claseImpresion.getSimpleName());
-
-            if (EnumReporte.FICHA_RELEVAMIENTO_PREDIAL_URBANO.equals(tipoReporte)) {
-                bloques = new CaracteristicasEdificacionesDto(this.predio);
-
-                parametrosReporte.put(EnumParametrosReporte.DESCRIPCION_TERRENO.getNombre(), ((PresentacionFichaCatastralDto) datosImpresion.get(0)).getListaDescripcionTerreno());
-                parametrosReporte.put(EnumParametrosReporte.INFRAESTRUCTURA_SERVICIOS.getNombre(), ((PresentacionFichaCatastralDto) datosImpresion.get(0)).getListaServicios());
-                parametrosReporte.put(EnumParametrosReporte.CARACTERISTICAS_EDIFICACION.getNombre(), ((PresentacionFichaCatastralDto) datosImpresion.get(0)).getListaBloques());
-                parametrosReporte.put(EnumParametrosReporte.PISO.getNombre(), bloques.getListadetallesPisoDtoD());
-
-                parametrosReporte.put(EnumParametrosReporte.IMAGEN_DELIMITACION_PREDIO.getNombre(), parametrosServicio.obtenerParametroPorNombre(EnumParametroSistema.DIRECCION_SERVICIO_IMAGEN_PREDIO, sesionBean.getSesion()).getValor().concat(geoCatastroServicio.obtenerBordesPredio(predio, BigDecimal.valueOf(95), BigDecimal.valueOf(533), sesionBean.getSesion())));
-            }
-
-            Map<String, Class> paramRepA = new HashMap<String, Class>();
-            paramRepA.put(claseImpresion.getSimpleName(), claseImpresion);
-            paramRepA.put("lista".concat(claseImpresion.getSimpleName()), List.class);
-
-            return generarReporte(tipoReporte, datosImpresion, paramRepA, xPath, parametrosReporte, formatoReporte);
-
-        } catch (NewviExcepcion ex) {
-            LoggerNewvi.getLogNewvi(this.getClass()).error(ex, sesionBean.getSesion());
-            MensajesFaces.mensajeError(ex.getMessage());
-        } catch (Exception ex) {
-            LoggerNewvi.getLogNewvi(this.getClass()).error(ex, sesionBean.getSesion());
-            return null;
-        }
-        return null;
-    }
+    
 
 }

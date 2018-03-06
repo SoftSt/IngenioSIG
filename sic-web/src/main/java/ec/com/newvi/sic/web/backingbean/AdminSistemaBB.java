@@ -7,20 +7,29 @@ package ec.com.newvi.sic.web.backingbean;
 
 import ec.com.newvi.componente.reporte.ConfiguracionReporte;
 import ec.com.newvi.componente.reporte.ReporteGenerador;
+import ec.com.newvi.sic.dto.CaracteristicasEdificacionesDto;
+import ec.com.newvi.sic.dto.PresentacionFichaCatastralDto;
 import ec.com.newvi.sic.enums.EnumNewviExcepciones;
 import ec.com.newvi.sic.enums.EnumParametroSistema;
 import ec.com.newvi.sic.enums.EnumReporte;
+import ec.com.newvi.sic.geo.servicios.GeoCatastroServicio;
+import ec.com.newvi.sic.modelo.Predios;
 import ec.com.newvi.sic.modelo.Reporte;
+import ec.com.newvi.sic.modelo.Titulos;
 import ec.com.newvi.sic.util.ComunUtil;
 import ec.com.newvi.sic.util.excepciones.NewviExcepcion;
 import ec.com.newvi.sic.util.logs.LoggerNewvi;
+import ec.com.newvi.sic.web.MensajesFaces;
 import ec.com.newvi.sic.web.enums.EnumParametrosReporte;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import javax.ejb.EJB;
 import org.primefaces.model.DefaultStreamedContent;
 
 /**
@@ -28,6 +37,22 @@ import org.primefaces.model.DefaultStreamedContent;
  * @author israelavila
  */
 public abstract class AdminSistemaBB extends SistemaBB {
+    
+    
+    @EJB
+    protected GeoCatastroServicio geoCatastroServicio;
+    
+    protected Predios predio;
+
+    public Predios getPredio() {
+        return predio;
+    }
+
+    public void setPredio(Predios predio) {
+        this.predio = predio;
+    }
+    
+    
 
     protected Map<String, Object> obtenerParametrosSistemaParaReporte() {
         String rutaReporte = "";
@@ -80,6 +105,51 @@ public abstract class AdminSistemaBB extends SistemaBB {
             throw new NewviExcepcion(EnumNewviExcepciones.ERR404, ex);
         }
         return archivoReporteGenerado;
+    }
+    
+    protected DefaultStreamedContent generarReporteCatastro(EnumReporte tipoReporte, ReporteGenerador.FormatoReporte formatoReporte, List datosImpresion, Class claseImpresion) {
+        try {
+
+            CaracteristicasEdificacionesDto bloques;
+            Map<String, Object> parametrosReporte = new HashMap<>();
+
+            parametrosReporte.put(EnumParametrosReporte.NOMBRE_MODULO.getNombre(), "CATASTRO PREDIAL URBANO");
+
+            String xPath = "/lista".concat(claseImpresion.getSimpleName()).concat("//").concat(claseImpresion.getSimpleName());
+
+            if (EnumReporte.FICHA_RELEVAMIENTO_PREDIAL_URBANO.equals(tipoReporte)) {
+                bloques = new CaracteristicasEdificacionesDto(this.predio);
+
+                parametrosReporte.put(EnumParametrosReporte.DESCRIPCION_TERRENO.getNombre(), ((PresentacionFichaCatastralDto) datosImpresion.get(0)).getListaDescripcionTerreno());
+                parametrosReporte.put(EnumParametrosReporte.INFRAESTRUCTURA_SERVICIOS.getNombre(), ((PresentacionFichaCatastralDto) datosImpresion.get(0)).getListaServicios());
+                parametrosReporte.put(EnumParametrosReporte.CARACTERISTICAS_EDIFICACION.getNombre(), ((PresentacionFichaCatastralDto) datosImpresion.get(0)).getListaBloques());
+                parametrosReporte.put(EnumParametrosReporte.PISO.getNombre(), bloques.getListadetallesPisoDtoD());
+
+                parametrosReporte.put(EnumParametrosReporte.IMAGEN_DELIMITACION_PREDIO.getNombre(), parametrosServicio.obtenerParametroPorNombre(EnumParametroSistema.DIRECCION_SERVICIO_IMAGEN_PREDIO, sesionBean.getSesion()).getValor().concat(geoCatastroServicio.obtenerBordesPredio(predio, BigDecimal.valueOf(95), BigDecimal.valueOf(533), sesionBean.getSesion())));
+            }
+
+            Map<String, Class> paramRepA = new HashMap<String, Class>();
+            paramRepA.put(claseImpresion.getSimpleName(), claseImpresion);
+            paramRepA.put("lista".concat(claseImpresion.getSimpleName()), List.class);
+
+            return generarReporte(tipoReporte, datosImpresion, paramRepA, xPath, parametrosReporte, formatoReporte);
+
+        } catch (NewviExcepcion ex) {
+            LoggerNewvi.getLogNewvi(this.getClass()).error(ex, sesionBean.getSesion());
+            MensajesFaces.mensajeError(ex.getMessage());
+        } catch (Exception ex) {
+            LoggerNewvi.getLogNewvi(this.getClass()).error(ex, sesionBean.getSesion());
+            return null;
+        }
+        return null;
+    }
+    
+    protected List<PresentacionFichaCatastralDto> obtenerDatosReporteListaTitulosDesmarcados(List<Titulos> listaTitulos) {
+        List<PresentacionFichaCatastralDto> tablita = new ArrayList<>();
+        for (Titulos titulo : listaTitulos) {
+            tablita.add(new PresentacionFichaCatastralDto(titulo, Boolean.TRUE));
+        }
+        return tablita;
     }
 
 }

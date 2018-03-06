@@ -5,6 +5,7 @@
  */
 package ec.com.newvi.sic.dto;
 
+import ec.com.newvi.sic.enums.EnumEstadoTitulo;
 import ec.com.newvi.sic.modelo.Bloques;
 import ec.com.newvi.sic.modelo.Contribuyentes;
 import ec.com.newvi.sic.modelo.LogPredio;
@@ -12,11 +13,13 @@ import ec.com.newvi.sic.modelo.Predios;
 import ec.com.newvi.sic.modelo.Propiedad;
 import ec.com.newvi.sic.modelo.Servicios;
 import ec.com.newvi.sic.modelo.Terreno;
+import ec.com.newvi.sic.modelo.TituloMovimientos;
 import ec.com.newvi.sic.modelo.Titulos;
 import ec.com.newvi.sic.util.ComunUtil;
 import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -44,6 +47,7 @@ public class PresentacionFichaCatastralDto {
     private String nomCartografia;
     private String nomFotoAerea;
     private String nomcCartografiaOtros;
+    private String codigoTitulo;
     private BigDecimal valAreaPredio;
     private BigDecimal valAreaFrente;
     private BigDecimal valAreaFondo;
@@ -71,6 +75,8 @@ public class PresentacionFichaCatastralDto {
     private String txtEste;
     private String txtOeste;
     private String contribuyente;
+    
+    private String razonMovimiento;
 
     private String stsTenencia;
     private String stsTenenciaotro;
@@ -114,6 +120,22 @@ public class PresentacionFichaCatastralDto {
     private List<Bloques> listaBloques;
 
     private List<Servicios> listaServicios;
+
+    public String getRazonMovimiento() {
+        return razonMovimiento;
+    }
+
+    public void setRazonMovimiento(String razonMovimiento) {
+        this.razonMovimiento = razonMovimiento;
+    }
+    
+    public String getCodigoTitulo() {
+        return codigoTitulo;
+    }
+
+    public void setCodigoTitulo(String codigoTitulo) {
+        this.codigoTitulo = codigoTitulo;
+    }
 
     public String getCodUsu() {
         return codUsu;
@@ -786,6 +808,14 @@ public class PresentacionFichaCatastralDto {
         setearDatosPropiedad(fichaCatastralDto.getPropiedad());
         setearDatosPredioTitulo(titulo.getCodCatastral());
     }
+    public PresentacionFichaCatastralDto(Titulos titulo, Boolean opcion) {
+        FichaCatastralDto fichaCatastralDto = new FichaCatastralDto(titulo.getCodCatastral());
+        setearDatosTitulo(titulo);
+        setearDatosMovimientoTitulo(titulo);
+        setearDatosContribuyente(fichaCatastralDto.getContribuyentePropiedad());
+        setearDatosPropiedad(fichaCatastralDto.getPropiedad());
+        setearDatosPredioTitulo(titulo.getCodCatastral());
+    }
 
     private void setearDatosPredioTitulo(Predios predio) {
         //this.txtCallePrincipal = predio.getTxtDireccion();
@@ -865,6 +895,19 @@ public class PresentacionFichaCatastralDto {
         return format.format(fechaEmision);
     }
 
+    private void setearDatosMovimientoTitulo(Titulos titulo) {
+        List<TituloMovimientos> movimientos= titulo.getListaMovimientosTitulo();
+        TituloMovimientos aux = null;
+        for (TituloMovimientos movimiento : movimientos) {
+            if(movimiento.getEstadoTitulo().equals(EnumEstadoTitulo.TITULO_DESMARCADO)){
+                aux = movimiento;
+            }
+        }
+        this.razonMovimiento = !ComunUtil.esNulo(aux.getRazonMovimiento())? aux.getRazonMovimiento(): "No ha sido especificada";
+        
+        
+        
+    }
     private void setearDatosTitulo(Titulos titulo) {
         this.valAreaPredio = titulo.getValAreaterreno();
         this.valAreaConstruccion = titulo.getValAreaconstruccion();
@@ -888,6 +931,7 @@ public class PresentacionFichaCatastralDto {
         this.txtCallePrincipal = titulo.getTxtDireccion();
         this.stsBarrio = titulo.getTxtBarrio();
         this.fecPago = generarHora(titulo.getFecFpago());
+        this.codigoTitulo = titulo.getCodSecuencial();
     }
 
 }

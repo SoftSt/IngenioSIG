@@ -25,23 +25,12 @@ import org.primefaces.model.DefaultStreamedContent;
  */
 @ManagedBean
 @ViewScoped
-public class TitulosDesmarcadosBB extends AdminTitulos {
-
+public class TitulosCobradosBB extends AdminTitulos{
     private EnumPantallaMantenimiento pantallaActual;
 
     private Boolean hayFechaRecaudacion;
 
     private BigDecimal totalCobrardoTitulos;
-
-    
-
-    public BigDecimal getTotalCobrardoTitulos() {
-        return totalCobrardoTitulos;
-    }
-
-    public void setTotalCobrardoTitulos(BigDecimal totalCobrardoTitulos) {
-        this.totalCobrardoTitulos = totalCobrardoTitulos;
-    }
 
     public Boolean getHayFechaRecaudacion() {
         return hayFechaRecaudacion;
@@ -51,12 +40,20 @@ public class TitulosDesmarcadosBB extends AdminTitulos {
         this.hayFechaRecaudacion = hayFechaRecaudacion;
     }
 
+    public BigDecimal getTotalCobrardoTitulos() {
+        return totalCobrardoTitulos;
+    }
+
+    public void setTotalCobrardoTitulos(BigDecimal totalCobrardoTitulos) {
+        this.totalCobrardoTitulos = totalCobrardoTitulos;
+    }
+    
     @PostConstruct
     public void init() {
         conmutarPantalla(EnumPantallaMantenimiento.PANTALLA_LISTADO);
-        establecerTitulo(EnumEtiquetas.CONSULTA_TITULOS_DESMARCADOS_LISTA_TITULO,
-                EnumEtiquetas.CONSULTA_TITULOS_DESMARCADOS_LISTA_ICONO,
-                EnumEtiquetas.CONSULTA_TITULOS_DESMARCADOS_LISTA_DESCRIPCION);
+        establecerTitulo(EnumEtiquetas.CONSULTA_TITULOS_COBRADOS_LISTA_TITULO,
+                EnumEtiquetas.CONSULTA_TITULOS_COBRADOS_LISTA_ICONO,
+                EnumEtiquetas.CONSULTA_TITULOS_COBRADOS_LISTA_DESCRIPCION);
 
         this.hayFechaRecaudacion = Boolean.TRUE;
     }
@@ -80,16 +77,8 @@ public class TitulosDesmarcadosBB extends AdminTitulos {
     }
 
     public void buscarTituloPorTipo() {
-        this.listaTitulosRegistrados = aplicarFiltros(rentasServicio.consultarTitulosPorTipo(EnumEstadoTitulo.TITULO_DESMARCADO), EnumEstadoTitulo.TITULO_DESMARCADO);
+        this.listaTitulosRegistrados = aplicarFiltros(rentasServicio.consultarTitulosPorTipo(EnumEstadoTitulo.TITULO_COBRADO), EnumEstadoTitulo.TITULO_COBRADO);
         this.totalCobrardoTitulos = obtenerTotalesTitulos(this.listaTitulosRegistrados);
     }
-
     
-
-    
-
-    
-
-    
-
 }

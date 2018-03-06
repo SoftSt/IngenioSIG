@@ -25,7 +25,7 @@ import org.primefaces.model.DefaultStreamedContent;
  */
 @ManagedBean
 @ViewScoped
-public class TitulosDesmarcadosBB extends AdminTitulos {
+public class TitulosDeBajaBB extends AdminTitulos {
 
     private EnumPantallaMantenimiento pantallaActual;
 
@@ -35,14 +35,6 @@ public class TitulosDesmarcadosBB extends AdminTitulos {
 
     
 
-    public BigDecimal getTotalCobrardoTitulos() {
-        return totalCobrardoTitulos;
-    }
-
-    public void setTotalCobrardoTitulos(BigDecimal totalCobrardoTitulos) {
-        this.totalCobrardoTitulos = totalCobrardoTitulos;
-    }
-
     public Boolean getHayFechaRecaudacion() {
         return hayFechaRecaudacion;
     }
@@ -51,12 +43,22 @@ public class TitulosDesmarcadosBB extends AdminTitulos {
         this.hayFechaRecaudacion = hayFechaRecaudacion;
     }
 
+    public BigDecimal getTotalCobrardoTitulos() {
+        return totalCobrardoTitulos;
+    }
+
+    public void setTotalCobrardoTitulos(BigDecimal totalCobrardoTitulos) {
+        this.totalCobrardoTitulos = totalCobrardoTitulos;
+    }
+
+    
+
     @PostConstruct
     public void init() {
         conmutarPantalla(EnumPantallaMantenimiento.PANTALLA_LISTADO);
-        establecerTitulo(EnumEtiquetas.CONSULTA_TITULOS_DESMARCADOS_LISTA_TITULO,
-                EnumEtiquetas.CONSULTA_TITULOS_DESMARCADOS_LISTA_ICONO,
-                EnumEtiquetas.CONSULTA_TITULOS_DESMARCADOS_LISTA_DESCRIPCION);
+        establecerTitulo(EnumEtiquetas.CONSULTA_TITULOS_DE_BAJA_LISTA_TITULO,
+                EnumEtiquetas.CONSULTA_TITULOS_DE_BAJA_LISTA_ICONO,
+                EnumEtiquetas.CONSULTA_TITULOS_DE_BAJA_LISTA_DESCRIPCION);
 
         this.hayFechaRecaudacion = Boolean.TRUE;
     }
@@ -75,21 +77,15 @@ public class TitulosDesmarcadosBB extends AdminTitulos {
         }
     }
 
-    public DefaultStreamedContent imprimir(EnumReporte tipoReporte, String formatoReporte) throws NewviExcepcion {
-        return generarReporteCatastro(tipoReporte, obtenerFormatoReporte(formatoReporte), obtenerDatosReporteListaTitulosDesmarcados(this.listaTitulosRegistrados), PresentacionFichaCatastralDto.class);
-    }
 
     public void buscarTituloPorTipo() {
-        this.listaTitulosRegistrados = aplicarFiltros(rentasServicio.consultarTitulosPorTipo(EnumEstadoTitulo.TITULO_DESMARCADO), EnumEstadoTitulo.TITULO_DESMARCADO);
+        this.listaTitulosRegistrados = aplicarFiltros(rentasServicio.consultarTitulosPorTipo(EnumEstadoTitulo.TITULO_ANULADO), EnumEstadoTitulo.TITULO_ANULADO );
         this.totalCobrardoTitulos = obtenerTotalesTitulos(this.listaTitulosRegistrados);
     }
 
     
 
-    
-
-    
-
-    
-
+    public DefaultStreamedContent imprimir(EnumReporte tipoReporte, String formatoReporte) throws NewviExcepcion {
+        return generarReporteCatastro(tipoReporte, obtenerFormatoReporte(formatoReporte), obtenerDatosReporteListaTitulosDesmarcados(this.listaTitulosRegistrados), PresentacionFichaCatastralDto.class);
+    }
 }
