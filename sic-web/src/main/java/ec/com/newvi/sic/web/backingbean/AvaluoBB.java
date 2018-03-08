@@ -172,7 +172,7 @@ public class AvaluoBB extends AdminFichaCatastralBB {
         Integer numeroPrediosTotal = listaPredios.size();
 
         for (Predios predioACalcular : listaPredios) {
-            //Predios predioACalcular= listaPredios.get(9);
+            //Predios predioACalcular= listaPredios.get(612);
             List<AvaluoDto> calculoAvaluo = catastroServicio.obtenerAvaluoPredio(predioACalcular, dominios, formatoMonedaSistema, sesionBean.getSesion());
             listaAvaluosCalculados.add(generarNuevoNodoPredio(predioACalcular, calculoAvaluo));
             registrarLogPredioProcesadoActual(predioACalcular);

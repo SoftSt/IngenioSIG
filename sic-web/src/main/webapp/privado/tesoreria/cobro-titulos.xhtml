@@ -142,7 +142,7 @@
                                     <p:column>
                                         <p:commandButton id="btnBajaTitulo" 
                                                          icon="fa fa-long-arrow-down"
-                                                         actionListener="#{cobroTituloBB.eliminarTitulo(tituloRegistrado.codTitulos)}"
+                                                         actionListener="#{cobroTituloBB.eliminarTitulo(tituloRegistradoActual.codTitulos)}"
                                                          update="grupoCobroDeTitulo">
                                             <p:confirm header="Dar de Baja al Título" message="¿Está seguro?" icon="ui-icon-alert" />
                                             <p:ajax update="toolTipDarBaja" process="@this" /> 
@@ -207,6 +207,18 @@
                                         <h:outputText value="#{tituloRegistradoVencido.valPagado}">
                                             <f:convertNumber pattern="###,###.00"/>
                                         </h:outputText>
+                                    </p:column>
+
+                                    <p:column>
+                                        <p:commandButton id="btnBajaTituloVencidos" 
+                                                         icon="fa fa-long-arrow-down"
+                                                         actionListener="#{cobroTituloBB.eliminarTitulo(tituloRegistradoVencido.codTitulos)}"
+                                                         update="grupoCobroDeTitulo">
+                                            <p:confirm header="Dar de Baja al Título" message="¿Está seguro?" icon="ui-icon-alert" />
+                                            <p:ajax update="toolTipDarBajaVencido" process="@this" /> 
+                                        </p:commandButton>
+                                        <p:tooltip id="toolTipDarBajaVencido" for="btnBajaTituloVencidos" value="Dar de Baja" showEffect="fade" hideEffect="fade" position="bottom"/>
+
                                     </p:column>
 
                                     <p:summaryRow>

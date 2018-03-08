@@ -381,7 +381,8 @@ public class CobroTituloBB extends AdminFichaCatastralBB {
             LoggerNewvi.getLogNewvi(this.getClass()).error(EnumNewviExcepciones.ERR000.presentarMensajeCodigo(), e, sesionBean.getSesion());
             MensajesFaces.mensajeError(e.getMessage());
         }
-        //this.listaTitulosRegistrados.remove(tituloEliminable);
+        registrarMovimiento(tituloEliminable);
+        actualizarListaTitulosRegistrados(tituloEliminable.getCodCatastral().getCodCatastral());
 
     }
 

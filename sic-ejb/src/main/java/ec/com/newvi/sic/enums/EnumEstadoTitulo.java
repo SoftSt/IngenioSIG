@@ -14,7 +14,7 @@ import ec.com.newvi.sic.util.ComunUtil;
 public enum EnumEstadoTitulo {
     
     TITULO_EMITIDO("Se ha realizado la emisión del título "),
-    TITULO_ANULADO("TITULO_ANULADO"),
+    TITULO_ANULADO("Se ha dado de baja el título "),
     TITULO_COBRADO("Se ha realizado la cobro del título "),
     TITULO_IMPRESO("TITULO_IMPRESO"),
     TITULO_DESMARCADO("Se ha desmarcado el título "),
