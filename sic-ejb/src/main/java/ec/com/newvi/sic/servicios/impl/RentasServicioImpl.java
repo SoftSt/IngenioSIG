@@ -52,18 +52,20 @@ public class RentasServicioImpl implements RentasServicio {
         Date fechaEmision = ComunUtil.hoy();
 
         for (Avaluo avaluo : listadoAvaluos) {
-            Titulos nuevoTitulo = obtenerTituloDesdeAvaluo(avaluo);
 
-            if (!ComunUtil.esNulo(nuevoTitulo)) {
-                // Registrar datos del nuevo titulo
-                //nuevoTitulo.setFecEmision(fechaEmision);
+            if (ComunUtil.esCedulaValida(avaluo.getCodCedularuc().trim())) {
+                Titulos nuevoTitulo = obtenerTituloDesdeAvaluo(avaluo);
+                if (!ComunUtil.esNulo(nuevoTitulo)) {
+                    // Registrar datos del nuevo titulo
+                    //nuevoTitulo.setFecEmision(fechaEmision);
 
-                //Registramos la auditoria de ingreso
-                nuevoTitulo.setAudIngIp(sesion.getDireccionIP());
-                nuevoTitulo.setAudIngUsu(sesion.getUsuarioRegistrado().getUsuPalabraclave().trim());
-                nuevoTitulo.setAudIngFec(fechaEmision);
+                    //Registramos la auditoria de ingreso
+                    nuevoTitulo.setAudIngIp(sesion.getDireccionIP());
+                    nuevoTitulo.setAudIngUsu(sesion.getUsuarioRegistrado().getUsuPalabraclave().trim());
+                    nuevoTitulo.setAudIngFec(fechaEmision);
 
-                listaTitulosGenerados.add(nuevoTitulo);
+                    listaTitulosGenerados.add(nuevoTitulo);
+                }
             }
 
         }

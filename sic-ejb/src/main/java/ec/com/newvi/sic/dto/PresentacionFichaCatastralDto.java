@@ -34,6 +34,8 @@ public class PresentacionFichaCatastralDto {
     private String nomCodigocatastralanterior;
     private String codDpa;
     private String codZona;
+    private String codCatastral;
+    private String codCampo;
     private String codSector;
     private String codManzana;
     private String codPredio;
@@ -70,12 +72,16 @@ public class PresentacionFichaCatastralDto {
     private BigDecimal valInteresaplicado;
     private BigDecimal valDescuentoaplicado;
     private BigDecimal valPagado;
+
+    private BigDecimal valDescuentoPago;
+    private BigDecimal valRecargoPago;
+
     private String txtNorte;
     private String txtSur;
     private String txtEste;
     private String txtOeste;
     private String contribuyente;
-    
+
     private String razonMovimiento;
 
     private String stsTenencia;
@@ -94,6 +100,22 @@ public class PresentacionFichaCatastralDto {
     private String fecEscritura;
     private String fecRegistro;
     private String stsEstado;
+
+    public String getCodCatastral() {
+        return codCatastral;
+    }
+
+    public void setCodCatastral(String codCatastral) {
+        this.codCatastral = codCatastral;
+    }
+
+    public String getCodCampo() {
+        return codCampo;
+    }
+
+    public void setCodCampo(String codCampo) {
+        this.codCampo = codCampo;
+    }
 
     private String codCedularuc;
     private String nomApellidos;
@@ -121,6 +143,22 @@ public class PresentacionFichaCatastralDto {
 
     private List<Servicios> listaServicios;
 
+    public BigDecimal getValDescuentoPago() {
+        return valDescuentoPago;
+    }
+
+    public void setValDescuentoPago(BigDecimal valDescuentoPago) {
+        this.valDescuentoPago = valDescuentoPago;
+    }
+
+    public BigDecimal getValRecargoPago() {
+        return valRecargoPago;
+    }
+
+    public void setValRecargoPago(BigDecimal valRecargoPago) {
+        this.valRecargoPago = valRecargoPago;
+    }
+
     public String getRazonMovimiento() {
         return razonMovimiento;
     }
@@ -128,7 +166,7 @@ public class PresentacionFichaCatastralDto {
     public void setRazonMovimiento(String razonMovimiento) {
         this.razonMovimiento = razonMovimiento;
     }
-    
+
     public String getCodigoTitulo() {
         return codigoTitulo;
     }
@@ -773,6 +811,17 @@ public class PresentacionFichaCatastralDto {
         this.contribuyente = contribuyente;
     }
 
+    public PresentacionFichaCatastralDto(FichaCatastralDto ficha) {
+        Contribuyentes contr = ficha.getContribuyentePropiedad();
+        Predios pred = ficha.getPredio();
+        this.codCedularuc = contr.getCodCedularuc();
+        this.nomApellidos = contr.getNomApellidos();
+        this.nomNombres = contr.getNomNombres();
+        this.nomCodigocatastral = pred.getNomCodigocatastral();
+        this.codCatastral = pred.getCodCatastral().toString();
+        this.codCampo = pred.getCodCampo();
+    }
+
     public PresentacionFichaCatastralDto(Predios predio) {
         FichaCatastralDto fichaCatastralDto = new FichaCatastralDto(predio);
         setearDatosPredio(fichaCatastralDto.getPredio());
@@ -808,6 +857,7 @@ public class PresentacionFichaCatastralDto {
         setearDatosPropiedad(fichaCatastralDto.getPropiedad());
         setearDatosPredioTitulo(titulo.getCodCatastral());
     }
+
     public PresentacionFichaCatastralDto(Titulos titulo, Boolean opcion) {
         FichaCatastralDto fichaCatastralDto = new FichaCatastralDto(titulo.getCodCatastral());
         setearDatosTitulo(titulo);
@@ -896,18 +946,37 @@ public class PresentacionFichaCatastralDto {
     }
 
     private void setearDatosMovimientoTitulo(Titulos titulo) {
-        List<TituloMovimientos> movimientos= titulo.getListaMovimientosTitulo();
+        List<TituloMovimientos> movimientos = titulo.getListaMovimientosTitulo();
         TituloMovimientos aux = null;
-        for (TituloMovimientos movimiento : movimientos) {
-            if(movimiento.getEstadoTitulo().equals(EnumEstadoTitulo.TITULO_DESMARCADO)){
-                aux = movimiento;
+        if (!ComunUtil.esNulo(movimientos) || movimientos.isEmpty()) {
+            for (TituloMovimientos movimiento : movimientos) {
+                if (movimiento.getEstadoTitulo().equals(EnumEstadoTitulo.TITULO_DESMARCADO)) {
+                    aux = movimiento;
+                }
+            }
+            this.razonMovimiento = !ComunUtil.esNulo(aux) && !ComunUtil.esNulo(aux.getRazonMovimiento()) ? aux.getRazonMovimiento() : "No ha sido especificada";
+        }
+    }
+
+    private void setearValoresDescRec(BigDecimal descuentoAplicado) {
+        if (!ComunUtil.esNulo(descuentoAplicado)) {
+            switch (descuentoAplicado.signum()) {
+                case -1:
+                    this.valRecargoPago = descuentoAplicado.negate();
+                    this.valDescuentoPago = BigDecimal.ZERO;
+                    break;
+                case 1:
+                    this.valDescuentoPago = descuentoAplicado.negate();
+                    this.valRecargoPago = BigDecimal.ZERO;
+                    break;
+                default:
+                    this.valDescuentoPago = BigDecimal.ZERO;
+                    this.valRecargoPago = BigDecimal.ZERO;
+                    break;
             }
         }
-        this.razonMovimiento = !ComunUtil.esNulo(aux.getRazonMovimiento())? aux.getRazonMovimiento(): "No ha sido especificada";
-        
-        
-        
     }
+
     private void setearDatosTitulo(Titulos titulo) {
         this.valAreaPredio = titulo.getValAreaterreno();
         this.valAreaConstruccion = titulo.getValAreaconstruccion();
@@ -932,6 +1001,7 @@ public class PresentacionFichaCatastralDto {
         this.stsBarrio = titulo.getTxtBarrio();
         this.fecPago = generarHora(titulo.getFecFpago());
         this.codigoTitulo = titulo.getCodSecuencial();
+        setearValoresDescRec(titulo.getValDescuentoaplicado());
     }
 
 }

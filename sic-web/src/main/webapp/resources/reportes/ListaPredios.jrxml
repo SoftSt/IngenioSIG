@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="1a776af0-9a3d-4b17-be56-48bdb72bfe7a">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="celda_cabecera"/>
+	<style name="table_TD"/>
+	<parameter name="NOMBRE_MUNICIPIO" class="java.lang.String"/>
+	<parameter name="NOMBRE_MODULO" class="java.lang.String"/>
+	<parameter name="TITULO_REPORTE" class="java.lang.String"/>
+	<field name="codCedularuc" class="java.lang.String"/>
+	<field name="nomApellidos" class="java.lang.String"/>
+	<field name="nomNombres" class="java.lang.String"/>
+	<field name="nomCodigocatastral" class="java.lang.String"/>
+	<field name="codCatastral" class="java.lang.String"/>
+	<field name="codCampo" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band height="75" splitType="Stretch">
+			<frame>
+				<reportElement style="celda_cabecera" x="0" y="0" width="555" height="75" uuid="7362b970-e8c9-4389-8921-e0e5220e5df0"/>
+				<textField>
+					<reportElement x="58" y="0" width="438" height="20" uuid="a847b224-0fb9-4fe8-9b60-8d94d0ec059d"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="13" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{NOMBRE_MUNICIPIO}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="58" y="20" width="438" height="20" uuid="55274287-973d-445c-92d1-a42bbf8935b7"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="11" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{NOMBRE_MODULO}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="58" y="40" width="438" height="15" uuid="ab9486a4-fdd7-4e5a-bf7d-b426dc400d7c"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{TITULO_REPORTE}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="58" y="55" width="438" height="20" uuid="2fea06b7-20cb-4320-9dfa-17aa85035bc7"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="SansSerif" size="10" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[new SimpleDateFormat("dd MMMM yyyy", new Locale("es")).format(new Date())]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="35" splitType="Stretch">
+			<frame>
+				<reportElement style="celda_cabecera" mode="Transparent" x="0" y="0" width="555" height="35" uuid="03c21c44-a740-4d97-ba12-f1482af61fb9"/>
+				<staticText>
+					<reportElement style="celda_cabecera" x="0" y="0" width="78" height="35" uuid="81b43c69-5a42-4c43-854b-71d3a9db6fb3"/>
+					<textElement textAlignment="Left" verticalAlignment="Bottom">
+						<font fontName="SansSerif" size="9" isBold="true"/>
+					</textElement>
+					<text><![CDATA[codcatastra]]></text>
+				</staticText>
+				<staticText>
+					<reportElement style="celda_cabecera" x="78" y="0" width="85" height="35" uuid="70d6a91b-0f12-4640-a6ef-24862a944133"/>
+					<textElement textAlignment="Left" verticalAlignment="Bottom">
+						<font fontName="SansSerif" size="9" isBold="true"/>
+					</textElement>
+					<text><![CDATA[codcampo]]></text>
+				</staticText>
+				<staticText>
+					<reportElement style="celda_cabecera" x="269" y="0" width="142" height="35" uuid="eb4f4ba3-3ed7-4596-bb99-14c7accd3511"/>
+					<textElement textAlignment="Left" verticalAlignment="Bottom">
+						<font fontName="SansSerif" size="9" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Apellidos y nombres]]></text>
+				</staticText>
+				<staticText>
+					<reportElement style="celda_cabecera" x="411" y="0" width="64" height="35" uuid="94968731-7a1c-49fe-ad39-fec943e4fafa"/>
+					<textElement textAlignment="Left" verticalAlignment="Bottom">
+						<font fontName="SansSerif" size="9" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Cédula]]></text>
+				</staticText>
+				<staticText>
+					<reportElement style="celda_cabecera" x="163" y="0" width="106" height="35" uuid="7b24604f-9fc7-40e7-a820-aa0717b88ec6"/>
+					<textElement textAlignment="Left" verticalAlignment="Bottom">
+						<font fontName="SansSerif" size="9" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Código Catastral]]></text>
+				</staticText>
+			</frame>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="25" splitType="Stretch">
+			<frame>
+				<reportElement style="celda_cabecera" x="0" y="0" width="555" height="25" uuid="41c85693-c5a8-4a8b-a484-7b25815f8f37"/>
+				<textField isBlankWhenNull="true">
+					<reportElement x="269" y="0" width="142" height="25" uuid="94a8d61b-b501-41c1-a0b5-9246dc03b2cb"/>
+					<textElement>
+						<font fontName="SansSerif" size="9"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{nomApellidos}.trim()+" "+$F{nomNombres}.trim()]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement x="163" y="0" width="106" height="25" uuid="d0f7c8a9-0958-452d-975d-7016cdfea639"/>
+					<textElement>
+						<font fontName="SansSerif" size="9"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{nomCodigocatastral}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement x="411" y="0" width="64" height="25" uuid="aec01fed-5cb4-4ebc-8c08-73cb8f1d5c5d"/>
+					<textElement>
+						<font fontName="SansSerif" size="9"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{codCedularuc}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement x="0" y="0" width="78" height="25" uuid="ae076020-f74e-418a-9e55-9efaba81d2bb"/>
+					<textElement>
+						<font fontName="SansSerif" size="9"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{codCatastral}]]></textFieldExpression>
+				</textField>
+				<textField isBlankWhenNull="true">
+					<reportElement x="78" y="0" width="85" height="25" uuid="75a6da1f-77d3-4f0c-9057-1311f4572ab7"/>
+					<textElement>
+						<font fontName="SansSerif" size="9"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{codCampo}]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

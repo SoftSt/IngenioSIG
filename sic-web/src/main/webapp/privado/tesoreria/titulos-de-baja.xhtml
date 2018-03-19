@@ -34,10 +34,10 @@
                                 </p:commandButton>
                                 <p:splitButton id="imprimir" value="Imprimir" icon="fa fa-print">
                                     <p:menuitem icon="fa fa-file-pdf-o" value="Imprimir en PDF" ajax="false" update="grupoTitulosDeBaja" onclick="PrimeFaces.monitorDownload(start, stop);">
-                                        <p:fileDownload value="#{titulosDeBajaBB.imprimir('LISTA_TITULOS_DESMARCADOS','PDF')}"/>
+                                        <p:fileDownload value="#{titulosDeBajaBB.imprimir('LISTA_TITULOS_DE_BAJA','PDF')}"/>
                                     </p:menuitem>
                                     <p:menuitem icon="fa fa-file-excel-o" value="Imprimir en XLSX" ajax="false" update="grupoTitulosDeBaja" onclick="PrimeFaces.monitorDownload(start, stop);">
-                                        <p:fileDownload value="#{titulosDeBajaBB.imprimir('LISTA_TITULOS_DESMARCADOS','XLSX')}"/>
+                                        <p:fileDownload value="#{titulosDeBajaBB.imprimir('LISTA_TITULOS_DE_BAJA','XLSX')}"/>
                                     </p:menuitem>
                                 </p:splitButton>
                             </h:panelGrid>

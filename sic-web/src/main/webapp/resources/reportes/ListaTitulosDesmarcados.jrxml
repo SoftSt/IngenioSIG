@@ -146,7 +146,7 @@
 					<text><![CDATA[Total]]></text>
 				</staticText>
 				<staticText>
-					<reportElement style="celda_cabecera" x="107" y="0" width="62" height="35" uuid="8249efee-5c5f-43ce-a777-785eb6af71cf"/>
+					<reportElement style="celda_cabecera" x="107" y="0" width="73" height="35" uuid="8249efee-5c5f-43ce-a777-785eb6af71cf"/>
 					<textElement textAlignment="Left" verticalAlignment="Middle">
 						<font fontName="SansSerif" size="9" isBold="true"/>
 					</textElement>
@@ -160,7 +160,7 @@
 					<text><![CDATA[Subtotal]]></text>
 				</staticText>
 				<staticText>
-					<reportElement style="celda_cabecera" x="169" y="0" width="209" height="35" uuid="e8cc6b3b-a577-43c5-a963-6e9fcd5a2e4b"/>
+					<reportElement style="celda_cabecera" x="180" y="0" width="198" height="35" uuid="e8cc6b3b-a577-43c5-a963-6e9fcd5a2e4b"/>
 					<textElement textAlignment="Left" verticalAlignment="Bottom">
 						<font fontName="SansSerif" size="9" isBold="true"/>
 					</textElement>
@@ -189,7 +189,7 @@
 				</textField>
 				<textField isBlankWhenNull="true">
 					<reportElement x="603" y="0" width="70" height="25" uuid="369fc1b1-ac24-4d3c-9dc6-ce72c95e379b"/>
-					<textElement textAlignment="Right">
+					<textElement>
 						<font fontName="SansSerif" size="9"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{txtCallePrincipal}]]></textFieldExpression>
@@ -203,28 +203,31 @@
 				</textField>
 				<textField isBlankWhenNull="true">
 					<reportElement x="36" y="0" width="71" height="25" uuid="bde03e43-c324-4ccb-ac23-4078637c5632"/>
-					<textElement textAlignment="Right">
+					<textElement>
 						<font fontName="SansSerif" size="9"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{codigoTitulo}]]></textFieldExpression>
 				</textField>
 				<textField isBlankWhenNull="true">
-					<reportElement x="107" y="0" width="62" height="25" uuid="7d261895-5e67-4e99-96d1-d1b340c3d5fd"/>
-					<textElement textAlignment="Right">
+					<reportElement x="107" y="0" width="73" height="25" uuid="7d261895-5e67-4e99-96d1-d1b340c3d5fd"/>
+					<textElement>
 						<font fontName="SansSerif" size="9"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{fecPago}]]></textFieldExpression>
 				</textField>
 				<textField isBlankWhenNull="true">
 					<reportElement x="0" y="0" width="35" height="25" uuid="1db167d1-4a3b-48d3-8424-3fd5523df70f"/>
+					<box>
+						<leftPen lineWidth="1.0"/>
+					</box>
 					<textElement>
 						<font fontName="SansSerif" size="9"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{anioEmision}]]></textFieldExpression>
 				</textField>
 				<textField isBlankWhenNull="true">
-					<reportElement x="169" y="0" width="209" height="25" uuid="0ac61da5-4da1-46c1-b6f7-b94d3c751601"/>
-					<textElement textAlignment="Right">
+					<reportElement x="180" y="0" width="198" height="25" uuid="0ac61da5-4da1-46c1-b6f7-b94d3c751601"/>
+					<textElement>
 						<font fontName="SansSerif" size="9"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{razonMovimiento}]]></textFieldExpression>
@@ -238,6 +241,9 @@
 				</textField>
 				<textField isBlankWhenNull="true">
 					<reportElement x="760" y="0" width="42" height="25" uuid="c63e120d-1775-4409-ba87-f17095249d1f"/>
+					<box>
+						<rightPen lineWidth="1.0"/>
+					</box>
 					<textElement textAlignment="Right">
 						<font fontName="SansSerif" size="9"/>
 					</textElement>

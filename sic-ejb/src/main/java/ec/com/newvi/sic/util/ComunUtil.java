@@ -9,6 +9,7 @@ import ec.com.newvi.sic.dto.DominioDto;
 import ec.com.newvi.sic.dto.FichaCatastralDto;
 import ec.com.newvi.sic.enums.EnumMeses;
 import ec.com.newvi.sic.enums.EnumNewviExcepciones;
+import ec.com.newvi.sic.enums.EnumTipoIdentificacion;
 import ec.com.newvi.sic.modelo.Contribuyentes;
 import ec.com.newvi.sic.modelo.Predios;
 import ec.com.newvi.sic.modelo.Propiedad;
@@ -18,6 +19,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -164,6 +166,7 @@ public class ComunUtil {
         }
         return calendar.get(Calendar.YEAR);
     }
+
     public static String obtenerMesDesdeFecha(Date fecha) {
         Calendar calendar = Calendar.getInstance();
         if (!ComunUtil.esNulo(fecha)) {
@@ -171,10 +174,11 @@ public class ComunUtil {
         }
         Integer dia = calendar.get(Calendar.DAY_OF_YEAR);
         Integer dia2 = calendar.get(Calendar.DAY_OF_MONTH);
-        Integer mes = calendar.get(Calendar.MONTH)+1;
-        
-        return EnumMeses.obtenerDescripcionMes(calendar.get(Calendar.MONTH)+1);
+        Integer mes = calendar.get(Calendar.MONTH) + 1;
+
+        return EnumMeses.obtenerDescripcionMes(calendar.get(Calendar.MONTH) + 1);
     }
+
     public static Integer obtenerDiaDesdeFecha(Date fecha) {
         Calendar calendar = Calendar.getInstance();
         if (!ComunUtil.esNulo(fecha)) {
@@ -182,4 +186,217 @@ public class ComunUtil {
         }
         return calendar.get(Calendar.DAY_OF_YEAR);
     }
+
+    /*public static Boolean esPar(Integer numero) {
+        return numero % 2 == 0 ? Boolean.TRUE : Boolean.FALSE;
+    }
+
+    private static List<Integer> iniciarCoeficientes() {
+        List<Integer> coeficientes = new ArrayList<>();
+        Integer contador = 0;
+        while (contador <= 8) {
+            if (esPar(contador)) {
+                coeficientes.add(2);
+            } else {
+                coeficientes.add(1);
+            }
+            contador++;
+        }
+        return coeficientes;
+    }
+
+    public static Boolean esCedulaValida(String cedula) {
+        Integer total;
+        Integer longituCedula;
+        Integer numProvincias;
+        Integer tercerDigito;
+        Integer provincia;
+        Integer digitoTres;
+
+        Integer digitoVerificadorObtenido;
+        Integer digitoVerificadorRecibido;
+
+        longituCedula = 10;
+        if (cedula.matches("[0-9]*") && cedula.length() == longituCedula) {
+            numProvincias = 24;
+            tercerDigito = 6;
+            provincia = Integer.parseInt(cedula.charAt(0) + "" + cedula.charAt(1));
+            digitoTres = Integer.parseInt(cedula.charAt(2) + "");
+            if ((provincia > 0 && provincia <= numProvincias) && digitoTres < tercerDigito) {
+                digitoVerificadorRecibido = Integer.parseInt(cedula.charAt(9) + "");
+                total = obtenerTotalCoeficienteCedula(cedula);
+                digitoVerificadorObtenido = obtenerDigitoVerificadorCalculado(total);
+
+                if (digitoVerificadorObtenido.equals(digitoVerificadorRecibido)) {
+                    return Boolean.TRUE;
+                }
+            }
+            return Boolean.FALSE;
+        }
+        return Boolean.FALSE;
+    }
+
+    private static Integer obtenerTotalCoeficienteCedula(String cedula) {
+        List<Integer> coeficientes = iniciarCoeficientes();
+        Integer valor;
+        Integer total = 0;
+        Integer contador = 0;
+        for (Integer coeficiente : coeficientes) {
+            valor = coeficiente * Integer.parseInt(cedula.charAt(contador++) + "");
+            total = valor >= 10 ? total + (valor - 9) : total + valor;
+        }
+        return total;
+    }
+
+    private static Integer obtenerDigitoVerificadorCalculado(Integer total) {
+        return total > +10
+                ? (total % 10) != 0
+                        ? 10 - (total % 10)
+                        : (total % 10) : total;
+    }*/
+    public static Boolean esRucNaturalValido(String ruc) {
+        if (validarInicial(ruc, 13)
+                && validarCodigoProvincia(ruc.substring(0, 2))
+                && validarTercerDigito(String.valueOf(ruc.charAt(2)), EnumTipoIdentificacion.CEDULA_RUC_NATURAL)
+                && validarCodigoEstablecimiento(ruc.substring(10, 13))
+                && algoritmoModulo10(ruc, Integer.parseInt(String.valueOf(ruc.charAt(9))))) {
+            return Boolean.TRUE;
+        } else {
+            return Boolean.FALSE;
+        }
+    }
+    public static Boolean esRucPrivadoValido(String ruc) {
+        if (validarInicial(ruc, 13)
+                && validarCodigoProvincia(ruc.substring(0, 2))
+                && validarTercerDigito(String.valueOf(ruc.charAt(2)), EnumTipoIdentificacion.RUC_SOCIEDAD_PRIVADA)
+                && validarCodigoEstablecimiento(ruc.substring(10, 13))
+                && algoritmoModulo10(ruc, Integer.parseInt(String.valueOf(ruc.charAt(9))))
+                /*&& algoritmoModulo11(ruc.substring(0, 9), Integer.parseInt(String.valueOf(ruc.charAt(9))), EnumTipoIdentificacion.RUC_SOCIEDAD_PRIVADA)*/) {
+            return Boolean.TRUE;
+        } else {
+            return Boolean.FALSE;
+        }
+    }
+
+    public static Boolean esCedulaValida(String cedula) {
+
+        if (validarInicial(cedula, 10)
+                && validarCodigoProvincia(cedula.substring(0, 2))
+                && validarTercerDigito(String.valueOf(cedula.charAt(2)), EnumTipoIdentificacion.CEDULA_RUC_NATURAL)
+                && algoritmoModulo10(cedula, Integer.parseInt(String.valueOf(cedula.charAt(9))))) {
+            return Boolean.TRUE;
+        } else {
+            return Boolean.FALSE;
+        }
+    }
+
+    private static boolean validarInicial(String cedula, int caracteres) {
+
+        if (!ComunUtil.esNulo(cedula) && cedula.matches("[0-9]*") && cedula.length() == caracteres) {
+            return Boolean.TRUE;
+        } else {
+            return Boolean.FALSE;
+        }
+    }
+
+    private static Boolean validarCodigoProvincia(String cedula) {
+        if (Integer.parseInt(cedula) < 0 || Integer.parseInt(cedula) > 24) {
+            return Boolean.TRUE;
+        } else {
+            return Boolean.FALSE;
+        }
+    }
+
+    private static boolean validarTercerDigito(String numero, EnumTipoIdentificacion tipo) {
+        Boolean retorno = Boolean.FALSE;
+
+        switch (tipo) {
+            case CEDULA_RUC_NATURAL:
+
+                if (Integer.parseInt(numero) > 0 || Integer.parseInt(numero) <= 5) {
+                    retorno = Boolean.TRUE;
+                }
+                break;
+            case RUC_SOCIEDAD_PRIVADA:
+                if (Integer.parseInt(numero) == 9) {
+                    retorno = Boolean.TRUE;
+                }
+                break;
+
+            case RUC_SOCIEDAD_PUBLICA:
+                if (Integer.parseInt(numero) == 6) {
+                    retorno = Boolean.TRUE;
+                }
+                break;
+            default:
+                retorno = Boolean.FALSE;
+        }
+
+        return retorno;
+    }
+
+    private static Integer[] iniciarDigitosTemporales(String digitosIniciales) {
+        Integer indice = 0;
+        Integer[] digitosInicialesTMP = new Integer[digitosIniciales.length()];
+        for (char valorPosicion : digitosIniciales.toCharArray()) {
+            digitosInicialesTMP[indice] = Integer.parseInt(String.valueOf(valorPosicion));
+            indice++;
+        }
+        return digitosInicialesTMP;
+    }
+
+    private static Integer obtenerTotalProducto(Integer[] arrayCoeficientes, Integer[] digitosInicialesTMP) {
+
+        Integer key = 0;
+        Integer total = 0;
+
+        for (Integer valorPosicion : digitosInicialesTMP) {
+            if (key < arrayCoeficientes.length) {
+                valorPosicion = (digitosInicialesTMP[key] * arrayCoeficientes[key]);
+
+                if (valorPosicion >= 10) {
+                    char[] valorPosicionSplit = String.valueOf(valorPosicion).toCharArray();
+                    valorPosicion = (Integer.parseInt(String.valueOf(valorPosicionSplit[0]))) + (Integer.parseInt(String.valueOf(valorPosicionSplit[1])));
+
+                }
+                total = total + valorPosicion;
+            }
+
+            key++;
+        }
+
+        return total;
+    }
+
+    private static Boolean esIgualDigitoVerificador(Integer total, Integer digitoVerificador) {
+
+        Integer residuo;
+        Integer resultado;
+
+        residuo = total % 10;
+
+        resultado = residuo == 0 ? 0 : 10 - residuo;
+
+        if (resultado.equals(digitoVerificador)) {
+            return Boolean.TRUE;
+        } else {
+            return Boolean.TRUE;
+        }
+    }
+
+    private static Boolean algoritmoModulo10(String digitosIniciales, Integer digitoVerificador) {
+        Integer[] arrayCoeficientes = new Integer[]{2, 1, 2, 1, 2, 1, 2, 1, 2};
+        Integer[] digitosInicialesTMP;
+        digitosInicialesTMP = iniciarDigitosTemporales(digitosIniciales);
+        return esIgualDigitoVerificador(obtenerTotalProducto(arrayCoeficientes, digitosInicialesTMP), digitoVerificador);
+    }
+    
+     private static Boolean validarCodigoEstablecimiento(String numero){
+        if (Integer.parseInt(numero) > 0) {
+            return Boolean.TRUE;
+        }else{
+            return Boolean.FALSE;
+        }
+}
+
 }

@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="69177265-d393-4ac5-a206-cec09fcc8acd">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="375"/>
 	<field name="propietario" class="java.lang.String"/>
 	<field name="nomApellidos" class="java.lang.String"/>
 	<field name="codCedularuc" class="java.lang.String"/>
@@ -13,7 +13,7 @@
 	<field name="valTerreno" class="java.lang.String"/>
 	<field name="valEdifica" class="java.lang.String"/>
 	<field name="serviciosAmbientales" class="java.lang.String"/>
-	<field name="nombreCodigocatastral" class="java.lang.String"/>
+	<field name="nomCodigocatastral" class="java.lang.String"/>
 	<field name="nomNumero" class="java.lang.String"/>
 	<field name="valImppredial" class="java.lang.String"/>
 	<field name="contribucionEspecialMejoras" class="java.lang.String"/>
@@ -30,6 +30,7 @@
 	<field name="valPagado" class="java.lang.String"/>
 	<field name="nomNombres" class="java.lang.String"/>
 	<field name="valContruccionObsoleta" class="java.lang.String"/>
+	<field name="valCem" class="java.lang.String"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -398,28 +399,28 @@
 				<reportElement x="275" y="199" width="280" height="1" uuid="5d20d653-a1e1-42e4-9f0e-9f641caf42f1"/>
 			</line>
 			<staticText>
-				<reportElement x="275" y="45" width="116" height="15" uuid="61dd01e4-5921-4c9f-87ab-d084bb067fe9"/>
+				<reportElement x="298" y="45" width="93" height="15" uuid="61dd01e4-5921-4c9f-87ab-d084bb067fe9"/>
 				<textElement textAlignment="Right">
 					<font fontName="SansSerif" size="9" isBold="false"/>
 				</textElement>
 				<text><![CDATA[Calle:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="275" y="15" width="116" height="15" uuid="ea8a4d32-d110-4aaf-9d3c-064e68620eab"/>
+				<reportElement x="298" y="15" width="93" height="15" uuid="ea8a4d32-d110-4aaf-9d3c-064e68620eab"/>
 				<textElement textAlignment="Right">
 					<font fontName="SansSerif" size="9" isBold="true"/>
 				</textElement>
 				<text><![CDATA[CLAVE CATASTRAL:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="0" y="0" width="115" height="15" uuid="d61cee73-e487-45dd-88c1-8ce14145badd"/>
+				<reportElement x="0" y="15" width="115" height="15" uuid="d61cee73-e487-45dd-88c1-8ce14145badd"/>
 				<textElement textAlignment="Right">
 					<font fontName="SansSerif" size="9" isBold="true"/>
 				</textElement>
 				<text><![CDATA[CONTRIBUYENTE:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="275" y="30" width="116" height="15" uuid="32c50b03-3b84-49de-8f9f-c62a7b61d090"/>
+				<reportElement x="298" y="30" width="93" height="15" uuid="32c50b03-3b84-49de-8f9f-c62a7b61d090"/>
 				<textElement textAlignment="Right">
 					<font fontName="SansSerif" size="9" isBold="false"/>
 				</textElement>
@@ -439,22 +440,15 @@
 				</textElement>
 				<text><![CDATA[Dirección Domicilio:]]></text>
 			</staticText>
-			<staticText>
-				<reportElement x="275" y="60" width="116" height="15" uuid="81c17587-7bd1-4ac6-831a-6d81cfbc1e4b"/>
-				<textElement textAlignment="Right">
-					<font fontName="SansSerif" size="9" isBold="false"/>
-				</textElement>
-				<text><![CDATA[Número:]]></text>
-			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement x="115" y="0" width="276" height="15" uuid="7e19ed78-8f06-4c8f-adef-9a502f76575f"/>
+				<reportElement x="115" y="15" width="183" height="15" uuid="7e19ed78-8f06-4c8f-adef-9a502f76575f"/>
 				<textElement>
 					<font fontName="SansSerif" size="9" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{nomApellidos}.trim()+" "+$F{nomNombres}.trim()]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="115" y="45" width="160" height="30" uuid="e3782d79-3ce6-4c0e-8cf9-556796bde32c"/>
+				<reportElement x="115" y="45" width="183" height="30" uuid="e3782d79-3ce6-4c0e-8cf9-556796bde32c"/>
 				<textElement textAlignment="Justified">
 					<font fontName="SansSerif" size="9"/>
 				</textElement>
@@ -475,7 +469,7 @@
 				<textFieldExpression><![CDATA[$F{stsBarrio}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="115" y="30" width="160" height="15" uuid="ef650b50-4397-4a56-8658-ab03701998e0"/>
+				<reportElement x="115" y="30" width="183" height="15" uuid="ef650b50-4397-4a56-8658-ab03701998e0"/>
 				<textElement>
 					<font fontName="SansSerif" size="9"/>
 				</textElement>
@@ -486,18 +480,32 @@
 				<textElement>
 					<font fontName="SansSerif" size="9" isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{nombreCodigocatastral}]]></textFieldExpression>
-			</textField>
-			<textField isBlankWhenNull="true">
-				<reportElement x="403" y="60" width="152" height="15" uuid="4903dbe0-61a3-41d1-9f03-eb1cbf251663"/>
-				<textElement>
-					<font fontName="SansSerif" size="9"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{nomNumero}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{nomCodigocatastral}]]></textFieldExpression>
 			</textField>
 			<line>
 				<reportElement x="0" y="74" width="555" height="1" uuid="7e064cd5-e2d7-48f9-969b-f35c59fefe45"/>
 			</line>
+			<staticText>
+				<reportElement x="275" y="180" width="140" height="15" uuid="f0b4daab-7e4f-4ada-a974-e9615242f107"/>
+				<textElement textAlignment="Right">
+					<font fontName="SansSerif" size="9" isBold="false"/>
+				</textElement>
+				<text><![CDATA[CEM:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="415" y="180" width="20" height="15" uuid="97faf910-e5c4-4517-bc6d-7ff7ef479a58"/>
+				<textElement textAlignment="Center">
+					<font fontName="SansSerif" size="9" isBold="false"/>
+				</textElement>
+				<text><![CDATA[$]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="435" y="180" width="120" height="15" uuid="8400ebd7-679d-44d0-a151-3b783cb184bc"/>
+				<textElement textAlignment="Right">
+					<font fontName="SansSerif" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{valCem}]]></textFieldExpression>
+			</textField>
 		</band>
 	</detail>
 	<pageFooter>
@@ -507,14 +515,12 @@
 				<textElement textAlignment="Right">
 					<font fontName="SansSerif"/>
 				</textElement>
-				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
 			</textField>
 			<textField evaluationTime="Report">
 				<reportElement x="275" y="0" width="280" height="20" uuid="73905d13-2170-4dda-8232-c3cbc6c754c6"/>
 				<textElement>
 					<font fontName="SansSerif"/>
 				</textElement>
-				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
 			</textField>
 		</band>
 	</pageFooter>

@@ -151,5 +151,12 @@ public abstract class AdminSistemaBB extends SistemaBB {
         }
         return tablita;
     }
+    protected List<PresentacionFichaCatastralDto> obtenerDatosReporteListaTitulos(List<Titulos> listaTitulos) {
+        List<PresentacionFichaCatastralDto> tablita = new ArrayList<>();
+        for (Titulos titulo : listaTitulos) {
+            tablita.add(new PresentacionFichaCatastralDto(titulo));
+        }
+        return tablita;
+    }
 
 }

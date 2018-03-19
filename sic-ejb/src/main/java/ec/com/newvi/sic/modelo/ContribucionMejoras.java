@@ -8,6 +8,7 @@ package ec.com.newvi.sic.modelo;
 import ec.com.newvi.sic.enums.EnumAplicacion;
 import ec.com.newvi.sic.enums.EnumAplicacionCEM;
 import ec.com.newvi.sic.enums.EnumEstadoRegistro;
+import ec.com.newvi.sic.enums.EnumTipoObra;
 import ec.com.newvi.sic.util.ComunUtil;
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -76,6 +77,9 @@ public class ContribucionMejoras implements Serializable {
     @Enumerated(EnumType.STRING)
     @Column(name = "obr_estado")
     private EnumEstadoRegistro obrEstado;
+    
+    @Column(name = "nom_obras_corto")
+    private String nomObraCorto;
     @Size(max = 50)
     @Column(name = "aud_ing_usu")
     private String audIngUsu;
@@ -102,6 +106,14 @@ public class ContribucionMejoras implements Serializable {
         this.codObras = codObras;
     }
 
+    public EnumTipoObra getNomObraCorto() {
+        return EnumTipoObra.obtenerTipoObras(this.nomObraCorto);
+    }
+
+    public void setNomObraCorto(EnumTipoObra nomObraCorto) {
+        this.nomObraCorto = nomObraCorto.getNomObras();
+    }
+    
     public Integer getCodObras() {
         return codObras;
     }

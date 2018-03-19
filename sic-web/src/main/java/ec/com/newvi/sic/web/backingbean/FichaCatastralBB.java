@@ -1093,8 +1093,23 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
         }
     }
 
-    public DefaultStreamedContent imprimir(EnumReporte tipoReporte) {
+    public DefaultStreamedContent imprimir(EnumReporte tipoReporte, String formatoReporte) {
         return generarReporteCatastro(tipoReporte, ReporteGenerador.FormatoReporte.PDF, obtenerDatosReporteCatastral(this.predio), PresentacionFichaCatastralDto.class);
+    }
+    
+    private ReporteGenerador.FormatoReporte obtenerFormatoReporte(String tipoReporte) {
+        if (tipoReporte.equals("PDF")) {
+            return ReporteGenerador.FormatoReporte.PDF;
+        } else if (tipoReporte.equals("XLSX")) {
+            return ReporteGenerador.FormatoReporte.XLSX;
+        } else {
+            return ReporteGenerador.FormatoReporte.DOCX;
+        }
+    }
+    
+    public DefaultStreamedContent imprimirLista(EnumReporte tipoReporte, String formatoReporte) {
+        return generarReporteCatastro(tipoReporte, obtenerFormatoReporte(formatoReporte), obtenerListaFichas(this.listaFichas), PresentacionFichaCatastralDto.class);
+        //return generarReporteCatastro(tipoReporte, obtenerFormatoReporte(formatoReporte), obtenerDatosReporteListaTitulosDesmarcados(this.listaFichas), PresentacionFichaCatastralDto.class);
     }
 
     public void seleccionPantallas() {
@@ -1291,4 +1306,5 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
         }
     }
 
+    
 }

@@ -337,7 +337,7 @@ public class CobroTituloBB extends AdminFichaCatastralBB {
     }
 
     private Boolean esDescuento(Titulos titulo) {
-        return obtenerDiferenciaAniosActualEmision(titulo) > 1 ? Boolean.FALSE : Boolean.TRUE;
+        return obtenerDiferenciaAniosActualEmision(titulo) >= 1 ? Boolean.FALSE : Boolean.TRUE;
     }
 
     public void abrirDialogoComprobante(Integer codTitulo) {
@@ -537,7 +537,7 @@ public class CobroTituloBB extends AdminFichaCatastralBB {
     }
 
     public void desmarcarTitulo() {
-        if(!ComunUtil.esNulo(this.razonTituloDesmarcado)){
+        if (!ComunUtil.esNulo(this.razonTituloDesmarcado)) {
             this.tituloDesmarcadoActual.setStsEstado(EnumEstadoTitulo.TITULO_DESMARCADO);
 
             try {
@@ -554,5 +554,5 @@ public class CobroTituloBB extends AdminFichaCatastralBB {
             }
         }
     }
-    
+
 }

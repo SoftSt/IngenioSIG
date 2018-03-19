@@ -6,9 +6,9 @@
                 template="/WEB-INF/templates/default.xhtml"
                 xmlns:p="http://primefaces.org/ui">
     <ui:define name="content">
-        <h:panelGroup id="grupoTitulosDeBaja">
-            <p:panel id="panelListaTitulosDeBaja" rendered="#{titulosCobradosBB.esPantallaActual('PANTALLA_LISTADO')}">
-                <h:form id="formularioListaTitulosDeBaja">
+        <h:panelGroup id="grupoTitulosCobrados">
+            <p:panel id="panelListaTitulosCobrados" rendered="#{titulosCobradosBB.esPantallaActual('PANTALLA_LISTADO')}">
+                <h:form id="formularioListaTitulosCobrados">
 
                     <p:growl id="growl" showDetail="true"/>
                     <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true"/>
@@ -27,17 +27,17 @@
                                 <p:commandButton actionListener="#{titulosCobradosBB.buscarTituloPorTipo}"
                                                  icon="fa fa-search"
                                                  value="Buscar"
-                                                 update="grupoTitulosDeBaja"
+                                                 update="grupoTitulosCobrados"
                                                  id="btnTipoTitulo"
                                                  onclick="PF('statusDialog').show();"
                                                  oncomplete="PF('statusDialog').hide();">
                                 </p:commandButton>
                                 <p:splitButton id="imprimir" value="Imprimir" icon="fa fa-print">
-                                    <p:menuitem icon="fa fa-file-pdf-o" value="Imprimir en PDF" ajax="false" update="grupoTitulosDeBaja" onclick="PrimeFaces.monitorDownload(start, stop);">
-                                        <p:fileDownload value="#{titulosCobradosBB.imprimir('LISTA_TITULOS_DESMARCADOS','PDF')}"/>
+                                    <p:menuitem icon="fa fa-file-pdf-o" value="Imprimir en PDF" ajax="false" update="grupoTitulosCobrados" onclick="PrimeFaces.monitorDownload(start, stop);">
+                                        <p:fileDownload value="#{titulosCobradosBB.imprimir('DETALLE_COBROS_URBANO','PDF')}"/>
                                     </p:menuitem>
-                                    <p:menuitem icon="fa fa-file-excel-o" value="Imprimir en XLSX" ajax="false" update="grupoTitulosDeBaja" onclick="PrimeFaces.monitorDownload(start, stop);">
-                                        <p:fileDownload value="#{titulosCobradosBB.imprimir('LISTA_TITULOS_DESMARCADOS','XLSX')}"/>
+                                    <p:menuitem icon="fa fa-file-excel-o" value="Imprimir en XLSX" ajax="false" update="grupoTitulosCobrados" onclick="PrimeFaces.monitorDownload(start, stop);">
+                                        <p:fileDownload value="#{titulosCobradosBB.imprimir('DETALLE_COBROS_URBANO','XLSX')}"/>
                                     </p:menuitem>
                                 </p:splitButton>
                             </h:panelGrid>

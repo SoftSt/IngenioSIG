@@ -11,17 +11,26 @@ package ec.com.newvi.sic.enums;
  */
 public enum EnumTipoObra {
     
-    APR(" Adoquinamiento, Pavimentación o Repavimentación Urbana"),
+    /*APR("Adoquinamiento, Pavimentación o Repavimentación Urbana"),
     Cercas("Cercas"),
     AB("Aceras y Bordillos"),
     Alcantarillado("Alcantarillado"),
     OSAP("Obras y Sistemas de Agua Potable"),
-    PPJ("Parques, Plazas y Jardine");
+    PPJ("Parques, Plazas y Jardine");*/
+    
+    ADOQUINAMIENTO("Adoquinamiento"),
+    PAVIMENTACION_REPAVIMENTACION("Pavimentación o Repavimentación"),
+    REMODELACION_OBRAS("Remodelación de obras"),
+    CONSTRUCCION_OBRAS("Construcción de obras"),
+    ALCANTARILLADO("Alcantarillado"),
+    ACERAS_BORDILLOS("Aceras y bordillos"),
+    CERCAS("Cercas"),
+    SISTEMAS_AGUA_POTABLE("Sistemas de Agua Potable"),;
     
     private final String nomObras;
     
     public String getNomObras() {
-        return nomObras;
+        return nomObras.trim();
     }
     
     private EnumTipoObra(String nomObras) {
@@ -37,7 +46,14 @@ public enum EnumTipoObra {
 
     
 
-    
+    public static EnumTipoObra obtenerTipoObras(String nomObraCorto) {
+        for (EnumTipoObra enumTipoObra : EnumTipoObra.values()) {
+            if (enumTipoObra.getNomObras().contains(nomObraCorto.trim())) {
+                return enumTipoObra;
+            }
+        }
+        return null;
+    }
 
     
 }

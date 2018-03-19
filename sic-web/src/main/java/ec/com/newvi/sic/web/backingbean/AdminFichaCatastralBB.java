@@ -59,9 +59,7 @@ public abstract class AdminFichaCatastralBB extends AdminSistemaBB {
     protected LazyDataModel<FichaCatastralDto> listaFichasLazy;
 
     protected List<Contribuyentes> listaContribuyentes;
-    
 
-    
     protected Contribuyentes contribuyente;
 
     public Predios getPredio() {
@@ -119,18 +117,25 @@ public abstract class AdminFichaCatastralBB extends AdminSistemaBB {
     public void setlistaContribuyentesFiltrado(List<Contribuyentes> listaContribuyentesFiltrado) {
         this.listaContribuyentesFiltrado = listaContribuyentesFiltrado;
     }*/
-
     protected void actualizarListadoPredios() {
+        FichaCatastralDto nuevaFicha;
         List<Predios> listaPredios = catastroServicio.consultarPredios();
         //String sql = ComunUtil.generarScriptTenencia(listaPredios, parametrosServicio);
         listaFichas = new ArrayList<>();
-        listaPredios.forEach((elementoPredio) -> {
+        for (Predios predioLista : listaPredios) {
+            nuevaFicha = new FichaCatastralDto(predioLista);
+            String cedulaPredio = nuevaFicha.getContribuyentePropiedad().getCodCedularuc().trim();
+            if (!ComunUtil.esCedulaValida(cedulaPredio)) {
+                listaFichas.add(nuevaFicha);
+            }
+        }
+
+        /*listaPredios.forEach((elementoPredio) -> {
             listaFichas.add(new FichaCatastralDto(elementoPredio));
         });
-        listaFichasLazy = new ModeloPredioLazy(listaFichas);
-        
+        listaFichasLazy = new ModeloPredioLazy(listaFichas);*/
         try {
-            List<GeoPredio> nuevoPre =  geoCatastroServicio.obtenerListadoGeoPrediosHuerfanos(listaPredios, sesionBean.getSesion());
+            List<GeoPredio> nuevoPre = geoCatastroServicio.obtenerListadoGeoPrediosHuerfanos(listaPredios, sesionBean.getSesion());
             nuevoPre.size();
         } catch (NewviExcepcion ex) {
             Logger.getLogger(AdminFichaCatastralBB.class.getName()).log(Level.SEVERE, null, ex);
@@ -214,6 +219,13 @@ public abstract class AdminFichaCatastralBB extends AdminSistemaBB {
         tablita.add(new PresentacionFichaCatastralDto(predio));
         return tablita;
     }
+    protected List<PresentacionFichaCatastralDto> obtenerListaFichas(List<FichaCatastralDto> fichas) {
+        List<PresentacionFichaCatastralDto> tablita = new ArrayList<>();
+        for (FichaCatastralDto ficha : fichas) {
+        tablita.add(new PresentacionFichaCatastralDto(ficha));
+        }
+        return tablita;
+    }
 
     protected List<PresentacionFichaCatastralDto> obtenerDatosReporteTitulos(Titulos titulo) {
         List<PresentacionFichaCatastralDto> tablita = new ArrayList<>();
@@ -228,6 +240,7 @@ public abstract class AdminFichaCatastralBB extends AdminSistemaBB {
         }
         return tablita;
     }
+
     protected List<PresentacionFichaCatastralDto> obtenerDatosReporteListaTitulosDesmarcados(List<Titulos> listaTitulos) {
         List<PresentacionFichaCatastralDto> tablita = new ArrayList<>();
         for (Titulos titulo : listaTitulos) {
@@ -235,6 +248,7 @@ public abstract class AdminFichaCatastralBB extends AdminSistemaBB {
         }
         return tablita;
     }
+
     protected List<PresentacionFichaCatastralDto> obtenerDatosReporteListaLogPredios(List<LogPredio> listaLogPredios) {
         List<PresentacionFichaCatastralDto> tablita = new ArrayList<>();
         for (LogPredio logPredio : listaLogPredios) {
@@ -242,7 +256,5 @@ public abstract class AdminFichaCatastralBB extends AdminSistemaBB {
         }
         return tablita;
     }
-
-    
 
 }
