@@ -125,7 +125,9 @@ public abstract class AdminFichaCatastralBB extends AdminSistemaBB {
         for (Predios predioLista : listaPredios) {
             nuevaFicha = new FichaCatastralDto(predioLista);
             String cedulaPredio = nuevaFicha.getContribuyentePropiedad().getCodCedularuc().trim();
-            if (!ComunUtil.esCedulaValida(cedulaPredio)) {
+            String codigoCatastral = nuevaFicha.getPredio().getNomCodigocatastral().trim();
+            //ComunUtil.esCedulaValida(cedulaPredio)&&
+            if (cedulaPredio.length() > 10&& !cedulaPredio.equals("1760009530001")) {
                 listaFichas.add(nuevaFicha);
             }
         }
@@ -219,10 +221,11 @@ public abstract class AdminFichaCatastralBB extends AdminSistemaBB {
         tablita.add(new PresentacionFichaCatastralDto(predio));
         return tablita;
     }
+
     protected List<PresentacionFichaCatastralDto> obtenerListaFichas(List<FichaCatastralDto> fichas) {
         List<PresentacionFichaCatastralDto> tablita = new ArrayList<>();
         for (FichaCatastralDto ficha : fichas) {
-        tablita.add(new PresentacionFichaCatastralDto(ficha));
+            tablita.add(new PresentacionFichaCatastralDto(ficha));
         }
         return tablita;
     }

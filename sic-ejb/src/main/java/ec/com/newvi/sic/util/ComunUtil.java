@@ -187,7 +187,7 @@ public class ComunUtil {
         return calendar.get(Calendar.DAY_OF_YEAR);
     }
 
-    /*public static Boolean esPar(Integer numero) {
+    public static Boolean esPar(Integer numero) {
         return numero % 2 == 0 ? Boolean.TRUE : Boolean.FALSE;
     }
 
@@ -253,8 +253,8 @@ public class ComunUtil {
                 ? (total % 10) != 0
                         ? 10 - (total % 10)
                         : (total % 10) : total;
-    }*/
-    public static Boolean esRucNaturalValido(String ruc) {
+    }
+    /*public static Boolean esRucNaturalValido(String ruc) {
         if (validarInicial(ruc, 13)
                 && validarCodigoProvincia(ruc.substring(0, 2))
                 && validarTercerDigito(String.valueOf(ruc.charAt(2)), EnumTipoIdentificacion.CEDULA_RUC_NATURAL)
@@ -265,13 +265,13 @@ public class ComunUtil {
             return Boolean.FALSE;
         }
     }
+
     public static Boolean esRucPrivadoValido(String ruc) {
         if (validarInicial(ruc, 13)
                 && validarCodigoProvincia(ruc.substring(0, 2))
                 && validarTercerDigito(String.valueOf(ruc.charAt(2)), EnumTipoIdentificacion.RUC_SOCIEDAD_PRIVADA)
                 && validarCodigoEstablecimiento(ruc.substring(10, 13))
-                && algoritmoModulo10(ruc, Integer.parseInt(String.valueOf(ruc.charAt(9))))
-                /*&& algoritmoModulo11(ruc.substring(0, 9), Integer.parseInt(String.valueOf(ruc.charAt(9))), EnumTipoIdentificacion.RUC_SOCIEDAD_PRIVADA)*/) {
+                && algoritmoModulo10(ruc, Integer.parseInt(String.valueOf(ruc.charAt(9)))) && algoritmoModulo11(ruc.substring(0, 9), Integer.parseInt(String.valueOf(ruc.charAt(9))), EnumTipoIdentificacion.RUC_SOCIEDAD_PRIVADA)) {
             return Boolean.TRUE;
         } else {
             return Boolean.FALSE;
@@ -390,13 +390,13 @@ public class ComunUtil {
         digitosInicialesTMP = iniciarDigitosTemporales(digitosIniciales);
         return esIgualDigitoVerificador(obtenerTotalProducto(arrayCoeficientes, digitosInicialesTMP), digitoVerificador);
     }
-    
-     private static Boolean validarCodigoEstablecimiento(String numero){
+
+    private static Boolean validarCodigoEstablecimiento(String numero) {
         if (Integer.parseInt(numero) > 0) {
             return Boolean.TRUE;
-        }else{
+        } else {
             return Boolean.FALSE;
         }
-}
+    }*/
 
 }
