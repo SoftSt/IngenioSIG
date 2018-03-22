@@ -120,17 +120,20 @@ public abstract class AdminFichaCatastralBB extends AdminSistemaBB {
     protected void actualizarListadoPredios() {
         FichaCatastralDto nuevaFicha;
         List<Predios> listaPredios = catastroServicio.consultarPredios();
-        //String sql = ComunUtil.generarScriptTenencia(listaPredios, parametrosServicio);
+        String sql = ComunUtil.generarScriptTenencia(listaPredios, parametrosServicio);
         listaFichas = new ArrayList<>();
-        for (Predios predioLista : listaPredios) {
-            nuevaFicha = new FichaCatastralDto(predioLista);
+        
+        //for (Predios predioLista : listaPredios) {
+           // nuevaFicha = new FichaCatastralDto(predioLista);
+            nuevaFicha = new FichaCatastralDto(listaPredios.get(3826));
             String cedulaPredio = nuevaFicha.getContribuyentePropiedad().getCodCedularuc().trim();
             String codigoCatastral = nuevaFicha.getPredio().getNomCodigocatastral().trim();
-            //ComunUtil.esCedulaValida(cedulaPredio)&&
-            if (cedulaPredio.length() > 10&& !cedulaPredio.equals("1760009530001")) {
+            //&&
+            if (ComunUtil.esCedulaValida(cedulaPredio)) {
+            //if (cedulaPredio.length() > 10&& !cedulaPredio.equals("1760009530001")) {
                 listaFichas.add(nuevaFicha);
             }
-        }
+        //}
 
         /*listaPredios.forEach((elementoPredio) -> {
             listaFichas.add(new FichaCatastralDto(elementoPredio));
