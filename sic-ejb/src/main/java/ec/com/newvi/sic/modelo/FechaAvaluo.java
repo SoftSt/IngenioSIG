@@ -35,7 +35,7 @@ import javax.validation.constraints.Size;
 public class FechaAvaluo implements Serializable {
 
 
-    @Column(name = "fechaavaluo")
+    /*@Column(name = "fechaavaluo")
     @Temporal(TemporalType.TIME)
     private Date fechaavaluo;
     @Column(name = "fech")
@@ -43,7 +43,7 @@ public class FechaAvaluo implements Serializable {
     private Date fech;
     @Column(name = "fe")
     @Temporal(TemporalType.TIMESTAMP)
-    private Date fe;
+    private Date fe;*/
     @OneToMany(mappedBy = "fecavId")
     private Collection<DetallesAvaluo> detallesAvaluoCollection;
 
@@ -199,7 +199,7 @@ public class FechaAvaluo implements Serializable {
 
    
 
-    public Date getFechaavaluo() {
+    /*public Date getFechaavaluo() {
         return fechaavaluo;
     }
 
@@ -221,7 +221,7 @@ public class FechaAvaluo implements Serializable {
 
     public void setFe(Date fe) {
         this.fe = fe;
-    }
+    }*/
 
     public Collection<DetallesAvaluo> getDetallesAvaluoCollection() {
         return detallesAvaluoCollection;

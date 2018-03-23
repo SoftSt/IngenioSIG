@@ -38,13 +38,14 @@ public class FichaCatastralDto {
     }
 
     private Propiedad obtenerPropiedadActual(Predios predioABuscar) {
+        Propiedad propietarioActual = null;
         for (Propiedad propiedad : predioABuscar.getHistoricoPropiedad()) {
             if (EnumEstadoRegistro.A.equals(propiedad.getProEstado())
                     && !ComunUtil.esNulo(propiedad.getPropiedad())) {
-                return propiedad;
+                propietarioActual =  propiedad;
             }
         }
-        return null;
+        return propietarioActual;
     }
 
     public Predios getPredio() {
