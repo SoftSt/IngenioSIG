@@ -905,5 +905,6 @@ public class Predios implements Serializable {
     public void setTitulosCollection(Collection<Titulos> titulosCollection) {
         this.titulosCollection = titulosCollection;
     }
+    
 
 }
