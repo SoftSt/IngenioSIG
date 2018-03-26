@@ -146,7 +146,9 @@ public class PropiedadBB extends AdminFichaCatastralBB {
 
     public void insertarPropiedad() {
         try {
-            contribuyentesServicio.generarNuevoPropiedad(propiedad, sesionBean.getSesion());
+            this.propiedad.setCodCatastral(catastroServicio.seleccionarPredio(this.propiedad.getCodCatastral().getCodCatastral()));
+            //Predio predioPropiedad = catastroServicio.seleccionarPredio(this.propiedad.getCodCatastral().getCodCatastral());
+            contribuyentesServicio.generarNuevoPropiedad(this.propiedad, sesionBean.getSesion());
             actualizarListadoPredios();
             MensajesFaces.mensajeInformacion(EnumNewviExcepciones.INF348.presentarMensaje());
         } catch (NewviExcepcion e) {

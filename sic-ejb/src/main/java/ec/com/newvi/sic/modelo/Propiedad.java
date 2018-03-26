@@ -59,7 +59,7 @@ public class Propiedad implements Serializable {
     private Integer codPropiedad;
 
     @JoinColumn(name = "cod_catastral", referencedColumnName = "cod_catastral")
-    @ManyToOne(cascade = CascadeType.PERSIST)/*(cascade = CascadeType.ALL, fetch = FetchType.EAGER)*/
+    @ManyToOne(cascade = CascadeType.MERGE)/*(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)*/
     private Predios codCatastral;
 
     @JoinColumn(name = "cod_personeria", referencedColumnName = "cod_personeria")
