@@ -90,11 +90,37 @@
                     <p:messages id="mensajeFormulario" showDetail="true" autoUpdate="true" closable="true" />
                     <p:tooltip />
                     <p:outputPanel id="opDetalleUsuarios">
-                        <h:panelGrid>
-                            <br/>
-                            <div style="font-size:1.2em;font-weight:bold;">Datos del usuario</div>
-                            <p:separator />
-                            
+                        <br/>
+                        <div style="font-size:1.2em;font-weight:bold;">Datos pesonales</div>
+                        <p:separator />
+                        <h:panelGrid width="100%" columns="2">
+                            <h:panelGrid>
+                                <h:outputLabel for="usuNombres" value="Nombres" style="font-weight: bold;"/>
+                                <p:inputText id="usuNombres" value="#{usuariosBB.usuario.usuNombres}" required="true" label="Nombres" size="50">
+                                    <f:validateLength minimum="1" maximum="35" />
+                                </p:inputText>
+                                <p:message for="usuNombres" display="tooltip"/>
+
+                                <h:outputLabel for="usuApellidos" value="Apellidos" style="font-weight: bold;"/>
+                                <p:inputText id="usuApellidos" value="#{usuariosBB.usuario.usuApellidos}" required="true" label="Apellidos" size="50">
+                                    <f:validateLength minimum="1" maximum="35" />
+                                </p:inputText>
+                                <p:message for="usuApellidos" display="tooltip"/>
+
+                            </h:panelGrid>
+                            <h:panelGrid>
+                                <h:outputLabel for="usuCodigo" value="Código/Cédula" style="font-weight: bold;"/>
+                                <p:inputNumber id="usuCodigo" value="#{usuariosBB.usuario.usuCodigo}" label="Código/Cédula" maxValue="99999999999" minValue="0" size="50" thousandSeparator="" decimalSeparator=""/>
+                                <p:message for="usuCodigo" display="tooltip"/>
+
+                                <h:outputLabel value="Fecha de nacimiento" style="font-weight: bold;"/>
+                                <p:calendar id="usuFechaNacimiento" navigator="true" value="#{usuariosBB.usuario.usuFnacimiento}" label="Fecha de nacimiento" 
+                                            showOn="button" size="10" pattern="dd/MM/yyyy" mask="true" >
+                                    <p:watermark for="usuFechaNacimiento" value="dd/mm/aaaa"/>
+                                </p:calendar>
+                                <p:message for="usuFechaNacimiento" display="tooltip"/>
+                            </h:panelGrid>
+
                             <h:outputLabel for="usuEmail" value="Correo electrónico" style="font-weight: bold;"/>
                             <p:inputText id="usuEmail" value="#{usuariosBB.usuario.usuEmai}" label="Correo electrónico" 
                                          validator="#{usuariosBB.validarEmail}" required="true" size="50"/>
@@ -121,21 +147,9 @@
                             </p:selectOneMenu>
                             <p:message for="grupoPermiso" display="tooltip"/>
 
-                            <h:outputLabel for="usuCodigo" value="Código/Cédula" style="font-weight: bold;"/>
-                            <p:inputNumber id="usuCodigo" value="#{usuariosBB.usuario.usuCodigo}" label="Código/Cédula" maxValue="99999999999" minValue="0" size="50" thousandSeparator="" decimalSeparator=""/>
-                            <p:message for="usuCodigo" display="tooltip"/>
 
-                            <h:outputLabel for="usuNombres" value="Nombres" style="font-weight: bold;"/>
-                            <p:inputText id="usuNombres" value="#{usuariosBB.usuario.usuNombres}" required="true" label="Nombres" size="50">
-                                <f:validateLength minimum="1" maximum="35" />
-                            </p:inputText>
-                            <p:message for="usuNombres" display="tooltip"/>
 
-                            <h:outputLabel for="usuApellidos" value="Apellidos" style="font-weight: bold;"/>
-                            <p:inputText id="usuApellidos" value="#{usuariosBB.usuario.usuApellidos}" required="true" label="Apellidos" size="50">
-                                <f:validateLength minimum="1" maximum="35" />
-                            </p:inputText>
-                            <p:message for="usuApellidos" display="tooltip"/>
+
 
                             <h:outputLabel for="usuDireccion" value="Dirección" style="font-weight: bold;"/>
                             <p:inputTextarea id="usuDireccion" value="#{usuariosBB.usuario.usuDireccion}" label="Dirección" rows="3" cols="50"/>
@@ -154,12 +168,7 @@
                             <p:message for="usuFoto" display="tooltip"/>
 
 
-                            <h:outputLabel value="Fecha de nacimiento" style="font-weight: bold;"/>
-                            <p:calendar id="usuFechaNacimiento" navigator="true" value="#{usuariosBB.usuario.usuFnacimiento}" label="Fecha de nacimiento" 
-                                        showOn="button" size="10" pattern="dd/MM/yyyy" mask="true" >
-                                <p:watermark for="usuFechaNacimiento" value="dd/mm/aaaa"/>
-                            </p:calendar>
-                            <p:message for="usuFechaNacimiento" display="tooltip"/>
+
 
                             <h:outputLabel value="Numero de ingreso" style="font-weight: bold;"/>
                             <p:inputNumber id="usuNumeroIngreso" maxValue="99" minValue="0" value="#{usuariosBB.usuario.usuNumingreso}" label="Numero de ingreso" size="5"/>

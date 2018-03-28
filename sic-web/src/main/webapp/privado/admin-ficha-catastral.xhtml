@@ -262,11 +262,23 @@
                                     <div style="font-size:1.2em;font-weight:bold;">Fotografías</div>
                                     <p:separator />
 
+                                    <p:commandButton icon="fa fa-image"
+                                                     value="Agregar imágenes"
+                                                     id="btnImagenNueva"
+                                                     actionListener="#{fichaCatastralBB.abrirDialogCargaImagen()}"
+                                                     update="grupoFichaCatastral">
+                                        <p:ajax update="toolTipImagenNueva" process="@this" />
+                                    </p:commandButton>
+                                    <p:tooltip id="toolTipImagenNueva" for="btnImagenNueva" value="Agregar Imagen" showEffect="fade" hideEffect="fade" position="bottom"/>
+                                    
                                     <p:galleria value="#{fichaCatastralBB.listaFotosJpg}" var="image" panelWidth="500" panelHeight="313" showCaption="false">
                                         <p:graphicImage value="#{sesionBean.obtenerImagen()}" width="500" height="313">
                                             <f:param name="imagen" value="#{image}"/>
                                         </p:graphicImage>
                                     </p:galleria>
+
+
+
                                     <br/>
                                     <div style="font-size:1.2em;font-weight:bold;">Colindantes</div>
                                     <p:separator />
@@ -943,6 +955,25 @@
                         </p:column>            
 
                     </p:treeTable>
+                </p:dialog>
+
+                <p:dialog widgetVar="dlgCargaImagen" modal="true" appendTo="@(body)" 
+                          showEffect="fade" hideEffect="fade" resizable="false" closeOnEscape="true" width="600">
+                    <h:form id="formCargaImagen">
+                        <p:outputPanel id="oppCargaImagen" style="text-align:left;">
+                            <h:panelGrid id="pgCargaImagen" >
+                                <br/>
+                                <div style="font-size:1.2em;font-weight:bold;">Seleccione las imágenes del predio a cargar:</div>
+                                <p:fileUpload fileUploadListener="#{fichaCatastralBB.cargarImagen}" mode="advanced" dragDropSupport="false"
+                                              update="grupoFichaCatastral" multiple="true" fileLimit="1"
+                                              allowTypes="/(\.|\/)(jpe?g)$/" 
+                                              label="Seleccionar" uploadLabel="Cargar" cancelLabel="Cancelar"
+                                              invalidFileMessage="Archivo inválido, solo se permite extensiones: jpg, JPG"
+                                              invalidSizeMessage="Archivo demasiado extenso"
+                                              fileLimitMessage="Solo se puede cargar una imagen a la vez"/>
+                            </h:panelGrid>
+                        </p:outputPanel>
+                    </h:form>
                 </p:dialog>
 
             </p:panel>

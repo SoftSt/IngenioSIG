@@ -123,7 +123,7 @@ public abstract class AdminFichaCatastralBB extends AdminSistemaBB {
         //String sql = ComunUtil.generarScriptTenencia(listaPredios, parametrosServicio);
         listaFichas = new ArrayList<>();
 
-        for (Predios predioLista : listaPredios) {
+        /*for (Predios predioLista : listaPredios) {
             nuevaFicha = new FichaCatastralDto(predioLista);
             //nuevaFicha = new FichaCatastralDto(listaPredios.get(3826));
             String cedulaPredio = nuevaFicha.getContribuyentePropiedad().getCodCedularuc().trim();
@@ -134,12 +134,12 @@ public abstract class AdminFichaCatastralBB extends AdminSistemaBB {
                 //if (cedulaPredio.length() > 10&& !cedulaPredio.equals("1760009530001")) {
                 listaFichas.add(nuevaFicha);
             }
-        }
+        }*/
 
-        /*listaPredios.forEach((elementoPredio) -> {
+        listaPredios.forEach((elementoPredio) -> {
             listaFichas.add(new FichaCatastralDto(elementoPredio));
         });
-        listaFichasLazy = new ModeloPredioLazy(listaFichas);*/
+        listaFichasLazy = new ModeloPredioLazy(listaFichas);
         try {
             List<GeoPredio> nuevoPre = geoCatastroServicio.obtenerListadoGeoPrediosHuerfanos(listaPredios, sesionBean.getSesion());
             nuevoPre.size();

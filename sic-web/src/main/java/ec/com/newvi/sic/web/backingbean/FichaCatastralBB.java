@@ -29,6 +29,7 @@ import ec.com.newvi.sic.modelo.DetallesAvaluo;
 import ec.com.newvi.sic.modelo.Dominios;
 import ec.com.newvi.sic.modelo.Fotos;
 import ec.com.newvi.sic.modelo.LogPredio;
+import ec.com.newvi.sic.modelo.ParametroSistema;
 import ec.com.newvi.sic.modelo.PisoDetalle;
 import ec.com.newvi.sic.modelo.Pisos;
 import ec.com.newvi.sic.modelo.Predios;
@@ -55,10 +56,12 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
+import org.primefaces.event.FileUploadEvent;
 import org.primefaces.event.NodeSelectEvent;
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.DefaultTreeNode;
 import org.primefaces.model.TreeNode;
+import org.primefaces.model.UploadedFile;
 
 /**
  *
@@ -103,6 +106,15 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
     private Boolean esPantallaEditable;
     private Boolean esPantallaNueva;
     private String direccionVisorPredios;
+    private UploadedFile imagenCargada;
+
+    public UploadedFile getImagenCargada() {
+        return imagenCargada;
+    }
+
+    public void setImagenCargada(UploadedFile imagenCargada) {
+        this.imagenCargada = imagenCargada;
+    }
 
     public Boolean getEsPantallaNueva() {
         return esPantallaNueva;
@@ -355,20 +367,20 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
     public void setListaEstadosDetallesPisos(List<PisoDetalle> listaEstadosDetallesPisos) {
         this.listaEstadosDetallesPisos = listaEstadosDetallesPisos;
     }
-    
+
     @PostConstruct
     public void init() {
-        
+
         this.predio = new Predios();
         deshabilitarPantallas();
         seleccionPantallas();
     }
-    
-    public void actulizarEstadosPisos(){
+
+    public void actulizarEstadosPisos() {
         this.listaEstadosPisos = catastroServicio.consultarStsEstadoPiso();
     }
-    
-    public void actulizarEstadosDetallesPisos(){
+
+    public void actulizarEstadosDetallesPisos() {
         this.listaEstadosDetallesPisos = catastroServicio.consultarStsEstadoDetallePiso();
     }
 
@@ -489,7 +501,7 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
         try {
             String rutaFotografias = parametrosServicio.obtenerParametroPorNombre(EnumParametroSistema.DIRECCION_IMAGENES_PREDIO, sesionBean.getSesion()).getValor().concat("/");
             if (imagenes.isEmpty()) {
-                listaFotosJpg.add("vacio.jpg");
+                listaFotosJpg.add(rutaFotografias.concat("vacio.jpg"));
             } else {
                 imagenes.forEach((imagen) -> {
                     listaFotosJpg.add(rutaFotografias.concat(imagen.getDirFotos().trim()).concat(".JPG"));
@@ -1096,7 +1108,7 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
     public DefaultStreamedContent imprimir(EnumReporte tipoReporte, String formatoReporte) {
         return generarReporteCatastro(tipoReporte, ReporteGenerador.FormatoReporte.PDF, obtenerDatosReporteCatastral(this.predio), PresentacionFichaCatastralDto.class);
     }
-    
+
     private ReporteGenerador.FormatoReporte obtenerFormatoReporte(String tipoReporte) {
         if (tipoReporte.equals("PDF")) {
             return ReporteGenerador.FormatoReporte.PDF;
@@ -1106,7 +1118,7 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
             return ReporteGenerador.FormatoReporte.DOCX;
         }
     }
-    
+
     public DefaultStreamedContent imprimirLista(EnumReporte tipoReporte, String formatoReporte) {
         return generarReporteCatastro(tipoReporte, obtenerFormatoReporte(formatoReporte), obtenerListaFichas(this.listaFichas), PresentacionFichaCatastralDto.class);
         //return generarReporteCatastro(tipoReporte, obtenerFormatoReporte(formatoReporte), obtenerDatosReporteListaTitulosDesmarcados(this.listaFichas), PresentacionFichaCatastralDto.class);
@@ -1306,5 +1318,40 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
         }
     }
 
-    
+    private String registrarFotoPredio(String nombreImagen) throws NewviExcepcion {
+        Fotos nuevaFoto = new Fotos();
+        nuevaFoto.setCodCatastral(this.predio);
+        nuevaFoto.setDirFotos(nombreImagen.substring(nombreImagen.lastIndexOf('/') + 1, nombreImagen.indexOf(".")));
+        nuevaFoto.setDesFotos("Fotografía 1");
+        nuevaFoto.setEstFotos(EnumEstadoRegistro.A);
+        return catastroServicio.generarNuevoFoto(nuevaFoto, sesionBean.getSesion());
+    }
+
+    public void cargarImagen(FileUploadEvent event) {
+
+        String direccionArchivo;
+        this.imagenCargada = event.getFile();
+        String nombreImagen = event.getFile().getFileName();
+
+        if (!ComunUtil.esNulo(this.imagenCargada)) {
+            try {
+                direccionArchivo = EnumParametroSistema.DIRECCION_IMAGENES_PREDIO.getValorPorDefecto();
+                String nombreArchivoGuardado = registrarFotoPredio(parametrosServicio.guardarImagenPredio(EnumParametroSistema.DIRECCION_IMAGENES_PREDIO.getValorPorDefecto(), this.imagenCargada.getContents(), nombreImagen, sesionBean.getSesion()));
+                MensajesFaces.mensajeInformacion("La imagen ".concat(nombreArchivoGuardado).concat(" se ha almacenado correctamente. "));
+
+            } catch (NewviExcepcion e) {
+                LoggerNewvi.getLogNewvi(this.getClass()).error(e, sesionBean.getSesion());
+                MensajesFaces.mensajeError("Ocurrió un error al intentar cargar la imagen. ".concat(e.getMessage()));
+            }
+        } else {
+            LoggerNewvi.getLogNewvi(this.getClass()).error(EnumNewviExcepciones.ERR010.presentarMensajeCodigo(), sesionBean.getSesion());
+            MensajesFaces.mensajeError(EnumNewviExcepciones.ERR010.presentarMensajeCodigo());
+        }
+        seleccionarPredio(this.predio.getCodCatastral());
+    }
+
+    public void abrirDialogCargaImagen() {
+        WebUtils.obtenerContextoPeticion().execute("PF('dlgCargaImagen').show()");
+    }
+
 }

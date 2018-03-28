@@ -627,6 +627,27 @@ public class CatastroServicioImpl implements CatastroServicio {
     public List<Fotos> consultarFotosPorPredio(int codCatastral) {
         return fotosFacade.buscarFotosPorPredio(codCatastral);
     }
+    
+    @Override
+    public String generarNuevoFoto(Fotos nuevaFoto, SesionDto sesion) throws NewviExcepcion{
+        // Validar que los datos no sean incorrectos
+        LoggerNewvi.getLogNewvi(this.getClass()).debug("Validando foto...", sesion);
+        if (!nuevaFoto.esFotoValida()) {
+            throw new NewviExcepcion(EnumNewviExcepciones.ERR343);
+        }
+        // Crear la foto
+        LoggerNewvi.getLogNewvi(this.getClass()).debug("Creando foto...", sesion);
+
+        //Registramos la auditoria de ingreso
+        Date fechaIngreso = Calendar.getInstance().getTime();
+        nuevaFoto.setAudIngIp(sesion.getDireccionIP());
+        nuevaFoto.setAudIngUsu(sesion.getUsuarioRegistrado().getUsuPalabraclave().trim());
+        nuevaFoto.setAudIngFec(fechaIngreso);
+
+        Fotos fotoRegistrada = fotosFacade.create(nuevaFoto);
+        // Si todo marcha bien enviar nombre de la foto
+        return nuevaFoto.getDirFotos();
+    }
 
     public BigDecimal obtenerM2Ame(List<Dominios> dominios, String codigo, String codPredio, String calculo) {
         for (Dominios dominioObtenido : obtenerDominiosPorCalculoYManzana(dominios, calculo, codigo)) {

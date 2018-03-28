@@ -342,6 +342,15 @@ public interface CatastroServicio {
      * @return lista de fotos del predio
      */
     public List<Fotos> consultarFotosPorPredio(int codCatastral);
+    /**
+     * Genera el registro de un la foto correspondiete a un predio
+     * 
+     * @param nuevaFoto Objeto a ser registrado
+     * @param sesion Sesion que realiza la operación
+     * @return el nombre de la foto registrada
+     * @throws NewviExcepcion 
+     */
+    public String generarNuevoFoto(Fotos nuevaFoto, SesionDto sesion) throws NewviExcepcion;
 
     /*------------------------------------------------------------Avalúos------------------------------------------------------------*/
     /**

@@ -20,7 +20,7 @@ public class UtilArchivos {
 
     public static String almacenarArchivoEnServidor(String nombreArchivo, String direccionArchivo, byte[] archivoEnBytes) throws NewviExcepcion {
         try {
-            String nombreDireccionArchivo = direccionArchivo.concat("/").concat(nombreArchivo);
+            String nombreDireccionArchivo = direccionArchivo.concat(nombreArchivo);
             BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(new File(nombreDireccionArchivo)));
             stream.write(archivoEnBytes);
             stream.close();

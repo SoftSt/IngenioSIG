@@ -63,6 +63,18 @@ public interface ParametrosServicio {
      * @throws NewviExcepcion
      */
     public String guardarImagenParametroSistema(ParametroSistema parametroSistema, byte[] imagenEnBytes, SesionDto sesion) throws NewviExcepcion;
+    /**
+     * Guarda una imagen dado el flujo de bytes en una ubicación específica,
+     * dado el parámetro
+     * 
+     * @param direccionArchivo El nombre de la imaagen que se va a registrar
+     * @param nombreArchivo Dirección en donde se almacenará la imagen
+     * @param imagenEnBytes El stream de la imagen a guardar.
+     * @param sesion Sesión que realiza la operación.
+     * @return Nombre del archivo guardado.
+     * @throws NewviExcepcion
+     */
+    public String guardarImagenPredio(String direccionArchivo, byte[] imagenEnBytes, String nombreArchivo, SesionDto sesion) throws NewviExcepcion;
 
     /**
      * Devuelve un parámetro dado una id

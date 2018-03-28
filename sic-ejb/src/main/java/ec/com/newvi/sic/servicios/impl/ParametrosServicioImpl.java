@@ -109,6 +109,11 @@ public class ParametrosServicioImpl implements ParametrosServicio {
     }
 
     @Override
+    public String guardarImagenPredio(String direccionArchivo, byte[] imagenEnBytes, String nombreArchivo, SesionDto sesion) throws NewviExcepcion {
+        return UtilArchivos.almacenarArchivoEnServidor(nombreArchivo, direccionArchivo, imagenEnBytes);
+    }
+
+    @Override
     public String guardarImagenParametroSistema(ParametroSistema parametroSistema, byte[] imagenEnBytes, SesionDto sesion) throws NewviExcepcion {
         String nombreArchivo = reemplazarValoresParametros(parametroSistema, sesion);
         String direccionArchivo = nombreArchivo.substring(0, nombreArchivo.lastIndexOf("/"));
