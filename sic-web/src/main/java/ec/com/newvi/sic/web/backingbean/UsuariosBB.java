@@ -7,6 +7,7 @@ package ec.com.newvi.sic.web.backingbean;
 
 import ec.com.newvi.sic.enums.EnumEstadoRegistro;
 import ec.com.newvi.sic.enums.EnumNewviExcepciones;
+import ec.com.newvi.sic.enums.EnumParametroSistema;
 import ec.com.newvi.sic.modelo.Permisos;
 import ec.com.newvi.sic.modelo.Usuarios;
 import ec.com.newvi.sic.util.ComunUtil;
@@ -35,6 +36,16 @@ public class UsuariosBB extends AdminSeguridadesBB {
     private List<Permisos> listaPermisos;
 
     private EnumPantallaMantenimiento pantallaActual;
+
+    private String fotoUsuarioActual;
+
+    public String getFotoUsuarioActual() {
+        return fotoUsuarioActual;
+    }
+
+    public void setFotoUsuarioActual(String fotoUsuarioActual) {
+        this.fotoUsuarioActual = fotoUsuarioActual;
+    }
 
     public Usuarios getUsuario() {
         return usuario;
@@ -181,8 +192,16 @@ public class UsuariosBB extends AdminSeguridadesBB {
                 EnumEtiquetas.USUARIOS_EDITAR_DESCRIPCION);
     }
 
+    private void seleccionarFotoUsuario() throws NewviExcepcion {
+        String rutaFotografias = parametrosServicio.obtenerParametroPorNombre(EnumParametroSistema.DIRECCION_IMAGENES_USUARIOS, sesionBean.getSesion()).getValor().concat("/");
+        String fotoUsuarioRegistrado = this.usuario.getUsuFoto();
+        this.fotoUsuarioActual = rutaFotografias.concat(!ComunUtil.esNulo(fotoUsuarioRegistrado) && !ComunUtil.esCadenaVacia(fotoUsuarioRegistrado.trim()) ? fotoUsuarioRegistrado.trim() : "usuario_desconocido.jpg");
+        String cart= rutaFotografias.concat("12");
+    }
+
     private void seleccionarUsuarioPorCodigo(Integer idUsuario) throws NewviExcepcion {
         this.usuario = seguridadesServicio.seleccionarUsuario(idUsuario);
+        seleccionarFotoUsuario();
     }
 
     public void cancelarEdicion() {
@@ -225,9 +244,9 @@ public class UsuariosBB extends AdminSeguridadesBB {
     }
 
     public void validarEmail(FacesContext arg0, UIComponent arg1, Object arg2) throws NewviExcepcion {
-        String usuEmail =arg2.toString();
+        String usuEmail = arg2.toString();
         if (!esPantallaActual("PANTALLA_EDICION")) {
-            
+
             try {
                 if (!ValidacionUtils.validarCorreoElectronico(usuEmail.trim())) {
                     throw ValidacionUtils.lanzarExcepcionValidacion(EnumNewviExcepciones.ERR251);
@@ -239,7 +258,7 @@ public class UsuariosBB extends AdminSeguridadesBB {
                 MensajesFaces.mensajeError(e.getMessage());
             }
         }
-        
+
     }
 
 }

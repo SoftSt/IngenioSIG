@@ -130,11 +130,11 @@ public abstract class AdminFichaCatastralBB extends AdminSistemaBB {
             String codigoCatastral = nuevaFicha.getPredio().getNomCodigocatastral().trim();
             //&&
             //if (ComunUtil.esCedulaValida(cedulaPredio) && !codigoCatastral.isEmpty()) {
-            if (!ComunUtil.esCedulaValida(cedulaPredio)) {
+            if (!ComunUtil.esCedulaValida(cedulaPredio)&& !cedulaPredio.equals("1760009530001")&& !cedulaPredio.equals("0000000000")) {
                 //if (cedulaPredio.length() > 10&& !cedulaPredio.equals("1760009530001")) {
                 listaFichas.add(nuevaFicha);
             }
-        }*/
+        }**/
 
         listaPredios.forEach((elementoPredio) -> {
             listaFichas.add(new FichaCatastralDto(elementoPredio));

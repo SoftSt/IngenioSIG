@@ -68,188 +68,186 @@
                     <p>#{cobroTituloBB.descripcionPantalla.textoEtiqueta}</p>
                     <p:tooltip />
                     <p:outputPanel id="opListaTitulos">
-                        <h:panelGrid>
-                            <br/>
-                            <div style="font-size:1.2em;font-weight:bold;">Características del Predio</div>
-                            <p:separator />
-                            <h:panelGrid columns="2" width="100%">
-                                <h:panelGrid>
-                                    <h:outputLabel for="propietarioActualContr" value="CONTRIBUYENTE:" style="font-weight: bold;"/>
-                                    <h:outputText id="propietarioActualContr" value="#{cobroTituloBB.fichaCatastral.contribuyentePropiedad.nomNombres.trim()} #{cobroTituloBB.fichaCatastral.contribuyentePropiedad.nomApellidos.trim()}"/>
-                                    <h:outputLabel for="codCedularucContr" value="RUC/CC:" style="font-weight: bold;"/>
-                                    <h:outputText id="codCedularucContr" value="#{cobroTituloBB.fichaCatastral.contribuyentePropiedad.codCedularuc}"/>
-                                    <h:outputLabel for="txtDireccionContr" value="DIRECCION/DOMICILIO:" style="font-weight: bold;"/>
-                                    <h:outputText id="txtDireccionContr" value="#{cobroTituloBB.fichaCatastral.contribuyentePropiedad.txtDireccion}"/>
-                                </h:panelGrid>
-                                <h:panelGrid>
-                                    <h:outputLabel for="nomCodigocatastralPredio" value="CLAVE CATASTRAL:" style="font-weight: bold;"/>
-                                    <h:outputText id="nomCodigocatastralPredio" value="#{cobroTituloBB.fichaCatastral.predio.nomCodigocatastral}"/>
-                                    <h:outputLabel for="txtBarrioPredio" value="SITIO/BARRIO:" style="font-weight: bold;"/>
-                                    <h:outputText id="txtBarrioPredio" value="#{cobroTituloBB.fichaCatastral.predio.stsBarrio}"/>
-                                    <h:outputLabel for="txtDireccionPredio" value="CALLE:" style="font-weight: bold;"/>
-                                    <h:outputText id="txtDireccionPredio" value="#{cobroTituloBB.fichaCatastral.predio.txtDireccion}"/>
-                                </h:panelGrid>
+                        <br/>
+                        <div style="font-size:1.2em;font-weight:bold;">Características del Predio</div>
+                        <p:separator />
+                        <h:panelGrid columns="2" width="100%">
+                            <h:panelGrid>
+                                <h:outputLabel for="propietarioActualContr" value="CONTRIBUYENTE:" style="font-weight: bold;"/>
+                                <h:outputText id="propietarioActualContr" value="#{cobroTituloBB.fichaCatastral.contribuyentePropiedad.nomNombres.trim()} #{cobroTituloBB.fichaCatastral.contribuyentePropiedad.nomApellidos.trim()}"/>
+                                <h:outputLabel for="codCedularucContr" value="RUC/CC:" style="font-weight: bold;"/>
+                                <h:outputText id="codCedularucContr" value="#{cobroTituloBB.fichaCatastral.contribuyentePropiedad.codCedularuc}"/>
+                                <h:outputLabel for="txtDireccionContr" value="DIRECCION/DOMICILIO:" style="font-weight: bold;"/>
+                                <h:outputText id="txtDireccionContr" value="#{cobroTituloBB.fichaCatastral.contribuyentePropiedad.txtDireccion}"/>
                             </h:panelGrid>
+                            <h:panelGrid>
+                                <h:outputLabel for="nomCodigocatastralPredio" value="CLAVE CATASTRAL:" style="font-weight: bold;"/>
+                                <h:outputText id="nomCodigocatastralPredio" value="#{cobroTituloBB.fichaCatastral.predio.nomCodigocatastral}"/>
+                                <h:outputLabel for="txtBarrioPredio" value="SITIO/BARRIO:" style="font-weight: bold;"/>
+                                <h:outputText id="txtBarrioPredio" value="#{cobroTituloBB.fichaCatastral.predio.stsBarrio}"/>
+                                <h:outputLabel for="txtDireccionPredio" value="CALLE:" style="font-weight: bold;"/>
+                                <h:outputText id="txtDireccionPredio" value="#{cobroTituloBB.fichaCatastral.predio.txtDireccion}"/>
+                            </h:panelGrid>
+                        </h:panelGrid>
 
+                        <br/>
+                        <div style="font-size:1.2em;font-weight:bold;">Títulos del Predio</div>
+                        <p:separator />
+                        <p:accordionPanel id="aPanel">
+                            <p:tab title="Actuales">
+                                <h:panelGrid id="pgTitulosActuales">
+                                    <p:commandButton value="Seleccionar todos" icon="fa fa-check-square-o" 
+                                                     id="btnSeleccionarTodosTitulosActuales"
+                                                     update="listaTitulosRegistradosActuales"
+                                                     actionListener="#{cobroTituloBB.seleccionarTodosTitulosActuales()}">
+                                    </p:commandButton>
+                                    <p:dataTable id="listaTitulosRegistradosActuales" var="tituloRegistradoActual" widgetVar="listaTitulosRegistradosActualesTabla" selection="#{cobroTituloBB.listaTitulosActualesSeleccionados}"
+                                                 value="#{cobroTituloBB.listaTitulosRegistradosActuales}" rowKey="#{tituloRegistradoActual.codTitulos}" filteredValue="#{cobroTituloBB.listaTitulosRegistradosActualesFiltrados}" 
+                                                 paginator="false" rows="10" sortBy="#{tituloRegistradoActual.stsEstado}"
+                                                 resizableColumns="false"
+                                                 emptyMessage="No se han encontrado resultados">
 
-                            <h:panelGrid  width="100%">
-                                <br/>
-                                <div style="font-size:1.2em;font-weight:bold;">Lista de Títulos Actuales</div>
-                                <p:separator />
-                                <p:commandButton value="Seleccionar todos" icon="fa fa-check-square-o" 
-                                                 id="btnSeleccionarTodosTitulosActuales"
-                                                 update="listaTitulosRegistradosActuales"
-                                                 actionListener="#{cobroTituloBB.seleccionarTodosTitulosActuales()}">
-                                </p:commandButton>
-                                <p:dataTable id="listaTitulosRegistradosActuales" var="tituloRegistradoActual" widgetVar="listaTitulosRegistradosActualesTabla" selection="#{cobroTituloBB.listaTitulosActualesSeleccionados}"
-                                             value="#{cobroTituloBB.listaTitulosRegistradosActuales}" rowKey="#{tituloRegistradoActual.codTitulos}" filteredValue="#{cobroTituloBB.listaTitulosRegistradosActualesFiltrados}" 
-                                             paginator="true" rows="10" sortBy="#{tituloRegistradoActual.stsEstado}"
-                                             rowsPerPageTemplate="10,30,50"  paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
-                                             resizableColumns="false"
-                                             emptyMessage="No se han encontrado resultados" 
-                                             paginatorPosition="bottom">
+                                        <p:column selectionMode="multiple" width="20" style="text-align:center" priority="1"/>
 
-                                    <p:column selectionMode="multiple" width="20" style="text-align:center" priority="1"/>
-
-                                    <p:column headerText="Cod. Catastral" >
-                                        <h:outputText value="#{tituloRegistradoActual.codCatastral.nomCodigocatastral}"/>
-                                    </p:column>
-
-                                    <p:column headerText="Dirección" >
-                                        <h:outputText value="#{tituloRegistradoActual.txtDireccion}">
-                                            <f:convertNumber pattern="$ ###,###.00"/>
-                                        </h:outputText>
-                                    </p:column>
-
-                                    <p:column headerText="Subtotal">
-                                        <h:outputText value="#{tituloRegistradoActual.valTotalapagar}">
-                                            <f:convertNumber pattern="###,###.00"/>
-                                        </h:outputText>
-                                    </p:column>
-
-                                    <p:column headerText="Desc/Rec:">
-                                        <h:outputText value="#{tituloRegistradoActual.valDescuentoaplicado}">
-                                            <f:convertNumber pattern="###,###.00"/>
-                                        </h:outputText>
-                                    </p:column>
-
-                                    <p:column headerText="Total" >
-                                        <h:outputText value="#{tituloRegistradoActual.valPagado}">
-                                            <f:convertNumber pattern="###,###.00"/>
-                                        </h:outputText>
-                                    </p:column>
-
-                                    <p:column>
-                                        <p:commandButton id="btnBajaTitulo" 
-                                                         icon="fa fa-long-arrow-down"
-                                                         actionListener="#{cobroTituloBB.eliminarTitulo(tituloRegistradoActual.codTitulos)}"
-                                                         update="grupoCobroDeTitulo">
-                                            <p:confirm header="Dar de Baja al Título" message="¿Está seguro?" icon="ui-icon-alert" />
-                                            <p:ajax update="toolTipDarBaja" process="@this" /> 
-                                        </p:commandButton>
-                                        <p:tooltip id="toolTipDarBaja" for="btnBajaTitulo" value="Dar de Baja" showEffect="fade" hideEffect="fade" position="bottom"/>
-
-                                    </p:column>
-
-                                    <p:summaryRow>
-                                        <p:column colspan="5" style="text-align:right">
-                                            <h:outputText style="font-size:1.2em;font-weight: bold;" value="Subtotal Títulos:" />
+                                        <p:column headerText="Cod. Catastral" >
+                                            <h:outputText value="#{tituloRegistradoActual.codCatastral.nomCodigocatastral}"/>
                                         </p:column>
-                                        <p:column>
-                                            <h:outputText value="#{cobroTituloBB.totalTitulosActulales}">
+
+                                        <p:column headerText="Dirección" >
+                                            <h:outputText value="#{tituloRegistradoActual.txtDireccion}">
+                                                <f:convertNumber pattern="$ ###,###.00"/>
+                                            </h:outputText>
+                                        </p:column>
+
+                                        <p:column headerText="Subtotal">
+                                            <h:outputText value="#{tituloRegistradoActual.valTotalapagar}">
                                                 <f:convertNumber pattern="###,###.00"/>
                                             </h:outputText>
                                         </p:column>
-                                    </p:summaryRow>
-                                </p:dataTable>
 
-                                <br/>
-                                <div style="font-size:1.2em;font-weight:bold;">Cartera Vencidos</div>
-                                <p:separator />
-                                <p:commandButton value="Seleccionar todos" icon="fa fa-check-square-o" 
-                                                 id="btnSeleccionarTodosTitulosVencidos"
-                                                 update="listaTitulosRegistradosActuales"
-                                                 actionListener="#{cobroTituloBB.seleccionarTodosTitulosVencidos()}">
-                                </p:commandButton>
-                                <p:dataTable id="listaTitulosRegistradosVencidos" var="tituloRegistradoVencido" widgetVar="listaTitulosRegistradosVencidosTabla" selection="#{cobroTituloBB.listaTitulosVencidosSeleccionados}"
-                                             value="#{cobroTituloBB.listaTitulosRegistradosVencidos}" rowKey="#{tituloRegistradoVencido.codTitulos}" filteredValue="#{cobroTituloBB.listaTitulosRegistradosVencidosFiltrados}" 
-                                             paginator="true" rows="10"  sortBy="#{tituloRegistradoVencido.stsEstado}"
-                                             rowsPerPageTemplate="10,30,50"  paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
-                                             resizableColumns="false"
-                                             emptyMessage="No se han encontrado resultados" 
-                                             paginatorPosition="bottom">
-
-                                    <p:column selectionMode="multiple" width="20" style="text-align:center" priority="1"/>
-
-                                    <p:column headerText="Cod. Catastral" >
-                                        <h:outputText value="#{tituloRegistradoVencido.codCatastral.nomCodigocatastral}"/>
-                                    </p:column>
-
-                                    <p:column headerText="Dirección" >
-                                        <h:outputText value="#{tituloRegistradoVencido.txtDireccion}">
-                                            <f:convertNumber pattern="$ ###,###.00"/>
-                                        </h:outputText>
-                                    </p:column>
-
-                                    <p:column headerText="Subtotal">
-                                        <h:outputText value="#{tituloRegistradoVencido.valTotalapagar}">
-                                            <f:convertNumber pattern="###,###.00"/>
-                                        </h:outputText>
-                                    </p:column>
-
-                                    <p:column headerText="Des/Rec:">
-                                        <h:outputText value="#{tituloRegistradoVencido.valDescuentoaplicado}">
-                                            <f:convertNumber pattern="###,###.00"/>
-                                        </h:outputText>
-                                    </p:column>
-
-                                    <p:column headerText="Total" >
-                                        <h:outputText value="#{tituloRegistradoVencido.valPagado}">
-                                            <f:convertNumber pattern="###,###.00"/>
-                                        </h:outputText>
-                                    </p:column>
-
-                                    <p:column>
-                                        <p:commandButton id="btnBajaTituloVencidos" 
-                                                         icon="fa fa-long-arrow-down"
-                                                         actionListener="#{cobroTituloBB.eliminarTitulo(tituloRegistradoVencido.codTitulos)}"
-                                                         update="grupoCobroDeTitulo">
-                                            <p:confirm header="Dar de Baja al Título" message="¿Está seguro?" icon="ui-icon-alert" />
-                                            <p:ajax update="toolTipDarBajaVencido" process="@this" /> 
-                                        </p:commandButton>
-                                        <p:tooltip id="toolTipDarBajaVencido" for="btnBajaTituloVencidos" value="Dar de Baja" showEffect="fade" hideEffect="fade" position="bottom"/>
-
-                                    </p:column>
-
-                                    <p:summaryRow>
-                                        <p:column colspan="5" style="text-align:right">
-                                            <h:outputText style="font-size:1.2em;font-weight: bold;" value="Subtotal Cartera" />
-                                        </p:column>
-                                        <p:column>
-                                            <h:outputText value="#{cobroTituloBB.totalTitulosVencidos}">
+                                        <p:column headerText="Desc/Rec:">
+                                            <h:outputText value="#{tituloRegistradoActual.valDescuentoaplicado}">
                                                 <f:convertNumber pattern="###,###.00"/>
                                             </h:outputText>
                                         </p:column>
-                                    </p:summaryRow>
-                                </p:dataTable>
-                            </h:panelGrid>
 
-                            <f:facet name="footer">
+                                        <p:column headerText="Total" >
+                                            <h:outputText value="#{tituloRegistradoActual.valPagado}">
+                                                <f:convertNumber pattern="###,###.00"/>
+                                            </h:outputText>
+                                        </p:column>
+
+                                        <p:column>
+                                            <p:commandButton id="btnBajaTitulo" 
+                                                             icon="fa fa-long-arrow-down"
+                                                             actionListener="#{cobroTituloBB.eliminarTitulo(tituloRegistradoActual.codTitulos)}"
+                                                             update="grupoCobroDeTitulo">
+                                                <p:confirm header="Dar de Baja al Título" message="¿Está seguro?" icon="ui-icon-alert" />
+                                                <p:ajax update="toolTipDarBaja" process="@this" /> 
+                                            </p:commandButton>
+                                            <p:tooltip id="toolTipDarBaja" for="btnBajaTitulo" value="Dar de Baja" showEffect="fade" hideEffect="fade" position="bottom"/>
+
+                                        </p:column>
+
+                                        <p:summaryRow>
+                                            <p:column colspan="5" style="text-align:right">
+                                                <h:outputText style="font-size:1.2em;font-weight: bold;" value="Subtotal Títulos:" />
+                                            </p:column>
+                                            <p:column>
+                                                <h:outputText value="#{cobroTituloBB.totalTitulosActulales}">
+                                                    <f:convertNumber pattern="###,###.00"/>
+                                                </h:outputText>
+                                            </p:column>
+                                        </p:summaryRow>
+                                    </p:dataTable>
+                                </h:panelGrid>
+
+                            </p:tab>
+                            <p:tab title="Cartera Vencida">
+                                <h:panelGrid>
+                                    <p:commandButton value="Seleccionar todos" icon="fa fa-check-square-o" 
+                                                     id="btnSeleccionarTodosTitulosVencidos"
+                                                     update="listaTitulosRegistradosActuales"
+                                                     actionListener="#{cobroTituloBB.seleccionarTodosTitulosVencidos()}">
+                                    </p:commandButton>
+                                    <p:dataTable id="listaTitulosRegistradosVencidos" var="tituloRegistradoVencido" widgetVar="listaTitulosRegistradosVencidosTabla" selection="#{cobroTituloBB.listaTitulosVencidosSeleccionados}"
+                                                 value="#{cobroTituloBB.listaTitulosRegistradosVencidos}" rowKey="#{tituloRegistradoVencido.codTitulos}" filteredValue="#{cobroTituloBB.listaTitulosRegistradosVencidosFiltrados}" 
+                                                 paginator="false" rows="10"  sortBy="#{tituloRegistradoVencido.stsEstado}"
+                                                 resizableColumns="false"
+                                                 emptyMessage="No se han encontrado resultados">
+
+                                        <p:column selectionMode="multiple" width="20" style="text-align:center" priority="1"/>
+
+                                        <p:column headerText="Cod. Catastral" >
+                                            <h:outputText value="#{tituloRegistradoVencido.codCatastral.nomCodigocatastral}"/>
+                                        </p:column>
+
+                                        <p:column headerText="Dirección" >
+                                            <h:outputText value="#{tituloRegistradoVencido.txtDireccion}">
+                                                <f:convertNumber pattern="$ ###,###.00"/>
+                                            </h:outputText>
+                                        </p:column>
+
+                                        <p:column headerText="Subtotal">
+                                            <h:outputText value="#{tituloRegistradoVencido.valTotalapagar}">
+                                                <f:convertNumber pattern="###,###.00"/>
+                                            </h:outputText>
+                                        </p:column>
+
+                                        <p:column headerText="Des/Rec:">
+                                            <h:outputText value="#{tituloRegistradoVencido.valDescuentoaplicado}">
+                                                <f:convertNumber pattern="###,###.00"/>
+                                            </h:outputText>
+                                        </p:column>
+
+                                        <p:column headerText="Total" >
+                                            <h:outputText value="#{tituloRegistradoVencido.valPagado}">
+                                                <f:convertNumber pattern="###,###.00"/>
+                                            </h:outputText>
+                                        </p:column>
+
+                                        <p:column>
+                                            <p:commandButton id="btnBajaTituloVencidos" 
+                                                             icon="fa fa-long-arrow-down"
+                                                             actionListener="#{cobroTituloBB.eliminarTitulo(tituloRegistradoVencido.codTitulos)}"
+                                                             update="grupoCobroDeTitulo">
+                                                <p:confirm header="Dar de Baja al Título" message="¿Está seguro?" icon="ui-icon-alert" />
+                                                <p:ajax update="toolTipDarBajaVencido" process="@this" /> 
+                                            </p:commandButton>
+                                            <p:tooltip id="toolTipDarBajaVencido" for="btnBajaTituloVencidos" value="Dar de Baja" showEffect="fade" hideEffect="fade" position="bottom"/>
+
+                                        </p:column>
+
+                                        <p:summaryRow>
+                                            <p:column colspan="5" style="text-align:right">
+                                                <h:outputText style="font-size:1.2em;font-weight: bold;" value="Subtotal Cartera" />
+                                            </p:column>
+                                            <p:column>
+                                                <h:outputText value="#{cobroTituloBB.totalTitulosVencidos}">
+                                                    <f:convertNumber pattern="###,###.00"/>
+                                                </h:outputText>
+                                            </p:column>
+                                        </p:summaryRow>
+                                    </p:dataTable>
+                                </h:panelGrid>
+                            </p:tab>
+                        </p:accordionPanel>
+                        <br/>
+                        <h:panelGrid columns="2" width="100%">
+                            <h:panelGrid>
                                 <p:commandButton value="Regresar Selección Contribuyente"
                                                  id="btnRegresarPredios"
                                                  update="grupoCobroDeTitulo"
                                                  icon="fa fa-arrow-left"
-                                                 actionListener="#{cobroTituloBB.regresarPaginaAnterior()}"
-                                                 style="float:left;">
-                                </p:commandButton>
+                                                 actionListener="#{cobroTituloBB.regresarPaginaAnterior()}"/>
+                            </h:panelGrid>
+                            <h:panelGrid style="float: right">
                                 <p:commandButton value="Avanzar al cobro"
                                                  id="btnAvanzarVerificacion"
                                                  update="grupoCobroDeTitulo"
                                                  icon="fa fa-arrow-right"
-                                                 actionListener="#{cobroTituloBB.avanzarPaginaVerificacion()}"
-                                                 style="float:right;">
-                                </p:commandButton>
-                            </f:facet>
+                                                 actionListener="#{cobroTituloBB.avanzarPaginaVerificacion()}"/>
+                            </h:panelGrid>
                         </h:panelGrid>
                     </p:outputPanel>
                 </h:form>

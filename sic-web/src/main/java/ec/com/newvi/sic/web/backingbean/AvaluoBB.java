@@ -148,6 +148,15 @@ public class AvaluoBB extends AdminFichaCatastralBB {
         return catastroServicio.generarNuevaFechaAvaluo(fechaAvaluo, sesionBean.getSesion());
     }
 
+    public void reiniciarVariables() {
+        this.listaAvaluos = new ArrayList<>();
+        this.listaAvaluosProcesados = new ArrayList<>();
+        this.totalPorCobrarCalculo = BigDecimal.ZERO;
+        this.esProcesoIniciado = false;
+        WebUtils.obtenerContextoPeticion().execute("PF('dlgAvaluo').hide()");
+        this.progreso = 0;
+    }
+
     public void cancelarAvaluo() {
         this.esProcesoCancelado = true;
     }
@@ -371,7 +380,7 @@ public class AvaluoBB extends AdminFichaCatastralBB {
     }
 
     public Boolean hayDatosCalculados() {
-        return !this.listaAvaluos.isEmpty();
+        return !ComunUtil.esNulo(this.listaAvaluos) && !this.listaAvaluos.isEmpty();
     }
 
     public Boolean hayDatosConsultados() {

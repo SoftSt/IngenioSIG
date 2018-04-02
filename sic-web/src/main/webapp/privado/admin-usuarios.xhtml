@@ -107,12 +107,9 @@
                                 </p:inputText>
                                 <p:message for="usuApellidos" display="tooltip"/>
 
-                            </h:panelGrid>
-                            <h:panelGrid>
-                                <h:outputLabel for="usuCodigo" value="Código/Cédula" style="font-weight: bold;"/>
-                                <p:inputNumber id="usuCodigo" value="#{usuariosBB.usuario.usuCodigo}" label="Código/Cédula" maxValue="99999999999" minValue="0" size="50" thousandSeparator="" decimalSeparator=""/>
-                                <p:message for="usuCodigo" display="tooltip"/>
-
+                                <h:outputLabel for="usuCedula" value="Código/Cédula" style="font-weight: bold;"/>
+                                <p:inputNumber id="usuCedula" value="#{usuariosBB.usuario.usuCodigo}" label="Código/Cédula" maxValue="99999999999" minValue="0" size="50" thousandSeparator="" decimalSeparator=""/>
+                                <p:message for="usuCedula" display="tooltip"/>
                                 <h:outputLabel value="Fecha de nacimiento" style="font-weight: bold;"/>
                                 <p:calendar id="usuFechaNacimiento" navigator="true" value="#{usuariosBB.usuario.usuFnacimiento}" label="Fecha de nacimiento" 
                                             showOn="button" size="10" pattern="dd/MM/yyyy" mask="true" >
@@ -120,92 +117,91 @@
                                 </p:calendar>
                                 <p:message for="usuFechaNacimiento" display="tooltip"/>
                             </h:panelGrid>
+                            <h:panelGrid>
+                                <h:outputLabel for="usuDireccion" value="Dirección" style="font-weight: bold;"/>
+                                <p:inputTextarea id="usuDireccion" value="#{usuariosBB.usuario.usuDireccion}" label="Dirección" rows="1" cols="45"/>
+                                <p:message for="usuDireccion" display="tooltip"/>
 
-                            <h:outputLabel for="usuEmail" value="Correo electrónico" style="font-weight: bold;"/>
-                            <p:inputText id="usuEmail" value="#{usuariosBB.usuario.usuEmai}" label="Correo electrónico" 
-                                         validator="#{usuariosBB.validarEmail}" required="true" size="50"/>
-                            <p:message for="usuEmail" display="tooltip"/>
+                                <h:outputLabel for="usuEmail" value="Correo electrónico" style="font-weight: bold;"/>
+                                <p:inputText id="usuEmail" value="#{usuariosBB.usuario.usuEmai}" label="Correo electrónico" 
+                                             validator="#{usuariosBB.validarEmail}" required="true" size="50"/>
+                                <p:message for="usuEmail" display="tooltip"/>
 
-                            <h:outputLabel for="usuUsuario" value="Usuario" style="font-weight: bold;"/>
-                            <p:inputText id="usuUsuario" value="#{usuariosBB.usuario.usuUsuario}" label="Usuario" 
-                                         validator="#{usuariosBB.validarUsuarioRepetido}" required="true" size="50"/>
-                            <p:message id="mensajeUsuario" for="usuUsuario" display="tooltip"/>
+                                <h:outputLabel for="usuTelefono" value="Teléfono celular" style="font-weight: bold;"/>
+                                <p:inputMask id="usuTelefono" value="#{usuariosBB.usuario.usuTelefono}" mask="(99) 999-99999" label="Teléfono celular" />
+                                <p:message for="usuTelefono" display="tooltip"/>
 
-                            <h:outputLabel for="usuPassword" value="Contraseña" style="font-weight: bold;"/>
-                            <p:password id="usuPassword" match="usuPasswordRepetir" required="true" value="#{usuariosBB.usuario.usuPassword}" label="Contraseña" size="50"/>
-                            <p:message for="usuPassword" display="tooltip"/>
+                                <h:outputLabel for="usuFax" value="Teléfono domicilio" style="font-weight: bold;"/>
+                                <p:inputMask id="usuFax" value="#{usuariosBB.usuario.usuFax}" mask="(999) 999-999" label="Teléfono domicilio"/>
+                                <p:message for="usuFax" display="tooltip"/>
 
-                            <h:outputLabel for="usuPasswordRepetir" value="Repita la Contraseña" style="font-weight: bold;"/>
-                            <p:password id="usuPasswordRepetir" required="true" value="#{usuariosBB.usuario.usuPassword}" label="Contraseña (Repetición)" size="50"/>
-                            <p:message for="usuPasswordRepetir" display="tooltip"/>
-
-                            <h:outputLabel for="grupoPermiso" value="Permiso asignado" style="font-weight: bold;"/>
-                            <p:selectOneMenu value="#{usuariosBB.usuario.perId}" converter="permisosConverter" 
-                                             id="grupoPermiso" label="Permiso asignado" required="true">
-                                <f:selectItem itemLabel="Seleccione uno" itemValue="" />
-                                <f:selectItems var="permiso" value="#{usuariosBB.listaPermisos}" itemLabel="#{permiso.grupoPermiso}" itemValue="#{permiso}"  />
-                            </p:selectOneMenu>
-                            <p:message for="grupoPermiso" display="tooltip"/>
-
-
-
-
-
-                            <h:outputLabel for="usuDireccion" value="Dirección" style="font-weight: bold;"/>
-                            <p:inputTextarea id="usuDireccion" value="#{usuariosBB.usuario.usuDireccion}" label="Dirección" rows="3" cols="50"/>
-                            <p:message for="usuDireccion" display="tooltip"/>
-
-                            <h:outputLabel for="usuTelefono" value="Teléfono celular" style="font-weight: bold;"/>
-                            <p:inputMask id="usuTelefono" value="#{usuariosBB.usuario.usuTelefono}" mask="(99) 999-99999" label="Teléfono celular" />
-                            <p:message for="usuTelefono" display="tooltip"/>
-
-                            <h:outputLabel for="usuFax" value="Teléfono domicilio" style="font-weight: bold;"/>
-                            <p:inputMask id="usuFax" value="#{usuariosBB.usuario.usuFax}" mask="(999) 999-999" label="Teléfono domicilio"/>
-                            <p:message for="usuFax" display="tooltip"/>
-
-                            <h:outputLabel for="usuFoto" value="Fotografía" style="font-weight: bold;"/>
-                            <p:inputText id="usuFoto" value="#{usuariosBB.usuario.usuFoto}" label="Fotografía"/>
-                            <p:message for="usuFoto" display="tooltip"/>
-
-
-
-
-                            <h:outputLabel value="Numero de ingreso" style="font-weight: bold;"/>
-                            <p:inputNumber id="usuNumeroIngreso" maxValue="99" minValue="0" value="#{usuariosBB.usuario.usuNumingreso}" label="Numero de ingreso" size="5"/>
-                            <p:message for="usuNumeroIngreso"/>
-
-
-                            <h:outputLabel for="usuCargo" value="Cargo" style="font-weight: bold;"/>
-                            <p:inputText id="usuCargo" value="#{usuariosBB.usuario.usuCargo}" label="Cargo" size="50"/>
-                            <p:message for="usuCargo" display="tooltip"/>
-
-
-                            <h:outputLabel for="usuDepartamento" value="Departamento" style="text-align:right !important;vertical-align:top;"/>
-                            <p:inputText id="usuDepartamento" value="#{usuariosBB.usuario.usuDepartamento}" label="Departamento" size="50"/>
-                            <p:message for="usuDepartamento" display="tooltip"/>
+                            </h:panelGrid>
                         </h:panelGrid>
-                        <h:panelGrid columns="4">
+                        <br/>
+                        <div style="font-size:1.2em;font-weight:bold;">Datos de acceso</div>
+                        <p:separator />
+                        <h:panelGrid width="100%" columns="3">
+                            <h:panelGrid>
+                                <p:graphicImage value="#{usuariosBB.fotoUsuarioActual}"  width="20" height="30"/>
+                            </h:panelGrid>
+                            <h:panelGrid>
+                                <h:outputLabel for="usuUsuario" value="Usuario" style="font-weight: bold;"/>
+                                <p:inputText id="usuUsuario" value="#{usuariosBB.usuario.usuUsuario}" label="Usuario" 
+                                             validator="#{usuariosBB.validarUsuarioRepetido}" required="true" size="50"/>
+                                <p:message id="mensajeUsuario" for="usuUsuario" display="tooltip"/>
 
-                            <p:commandButton actionListener="#{usuariosBB.actualizarUsuario()}" 
-                                             update="grupoUsuarios" 
-                                             icon="fa fa-check"
-                                             id="guardarUsuario"
-                                             value="Guardar">
-                                <p:ajax update="toolTipSave" process="@this" /> 
-                            </p:commandButton>
-                            <p:tooltip id="toolTipSave" for="guardarUsuario" value="Guardar cambios en usuario" showEffect="fade" hideEffect="fade" position="top"/>
+                                <h:outputLabel for="usuPassword" value="Contraseña" style="font-weight: bold;"/>
+                                <p:password id="usuPassword" match="usuPasswordRepetir" required="true" value="#{usuariosBB.usuario.usuPassword}" label="Contraseña" size="50"/>
+                                <p:message for="usuPassword" display="tooltip"/>
 
-                            <p:commandButton icon="fa fa-close" 
-                                             value="Cerrar"
-                                             id="cancelar"
-                                             update="grupoUsuarios" 
-                                             process="@this"
-                                             actionListener="#{usuariosBB.cancelarEdicion()}">
-                                <p:ajax update="toolTipCancel" process="@this" />
-                                <p:resetInput target="panelUsuario" />
-                            </p:commandButton>
-                            <p:tooltip id="toolTipCancel" for="cancelar" value="Regresar sin guardar cambios" showEffect="fade" hideEffect="fade" position="top"/>
+                                <h:outputLabel for="usuPasswordRepetir" value="Repita la Contraseña" style="font-weight: bold;"/>
+                                <p:password id="usuPasswordRepetir" required="true" value="#{usuariosBB.usuario.usuPassword}" label="Contraseña (Repetición)" size="50"/>
+                                <p:message for="usuPasswordRepetir" display="tooltip"/>
+                            </h:panelGrid>
+                            <h:panelGrid>
+                                <h:outputLabel for="grupoPermiso" value="Permiso asignado" style="font-weight: bold;"/>
+                                <p:selectOneMenu value="#{usuariosBB.usuario.perId}" converter="permisosConverter" 
+                                                 id="grupoPermiso" label="Permiso asignado" required="true">
+                                    <f:selectItem itemLabel="Seleccione uno" itemValue="" />
+                                    <f:selectItems var="permiso" value="#{usuariosBB.listaPermisos}" itemLabel="#{permiso.grupoPermiso}" itemValue="#{permiso}"  />
+                                </p:selectOneMenu>
+                                <p:message for="grupoPermiso" display="tooltip"/>
+
+                                <h:outputLabel for="usuCargo" value="Cargo" style="font-weight: bold;"/>
+                                <p:inputText id="usuCargo" value="#{usuariosBB.usuario.usuCargo}" label="Cargo" size="50"/>
+                                <p:message for="usuCargo" display="tooltip"/>
+
+
+                                <h:outputLabel for="usuDepartamento" value="Departamento" style="font-weight: bold;"/>
+                                <p:inputText id="usuDepartamento" value="#{usuariosBB.usuario.usuDepartamento}" label="Departamento" size="50"/>
+                                <p:message for="usuDepartamento" display="tooltip"/>
+                            </h:panelGrid>
+                            <f:facet name="footer">
+                                <p:commandButton actionListener="#{usuariosBB.actualizarUsuario()}" 
+                                                 update="grupoUsuarios" 
+                                                 icon="fa fa-check"
+                                                 id="guardarUsuario"
+                                                 style="float:right;"
+                                                 value="Guardar">
+                                    <p:ajax update="toolTipSave" process="@this" /> 
+                                </p:commandButton>
+                                <p:tooltip id="toolTipSave" for="guardarUsuario" value="Guardar cambios en usuario" showEffect="fade" hideEffect="fade" position="top"/>
+
+                                <p:commandButton icon="fa fa-close" 
+                                                 value="Cerrar"
+                                                 id="cancelar"
+                                                 update="grupoUsuarios" 
+                                                 process="@this"
+                                                 style="float:left;"
+                                                 actionListener="#{usuariosBB.cancelarEdicion()}">
+                                    <p:ajax update="toolTipCancel" process="@this" />
+                                    <p:resetInput target="panelUsuario" />
+                                </p:commandButton>
+                                <p:tooltip id="toolTipCancel" for="cancelar" value="Regresar sin guardar cambios" showEffect="fade" hideEffect="fade" position="top"/>
+
+                            </f:facet>
                         </h:panelGrid>
+
                     </p:outputPanel>
                 </h:form>
             </p:panel>

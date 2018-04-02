@@ -369,4 +369,8 @@ public class Usuarios implements Serializable {
     public Boolean esUsuarioValido() {
         return (!ComunUtil.esNulo(this.usuEstado));
     }
+    
+    public String obtenerImagen(){
+        return !ComunUtil.esNulo(this.usuFoto) || !ComunUtil.esCadenaVacia(this.usuFoto)? this.usuFoto : "usuario_desconocido.jpg";
+    }
 }
