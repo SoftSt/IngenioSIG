@@ -51,11 +51,6 @@ public class Titulos implements Serializable {
     @Size(max = 25)
     @Column(name = "nom_codigocatastral")
     private String nomCodigocatastral;
-    @Size(max = 25)
-    @Column(name = "sts_casosexcepcion")
-    private String stsCasosexcepcion;
-    @Column(name = "usu_codigo")
-    private Integer usuCodigo;
     @Column(name = "fec_emision")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fecEmision;
@@ -100,40 +95,19 @@ public class Titulos implements Serializable {
     private BigDecimal valImpuestopredial;
     @Column(name = "val_bomberos")
     private BigDecimal valBomberos;
-    @Column(name = "val_saludpublica")
-    private BigDecimal valSaludpublica;
-    @Column(name = "val_educacion")
-    private BigDecimal valEducacion;
-    @Column(name = "val_acilo")
-    private BigDecimal valAcilo;
-    @Column(name = "val_rrp")
-    private BigDecimal valRrp;
-    @Column(name = "val_interes")
-    private BigDecimal valInteres;
-    @Column(name = "val_descuento")
-    private BigDecimal valDescuento;
-    @Column(name = "val_prestamo")
-    private BigDecimal valPrestamo;
+    
     @Column(name = "val_serviciosadministrativos")
     private BigDecimal valServiciosadministrativos;
     @Column(name = "val_recoleccionbasura")
     private BigDecimal valRecoleccionbasura;
-    @Column(name = "val_impuestomasadicionales")
-    private BigDecimal valImpuestomasadicionales;
-    @Column(name = "val_seguridad")
-    private BigDecimal valSeguridad;
     @Column(name = "val_cem")
     private BigDecimal valCem;
     @Column(name = "val_noconstruido")
     private BigDecimal valNoconstruido;
     @Column(name = "val_totalapagar")
     private BigDecimal valTotalapagar;
-    @Column(name = "val_descuentos")
-    private BigDecimal valDescuentos;
     @Column(name = "val_pagado")
     private BigDecimal valPagado;
-    @Column(name = "val_rebaja")
-    private BigDecimal valRebaja;
     @Column(name = "val_totalexcepciones")
     private BigDecimal valTotalexcepciones;
     @Column(name = "val_interesaplicado")
@@ -193,22 +167,6 @@ public class Titulos implements Serializable {
 
     public void setNomCodigocatastral(String nomCodigocatastral) {
         this.nomCodigocatastral = nomCodigocatastral;
-    }
-
-    public String getStsCasosexcepcion() {
-        return stsCasosexcepcion;
-    }
-
-    public void setStsCasosexcepcion(String stsCasosexcepcion) {
-        this.stsCasosexcepcion = stsCasosexcepcion;
-    }
-
-    public Integer getUsuCodigo() {
-        return usuCodigo;
-    }
-
-    public void setUsuCodigo(Integer usuCodigo) {
-        this.usuCodigo = usuCodigo;
     }
 
     public Date getFecEmision() {
@@ -339,62 +297,6 @@ public class Titulos implements Serializable {
         this.valBomberos = valBomberos;
     }
 
-    public BigDecimal getValSaludpublica() {
-        return valSaludpublica;
-    }
-
-    public void setValSaludpublica(BigDecimal valSaludpublica) {
-        this.valSaludpublica = valSaludpublica;
-    }
-
-    public BigDecimal getValEducacion() {
-        return valEducacion;
-    }
-
-    public void setValEducacion(BigDecimal valEducacion) {
-        this.valEducacion = valEducacion;
-    }
-
-    public BigDecimal getValAcilo() {
-        return valAcilo;
-    }
-
-    public void setValAcilo(BigDecimal valAcilo) {
-        this.valAcilo = valAcilo;
-    }
-
-    public BigDecimal getValRrp() {
-        return valRrp;
-    }
-
-    public void setValRrp(BigDecimal valRrp) {
-        this.valRrp = valRrp;
-    }
-
-    public BigDecimal getValInteres() {
-        return valInteres;
-    }
-
-    public void setValInteres(BigDecimal valInteres) {
-        this.valInteres = valInteres;
-    }
-
-    public BigDecimal getValDescuento() {
-        return valDescuento;
-    }
-
-    public void setValDescuento(BigDecimal valDescuento) {
-        this.valDescuento = valDescuento;
-    }
-
-    public BigDecimal getValPrestamo() {
-        return valPrestamo;
-    }
-
-    public void setValPrestamo(BigDecimal valPrestamo) {
-        this.valPrestamo = valPrestamo;
-    }
-
     public BigDecimal getValServiciosadministrativos() {
         return valServiciosadministrativos;
     }
@@ -409,22 +311,6 @@ public class Titulos implements Serializable {
 
     public void setValRecoleccionbasura(BigDecimal valRecoleccionbasura) {
         this.valRecoleccionbasura = valRecoleccionbasura;
-    }
-
-    public BigDecimal getValImpuestomasadicionales() {
-        return valImpuestomasadicionales;
-    }
-
-    public void setValImpuestomasadicionales(BigDecimal valImpuestomasadicionales) {
-        this.valImpuestomasadicionales = valImpuestomasadicionales;
-    }
-
-    public BigDecimal getValSeguridad() {
-        return valSeguridad;
-    }
-
-    public void setValSeguridad(BigDecimal valSeguridad) {
-        this.valSeguridad = valSeguridad;
     }
 
     public BigDecimal getValCem() {
@@ -451,28 +337,12 @@ public class Titulos implements Serializable {
         this.valTotalapagar = valTotalapagar;
     }
 
-    public BigDecimal getValDescuentos() {
-        return valDescuentos;
-    }
-
-    public void setValDescuentos(BigDecimal valDescuentos) {
-        this.valDescuentos = valDescuentos;
-    }
-
     public BigDecimal getValPagado() {
         return !ComunUtil.esNulo(valPagado) ? valPagado : BigDecimal.ZERO;
     }
 
     public void setValPagado(BigDecimal valPagado) {
         this.valPagado = valPagado;
-    }
-
-    public BigDecimal getValRebaja() {
-        return valRebaja;
-    }
-
-    public void setValRebaja(BigDecimal valRebaja) {
-        this.valRebaja = valRebaja;
     }
 
     public BigDecimal getValTotalexcepciones() {

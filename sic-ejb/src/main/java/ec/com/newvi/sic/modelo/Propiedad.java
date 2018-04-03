@@ -70,15 +70,9 @@ public class Propiedad implements Serializable {
     @Column(name = "sts_tenencia")
     private String stsTenencia;
 
-    @Size(max = 50)
-    @Column(name = "sts_tenenciaotro")
-    private String stsTenenciaotro;
-
     @Column(name = "sts_transferenciadominio")
     private String stsTransferenciadominio;
 
-    @Column(name = "val_predioareaescritura")
-    private BigDecimal valPredioAreaEscritura;
     @Size(max = 100)
     @Column(name = "txt_notaria")
     private String txtNotaria;
@@ -171,28 +165,12 @@ public class Propiedad implements Serializable {
         this.stsTenencia = stsTenencia.toString();
     }
 
-    public String getStsTenenciaotro() {
-        return stsTenenciaotro;
-    }
-
-    public void setStsTenenciaotro(String stsTenenciaotro) {
-        this.stsTenenciaotro = stsTenenciaotro;
-    }
-
     public EnumTraslacion getStsTransferenciadominio() {
         return EnumTraslacion.obtenerTraslacion(stsTransferenciadominio);
     }
 
     public void setStsTransferenciadominio(EnumTraslacion stsTransferenciadominio) {
         this.stsTransferenciadominio = stsTransferenciadominio.toString();
-    }
-
-    public BigDecimal getValPredioAreaEscritura() {
-        return valPredioAreaEscritura;
-    }
-
-    public void setValPredioAreaEscritura(BigDecimal valPredioAreaEscritura) {
-        this.valPredioAreaEscritura = valPredioAreaEscritura;
     }
 
     public String getTxtNotaria() {

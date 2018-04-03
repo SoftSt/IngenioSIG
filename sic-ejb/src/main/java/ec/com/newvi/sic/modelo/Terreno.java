@@ -50,8 +50,6 @@ public class Terreno implements Serializable {
     @Size(max = 100)
     @Column(name = "sts_descripcion")
     private String stsDescripcion;
-    @Column(name = "cod_usuario")
-    private Integer codUsuario;
     @Enumerated(EnumType.STRING)
     @Column(name = "ter_estado")
     private EnumEstadoRegistro terEstado;
@@ -122,14 +120,6 @@ public class Terreno implements Serializable {
 
     public void setStsDescripcion(String stsDescripcion) {
         this.stsDescripcion = stsDescripcion;
-    }
-
-    public Integer getCodUsuario() {
-        return codUsuario;
-    }
-
-    public void setCodUsuario(Integer codUsuario) {
-        this.codUsuario = codUsuario;
     }
 
     public EnumEstadoRegistro getTerEstado() {

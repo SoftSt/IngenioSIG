@@ -49,7 +49,7 @@ public class Avaluo implements Serializable {
     @Column(name = "nom_codigocatastral")
     private String nomCodigocatastral;
     @Size(max = 150)
-    @Column(name = "sts_barrio")
+    @Column(name = "txt_barrio")
     private String stsBarrio;
     @Size(max = 100)
     @Column(name = "txt_direccion")
@@ -87,9 +87,6 @@ public class Avaluo implements Serializable {
     private BigDecimal valPromFactores;
     @Column(name = "val_precio_base")
     private BigDecimal valPrecioBase;
-    @Size(max = 50)
-    @Column(name = "cat_casosespeciales")
-    private String catCasosespeciales;
     @Enumerated(EnumType.STRING)
     @Column(name = "aval_estado")
     private EnumEstadoRegistro avalEstado;
@@ -275,14 +272,6 @@ public class Avaluo implements Serializable {
 
     public void setValImppredial(BigDecimal valImppredial) {
         this.valImppredial = valImppredial;
-    }
-
-    public String getCatCasosespeciales() {
-        return catCasosespeciales;
-    }
-
-    public void setCatCasosespeciales(String catCasosespeciales) {
-        this.catCasosespeciales = catCasosespeciales;
     }
 
     public BigDecimal getValDescuentosExoneraciones() {

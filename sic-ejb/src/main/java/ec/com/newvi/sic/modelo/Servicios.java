@@ -70,8 +70,6 @@ public class Servicios implements Serializable {
     @Size(max = 50)
     @Column(name = "nom_medidor")
     private String nomMedidor;
-    @Column(name = "cod_usuario")
-    private Integer codUsuario;
     @Column(name = "num_medidores")
     private Integer numMedidores;
     @Enumerated(EnumType.STRING)
@@ -158,14 +156,6 @@ public class Servicios implements Serializable {
 
     public void setNomMedidor(String nomMedidor) {
         this.nomMedidor = nomMedidor;
-    }
-
-    public Integer getCodUsuario() {
-        return codUsuario;
-    }
-
-    public void setCodUsuario(Integer codUsuario) {
-        this.codUsuario = codUsuario;
     }
 
     public Integer getNumMedidores() {

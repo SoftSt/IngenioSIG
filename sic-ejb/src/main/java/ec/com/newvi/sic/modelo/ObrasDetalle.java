@@ -39,8 +39,6 @@ public class ObrasDetalle implements Serializable {
     @GeneratedValue(generator = "OBRAS_DETALLE_CODIGO_GENERATOR")
     @Column(name = "cod_obrasdetalle")
     private Integer codObrasdetalle;
-    @Column(name = "cod_predio")
-    private Integer codPredio;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "obr_valor")
     private BigDecimal obrValor;
@@ -92,14 +90,6 @@ public class ObrasDetalle implements Serializable {
 
     public void setCodObrasdetalle(Integer codObrasdetalle) {
         this.codObrasdetalle = codObrasdetalle;
-    }
-
-    public Integer getCodPredio() {
-        return codPredio;
-    }
-
-    public void setCodPredio(Integer codPredio) {
-        this.codPredio = codPredio;
     }
 
     public BigDecimal getObrValor() {

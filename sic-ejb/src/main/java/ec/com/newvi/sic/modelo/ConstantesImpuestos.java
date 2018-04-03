@@ -66,22 +66,12 @@ public class ConstantesImpuestos implements Serializable {
     private BigDecimal valForestales;
     @Column(name = "val_saludpublica")
     private BigDecimal valSaludpublica;
-    @Column(name = "val_educacion")
-    private BigDecimal valEducacion;
-    @Column(name = "val_rrp")
-    private BigDecimal valRrp;
-    @Column(name = "val_acilo")
-    private BigDecimal valAcilo;
     @Column(name = "val_patrimonio")
     private BigDecimal valPatrimonio;
     @Column(name = "val_noedifica")
     private BigDecimal valNoedifica;
     @Column(name = "val_timiteinferior")
     private BigDecimal valTimiteinferior;
-    @Column(name = "val_seguridad")
-    private BigDecimal valSeguridad;
-    @Column(name = "val_rebajag")
-    private BigDecimal valRebajag;
     @Enumerated(EnumType.STRING)
     @Column(name = "conimp_estado")
     private EnumEstadoRegistro conImpuestoEstado;
@@ -265,30 +255,6 @@ public class ConstantesImpuestos implements Serializable {
         this.valSaludpublica = valSaludpublica;
     }
 
-    public BigDecimal getValEducacion() {
-        return valEducacion;
-    }
-
-    public void setValEducacion(BigDecimal valEducacion) {
-        this.valEducacion = valEducacion;
-    }
-
-    public BigDecimal getValRrp() {
-        return valRrp;
-    }
-
-    public void setValRrp(BigDecimal valRrp) {
-        this.valRrp = valRrp;
-    }
-
-    public BigDecimal getValAcilo() {
-        return valAcilo;
-    }
-
-    public void setValAcilo(BigDecimal valAcilo) {
-        this.valAcilo = valAcilo;
-    }
-
     public BigDecimal getValPatrimonio() {
         return valPatrimonio;
     }
@@ -311,22 +277,6 @@ public class ConstantesImpuestos implements Serializable {
 
     public void setValTimiteinferior(BigDecimal valTimiteinferior) {
         this.valTimiteinferior = valTimiteinferior;
-    }
-
-    public BigDecimal getValSeguridad() {
-        return valSeguridad;
-    }
-
-    public void setValSeguridad(BigDecimal valSeguridad) {
-        this.valSeguridad = valSeguridad;
-    }
-
-    public BigDecimal getValRebajag() {
-        return valRebajag;
-    }
-
-    public void setValRebajag(BigDecimal valRebajag) {
-        this.valRebajag = valRebajag;
     }
 
     @Override

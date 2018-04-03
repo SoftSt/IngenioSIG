@@ -214,7 +214,6 @@ public abstract class AdminFichaCatastralBB extends AdminSistemaBB {
             datosAvaluo.setTasaBomberos(avaluo.getValBomberos());
             datosAvaluo.setServiciosAmbientales(avaluo.getValAmbientales());
             datosAvaluo.setTotalAPagar(avaluo.getValImppredial());
-            datosAvaluo.setObservaciones(avaluo.getCatCasosespeciales());
             datosImpresion.add(datosAvaluo);
         }
         return datosImpresion;

@@ -46,9 +46,6 @@ public class PresentacionFichaCatastralDto {
     private String txtCallePrincipal;
     private String txtObservacion;
     private String nomNumero;
-    private String nomCartografia;
-    private String nomFotoAerea;
-    private String nomcCartografiaOtros;
     private String codigoTitulo;
     private BigDecimal valAreaPredio;
     private BigDecimal valAreaFrente;
@@ -85,9 +82,7 @@ public class PresentacionFichaCatastralDto {
     private String razonMovimiento;
 
     private String stsTenencia;
-    private String stsTenenciaotro;
     private String stsTransferenciadominio;
-    private BigDecimal valPredioAreaEscritura;
     private String txtNotaria;
     private String txtCiudad;
     private String txtRegistroNumero;
@@ -575,28 +570,12 @@ public class PresentacionFichaCatastralDto {
         this.stsTenencia = stsTenencia;
     }
 
-    public String getStsTenenciaotro() {
-        return stsTenenciaotro;
-    }
-
-    public void setStsTenenciaotro(String stsTenenciaotro) {
-        this.stsTenenciaotro = stsTenenciaotro;
-    }
-
     public String getStsTransferenciadominio() {
         return stsTransferenciadominio;
     }
 
     public void setStsTransferenciadominio(String stsTransferenciadominio) {
         this.stsTransferenciadominio = stsTransferenciadominio;
-    }
-
-    public BigDecimal getValPredioAreaEscritura() {
-        return valPredioAreaEscritura;
-    }
-
-    public void setValPredioAreaEscritura(BigDecimal valPredioAreaEscritura) {
-        this.valPredioAreaEscritura = valPredioAreaEscritura;
     }
 
     public String getTxtNotaria() {
@@ -709,30 +688,6 @@ public class PresentacionFichaCatastralDto {
 
     public void setNomNumero(String nomNumero) {
         this.nomNumero = nomNumero;
-    }
-
-    public String getNomCartografia() {
-        return nomCartografia;
-    }
-
-    public void setNomCartografia(String nomCartografia) {
-        this.nomCartografia = nomCartografia;
-    }
-
-    public String getNomFotoAerea() {
-        return nomFotoAerea;
-    }
-
-    public void setNomFotoAerea(String nomFotoAerea) {
-        this.nomFotoAerea = nomFotoAerea;
-    }
-
-    public String getNomcCartografiaOtros() {
-        return nomcCartografiaOtros;
-    }
-
-    public void setNomcCartografiaOtros(String nomcCartografiaOtros) {
-        this.nomcCartografiaOtros = nomcCartografiaOtros;
     }
 
     public BigDecimal getValServiciosadministrativos() {
@@ -897,9 +852,6 @@ public class PresentacionFichaCatastralDto {
         this.valAreaFondo = predio.getValAreaFondo();
         this.valAreaConstruccion = predio.getValAreaConstruccion();
         this.nomNumero = predio.getNomNumero();
-        this.nomCartografia = predio.getNomCartografia();
-        this.nomFotoAerea = predio.getNomFotoAerea();
-        this.nomcCartografiaOtros = predio.getNomcCartografiaOtros();
         this.valCoordenadaEste = predio.getValCoordenadaEste();
         this.valCoordenadaNorte = predio.getValCoordenadaNorte();
         this.valTerreno = predio.getValTerreno();
@@ -930,7 +882,6 @@ public class PresentacionFichaCatastralDto {
 
     private void setearDatosPropiedad(Propiedad propiedad) {
         this.stsTenencia = propiedad.getStsTenencia().getStsTenencia();
-        this.stsTenenciaotro = propiedad.getStsTenenciaotro();
         this.stsTransferenciadominio = propiedad.getStsTransferenciadominio().getStsTransferenciadominio();
     }
 

@@ -50,25 +50,9 @@ public class Predios implements Serializable {
     @OneToMany(mappedBy = "codCatastral")
     private Collection<DetallesAvaluo> detallesAvaluoCollection;
 
-    @Size(max = 100)
-    @Column(name = "nom_predio")
-    private String nomPredio;
     @Size(max = 25)
     @Column(name = "sts_urbanomarginal")
     private String stsUrbanomarginal;
-    @Size(max = 25)
-    @Column(name = "sts_sectorhomogeneo")
-    private String stsSectorhomogeneo;
-    @Size(max = 25)
-    @Column(name = "sts_planospredio")
-    private String stsPlanospredio;
-    @Column(name = "val_otro1")
-    private BigDecimal valOtro1;
-    @Column(name = "val_otro2")
-    private BigDecimal valOtro2;
-    @Size(max = 50)
-    @Column(name = "cat_casosespeciales")
-    private String catCasosespeciales;
     @Size(max = 2147483647)
     @Column(name = "txt_observacion")
     private String txtObservacion;
@@ -123,7 +107,7 @@ public class Predios implements Serializable {
     @Column(name = "cod_horizontal")
     private String codHorizontal;
     @Size(max = 150)
-    @Column(name = "sts_barrio")
+    @Column(name = "txt_barrio")
     private String stsBarrio;
     @Size(max = 100)
     @Column(name = "txt_direccion")
@@ -131,18 +115,7 @@ public class Predios implements Serializable {
     @Size(max = 20)
     @Column(name = "nom_numero")
     private String nomNumero;
-    @Size(max = 100)
-    @Column(name = "txt_ubicacion")
-    private String txtUbicacion;
-    @Size(max = 50)
-    @Column(name = "nom_cartografia")
-    private String nomCartografia;
-    @Size(max = 50)
-    @Column(name = "nom_fotoaerea")
-    private String nomFotoAerea;
-    @Size(max = 50)
-    @Column(name = "nom_cartootros")
-    private String nomcCartografiaOtros;
+    
     @Column(name = "val_coordenadaeste")
     private BigDecimal valCoordenadaEste;
     @Column(name = "val_coordenadanorte")
@@ -345,38 +318,6 @@ public class Predios implements Serializable {
 
     public void setNomNumero(String nomNumero) {
         this.nomNumero = nomNumero;
-    }
-
-    public String getTxtUbicacion() {
-        return txtUbicacion;
-    }
-
-    public void setTxtUbicacion(String txtUbicacion) {
-        this.txtUbicacion = txtUbicacion;
-    }
-
-    public String getNomCartografia() {
-        return nomCartografia;
-    }
-
-    public void setNomCartografia(String nomCartografia) {
-        this.nomCartografia = nomCartografia;
-    }
-
-    public String getNomFotoAerea() {
-        return nomFotoAerea;
-    }
-
-    public void setNomFotoAerea(String nomFotoAerea) {
-        this.nomFotoAerea = nomFotoAerea;
-    }
-
-    public String getNomcCartografiaOtros() {
-        return nomcCartografiaOtros;
-    }
-
-    public void setNomcCartografiaOtros(String nomcCartografiaOtros) {
-        this.nomcCartografiaOtros = nomcCartografiaOtros;
     }
 
     public BigDecimal getValCoordenadaEste() {
@@ -699,60 +640,12 @@ public class Predios implements Serializable {
         this.nomCodigocatastral = this.codDpa.concat(this.codZona).concat(this.codSector).concat(this.codManzana).concat(this.codPredio).concat(this.codRegimentenencia).concat(this.codHorizontal);
     }
 
-    public String getNomPredio() {
-        return nomPredio;
-    }
-
-    public void setNomPredio(String nomPredio) {
-        this.nomPredio = nomPredio;
-    }
-
     public String getStsUrbanomarginal() {
         return stsUrbanomarginal;
     }
 
     public void setStsUrbanomarginal(String stsUrbanomarginal) {
         this.stsUrbanomarginal = stsUrbanomarginal;
-    }
-
-    public String getStsSectorhomogeneo() {
-        return stsSectorhomogeneo;
-    }
-
-    public void setStsSectorhomogeneo(String stsSectorhomogeneo) {
-        this.stsSectorhomogeneo = stsSectorhomogeneo;
-    }
-
-    public String getStsPlanospredio() {
-        return stsPlanospredio;
-    }
-
-    public void setStsPlanospredio(String stsPlanospredio) {
-        this.stsPlanospredio = stsPlanospredio;
-    }
-
-    public BigDecimal getValOtro1() {
-        return valOtro1;
-    }
-
-    public void setValOtro1(BigDecimal valOtro1) {
-        this.valOtro1 = valOtro1;
-    }
-
-    public BigDecimal getValOtro2() {
-        return valOtro2;
-    }
-
-    public void setValOtro2(BigDecimal valOtro2) {
-        this.valOtro2 = valOtro2;
-    }
-
-    public String getCatCasosespeciales() {
-        return catCasosespeciales;
-    }
-
-    public void setCatCasosespeciales(String catCasosespeciales) {
-        this.catCasosespeciales = catCasosespeciales;
     }
 
     public String getTxtObservacion() {

@@ -228,7 +228,6 @@ public class ParametrosServicioImpl implements ParametrosServicio {
 
     @Override
     public String eliminarDominio(Dominios dominio, SesionDto sesion) throws NewviExcepcion {
-        //dominio.setDomiEstado(EnumEstadoRegistro.E);
         dominio.setEstadoDominio(EnumEstadoRegistro.E);
         return actualizarDominio(dominio, sesion);
     }

@@ -83,15 +83,6 @@ public class Dominios implements Serializable {
     @Size(max = 16)
     @Column(name = "domi_unidad")
     private String domiUnidad;
-    @Size(max = 1)
-    @Column(name = "domi_estado")
-    private String domiEstado;
-    @Size(max = 16)
-    @Column(name = "domi_ficha")
-    private String domiFicha;
-    @Size(max = 10)
-    @Column(name = "domi_tipo")
-    private String domiTipo;
     @Column(name = "domi_minimo")
     private Double domiMinimo;
     @Column(name = "domi_maximo")
@@ -219,14 +210,6 @@ public class Dominios implements Serializable {
         this.domiUnidad = domiUnidad;
     }
 
-    public String getDomiEstado() {
-        return domiEstado;
-    }
-
-    public void setDomiEstado(String domiEstado) {
-        this.domiEstado = domiEstado;
-    }
-
     public EnumEstadoRegistro getEstadoDominio() {
         return estadoDominio;
     }
@@ -235,24 +218,6 @@ public class Dominios implements Serializable {
         this.estadoDominio = estadoDominio;
     }
     
-    
-
-    public String getDomiFicha() {
-        return domiFicha;
-    }
-
-    public void setDomiFicha(String domiFicha) {
-        this.domiFicha = domiFicha;
-    }
-
-    public String getDomiTipo() {
-        return domiTipo;
-    }
-
-    public void setDomiTipo(String domiTipo) {
-        this.domiTipo = domiTipo;
-    }
-
     public Double getDomiMinimo() {
         return domiMinimo;
     }
