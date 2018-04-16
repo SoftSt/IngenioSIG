@@ -86,8 +86,8 @@
                     <p:messages id="mensajeFormulario" showDetail="true" autoUpdate="true" closable="true" />
                     <p:tooltip />
                     <p:outputPanel id="opDetalleContribuyentes">
-                        <h:panelGrid columns="2">
-                            <h:panelGrid columns="1">
+                        <h:panelGrid columns="2" width="100%">
+                            <h:panelGrid columns="1" >
                                 <h:outputLabel for="stsTipopersoneria" value="Tipo Contribuyente" style="font-weight: bold;"/>
                                 <p:selectOneMenu id="stsTipopersoneria" value="#{contribuyentesBB.contribuyente.stsTipopersoneria}" required="true" style="width:125px" >
                                     <f:selectItem itemLabel="Seleccione tipo de contribuyente..." itemValue="null" />
@@ -107,7 +107,7 @@
                                 </p:inputText>
                                 <p:message for="nomNombres" display="tooltip"/>
 
-                                <h:outputLabel for="codCedularuc" value="Cedula/RUC" style="font-weight: bold;"/>
+                                <h:outputLabel for="codCedularuc" value="Cédula/RUC" style="font-weight: bold;"/>
                                 <p:inputNumber id="codCedularuc" value="#{contribuyentesBB.contribuyente.codCedularuc}" maxValue="999999999999999" minValue="0" label="Cedula/RUC" size="50" thousandSeparator="" decimalSeparator=""/>
                                 <p:message for="codCedularuc" display="tooltip"/>
 

@@ -176,7 +176,7 @@
                             <p:tab title="Revisión">
                                 <h:panelGrid rendered="#{!avaluoBB.hayDatosConsultados()}" columns="2">
                                     <p:selectOneMenu id="fechaAvaluo" value="#{avaluoBB.fechaAvaluoActual.fechaDescripcion}" style="width:125px" >
-                                        <f:selectItem itemLabel="Seleccione tipo fecha..." itemValue="null"/>
+                                        <f:selectItem itemLabel="Seleccione una fecha..." itemValue="null"/>
                                         <f:selectItems value="#{avaluoBB.listaFechaAvaluos}" var="fechas" itemValue="#{fechas.fechaDescripcion}" itemLabel="#{fechas.fechaDescripcion}"/>
                                     </p:selectOneMenu>
 

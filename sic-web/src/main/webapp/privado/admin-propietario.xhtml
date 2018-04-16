@@ -46,7 +46,7 @@
                                              update="grupoPropietario">
                                 <p:ajax update="toolTipEdit" process="@this" /> 
                             </p:commandButton>
-                            <p:tooltip id="toolTipEdit" for="seleccionarFichaCatastral" value="Seleccionar predio" showEffect="fade" hideEffect="fade" position="bottom"/>
+                            <p:tooltip id="toolTipEdit" for="seleccionarFichaCatastral" value="Editar propiedad" showEffect="fade" hideEffect="fade" position="bottom"/>
                         </p:column>
                         <p:column headerText="Nuevo propietario" width="80">
                             <p:commandButton process="listaFichaCatastral" 
@@ -63,7 +63,7 @@
                 </h:form>
             </p:panel>
 
-            <p:dialog header="Selección de Nuevo Propietario" widgetVar="dlgContribuyente" appendTo="@(body)" modal="true" showEffect="fade" hideEffect="fade" resizable="false" closable="true" width="750" height="500">
+            <p:dialog widgetVar="dlgContribuyente" appendTo="@(body)" modal="true" showEffect="fade" hideEffect="fade" resizable="false" closable="true" width="750" height="500">
                 <h:form id="dialogContribuyente">
                     <p:growl id="messagesw" showDetail="true" escape="false"/>
                     <div style="font-size:1.2em;font-weight:bold;">Selección del nuevo propietario</div>                                    
@@ -89,7 +89,7 @@
 
                         <p:column width="80">
                             <p:commandButton actionListener="#{propiedadBB.seleccionarContribuyenteParaNuevaPropiedad(contribuyente.codPersoneria)}"
-                                             icon="fa fa-check"
+                                             value="Seleccionar"
                                              id="seleccionarContribuyente"
                                              update="grupoPropietario">
                                 <p:ajax update="toolTipEdit" process="@this" /> 

@@ -1105,7 +1105,7 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
         }
     }
 
-    public DefaultStreamedContent imprimir(EnumReporte tipoReporte, String formatoReporte) {
+    public DefaultStreamedContent imprimir(EnumReporte tipoReporte) {
         return generarReporteCatastro(tipoReporte, ReporteGenerador.FormatoReporte.PDF, obtenerDatosReporteCatastral(this.predio), PresentacionFichaCatastralDto.class);
     }
 

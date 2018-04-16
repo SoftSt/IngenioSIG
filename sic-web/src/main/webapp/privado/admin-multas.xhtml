@@ -41,11 +41,11 @@
                             <p:commandButton process="listaMultas" 
                                              actionListener="#{multasBB.seleccionarMulta(multas.codInteresmora)}"
                                              icon="fa fa-edit"
-                                             id="btnSeleccionarDescuento"
+                                             id="btnSeleccionarMultas"
                                              update="grupoFormularioMultas">
                                 <p:ajax update="toolTipEdit" process="@this" /> 
                             </p:commandButton>
-                            <p:tooltip id="toolTipEdit" for="btnSeleccionarDescuento" value="Editar Descuento" showEffect="fade" hideEffect="fade" position="bottom"/>
+                            <p:tooltip id="toolTipEdit" for="btnSeleccionarMultas" value="Editar Multa" showEffect="fade" hideEffect="fade" position="bottom"/>
                         </p:column>
                     </p:dataTable>
                 </h:form>

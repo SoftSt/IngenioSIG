@@ -214,8 +214,6 @@
                                     <p:inputText id="stsBarrio" value="#{fichaCatastralBB.predio.stsBarrio}" label="Barrio/Sitio" size="50" maxlength="150"/>
                                     <p:message for="stsBarrio" display="tooltip"/>
 
-                                    <br/>
-                                    
                                     <p style="font-weight:bold;">Coordenadas planas de referencia</p>
                                     <h:panelGrid columns="2">
                                         <h:outputLabel for="valCoordenadaEste" value="Coordenada Este" style="font-weight: bold;"/>
@@ -259,12 +257,12 @@
                                                      value="Agregar imágenes"
                                                      id="btnImagenNueva"
                                                      actionListener="#{fichaCatastralBB.abrirDialogCargaImagen()}"
-                                                     update="grupoFichaCatastral">
+                                                     update="galeriaImagenesPredio">
                                         <p:ajax update="toolTipImagenNueva" process="@this" />
                                     </p:commandButton>
                                     <p:tooltip id="toolTipImagenNueva" for="btnImagenNueva" value="Agregar Imagen" showEffect="fade" hideEffect="fade" position="bottom"/>
-                                    
-                                    <p:galleria value="#{fichaCatastralBB.listaFotosJpg}" var="image" panelWidth="500" panelHeight="313" showCaption="false">
+
+                                    <p:galleria value="#{fichaCatastralBB.listaFotosJpg}" id="galeriaImagenesPredio" var="image" panelWidth="500" panelHeight="313" showCaption="false">
                                         <p:graphicImage value="#{sesionBean.obtenerImagen()}" width="500" height="313">
                                             <f:param name="imagen" value="#{image}"/>
                                         </p:graphicImage>
@@ -407,7 +405,8 @@
 
                                 </h:panelGrid>
                             </p:tab>
-                            <p:tab title="Terreno, Construcción y Servicios">
+                            <p:tab title="Terreno, Construcción y Servicios" id="tabTerrConstServ">
+                                <p:growl id="growlTerrConstServ" showDetail="true" sticky="true" life="800"/>
                                 <h:panelGrid >
                                     <br/>
                                     <div style="font-size:1.2em;font-weight:bold;">Descripción del terreno</div>
@@ -536,7 +535,7 @@
                                     <p:commandButton value="Nuevo bloque"
                                                      actionListener="#{fichaCatastralBB.agregarNuevoBloque()}"
                                                      id="nuevoBloque"
-                                                     update="grupoFichaCatastral">
+                                                     update="tabTerrConstServ growlTerrConstServ">
                                         <p:ajax update="toolTipInsert" process="@this" /> 
                                     </p:commandButton>
                                     <p:tooltip id="toolTipInsert" for="nuevoBloque" value="Agregar nuevo bloque" showEffect="fade" hideEffect="fade" position="bottom"/>
@@ -1043,7 +1042,7 @@
                                     <p:message for="stsBarrio" display="tooltip"/>
 
                                     <br/>
-                                    
+
                                     <p style="font-weight:bold;">Coordenadas planas de referencia</p>
                                     <h:panelGrid columns="2">
                                         <h:outputLabel for="valCoordenadaEste" value="Coordenada Este" style="font-weight: bold;"/>

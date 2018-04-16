@@ -112,12 +112,12 @@
                             <h:outputLabel value="Operaciones" style="font-weight: bold;"/>
                             <p:inputText id="operacionesPermiso" value="#{permisosBB.permiso.operacionesPermiso}" label="Operaciones" size="50"/>
                             <p:message for="operacionesPermiso" display="tooltip"/>
-                        </h:panelGrid>
-                        <h:panelGrid columns="4">
-                            <p:commandButton actionListener="#{permisosBB.actualizarPermiso()}" 
+                            <f:facet name="footer">
+                                <p:commandButton actionListener="#{permisosBB.actualizarPermiso()}" 
                                              update="grupoPermisos" 
                                              icon="fa fa-check" 
                                              id="guardarRol"
+                                             style="float: right"
                                              value="Guardar">
                                 <p:ajax update="toolTipSave" process="@this" /> 
                             </p:commandButton>
@@ -128,11 +128,13 @@
                                              id="cancelar"
                                              value="Cerrar"
                                              process="@this"
+                                             style="float: left"
                                              update="grupoPermisos" 
                                              actionListener="#{permisosBB.cancelarEdicion()}">
                                 <p:ajax update="toolTipCancel" process="@this" />
                             </p:commandButton>
                             <p:tooltip id="toolTipCancel" for="cancelar" value="Regresar sin guardar cambios" showEffect="fade" hideEffect="fade" position="bottom"/>
+                            </f:facet>
                         </h:panelGrid>
                     </p:outputPanel>
                 </h:form>

@@ -207,12 +207,11 @@ public class NuevoPredioBB extends AdminFichaCatastralBB {
                 //this.listaPrediosHuerfanosRegistrados.add(new FichaCatastralDto(predioRegistrado));
                 //this.listaPrediosHuerfanosRegistrados.add(new FichaCatastralDto(obtenerPredio(predioRegistrado)));
                 nuevoPredio.setCatEstado(EnumEstadoRegistro.A);
-                
-                
+
             } /*catch (NewviExcepcion e) {
                 LoggerNewvi.getLogNewvi(this.getClass()).error(e, sesionBean.getSesion());
                 MensajesFaces.mensajeError(e.getMessage());
-            } */catch (Exception e) {
+            } */ catch (Exception e) {
                 LoggerNewvi.getLogNewvi(this.getClass()).error(EnumNewviExcepciones.ERR000.presentarMensajeCodigo(), e, sesionBean.getSesion());
                 MensajesFaces.mensajeError(e.getMessage());
             }
@@ -285,11 +284,9 @@ public class NuevoPredioBB extends AdminFichaCatastralBB {
             listaPropiedadesHistoricas.add(nuevaPropiedad);
             this.predioActual.setHistoricoPropiedad(listaPropiedadesHistoricas);
             contribuyentesServicio.generarNuevoPropiedad(nuevaPropiedad, sesionBean.getSesion());
-            
-            
+
             this.listaPrediosGenerados.remove(obtenerPredioSeleccionado(this.predioActual.getCodCampo()));
             this.listaPrediosGenerados.add(this.predioActual);
-            
 
             LoggerNewvi.getLogNewvi(this.getClass()).info(EnumNewviExcepciones.INF375.presentarMensaje(), sesionBean.getSesion());
             MensajesFaces.mensajeInformacion(EnumNewviExcepciones.INF375.presentarMensaje());
@@ -297,6 +294,29 @@ public class NuevoPredioBB extends AdminFichaCatastralBB {
         } catch (NewviExcepcion ex) {
             Logger.getLogger(NuevoPredioBB.class.getName()).log(Level.SEVERE, null, ex);
         }
+
+    }
+
+    public void registrarListaPrediosNuevos() {
+        Integer contador = 0;
+        for (Predios nuevoPredio : this.listaPrediosGenerados) {
+            try {
+                nuevoPredio.setCatEstado(EnumEstadoRegistro.A);
+                catastroServicio.generarNuevoPredio(nuevoPredio, sesionBean.getSesion());
+                contador++;
+            } catch (NewviExcepcion e) {
+                LoggerNewvi.getLogNewvi(this.getClass()).error(e, sesionBean.getSesion());
+                MensajesFaces.mensajeError(e.getMessage());
+            } catch (Exception e) {
+                LoggerNewvi.getLogNewvi(this.getClass()).error(EnumNewviExcepciones.ERR000.presentarMensajeCodigo(), e, sesionBean.getSesion());
+                MensajesFaces.mensajeError(e.getMessage());
+            }
+        }
+
+        Map<String, String> variables = new HashMap<>();
+        variables.put("npredios", (new Integer(contador)).toString());
+        LoggerNewvi.getLogNewvi(this.getClass()).info(EnumNewviExcepciones.INF507.presentarMensaje(variables), sesionBean.getSesion());
+        MensajesFaces.mensajeInformacion(EnumNewviExcepciones.INF507.presentarMensaje(variables));
 
     }
 

@@ -240,8 +240,8 @@ public class GenerarTituloBB extends AdminFichaCatastralBB {
 
     public void actualizarListaAvaluosPorFecha(String fechaDescripcion) {
         try {
-            //listaAvaluosProcesados = catastroServicio.consultarListaAvaluosPorFecha(fechaDescripcion);
-            listaAvaluosProcesados = retirarTitulosEmitidos(catastroServicio.consultarListaAvaluosPorFecha(fechaDescripcion), fechaDescripcion.substring(0, 4));
+            listaAvaluosProcesados = catastroServicio.consultarListaAvaluosPorFecha(fechaDescripcion);
+            //listaAvaluosProcesados = retirarTitulosEmitidos(catastroServicio.consultarListaAvaluosPorFecha(fechaDescripcion), fechaDescripcion.substring(0, 4));
             this.totalPorCobrarConsulta = obtenerTotales(listaAvaluosProcesados);
         } catch (Exception e) {
             LoggerNewvi.getLogNewvi(this.getClass()).error(EnumNewviExcepciones.ERR001.presentarMensajeCodigo(), e, sesionBean.getSesion());

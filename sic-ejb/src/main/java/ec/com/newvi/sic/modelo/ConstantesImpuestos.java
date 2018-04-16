@@ -64,8 +64,6 @@ public class ConstantesImpuestos implements Serializable {
     private BigDecimal valConstrucion;
     @Column(name = "val_forestales")
     private BigDecimal valForestales;
-    @Column(name = "val_saludpublica")
-    private BigDecimal valSaludpublica;
     @Column(name = "val_patrimonio")
     private BigDecimal valPatrimonio;
     @Column(name = "val_noedifica")
@@ -245,14 +243,6 @@ public class ConstantesImpuestos implements Serializable {
 
     public void setValForestales(BigDecimal valForestales) {
         this.valForestales = valForestales;
-    }
-
-    public BigDecimal getValSaludpublica() {
-        return valSaludpublica;
-    }
-
-    public void setValSaludpublica(BigDecimal valSaludpublica) {
-        this.valSaludpublica = valSaludpublica;
     }
 
     public BigDecimal getValPatrimonio() {

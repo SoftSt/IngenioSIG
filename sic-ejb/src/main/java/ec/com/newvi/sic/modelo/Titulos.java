@@ -63,9 +63,6 @@ public class Titulos implements Serializable {
     @Size(max = 5)
     @Column(name = "sts_anioavaluo")
     private String stsAnioavaluo;
-    @Size(max = 25)
-    @Column(name = "sts_tipo")
-    private String stsTipo;
     @Size(max = 30)
     @Column(name = "cod_secuencial")
     private String codSecuencial;
@@ -199,14 +196,6 @@ public class Titulos implements Serializable {
 
     public void setStsAnioavaluo(String stsAnioavaluo) {
         this.stsAnioavaluo = stsAnioavaluo;
-    }
-
-    public String getStsTipo() {
-        return stsTipo;
-    }
-
-    public void setStsTipo(String stsTipo) {
-        this.stsTipo = stsTipo;
     }
 
     public EnumEstadoTitulo getStsEstado() {

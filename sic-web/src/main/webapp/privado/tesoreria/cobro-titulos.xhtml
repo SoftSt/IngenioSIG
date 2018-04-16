@@ -21,7 +21,7 @@
                     <p>#{cobroTituloBB.descripcionPantalla.textoEtiqueta}</p>
 
                     <p:dataTable id="listaFichaCatastral" var="fichaCatastral" widgetVar="listaFichaCatastralTabla"
-                                 value="#{cobroTituloBB.listaFichas}" rowKey="#{fichaCatastral.predio.codCatastral}" filteredValue="#{cobroTituloBB.listaFichasFiltradas}"
+                                 value="#{cobroTituloBB.listaFichasTitulos}" rowKey="#{fichaCatastral.predio.codCatastral}" filteredValue="#{cobroTituloBB.listaFichasFiltradas}"
                                  paginator="true" rows="1" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}" 
                                  rowsPerPageTemplate="5,10,15" 
                                  emptyMessage="Utilice los filtros de busqueda para encontrar un registro" 
@@ -42,11 +42,11 @@
                             <p:commandButton process="listaFichaCatastral" 
                                              actionListener="#{cobroTituloBB.seleccionarTitulosPredio(fichaCatastral.predio.codCatastral)}"
                                              icon="fa fa-angle-double-right"
-                                             id="btnSeleccionarTitulo"
+                                             id="btnSeleccionarContribuyenteConTitulo"
                                              update="grupoCobroDeTitulo">
-                                <p:ajax update="toolTipSeleccionTitulo" process="@this" /> 
+                                <p:ajax update="toolTipSeleccionContribuyenteConTitulos" process="@this" /> 
                             </p:commandButton>
-                            <p:tooltip id="toolTipSeleccionTitulo" for="btnSeleccionarTitulo" value="Seleccionar título" showEffect="fade" hideEffect="fade" position="bottom"/>
+                            <p:tooltip id="toolTipSeleccionContribuyenteConTitulos" for="btnSeleccionarContribuyenteConTitulo" value="Seleccionar Contribuyente" showEffect="fade" hideEffect="fade" position="bottom"/>
                         </p:column>
 
                     </p:dataTable>
@@ -292,16 +292,13 @@
                             </h:panelGrid>
 
                             <br/>
-                            <div style="font-size:1.2em;font-weight:bold;">Resúmen de títulos por Pagar</div>
+                            <div style="font-size:1.2em;font-weight:bold;">Resumen de títulos por Pagar</div>
                             <p:separator />
                             <p:dataTable id="listaTitulosPorPagar" var="tituloPorPagar" widgetVar="listaTitulosPorPagarTabla"
                                          value="#{cobroTituloBB.listaTitulosPorPagar}" rowKey="#{tituloPorPagar.codTitulos}" filteredValue="#{cobroTituloBB.listaTitulosPorPagarFiltrados}"
-                                         paginator="true" rows="10" 
-                                         rowsPerPageTemplate="10,30,50"  paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
                                          resizableColumns="false"
                                          sortBy="#{tituloPorPagar.stsEstado}"
-                                         emptyMessage="No se han encontrado resultados" 
-                                         paginatorPosition="bottom">
+                                         emptyMessage="No se han encontrado resultados">
 
                                 <p:column headerText="Cod. Catastral" >
                                     <h:outputText value="#{tituloPorPagar.codCatastral.nomCodigocatastral}"/>
@@ -492,20 +489,6 @@
                                 </p:column>
 
                                 <p:column headerText="Acciones" >
-                                    <p:commandButton icon="fa fa-minus-square-o"
-                                                     id="desmarcarTitulo"
-                                                     actionListener="#{cobroTituloBB.abrirDialogRazonDesmarque(titulosCobradosActual.codTitulos)}"
-                                                     update="grupoCobroDeTitulo">
-                                        <p:ajax update="toolTipDeSelect" process="@this" />
-                                    </p:commandButton>
-                                    <p:tooltip id="toolTipDeSelect" for="desmarcarTitulo" value="Desmarcar título" showEffect="fade" hideEffect="fade" position="bottom"/>
-                                    <p:commandButton icon="fa fa-search-plus"
-                                                     id="visualizarComprobante"
-                                                     actionListener="#{cobroTituloBB.abrirDialogoComprobante(titulosCobradosActual.codTitulos)}"
-                                                     update="grupoCobroDeTitulo">
-                                        <p:ajax update="toolTipResumen" process="@this" />
-                                    </p:commandButton>
-                                    <p:tooltip id="toolTipResumen" for="visualizarComprobante" value="Visualizar Comprobante" showEffect="fade" hideEffect="fade" position="bottom"/>
                                     <p:commandButton icon="fa fa-print" 
                                                      ajax="false" 
                                                      id="imprimirComprobante"
@@ -517,6 +500,20 @@
                                         <p:ajax update="toolTipPrint" process="@this" />
                                     </p:commandButton>
                                     <p:tooltip id="toolTipPrint" for="imprimirComprobante" value="Imprimir Comprobante" showEffect="fade" hideEffect="fade" position="bottom"/>
+                                    <p:commandButton icon="fa fa-search-plus"
+                                                     id="visualizarComprobante"
+                                                     actionListener="#{cobroTituloBB.abrirDialogoComprobante(titulosCobradosActual.codTitulos)}"
+                                                     update="grupoCobroDeTitulo">
+                                        <p:ajax update="toolTipResumen" process="@this" />
+                                    </p:commandButton>
+                                    <p:tooltip id="toolTipResumen" for="visualizarComprobante" value="Visualizar Comprobante" showEffect="fade" hideEffect="fade" position="bottom"/>
+                                    <p:commandButton icon="fa fa-minus-square-o"
+                                                     id="desmarcarTitulo"
+                                                     actionListener="#{cobroTituloBB.abrirDialogRazonDesmarque(titulosCobradosActual.codTitulos)}"
+                                                     update="grupoCobroDeTitulo">
+                                        <p:ajax update="toolTipDeSelect" process="@this" />
+                                    </p:commandButton>
+                                    <p:tooltip id="toolTipDeSelect" for="desmarcarTitulo" value="Desmarcar título" showEffect="fade" hideEffect="fade" position="bottom"/>
                                 </p:column>
                             </p:dataTable>
 
@@ -595,7 +592,7 @@
                                     <f:convertNumber pattern="###,###.00"/>
                                 </h:outputText>
                                 <h:outputLabel for="valObsoleto" value="Construcción Obsoleta ($):" style="font-weight: bold;font-size: 0.9em;"/>
-                                <h:outputText id="valObsoleto" style="float: right;font-size: 0.9em;" value="#{cobroTituloBB.tituloActual.valSaludpublica}">
+                                <h:outputText id="valObsoleto" style="float: right;font-size: 0.9em;" value="#{cobroTituloBB.tituloActual.valContruccionObsoleta}">
                                     <f:convertNumber pattern="###,###.00"/>
                                 </h:outputText>
                                 <h:outputLabel for="valBomberos" value="Bomberos. ($):" style="font-weight: bold;font-size: 0.9em;"/>
@@ -646,9 +643,15 @@
                                     <li>Es obligatorio escribir la explicación del desmarque del título, en el siguiente campo: </li>
 
                                 </ul>
-                                <p:inputTextarea  id="contribuyente" value="#{cobroTituloBB.razonTituloDesmarcado}" cols="65" rows="5"/>
+                                <p:inputTextarea  id="razonDesmarque" required="true" label="Escribir la explicación para desmarcar el título"
+                                                  placeholder="Escriba la explicacion por la que va ha desmarcar este título"
+                                                  value="#{cobroTituloBB.razonTituloDesmarcado}" cols="65" rows="5">
+                                    <f:validateLength minimum="1"/>
+                                </p:inputTextarea>
+                                <p:message for="razonDesmarque" display="icon" />
                                 <br/>
                                 <br/>
+
                                 <p:commandButton value="Cancelar"
                                                  id="btnCerrarDialogo"
                                                  update="grupoCobroDeTitulo"
@@ -657,12 +660,13 @@
                                                  style="float:left;">
                                 </p:commandButton>
                                 <p:commandButton value="Desmarcar"
-                                                 id="btnRealizarPago" 
+                                                 id="btnRealizarPago"
                                                  actionListener="#{cobroTituloBB.desmarcarTitulo()}"
                                                  icon="fa fa-minus-square-o"
                                                  update="grupoCobroDeTitulo"
                                                  style="float:right;">
                                 </p:commandButton>
+
                             </p:panelGrid>
                         </p:outputPanel>
                     </h:form>

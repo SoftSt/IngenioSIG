@@ -21,7 +21,7 @@
                     <p>#{constantesImpuestoBB.descripcionPantalla.textoEtiqueta}</p>
 
                     <p>
-                        <p:commandButton value="Nuevo Parametro" icon="fa fa-plus" 
+                        <p:commandButton value="Nuevo Parámetro" icon="fa fa-plus" 
                                          update="messages grupoConstantesImpuestos"
                                          id="ingresarConstanteImpuestos"
                                          actionListener="#{constantesImpuestoBB.crearNuevaConstanteImpuesto()}">
@@ -51,23 +51,23 @@
                         <p:column headerText="Tasa Bomberos" sortBy="#{constanteImpuestos.valBomberos}">
                             <h:outputText value="#{constanteImpuestos.valBomberos}" />
                         </p:column>
-                        
+
                         <p:column headerText="Servicios Administrativos" sortBy="#{constanteImpuestos.valServiciosadministrativos}">
                             <h:outputText value="#{constanteImpuestos.valServiciosadministrativos}" />
                         </p:column>
-                        
+
                         <p:column headerText="Tasa Solar No Edificado" sortBy="#{constanteImpuestos.valNoedifica}">
                             <h:outputText value="#{constanteImpuestos.valNoedifica}" />
                         </p:column>
-                        
+
                         <p:column headerText="Tasa Construcciones Obsoletas" sortBy="#{constanteImpuestos.valConstrucion}">
                             <h:outputText value="#{constanteImpuestos.valConstrucion}" />
                         </p:column>
-                        
+
                         <p:column headerText="Tasa Impuesto Predial" sortBy="#{constanteImpuestos.valTasaaplicada}">
                             <h:outputText value="#{constanteImpuestos.valTasaaplicada}" />
                         </p:column>
-                        
+
                         <p:column headerText="Ambientales" sortBy="#{constanteImpuestos.valAmbientales}">
                             <h:outputText value="#{constanteImpuestos.valAmbientales}" />
                         </p:column>
@@ -77,10 +77,10 @@
                                              icon="fa fa-trash"
                                              id="eliminarConstanteImpuestos"
                                              update="listaConstantesImpuestos :formularioListaConstantesImpuestos:growl :formularioListaConstantesImpuestos:messages" >
-                                <p:confirm header="Eliminar constanteImpuestos" message="¿Está seguro?" icon="ui-icon-alert" />
+                                <p:confirm header="Eliminar parámetro" message="¿Está seguro?" icon="ui-icon-alert" />
                                 <p:ajax update="toolTipDelete" process="@this" /> 
                             </p:commandButton>
-                            <p:tooltip id="toolTipDelete" for="eliminarConstanteImpuestos" value="Eliminar parametro" showEffect="fade" hideEffect="fade" position="bottom"/>
+                            <p:tooltip id="toolTipDelete" for="eliminarConstanteImpuestos" value="Eliminar parámetro" showEffect="fade" hideEffect="fade" position="bottom"/>
 
                             <p:commandButton process="listaConstantesImpuestos" 
                                              actionListener="#{constantesImpuestoBB.seleccionarConstanteImpuesto(constanteImpuestos.codConstantesimpuestos)}"
@@ -89,7 +89,7 @@
                                              update="grupoConstantesImpuestos">
                                 <p:ajax update="toolTipEdit" process="@this" /> 
                             </p:commandButton>
-                            <p:tooltip id="toolTipEdit" for="editarConstanteImpuestos" value="Editar parametro" showEffect="fade" hideEffect="fade" position="bottom"/>
+                            <p:tooltip id="toolTipEdit" for="editarConstanteImpuestos" value="Editar parámetro" showEffect="fade" hideEffect="fade" position="bottom"/>
 
                         </p:column>            
                     </p:dataTable>
@@ -112,57 +112,71 @@
                     <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
                     <p:tooltip />
                     <p:outputPanel id="opDetalleConstantesImpuestos">
-                        <h:panelGrid columns="1">
+                        <h:panelGrid columns="2" width="100%">
+                            <h:panelGrid>
+                                <h:outputLabel value="Año" style="font-weight: bold;"/>
+                                <p:inputNumber id="stsAnio" value="#{constantesImpuestoBB.constantesImpuestos.stsAnio}" label="Año de ejecución" size="50" maxValue="9999" decimalPlaces="0"  decimalSeparator="" thousandSeparator=""/>
+                                <p:message for="stsAnio" display="tooltip"/>
+                                
+                                <h:outputLabel value="Tasa Bomberos" style="font-weight: bold;"/>
+                                <p:inputNumber id="valBomberos" value="#{constantesImpuestoBB.constantesImpuestos.valBomberos}" label="Tasa bomberos" size="50" required="true" decimalPlaces="4"/>
+                                <p:message for="valBomberos" display="tooltip"/>
 
-                            <h:outputLabel value="Tasa Bomberos" style="font-weight: bold;"/>
-                            <p:inputNumber id="valBomberos" value="#{constantesImpuestoBB.constantesImpuestos.valBomberos}" label="Tasa bomberos" size="50" required="true" decimalPlaces="8"/>
-                            <p:message for="valBomberos" display="tooltip"/>
-
-                            <h:outputLabel value="Servicios Administrativos" style="font-weight: bold;"/>
-                            <p:inputNumber id="valServiciosadministrativos" value="#{constantesImpuestoBB.constantesImpuestos.valServiciosadministrativos}" size="50" label="Servicios Administrativos" decimalPlaces="8"/>
-                            <p:message for="valServiciosadministrativos" display="tooltip"/>
+                                <h:outputLabel value="Servicios Administrativos" style="font-weight: bold;"/>
+                                <p:inputNumber id="valServiciosadministrativos" value="#{constantesImpuestoBB.constantesImpuestos.valServiciosadministrativos}" size="50" label="Servicios Administrativos" decimalPlaces="4"/>
+                                <p:message for="valServiciosadministrativos" display="tooltip"/>
 
 
-                            <h:outputLabel value="Cem" style="font-weight: bold;"/>
-                            <p:inputNumber id="valCem" value="#{constantesImpuestoBB.constantesImpuestos.valCem}" label="Valor cem" size="50"/>
-                            <p:message for="valCem" display="tooltip"/>
+                                <h:outputLabel value="Cem" style="font-weight: bold;"/>
+                                <p:inputNumber id="valCem" value="#{constantesImpuestoBB.constantesImpuestos.valCem}" label="Valor cem"  decimalPlaces="4" size="50"/>
+                                <p:message for="valCem" display="tooltip"/>
+                                
+                            </h:panelGrid>
+                            <h:panelGrid>
+                                <h:outputLabel value="Tasa Impuesto Predial" style="font-weight: bold;"/>
+                                <p:inputNumber id="valTasaaplicada" value="#{constantesImpuestoBB.constantesImpuestos.valTasaaplicada}" label="Tasa Impuesto Predial" size="50" decimalPlaces="4"/>
+                                <p:message for="valTasaaplicada" display="tooltip"/>
 
-                            <h:outputLabel value="Tasa Impuesto Predial" style="font-weight: bold;"/>
-                            <p:inputNumber id="valTasaaplicada" value="#{constantesImpuestoBB.constantesImpuestos.valTasaaplicada}" label="Tasa Impuesto Predial" size="50" decimalPlaces="8"/>
-                            <p:message for="valTasaaplicada" display="tooltip"/>
+                                <h:outputLabel value="Tasa Solar No Edificado" style="font-weight: bold;"/>
+                                <p:inputNumber id="valNoedifica" value="#{constantesImpuestoBB.constantesImpuestos.valNoedifica}" label="Tasa Solar No Edificado" size="50" decimalPlaces="4"/>
+                                <p:message for="valNoedifica" display="tooltip"/>
 
-                            <h:outputLabel value="Tasa Solar No Edificado" style="font-weight: bold;"/>
-                            <p:inputNumber id="valNoedifica" value="#{constantesImpuestoBB.constantesImpuestos.valNoedifica}" label="Tasa Solar No Edificado" size="50" decimalPlaces="8"/>
-                            <p:message for="valNoedifica" display="tooltip"/>
-
-                            <h:outputLabel value="Tasa Edificación Obsoleta" style="font-weight: bold;"/>
-                            <p:inputNumber id="valConstrucion" value="#{constantesImpuestoBB.constantesImpuestos.valConstrucion}" label="Tasa Edificación Obsoleta" size="50" decimalPlaces="8"/>
-                            <p:message for="valConstrucion" display="tooltip"/>
-
-                            <h:outputLabel value="Tasa Impuesto Ambiental" style="font-weight: bold;"/>
-                            <p:inputNumber id="valAmbientales" value="#{constantesImpuestoBB.constantesImpuestos.valAmbientales}" label="Tasa Impuesto Ambiental" size="50" decimalPlaces="8"/>
-                            <p:message for="valAmbientales" display="tooltip"/>
+                                <h:outputLabel value="Tasa Edificación Obsoleta" style="font-weight: bold;"/>
+                                <p:inputNumber id="valConstrucion" value="#{constantesImpuestoBB.constantesImpuestos.valConstrucion}" label="Tasa Edificación Obsoleta" size="50" decimalPlaces="4"/>
+                                <p:message for="valConstrucion" display="tooltip"/>
+                                
+                                <h:outputLabel value="Tasa Impuesto Ambiental" style="font-weight: bold;"/>
+                                <p:inputNumber id="valAmbientales" value="#{constantesImpuestoBB.constantesImpuestos.valAmbientales}" label="Tasa Impuesto Ambiental" size="50" decimalPlaces="4"/>
+                                <p:message for="valAmbientales" display="tooltip"/>
+                            </h:panelGrid>
                             
-                        </h:panelGrid>
-                        <h:panelGrid columns="4">
-                            <p:commandButton actionListener="#{constantesImpuestoBB.actualizarConstanteImpuesto()}" 
-                                             update="grupoConstantesImpuestos" 
-                                             id="guardarConstanteImpuestos"
-                                             icon="fa fa-check" 
-                                             value="Guardar">
-                                <p:ajax update="toolTipSave" process="@this" /> 
-                            </p:commandButton>
-                            <p:tooltip id="toolTipSave" for="guardarConstanteImpuestos" value="Guardar cambios en el parametro" showEffect="fade" hideEffect="fade" position="bottom"/>
 
-                            <p:commandButton icon="fa fa-close" 
-                                             id="cancelar"
-                                             value="Cerrar"
-                                             process="@this"
-                                             update="grupoConstantesImpuestos" 
-                                             actionListener="#{constantesImpuestoBB.cancelarEdicion()}">
-                                <p:ajax update="toolTipCancel" process="@this" />
-                            </p:commandButton>
-                            <p:tooltip id="toolTipCancel" for="cancelar" value="Regresar sin guardar cambios" showEffect="fade" hideEffect="fade" position="bottom"/>
+
+
+
+                            <f:facet name="footer">
+                                <p:commandButton actionListener="#{constantesImpuestoBB.actualizarConstanteImpuesto()}" 
+                                                 update="grupoConstantesImpuestos" 
+                                                 id="guardarConstanteImpuestos"
+                                                 icon="fa fa-check" 
+                                                 style="float: right"
+                                                 value="Guardar">
+                                    <p:ajax update="toolTipSave" process="@this" /> 
+                                </p:commandButton>
+                                <p:tooltip id="toolTipSave" for="guardarConstanteImpuestos" value="Guardar cambios en el parámetro" showEffect="fade" hideEffect="fade" position="bottom"/>
+
+                                <p:commandButton icon="fa fa-close" 
+                                                 id="cancelar"
+                                                 value="Cerrar"
+                                                 process="@this"
+                                                 style="float: left"
+                                                 update="grupoConstantesImpuestos" 
+                                                 actionListener="#{constantesImpuestoBB.cancelarEdicion()}">
+                                    <p:ajax update="toolTipCancel" process="@this" />
+                                </p:commandButton>
+                                <p:tooltip id="toolTipCancel" for="cancelar" value="Regresar sin guardar cambios" showEffect="fade" hideEffect="fade" position="bottom"/>
+                            </f:facet>
+
                         </h:panelGrid>
                     </p:outputPanel>
                 </h:form>

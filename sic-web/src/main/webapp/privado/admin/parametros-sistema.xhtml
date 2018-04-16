@@ -18,7 +18,7 @@
                             <h:outputText value=" #{parametrosSistemaBB.tituloPantalla.textoEtiqueta}"/>
                         </h2>
                     </p>
-                    <p>#{usuariosBB.descripcionPantalla.textoEtiqueta}</p>
+                    <p>#{parametrosSistemaBB.descripcionPantalla.textoEtiqueta}</p>
                     <p>
                         <p:commandButton value="Nuevo parámetro" icon="fa fa-plus" 
                                          update="messages grupoParametrosSistema"
@@ -81,7 +81,7 @@
                     <p:messages id="mensajeFormulario" showDetail="true" autoUpdate="true" closable="true" />
                     <p:tooltip />
                     <p:outputPanel id="opDetalleParametroSistema">
-                        <h:panelGrid>
+                        <h:panelGrid width="100%">
                             <br/>
                             <div style="font-size:1.2em;font-weight:bold;">Datos del parámetro del sistema</div>
                             <p:separator />
@@ -120,28 +120,29 @@
                                           update="grupoParametrosSistema" 
                                           sizeLimit="100000" allowTypes="/(\.|\/)(png)$/" />
 
-                        </h:panelGrid>
-                        <h:panelGrid columns="4">
+                            <f:facet name="footer">
+                                <p:commandButton actionListener="#{parametrosSistemaBB.actualizarParametroSistema()}" 
+                                                 update="grupoParametrosSistema" 
+                                                 icon="fa fa-check"
+                                                 style="float: right"
+                                                 id="guardarParametroSistema"
+                                                 value="Guardar">
+                                    <p:ajax update="toolTipSave" process="@this" /> 
+                                </p:commandButton>
+                                <p:tooltip id="toolTipSave" for="guardarParametroSistema" value="Guardar cambios en el parámetro" showEffect="fade" hideEffect="fade" position="top"/>
 
-                            <p:commandButton actionListener="#{parametrosSistemaBB.actualizarParametroSistema()}" 
-                                             update="grupoParametrosSistema" 
-                                             icon="fa fa-check"
-                                             id="guardarParametroSistema"
-                                             value="Guardar">
-                                <p:ajax update="toolTipSave" process="@this" /> 
-                            </p:commandButton>
-                            <p:tooltip id="toolTipSave" for="guardarParametroSistema" value="Guardar cambios en el parámetro" showEffect="fade" hideEffect="fade" position="top"/>
-
-                            <p:commandButton icon="fa fa-close" 
-                                             value="Cerrar"
-                                             id="cancelar"
-                                             update="grupoParametrosSistema" 
-                                             process="@this"
-                                             actionListener="#{parametrosSistemaBB.cancelarEdicion()}">
-                                <p:ajax update="toolTipCancel" process="@this" />
-                                <p:resetInput target="panelParametroSistema" />
-                            </p:commandButton>
-                            <p:tooltip id="toolTipCancel" for="cancelar" value="Regresar sin guardar cambios" showEffect="fade" hideEffect="fade" position="top"/>
+                                <p:commandButton icon="fa fa-close" 
+                                                 value="Cerrar"
+                                                 id="cancelar"
+                                                 style="float: left"
+                                                 update="grupoParametrosSistema" 
+                                                 process="@this"
+                                                 actionListener="#{parametrosSistemaBB.cancelarEdicion()}">
+                                    <p:ajax update="toolTipCancel" process="@this" />
+                                    <p:resetInput target="panelParametroSistema" />
+                                </p:commandButton>
+                                <p:tooltip id="toolTipCancel" for="cancelar" value="Regresar sin guardar cambios" showEffect="fade" hideEffect="fade" position="top"/>
+                            </f:facet>
                         </h:panelGrid>
                     </p:outputPanel>
                 </h:form>

@@ -40,10 +40,6 @@
                                  paginatorPosition="bottom">
 
 
-                        <p:column width="80" headerText="Codigo" sortBy="#{dominio.domiCodigo}" filterBy="#{dominio.domiCodigo}">
-                            <h:outputText value="#{dominio.domiCodigo}" />
-                        </p:column>
-
                         <p:column headerText="Descripcion" sortBy="#{dominio.domiDescripcion}" filterBy="#{dominio.domiDescripcion}">
                             <h:outputText value="#{dominio.domiDescripcion}" />
                         </p:column>            
@@ -114,83 +110,86 @@
                     <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
                     <p:tooltip />
                     <p:outputPanel id="opDetalleDominios">
-                        <h:panelGrid columns="1">
+                        <h:panelGrid width="100%">
+                            <br/>
+                            <div style="font-size:1.2em;font-weight:bold;">Identificación del Dominio</div>
+                            <p:separator />
+                            <h:panelGrid columns="3">
+                                <h:outputLabel value="Relación" style="font-weight: bold;"/>
+                                <h:outputLabel value="Código Padre" style="font-weight: bold;"/>
+                                <h:outputLabel value="Código Dominio" style="font-weight: bold;"/>
 
-                            <h:outputLabel value="Codigo" style="font-weight: bold;"/>
-                            <p:inputText id="domiCodigo" value="#{dominiosBB.dominio.domiCodigo}" label="Codigo" size="50" required="true">
-                                <f:validateLength minimum="1" maximum="16" />
-                            </p:inputText>
-                            <p:message for="domiCodigo" display="tooltip"/>
+                                <p:selectOneMenu id="dominRelacion" value="#{dominiosBB.dominio.domiRelacion}" label="Relacion" style="width:65px" >
+                                    <f:selectItem itemLabel="Seleccione uno" itemValue="" />
+                                    <f:selectItems value="#{dominiosBB.listaRelacionDominios}" var="relacionDominio" itemValue="#{relacionDominio}" itemLabel="#{relacionDominio.descripcionRelacionDominios}"/>
+                                </p:selectOneMenu>
+                                <p:inputText id="domiPadre" value="#{dominiosBB.dominio.domiPadre}" size="15" label="Padre"/>
+                                <p:inputText id="domiCodigo" value="#{dominiosBB.dominio.domiCodigo}" label="Codigo Dominio" size="15" required="true">
+                                    <f:validateLength minimum="1" maximum="16" />
+                                </p:inputText>
 
-                            <h:outputLabel value="Padre" style="font-weight: bold;"/>
-                            <p:inputText id="domiPadre" value="#{dominiosBB.dominio.domiPadre}" size="50" label="Padre"/>
-                            <p:message for="domiPadre" display="tooltip"/>
+                                <p:message for="domiCodigo" display="tooltip"/>
+                                <p:message for="domiPadre" display="tooltip"/>
+                                <p:message for="dominRelacion" display="tooltip"/>
 
-                            <h:outputLabel value="Relacion" style="font-weight: bold;"/>
-                            <p:selectOneMenu id="dominRelacion" value="#{dominiosBB.dominio.domiRelacion}" label="Relacion" style="width:125px" >
-                                <f:selectItems value="#{dominiosBB.listaRelacionDominios}" var="relacionDominio" itemValue="#{relacionDominio}" itemLabel="#{relacionDominio.descripcionRelacionDominios}"/>
-                            </p:selectOneMenu>
-                            <p:message for="dominRelacion" display="tooltip"/>
+                            </h:panelGrid>
+                            <br/>
+                            <div style="font-size:1.2em;font-weight:bold;">Descripción del Dominio</div>
+                            <p:separator />
+                            <h:panelGrid columns="3">
+                                <h:outputLabel value="Grupos" style="font-weight: bold;"/>
+                                <h:outputLabel value="SubGrupo" style="font-weight: bold;"/>
+                                <h:outputLabel value="Descripcion" style="font-weight: bold;"/>
 
-                            <h:outputLabel value="Descripcion" style="font-weight: bold;"/>
-                            <p:inputTextarea rows="3" id="domiDescripcion" value="#{dominiosBB.dominio.domiDescripcion}" label="Descripcion" cols="50"/>
-                            <p:message for="domiDescripcion" display="tooltip"/>
+                                <p:inputText id="domiGrupos" value="#{dominiosBB.dominio.domiGrupos}" label="Grupos" size="45"/>
+                                <p:inputText id="domiCalculo" value="#{dominiosBB.dominio.domiCalculo}" label="Calculo" size="45"/>
+                                <p:inputText id="domiDescripcion" value="#{dominiosBB.dominio.domiDescripcion}" label="Descripcion" size="45"/>
 
-                            <h:outputLabel value="Grupos" style="font-weight: bold;"/>
-                            <p:inputText id="domiGrupos" value="#{dominiosBB.dominio.domiGrupos}" label="Grupos" size="50"/>
-                            <p:message for="domiGrupos" display="tooltip"/>
+                                <p:message for="domiGrupos" display="tooltip"/>
+                                <p:message for="domiCalculo" display="tooltip"/>
+                                <p:message for="domiDescripcion" display="tooltip"/>
+                            </h:panelGrid>
+                            <br/>
+                            <div style="font-size:1.2em;font-weight:bold;">Factores Cálculo Dominio</div>
+                            <p:separator />
+                            <h:panelGrid columns="3">
+                                <h:outputLabel  value="Coeficiente" style="font-weight: bold;"/>
+                                <h:outputLabel value="Minimo" style="font-weight: bold;"/>
+                                <h:outputLabel value="Maximo" style="font-weight: bold;"/>
+                                
+                                <p:inputNumber id="domiCoeficiente" value="#{dominiosBB.dominio.domiCoefic}" decimalPlaces="4" label="Coeficiente" size="15"/>
+                                <p:inputNumber id="domiMinimo" value="#{dominiosBB.dominio.domiMinimo}" decimalPlaces="4" label="Minimo" size="15"/>
+                                <p:inputNumber id="domiMaximo" value="#{dominiosBB.dominio.domiMaximo}" decimalPlaces="4" label="Maximo" size="15" />
+                                
+                                <p:message for="domiCoeficiente" display="tooltip"/>
+                                <p:message for="domiMinimo" display="tooltip"/>
+                                <p:message for="domiMaximo" display="tooltip"/>
+                            </h:panelGrid>
+                            
+                            <f:facet name="footer">
+                                <p:commandButton actionListener="#{dominiosBB.actualizarDominio()}" 
+                                                 update="grupoDominios" 
+                                                 id="guardarDominio"
+                                                 icon="fa fa-check" 
+                                                 style="float:right;"
+                                                 value="Guardar">
+                                    <p:ajax update="toolTipSave" process="@this" /> 
+                                </p:commandButton>
+                                <p:tooltip id="toolTipSave" for="guardarDominio" value="Guardar cambios en el dominio" showEffect="fade" hideEffect="fade" position="bottom"/>
 
-                            <h:outputLabel value="Calculo" style="font-weight: bold;"/>
-                            <p:inputText id="domiCalculo" value="#{dominiosBB.dominio.domiCalculo}" label="Calculo" size="50"/>
-                            <p:message for="domiCalculo" display="tooltip"/>
-
-                            <h:outputLabel value="Depreciacion" style="font-weight: bold;"/>
-                            <p:inputNumber id="domiDepreciacion" value="#{dominiosBB.dominio.domiDepreciacion}" label="Depreciacion" size="50"/>
-                            <p:message for="domiDepreciacion" display="tooltip"/>
-
-                            <h:outputLabel value="Codame" style="font-weight: bold;"/>
-                            <p:inputText id="domiCodame" value="#{dominiosBB.dominio.domiCodame}" label="Codame" size="50"/>
-                            <p:message for="domiCodame" display="tooltip"/>
-
-                            <h:outputLabel  value="Coeficiente" style="font-weight: bold;"/>
-                            <p:inputNumber id="domiCoeficiente" value="#{dominiosBB.dominio.domiCoefic}" decimalPlaces="4" label="Coeficiente" size="50"/>
-                            <p:message for="domiCoeficiente" display="tooltip"/>
-
-                            <h:outputLabel value="Unidad" style="font-weight: bold;"/>
-                            <p:inputText id="domiUnidad" value="#{dominiosBB.dominio.domiUnidad}" label="Unidad" size="50"/>
-                            <p:message for="domiUnidad" display="tooltip"/>
-
-                            <h:outputLabel value="Ficha" style="font-weight: bold;"/>
-                            <p:inputText id="domiFicha" value="#{dominiosBB.dominio.domiFicha}" label="Ficha" size="50"/>
-                            <p:message for="domiFicha" display="tooltip"/>
-                            <h:outputLabel value="Minimo" style="font-weight: bold;"/>
-                            <p:inputNumber id="domiMinimo" value="#{dominiosBB.dominio.domiMinimo}" decimalPlaces="4" label="Minimo" size="50"/>
-                            <p:message for="domiMinimo" display="tooltip"/>
-
-                            <h:outputLabel value="Maximo" style="font-weight: bold;"/>
-                            <p:inputNumber id="domiMaximo" value="#{dominiosBB.dominio.domiMaximo}" decimalPlaces="4" label="Maximo" size="50" />
-                            <p:message for="domiMaximo" display="tooltip"/>
+                                <p:commandButton icon="fa fa-close" 
+                                                 id="cancelar"
+                                                 value="Cerrar"
+                                                 process="@this"
+                                                 update="grupoDominios" 
+                                                 style="float:left;"
+                                                 actionListener="#{dominiosBB.cancelarEdicion()}">
+                                    <p:ajax update="toolTipCancel" process="@this" />
+                                </p:commandButton>
+                                <p:tooltip id="toolTipCancel" for="cancelar" value="Regresar sin guardar cambios" showEffect="fade" hideEffect="fade" position="bottom"/>
+                            </f:facet>
                         </h:panelGrid>
-                        <h:panelGrid columns="4">
-                            <p:commandButton actionListener="#{dominiosBB.actualizarDominio()}" 
-                                             update="grupoDominios" 
-                                             id="guardarDominio"
-                                             icon="fa fa-check" 
-                                             value="Guardar">
-                                <p:ajax update="toolTipSave" process="@this" /> 
-                            </p:commandButton>
-                            <p:tooltip id="toolTipSave" for="guardarDominio" value="Guardar cambios en el dominio" showEffect="fade" hideEffect="fade" position="bottom"/>
-
-                            <p:commandButton icon="fa fa-close" 
-                                             id="cancelar"
-                                             value="Cerrar"
-                                             process="@this"
-                                             update="grupoDominios" 
-                                             actionListener="#{dominiosBB.cancelarEdicion()}">
-                                <p:ajax update="toolTipCancel" process="@this" />
-                            </p:commandButton>
-                            <p:tooltip id="toolTipCancel" for="cancelar" value="Regresar sin guardar cambios" showEffect="fade" hideEffect="fade" position="bottom"/>
-                        </h:panelGrid>
+                        
                     </p:outputPanel>
                 </h:form>
             </p:panel>

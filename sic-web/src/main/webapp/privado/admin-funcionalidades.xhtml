@@ -98,54 +98,59 @@
                     <p:messages id="mensajeFormulario" showDetail="true" autoUpdate="true" closable="true" />
                     <p:tooltip />
                     <p:outputPanel id="opDetalleFuncionalidades">
-                        <h:panelGrid columns="1">
+                        <h:panelGrid width="100%">
 
-                            <h:outputLabel value="Nombre" style="font-weight: bold;" />
-                            <p:inputText id="nombreFuncionalidad" value="#{funcionalidadesBB.funcionalidad.funNombre}" label="Nombre" size="50" required="true">
-                                <f:validateLength minimum="1" maximum="50" />
-                            </p:inputText>
-                            <p:message for="nombreFuncionalidad" display="tooltip"/>
+                            <h:panelGrid width="100%" columns="2">
+                                <h:panelGrid>
+                                    <h:outputLabel value="Nombre" style="font-weight: bold;" />
+                                    <p:inputText id="nombreFuncionalidad" value="#{funcionalidadesBB.funcionalidad.funNombre}" size="40" label="Nombre" required="true">
+                                        <f:validateLength minimum="1" maximum="50" />
+                                    </p:inputText>
+                                    <p:message for="nombreFuncionalidad" display="tooltip"/>
+                                    <h:outputLabel value="Descripción" style="font-weight: bold;" />
+                                    <p:inputTextarea id="descripcionFuncionalidad" value="#{funcionalidadesBB.funcionalidad.funDescripcion}" label="Descripción" rows="4" cols="40"/>
+                                    <p:message for="descripcionFuncionalidad" display="tooltip"/>
 
-                            <h:outputLabel value="Descripción" style="font-weight: bold;" />
-                            <p:inputTextarea id="descripcionFuncionalidad" value="#{funcionalidadesBB.funcionalidad.funDescripcion}" label="Descripción" rows="3" cols="50"/>
-                            <p:message for="descripcionFuncionalidad" display="tooltip"/>
+                                </h:panelGrid>
+                                <h:panelGrid>
+                                    <h:panelGrid columns="2">
+                                        <h:outputLabel value="Menu" style="font-weight: bold;"/>
+                                        <h:outputLabel value="Icono Menu" style="font-weight: bold;" />
+                                        <p:inputText id="menuFuncionalidad" value="#{funcionalidadesBB.funcionalidad.funMenu}" size="30" label="Menu"/>
+                                        <p:inputText id="menuIconoFuncionalidad" value="#{funcionalidadesBB.funcionalidad.funMenuIcono}" size="10" label="Icono Menu" />
+                                        <p:message for="menuFuncionalidad" display="tooltip"/>
+                                        <p:message for="menuIconoFuncionalidad" display="tooltip"/>
+                                    </h:panelGrid>
+                                    <h:outputLabel value="Ruta" style="font-weight: bold;" />
+                                    <p:inputText id="rutaFuncionalidad" value="#{funcionalidadesBB.funcionalidad.funRuta}" size="42" label="Ruta"/>
+                                    <p:message for="rutaFuncionalidad" display="tooltip"/>
+                                    <h:outputLabel value="Orden"  style="font-weight: bold;"/>
+                                    <p:inputNumber id="ordenFuncionalidad" value="#{funcionalidadesBB.funcionalidad.funOrden}" size="15" maxValue="99" minValue="0" label="Orden" />
+                                    <p:message for="ordenFuncionalidad" display="tooltip"/>
 
-                            <h:outputLabel value="Menu" style="font-weight: bold;"/>
-                            <p:inputText id="menuFuncionalidad" value="#{funcionalidadesBB.funcionalidad.funMenu}" label="Menu" size="50"/>
-                            <p:message for="menuFuncionalidad" display="tooltip"/>
-
-                            <h:outputLabel value="Icono Menu" style="font-weight: bold;" />
-                            <p:inputText id="menuIconoFuncionalidad" value="#{funcionalidadesBB.funcionalidad.funMenuIcono}" label="Icono Menu" size="15"/>
-                            <p:message for="menuIconoFuncionalidad" display="tooltip"/>
-
-                            <h:outputLabel value="Ruta" style="font-weight: bold;" />
-                            <p:inputText id="rutaFuncionalidad" value="#{funcionalidadesBB.funcionalidad.funRuta}" label="Ruta" size="50"/>
-                            <p:message for="rutaFuncionalidad" display="tooltip"/>
-
-                            <h:outputLabel value="Orden"  style="font-weight: bold;"/>
-                            <p:inputNumber id="ordenFuncionalidad" value="#{funcionalidadesBB.funcionalidad.funOrden}" maxValue="99" minValue="0" label="Orden" size="5"/>
-                            <p:message for="ordenFuncionalidad" display="tooltip"/>
-
-                        </h:panelGrid>
-                        <h:panelGrid columns="4">
-                            <p:commandButton actionListener="#{funcionalidadesBB.actualizarFuncionalidad()}" 
-                                             update="grupoFuncionalidades" 
-                                             id="guardarFuncionalidad"
-                                             icon="fa fa-check" 
-                                             value="Guardar">
-                                <p:ajax update="toolTipSave" process="@this" /> 
-                            </p:commandButton>
-                            <p:tooltip id="toolTipSave" for="guardarFuncionalidad" value="Guardar cambios en la funcionalidad" showEffect="fade" hideEffect="fade" position="bottom"/>
-
-                            <p:commandButton icon="fa fa-close" 
-                                             id="cancelar"
-                                             value="Cerrar" 
-                                             update="grupoFuncionalidades" 
-                                             process="@this"
-                                             actionListener="#{funcionalidadesBB.cancelarEdicion()}">
-                                <p:ajax update="toolTipCancel" process="@this" />
-                            </p:commandButton>
-                            <p:tooltip id="toolTipCancel" for="cancelar" value="Regresar sin guardar cambios" showEffect="fade" hideEffect="fade" position="bottom"/>
+                                </h:panelGrid>
+                            </h:panelGrid>
+                            <f:facet name="footer">
+                                <p:commandButton actionListener="#{funcionalidadesBB.actualizarFuncionalidad()}" 
+                                                 update="grupoFuncionalidades" 
+                                                 id="guardarFuncionalidad"
+                                                 icon="fa fa-check" 
+                                                 style="float:right;"
+                                                 value="Guardar">
+                                    <p:ajax update="toolTipSave" process="@this" /> 
+                                </p:commandButton>
+                                <p:tooltip id="toolTipSave" for="guardarFuncionalidad" value="Guardar cambios en la funcionalidad" showEffect="fade" hideEffect="fade" position="bottom"/>
+                                <p:commandButton icon="fa fa-close" 
+                                                 id="cancelar"
+                                                 value="Cerrar" 
+                                                 update="grupoFuncionalidades" 
+                                                 process="@this"
+                                                 style="float:left;"
+                                                 actionListener="#{funcionalidadesBB.cancelarEdicion()}">
+                                    <p:ajax update="toolTipCancel" process="@this" />
+                                </p:commandButton>
+                                <p:tooltip id="toolTipCancel" for="cancelar" value="Regresar sin guardar cambios" showEffect="fade" hideEffect="fade" position="bottom"/>
+                            </f:facet>
                         </h:panelGrid>
                     </p:outputPanel>
                 </h:form>

@@ -28,6 +28,7 @@ import ec.com.newvi.sic.web.utils.WebUtils;
 import java.math.BigDecimal;
 import java.util.AbstractList;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -60,6 +61,7 @@ public class CobroTituloBB extends AdminFichaCatastralBB {
     private List<Titulos> listaTitulosRegistradosVencidos;
     private List<Titulos> listaTitulosRegistradosVencidosFiltrados;
     private FichaCatastralDto fichaCatastral;
+    private List<FichaCatastralDto> listaFichasTitulos;
     private Titulos tituloActual;
 
     private BigDecimal totalTitulosActulales;
@@ -69,8 +71,25 @@ public class CobroTituloBB extends AdminFichaCatastralBB {
     private String razonTituloDesmarcado;
 
     private Boolean esCobrado;
+    private Boolean esRazonValida;
 
     private Titulos tituloDesmarcadoActual;
+
+    public List<FichaCatastralDto> getListaFichasTitulos() {
+        return listaFichasTitulos;
+    }
+
+    public void setListaFichasTitulos(List<FichaCatastralDto> listaFichasTitulos) {
+        this.listaFichasTitulos = listaFichasTitulos;
+    }
+
+    public Boolean getEsRazonValida() {
+        return esRazonValida;
+    }
+
+    public void setEsRazonValida(Boolean esRazonValida) {
+        this.esRazonValida = esRazonValida;
+    }
 
     public Titulos getTituloDesmarcadoActual() {
         return tituloDesmarcadoActual;
@@ -219,8 +238,27 @@ public class CobroTituloBB extends AdminFichaCatastralBB {
         establecerTitulo(EnumEtiquetas.COBRO_TITULO_LISTA_TITULO,
                 EnumEtiquetas.COBRO_TITULO_LISTA_ICONO,
                 EnumEtiquetas.COBRO_TITULO_LISTA_DESCRIPCION);
-        actualizarListadoPredios();
+        //actualizarListadoPredios();
+        filtrarPrediosConTitulos();
         this.esCobrado = Boolean.FALSE;
+        this.esRazonValida = Boolean.FALSE;
+    }
+    private void esColeccionValida(List<Titulos> listaTitulosPredio){
+        if(!ComunUtil.esNulo(listaTitulosPredio)&& !listaTitulosPredio.isEmpty()){
+            for (Titulos titulo : listaTitulosPredio) {
+            }
+        }
+        
+    }
+
+    private void filtrarPrediosConTitulos() {
+        actualizarListadoPredios();
+        this.listaFichasTitulos = new ArrayList<>();
+        for (FichaCatastralDto ficha : this.listaFichas) {
+            if (!ComunUtil.esNulo(ficha.getPredio().getListaTitulos()) && !ficha.getPredio().getListaTitulos().isEmpty()) {
+                this.listaFichasTitulos.add(ficha);
+            }
+        }
     }
 
     private void conmutarPantalla(EnumPantallaMantenimiento nuevaPantalla) {
@@ -553,6 +591,12 @@ public class CobroTituloBB extends AdminFichaCatastralBB {
                 MensajesFaces.mensajeError(e.getMessage());
             }
         }
+    }
+
+    public void habilitarBotonDesmarcarTitulo() {
+        this.esRazonValida = Boolean.TRUE;
+
+        //WebUtils.obtenerContextoPeticion().reset("formularioResumenTitulos:dlgRazonDesmarque:formDialogpRazonDesmarque:oppRazonDesmarque:pgRazonDesmarque:footerRazon");
     }
 
 }

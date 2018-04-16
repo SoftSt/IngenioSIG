@@ -59,7 +59,7 @@
 
                         <h:panelGrid style="float:right;" id="pgFooter">
                             <f:facet name="footer">
-                                <p:commandButton value="Incluir contribuyente"
+                                <p:commandButton value="Registrar predios"
                                                  id="btnContinuar"
                                                  update="grupoPrediosHuerfanos"
                                                  icon="fa fa-arrow-right"
@@ -85,8 +85,16 @@
                     </p>
                     <p>#{nuevoPredioBB.descripcionPantalla.textoEtiqueta}</p>
                     <p:outputPanel id="opListaPrediosGenerados">
-                        
+
                         <h:panelGrid>
+                            <p:commandButton value="Registrar predios"
+                                             id="btnGuardarListaPredios"
+                                             update="grupoPrediosHuerfanos"
+                                             icon="fa fa-save"
+                                             onclick="PF('statusDialog').show();"
+                                             oncomplete="PF('statusDialog').hide();"
+                                             actionListener="#{nuevoPredioBB.registrarListaPrediosNuevos()}"/>
+
                             <p:dataTable id="listaPrediosGenerados" var="listaPrediosGenerados" widgetVar="listaPrediosGeneradosTabla"
                                          value="#{nuevoPredioBB.listaPrediosGenerados}" rowKey="#{listaPrediosGenerados.codCatastral}" filteredValue="#{nuevoPredioBB.listaPrediosGeneradosFiltrados}"
                                          paginator="true" rows="20" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" 
@@ -105,7 +113,10 @@
                                     <p:commandButton icon="fa fa-user-plus" 
                                                      actionListener="#{nuevoPredioBB.abrirListadoContribuyentes(listaPrediosGenerados.codCampo)}" 
                                                      update="grupoPrediosHuerfanos"
-                                                     />
+                                                     id="nuevoContribuyente">
+                                        <p:ajax update="toolTipAgregarContribuyente" process="@this" />
+                                    </p:commandButton>
+                                    <p:tooltip id="toolTipAgregarContribuyente" for="nuevoContribuyente" value="Agregar nuevo contribuyente" showEffect="fade" hideEffect="fade" position="bottom"/>
                                 </p:column>
 
                             </p:dataTable>
