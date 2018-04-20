@@ -22,18 +22,18 @@
                     </p>
                     <p>#{fichaCatastralBB.descripcionPantalla.textoEtiqueta}</p>
                     <p>
-                        <p:commandButton value="Nuevo ficha Catastral" icon="fa fa-user-plus" 
+                        <p:commandButton value="Nueva Ficha Catastral" icon="fa fa-user-plus" 
                                          update="messages grupoFichaCatastral"
                                          id="ingresarFichaCatastral"
                                          rendered="false"
                                          actionListener="#{fichaCatastralBB.crearNuevoPredio()}">
                             <p:ajax update="toolTipInsert" process="@this" />  
                         </p:commandButton>
-                        <p:tooltip id="toolTipInsert" for="ingresarFichaCatastral" value="Ingresar un nuevo ficha Catastral" showEffect="fade" hideEffect="fade" position="bottom"/>
+                        <p:tooltip id="toolTipInsert" for="ingresarFichaCatastral" value="Ingresar una nueva Ficha Catastral" showEffect="fade" hideEffect="fade" position="bottom"/>
 
                     </p>
                     <p>
-                        <p:splitButton id="imprimir" value="Imprimir" icon="fa fa-print">
+                        <p:splitButton id="imprimir" rendered="false" value="Imprimir" icon="fa fa-print">
                             <p:menuitem icon="fa fa-file-pdf-o" value="Imprimir en PDF" ajax="false" update="grupoTitulosDesmarcado" onclick="PrimeFaces.monitorDownload(start, stop);">
                                 <p:fileDownload value="#{fichaCatastralBB.imprimirLista('LISTA_PREDIOS','PDF')}"/>
                             </p:menuitem>
@@ -65,10 +65,10 @@
                                              icon="fa fa-trash"
                                              id="eliminarFichaCatastral"
                                              update="listaFichaCatastral :formularioListaFichaCatastral:growl :formularioListaFichaCatastral:messages" >
-                                <p:confirm header="Eliminar fichaCatastral" message="¿Está seguro?" icon="ui-icon-alert" />
+                                <p:confirm header="Eliminar Ficha Catastral" message="¿Está seguro?" icon="ui-icon-alert" />
                                 <p:ajax update="toolTipDelete" process="@this" /> 
                             </p:commandButton>
-                            <p:tooltip id="toolTipDelete" for="eliminarFichaCatastral" value="Eliminar FichaCatastral" showEffect="fade" hideEffect="fade" position="bottom"/>
+                            <p:tooltip id="toolTipDelete" for="eliminarFichaCatastral" value="Eliminar Ficha Catastral" showEffect="fade" hideEffect="fade" position="bottom"/>
                         </p:column>
                         <p:column headerText="Editar" width="80" rendered="#{fichaCatastralBB.esPantallaEdicion}">
                             <p:commandButton process="listaFichaCatastral" 
@@ -78,7 +78,7 @@
                                              update="grupoFichaCatastral">
                                 <p:ajax update="toolTipEdit" process="@this" /> 
                             </p:commandButton>
-                            <p:tooltip id="toolTipEdit" for="editarFichaCatastral" value="Editar FichaCatastral" showEffect="fade" hideEffect="fade" position="bottom"/>
+                            <p:tooltip id="toolTipEdit" for="editarFichaCatastral" value="Editar Ficha Catastral" showEffect="fade" hideEffect="fade" position="bottom"/>
                         </p:column>
                         <p:column headerText="Generar" width="80" rendered="#{fichaCatastralBB.esPantallaFormularios}">
                             <p:remoteCommand name="rc" actionListener="#{fichaCatastralBB.abrirDialogImpresionFormulario(fichaCatastral.predio.codCatastral)}"/>

@@ -12,6 +12,7 @@ import ec.com.newvi.sic.enums.EnumSitActual;
 import ec.com.newvi.sic.enums.EnumTenencia;
 import ec.com.newvi.sic.enums.EnumTraslacion;
 import ec.com.newvi.sic.modelo.Contribuyentes;
+import ec.com.newvi.sic.modelo.Predios;
 import ec.com.newvi.sic.modelo.Propiedad;
 import ec.com.newvi.sic.util.ComunUtil;
 import ec.com.newvi.sic.util.excepciones.NewviExcepcion;
@@ -20,7 +21,10 @@ import ec.com.newvi.sic.web.MensajesFaces;
 import ec.com.newvi.sic.web.enums.EnumEtiquetas;
 import ec.com.newvi.sic.web.enums.EnumPantallaMantenimiento;
 import ec.com.newvi.sic.web.utils.WebUtils;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
@@ -42,9 +46,7 @@ public class PropiedadBB extends AdminFichaCatastralBB {
     private EnumSitActual[] listaTipoSitActual;
     private EnumSiNo[] listaTipoEscritura;
 
-    
-    
-     private List<Contribuyentes> listaContribuyentesFiltrado;
+    private List<Contribuyentes> listaContribuyentesFiltrado;
 
     public List<Contribuyentes> getListaContribuyentesFiltrado() {
         return listaContribuyentesFiltrado;
@@ -53,8 +55,7 @@ public class PropiedadBB extends AdminFichaCatastralBB {
     public void setListaContribuyentesFiltrado(List<Contribuyentes> listaContribuyentesFiltrado) {
         this.listaContribuyentesFiltrado = listaContribuyentesFiltrado;
     }
-    
-    
+
     public Propiedad getPropiedad() {
         return propiedad;
     }
@@ -134,14 +135,38 @@ public class PropiedadBB extends AdminFichaCatastralBB {
     }
 
     public void crearNuevoPropiedad() {
-        this.propiedad = new Propiedad();
-        this.propiedad.setProEstado(EnumEstadoRegistro.A);
-        this.propiedad.setPropiedad(contribuyente);
-        this.propiedad.setCodCatastral(predio);
-        conmutarPantalla(EnumPantallaMantenimiento.PANTALLA_EDICION);
-        establecerTitulo(EnumEtiquetas.PROPIETARIO_NUEVO_TITULO,
-                EnumEtiquetas.PROPIETARIO_NUEVO_ICONO,
-                EnumEtiquetas.PROPIETARIO_NUEVO_DESCRIPCION);
+        try {
+            /*this.propiedad = new Propiedad();
+            this.propiedad.setProEstado(EnumEstadoRegistro.A);
+            this.propiedad.setPropiedad(contribuyente);
+            this.propiedad.setCodCatastral(predio);
+            
+            
+            
+            conmutarPantalla(EnumPantallaMantenimiento.PANTALLA_EDICION);
+            establecerTitulo(EnumEtiquetas.PROPIETARIO_NUEVO_TITULO,
+            EnumEtiquetas.PROPIETARIO_NUEVO_ICONO,
+            EnumEtiquetas.PROPIETARIO_NUEVO_DESCRIPCION);*/
+            Propiedad nuevaPropiedad = new Propiedad();
+
+            //contribuyenteActual = contribuyentesServicio.seleccionarContribuyente(contribuyente);
+            
+            Predios predioActual = catastroServicio.seleccionarPredio(this.predio.getCodCatastral());
+            
+            nuevaPropiedad.setContribuyente(contribuyente);
+            nuevaPropiedad.setCodCatastral(predioActual);
+            nuevaPropiedad.setProEstado(EnumEstadoRegistro.A);
+            List<Propiedad> listaPropiedadesHistoricas = new ArrayList();
+            listaPropiedadesHistoricas.add(nuevaPropiedad);
+            predioActual.setHistoricoPropiedad(listaPropiedadesHistoricas);
+            contribuyentesServicio.generarNuevoPropiedad(nuevaPropiedad, sesionBean.getSesion());
+
+            LoggerNewvi.getLogNewvi(this.getClass()).info(EnumNewviExcepciones.INF375.presentarMensaje(), sesionBean.getSesion());
+            MensajesFaces.mensajeInformacion(EnumNewviExcepciones.INF375.presentarMensaje());
+
+        } catch (NewviExcepcion ex) {
+            Logger.getLogger(NuevoPredioBB.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     public void insertarPropiedad() {
@@ -211,19 +236,19 @@ public class PropiedadBB extends AdminFichaCatastralBB {
                 EnumEtiquetas.PROPIETARIO_EDITAR_ICONO,
                 EnumEtiquetas.PROPIETARIO_EDITAR_DESCRIPCION);
     }
-    
+
     public void seleccionarPredioParaNuevaPropiedad(Integer idPredio) {
         super.seleccionarPredio(idPredio);
         this.listaPropiedad = (List) predio.getHistoricoPropiedad();
         this.actualizarListadoContribuyentes();
         WebUtils.obtenerContextoPeticion().execute("PF('dlgContribuyente').show()");
     }
-    
+
     public void seleccionarContribuyenteParaNuevaPropiedad(Integer idContribuyente) {
         this.seleccionarContribuyente(idContribuyente);
         this.crearNuevoPropiedad();
     }
-        
+
     public void seleccionarPropiedad(Integer idPropiedad) {
         try {
             this.seleccionarPropiedadPorCodigo(idPropiedad);

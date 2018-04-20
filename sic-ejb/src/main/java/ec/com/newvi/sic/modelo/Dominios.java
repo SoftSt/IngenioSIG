@@ -42,8 +42,8 @@ public class Dominios implements Serializable {
     
     
     
-    @OneToMany(mappedBy = "domiId")
-    private Collection<DetallesAvaluo> detallesAvaluoCollection;
+    /*@OneToMany(mappedBy = "domiId")
+    private Collection<DetallesAvaluo> detallesAvaluoCollection;*/
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -311,11 +311,11 @@ public class Dominios implements Serializable {
         return (!ComunUtil.esNulo(this.domiCodigo));
     }
 
-    public Collection<DetallesAvaluo> getDetallesAvaluoCollection() {
+    /*public Collection<DetallesAvaluo> getDetallesAvaluoCollection() {
         return detallesAvaluoCollection;
     }
 
     public void setDetallesAvaluoCollection(Collection<DetallesAvaluo> detallesAvaluoCollection) {
         this.detallesAvaluoCollection = detallesAvaluoCollection;
-    }
+    }*/
 }

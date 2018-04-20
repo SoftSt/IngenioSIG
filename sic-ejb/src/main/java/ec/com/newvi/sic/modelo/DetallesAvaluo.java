@@ -74,9 +74,9 @@ public class DetallesAvaluo implements Serializable {
     @Size(max = 30)
     @Column(name = "aud_mod_ip")
     private String audModIp;
-    @JoinColumn(name = "domi_id", referencedColumnName = "domi_id")
+    /*@JoinColumn(name = "domi_id", referencedColumnName = "domi_id")
     @ManyToOne
-    private Dominios domiId;
+    private Dominios domiId;*/
     @JoinColumn(name = "fecav_id", referencedColumnName = "fecav_id")
     @ManyToOne
     private FechaAvaluo fecavId;
@@ -195,13 +195,13 @@ public class DetallesAvaluo implements Serializable {
         this.audModIp = audModIp;
     }
 
-    public Dominios getDomiId() {
+    /*public Dominios getDomiId() {
         return domiId;
     }
 
     public void setDomiId(Dominios domiId) {
         this.domiId = domiId;
-    }
+    }*/
 
     public FechaAvaluo getFecavId() {
         return fecavId;

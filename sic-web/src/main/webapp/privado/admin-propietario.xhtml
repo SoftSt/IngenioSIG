@@ -38,7 +38,7 @@
                             <h:outputText value="#{fichaCatastral.contribuyentePropiedad.nomApellidos} #{fichaCatastral.contribuyentePropiedad.nomNombres}"/>
                         </p:column>
 
-                        <p:column headerText="Seleccionar" width="80">
+                        <p:column headerText="Editar" width="80">
                             <p:commandButton process="listaFichaCatastral" 
                                              actionListener="#{propiedadBB.seleccionarPredio(fichaCatastral.predio.codCatastral)}"
                                              icon="fa fa-edit"
@@ -63,7 +63,7 @@
                 </h:form>
             </p:panel>
 
-            <p:dialog widgetVar="dlgContribuyente" appendTo="@(body)" modal="true" showEffect="fade" hideEffect="fade" resizable="false" closable="true" width="750" height="500">
+            <p:dialog widgetVar="dlgContribuyente" appendTo="@(body)" modal="true" showEffect="fade" hideEffect="fade" resizable="false" closable="true" width="780" height="500">
                 <h:form id="dialogContribuyente">
                     <p:growl id="messagesw" showDetail="true" escape="false"/>
                     <div style="font-size:1.2em;font-weight:bold;">Selección del nuevo propietario</div>                                    
@@ -87,7 +87,7 @@
                             <h:outputText value="#{contribuyente.nomApellidos.concat(' ').concat(contribuyente.nomNombres)}" />
                         </p:column>
 
-                        <p:column width="80">
+                        <p:column>
                             <p:commandButton actionListener="#{propiedadBB.seleccionarContribuyenteParaNuevaPropiedad(contribuyente.codPersoneria)}"
                                              value="Seleccionar"
                                              id="seleccionarContribuyente"
