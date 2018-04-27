@@ -6,6 +6,7 @@
 package ec.com.newvi.sic.dao;
 
 import ec.com.newvi.sic.enums.EnumEstadoRegistro;
+import ec.com.newvi.sic.enums.EnumTipoPredio;
 import ec.com.newvi.sic.modelo.Predios;
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -29,11 +30,24 @@ public class PrediosFacade extends AbstractFacade<Predios, Integer> implements S
     public List<Predios> buscarPredio() {
         // Busca un listado de Predios
         //Query q = this.getEntityManager().createQuery("SELECT predio FROM Predios predio where predio.catEstado = :ESTADO");
-        Query q = this.getEntityManager().createQuery("SELECT predio FROM Predios predio where PREDIO.catEstado =:ESTADO ORDER BY predio.codCatastral ASC");
+        Query q = this.getEntityManager().createQuery("SELECT predio FROM Predios predio where PREDIO.catEstado =:ESTADO AND PREDIO.stsTipo =:TIPOPREDIO ORDER BY predio.codCatastral ASC");
         q.setParameter("ESTADO", EnumEstadoRegistro.A);
+        q.setParameter("TIPOPREDIO", EnumTipoPredio.URBANO);
         //@return listado de Predios
         return q.getResultList();
     }
+    
+    public List<Predios> buscarPredioRural() {
+        // Busca un listado de Predios
+        //Query q = this.getEntityManager().createQuery("SELECT predio FROM Predios predio where predio.catEstado = :ESTADO");
+        Query q = this.getEntityManager().createQuery("SELECT predio FROM Predios predio where predio.catEstado =:ESTADO AND predio.stsTipo =:TIPOPREDIO ORDER BY predio.codCatastral ASC");
+        q.setParameter("ESTADO", EnumEstadoRegistro.A);
+        q.setParameter("TIPOPREDIO", EnumTipoPredio.RURAL);
+        //@return listado de Predios
+        return q.getResultList();
+    }
+    
+    
 
     public Integer obtenerNumeroPredios() {
         Integer resultado;

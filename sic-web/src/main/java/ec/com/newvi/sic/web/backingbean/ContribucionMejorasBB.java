@@ -9,6 +9,7 @@ import ec.com.newvi.sic.enums.EnumAplicacion;
 import ec.com.newvi.sic.enums.EnumAplicacionCEM;
 import ec.com.newvi.sic.enums.EnumEstadoRegistro;
 import ec.com.newvi.sic.enums.EnumNewviExcepciones;
+import ec.com.newvi.sic.enums.EnumTipoObra;
 import ec.com.newvi.sic.modelo.ContribucionMejoras;
 import ec.com.newvi.sic.modelo.ObrasDetalle;
 import ec.com.newvi.sic.modelo.Predios;
@@ -55,7 +56,16 @@ public class ContribucionMejorasBB extends AdminContribucionMejorasBB {
     private EnumPantallaMantenimiento pantallaActual;
     private EnumAplicacion[] listaAplicacion;
     private Boolean aplicaOrdenanza;
+    private EnumTipoObra[] listaTiposObra;
 
+    public EnumTipoObra[] getListaTiposObra() {
+        return listaTiposObra;
+    }
+
+    public void setListaTiposObra(EnumTipoObra[] listaTiposObra) {
+        this.listaTiposObra = listaTiposObra;
+    }
+    
     public List<Predios> getListaPrediosActualizados() {
         return listaPrediosActualizados;
     }
@@ -181,7 +191,8 @@ public class ContribucionMejorasBB extends AdminContribucionMejorasBB {
         this.contribucionMejoras = new ContribucionMejoras();
         actualizarListadoContribucionMejoras();
         actualizarListadoPredios();
-        listaAplicacion = EnumAplicacion.values();
+        this.listaAplicacion = EnumAplicacion.values();
+        this.listaTiposObra = EnumTipoObra.values();
         //listaTipoPersoneria= EnumTipoPersoneria.values();
         conmutarPantalla(EnumPantallaMantenimiento.PANTALLA_LISTADO);
         establecerTitulo(EnumEtiquetas.CONTRIBUCION_MEJORAS_LISTA_TITULO,

@@ -7,6 +7,7 @@ package ec.com.newvi.sic.modelo;
 
 import ec.com.newvi.sic.enums.EnumEstadoRegistro;
 import ec.com.newvi.sic.enums.EnumNewviExcepciones;
+import ec.com.newvi.sic.enums.EnumTipoPredio;
 import ec.com.newvi.sic.enums.EnumZonaInfluencia;
 import ec.com.newvi.sic.util.ComunUtil;
 import ec.com.newvi.sic.util.excepciones.NewviExcepcion;
@@ -73,9 +74,9 @@ public class Predios implements Serializable {
     @Column(name = "cod_catastral")
     private Integer codCatastral;
 
-    @Size(max = 25)
+    @Enumerated(EnumType.STRING)
     @Column(name = "sts_tipo")
-    private String stsTipo;
+    private EnumTipoPredio stsTipo;
     @Size(max = 25)
     @Column(name = "nom_codigocatastral")
     private String nomCodigocatastral;
@@ -216,11 +217,11 @@ public class Predios implements Serializable {
         this.codCatastral = codCatastral;
     }
 
-    public String getStsTipo() {
+    public EnumTipoPredio getStsTipo() {
         return stsTipo;
     }
 
-    public void setStsTipo(String stsTipo) {
+    public void setStsTipo(EnumTipoPredio stsTipo) {
         this.stsTipo = stsTipo;
     }
 

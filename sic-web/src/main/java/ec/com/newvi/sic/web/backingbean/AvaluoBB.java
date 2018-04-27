@@ -219,7 +219,10 @@ public class AvaluoBB extends AdminFichaCatastralBB {
 
     private void evaluarProceso(Integer numeroPrediosProcesados, Integer numeroPrediosTotal) {
         if (this.progreso <= PROCESO_COMPLETO - 1) {
-            progreso = (numeroPrediosProcesados % (numeroPrediosTotal / 100)) == 0 ? progreso + 1 : progreso;
+            
+            Integer  porcentajeAvance = (numeroPrediosProcesados * 100)/numeroPrediosTotal;
+            progreso = porcentajeAvance > 0 ? porcentajeAvance : progreso;
+            //progreso = (numeroPrediosProcesados % (numeroPrediosTotal / 100)) == 0 ? progreso + 1 : progreso;
         } else {
             this.progreso = PROCESO_COMPLETO - 1;
         }

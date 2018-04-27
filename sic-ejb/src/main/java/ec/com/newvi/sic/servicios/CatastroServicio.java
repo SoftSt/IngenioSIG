@@ -66,11 +66,17 @@ public interface CatastroServicio {
     public Predios seleccionarPredio(Integer idPredio) throws NewviExcepcion;
 
     /**
-     * Devuelve un listado de Predios.
+     * Devuelve un listado de Predios Urbanos.
      *
-     * @return Listado de Predios
+     * @return Listado de Predios Urbanos
      */
     public List<Predios> consultarPredios();
+    /**
+     * Devuelve un listado de Predios Rurales.
+     *
+     * @return Listado de Predios Rurales
+     */
+    public List<Predios> consultarPrediosRural();
 
     /**
      * Elimina un predios dado

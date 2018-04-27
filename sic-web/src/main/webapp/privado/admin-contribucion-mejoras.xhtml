@@ -62,7 +62,7 @@
                             <p:column headerText="Aplicación" width="45">
                                 <h:outputText value="#{contribucionMejoras.stsAplicacionforma}" />
                             </p:column>
-                            
+
                             <p:column headerText="Nombre Corto" width="45">
                                 <h:outputText value="#{contribucionMejoras.nomObraCorto.nomObras}" />
                             </p:column>
@@ -236,46 +236,57 @@
                                 <p:inputTextarea id="txtDetalle" value="#{contribucionMejorasBB.contribucionMejoras.txtDetalle}" label="Detalle" rows="3" cols="50"/>
                                 <p:message for="txtDetalle" display="tooltip"/>
 
-                                <h:outputLabel for="valAnioobra" value="Año de la obra" style="font-weight: bold;"/>
-                                <p:inputText id="valAnioobra" value="#{contribucionMejorasBB.contribucionMejoras.valAnioobra}" />
-                                <p:message for="valAnioobra" display="tooltip"/>
+                                <h:panelGrid columns="2">
+                                    <h:outputLabel for="valAnioobra" value="Año de la obra" style="font-weight: bold;"/>
+                                    <h:outputLabel for="tipoObra" value="Tipo de la obra" style="font-weight: bold;"/>
+
+                                    <p:inputNumber id="valAnioobra" value="#{contribucionMejorasBB.contribucionMejoras.valAnioobra}" maxlength="9999" decimalPlaces="0" thousandSeparator="" decimalSeparator="" style="width:25px" />
+                                    <p:selectOneMenu id="tipoObra" value="#{contribucionMejorasBB.contribucionMejoras.nomObraCorto}" style="width:35px" >
+                                        <f:selectItem itemLabel="Seleccione tipo de obra..." itemValue="null" />
+                                        <f:selectItems value="#{contribucionMejorasBB.listaTiposObra}" var="tipoObra" itemValue="#{tipoObra}" itemLabel="#{tipoObra.nomObras}"/>
+                                    </p:selectOneMenu>
+
+                                    <p:message for="valAnioobra" display="tooltip"/>
+                                    <p:message for="tipoObra" display="tooltip"/>
+
+                                </h:panelGrid>
 
                                 <h:outputLabel for="valAniodeprecia" value="Años de depreciacion" style="font-weight: bold;"/>
                                 <p:inputText id="valAniodeprecia" value="#{contribucionMejorasBB.contribucionMejoras.valAniodeprecia}" />
                                 <p:message for="valAniodeprecia" display="tooltip"/>
                             </h:panelGrid>
                             <f:facet name="footer">
-                                
-                                <p:commandButton actionListener="#{contribucionMejorasBB.actualizarContribucionMejoras()}" 
-                                             update="grupoContribucionMejoras" 
-                                             icon="fa fa-check"
-                                             id="guardarContribucionMejoras"
-                                             value="Guardar"
-                                             style="float:right;">
-                                 
-                            </p:commandButton>
-                            
 
-                            <p:commandButton icon="fa fa-close" 
-                                             value="Cerrar"
-                                             id="cancelar"
-                                             update="grupoContribucionMejoras" 
-                                             process="@this"
-                                             actionListener="#{contribucionMejorasBB.cancelarEdicion()}"
-                                             style="float:left;">
-                                <p:resetInput target="panelContribucionMejoras" />
-                            </p:commandButton>
-                            
+                                <p:commandButton actionListener="#{contribucionMejorasBB.actualizarContribucionMejoras()}" 
+                                                 update="grupoContribucionMejoras" 
+                                                 icon="fa fa-check"
+                                                 id="guardarContribucionMejoras"
+                                                 value="Guardar"
+                                                 style="float:right;">
+
+                                </p:commandButton>
+
+
+                                <p:commandButton icon="fa fa-close" 
+                                                 value="Cerrar"
+                                                 id="cancelar"
+                                                 update="grupoContribucionMejoras" 
+                                                 process="@this"
+                                                 actionListener="#{contribucionMejorasBB.cancelarEdicion()}"
+                                                 style="float:left;">
+                                    <p:resetInput target="panelContribucionMejoras" />
+                                </p:commandButton>
+
                             </f:facet>
                         </h:panelGrid>
 
                         <h:panelGrid columns="4">
 
-                            
+
                         </h:panelGrid>
                     </p:outputPanel>
                 </h:form>
-                
+
             </p:panel>
         </h:panelGroup>
     </ui:define>

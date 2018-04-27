@@ -173,7 +173,7 @@
                                     </p:dataTable>
                                 </h:panelGrid>
                             </p:tab>
-                            <p:tab title="Revisión">
+                            <p:tab title="Revisión y aprobación">
                                 <h:panelGrid rendered="#{!avaluoBB.hayDatosConsultados()}" columns="2">
                                     <p:selectOneMenu id="fechaAvaluo" value="#{avaluoBB.fechaAvaluoActual.fechaDescripcion}" style="width:125px" >
                                         <f:selectItem itemLabel="Seleccione una fecha..." itemValue="null"/>
@@ -190,7 +190,7 @@
                                     </p:commandButton>
                                 </h:panelGrid>
                                 <h:panelGrid rendered="#{avaluoBB.hayDatosConsultados()}" columns="4">
-                                    <p:splitButton id="imprimirConsultado" value="Imprimir" icon="fa fa-print">
+                                    <p:splitButton id="imprimirConsultado" value="Imprimir" rendered="false" icon="fa fa-print">
                                         <p:menuitem value="Tabla Catastral - Condensado" ajax="false"
                                                     update="grupoAvaluos" icon="fa fa-print" 
                                                     onclick="PrimeFaces.monitorDownload(start, stop);">
@@ -208,7 +208,17 @@
                                         </p:menuitem>
                                     </p:splitButton>
                                     <p:tooltip id="toolTipImprimirConsultado" for="imprimirConsultado" value="Imprimir" showEffect="fade" hideEffect="fade" position="top"/>
-                                    
+                                    <p:commandButton value="Aprobar" icon="fa fa-check" 
+                                                     update="grupoAvaluos" 
+                                                     id="aprobarConsulta"
+                                                     actionListener="#{avaluoBB.reiniciarConsulta()}">
+                                    </p:commandButton>
+
+                                    <p:commandButton value="Reiniciar" icon="fa fa-repeat" 
+                                                     update="grupoAvaluos" 
+                                                     id="reiniciarConsulta"
+                                                     actionListener="#{avaluoBB.reiniciarConsulta()}">
+                                    </p:commandButton>
                                 </h:panelGrid>
                                 <h:panelGrid>
                                     <p:dataTable id="listaAvaluosProcesados" var="avaluoProcesado" widgetVar="listaAvaluoProcesadoTabla"
@@ -298,6 +308,14 @@
                                             <h:outputText value="#{avaluoProcesado.valImppredial}" style="float:right">
                                                 <f:convertNumber pattern="$ ###,###.00"/>
                                             </h:outputText>
+                                        </p:column>
+                                        <p:column headerText="Editar" width="80">
+                                            <p:commandButton icon="fa fa-edit"
+                                                             id="editarRegistro">
+                                                             
+                                                <p:ajax update="toolTipEdit" process="@this" /> 
+                                            </p:commandButton>
+                                            <p:tooltip id="toolTipEdit" for="editarRegistro" value="Editar Registro" showEffect="fade" hideEffect="fade" position="bottom"/>
                                         </p:column>
 
                                         <p:columnGroup rendered="true" type="footer">
