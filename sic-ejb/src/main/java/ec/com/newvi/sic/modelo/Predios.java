@@ -7,6 +7,7 @@ package ec.com.newvi.sic.modelo;
 
 import ec.com.newvi.sic.enums.EnumEstadoRegistro;
 import ec.com.newvi.sic.enums.EnumNewviExcepciones;
+import ec.com.newvi.sic.enums.EnumTipoPredio;
 import ec.com.newvi.sic.enums.EnumZonaInfluencia;
 import ec.com.newvi.sic.util.ComunUtil;
 import ec.com.newvi.sic.util.excepciones.NewviExcepcion;
@@ -45,28 +46,14 @@ import javax.validation.constraints.Size;
 public class Predios implements Serializable {
 
     @OneToMany(mappedBy = "codCatastral")
-    private Collection<Titulos> titulosCollection;
+    private List<Titulos> listaTitulos;
     @ElementCollection
     @OneToMany(mappedBy = "codCatastral")
     private Collection<DetallesAvaluo> detallesAvaluoCollection;
 
-    /*@Size(max = 100)
-    @Column(name = "nom_predio")
-    private String nomPredio;*/
     @Size(max = 25)
     @Column(name = "sts_urbanomarginal")
     private String stsUrbanomarginal;
-    @Size(max = 25)
-    @Column(name = "sts_sectorhomogeneo")
-    private String stsSectorhomogeneo;
-    @Size(max = 25)
-    @Column(name = "sts_planospredio")
-    private String stsPlanospredio;
-    @Column(name = "val_otro1")
-    private BigDecimal valOtro1;
-    @Column(name = "val_otro2")
-    private BigDecimal valOtro2;
-    
     @Size(max = 2147483647)
     @Column(name = "txt_observacion")
     private String txtObservacion;
@@ -87,9 +74,9 @@ public class Predios implements Serializable {
     @Column(name = "cod_catastral")
     private Integer codCatastral;
 
-    @Size(max = 25)
+    @Enumerated(EnumType.STRING)
     @Column(name = "sts_tipo")
-    private String stsTipo;
+    private EnumTipoPredio stsTipo;
     @Size(max = 25)
     @Column(name = "nom_codigocatastral")
     private String nomCodigocatastral;
@@ -121,7 +108,7 @@ public class Predios implements Serializable {
     @Column(name = "cod_horizontal")
     private String codHorizontal;
     @Size(max = 150)
-    @Column(name = "sts_barrio")
+    @Column(name = "txt_barrio")
     private String stsBarrio;
     @Size(max = 100)
     @Column(name = "txt_direccion")
@@ -129,10 +116,6 @@ public class Predios implements Serializable {
     @Size(max = 20)
     @Column(name = "nom_numero")
     private String nomNumero;
-    @Size(max = 100)
-    @Column(name = "txt_ubicacion")
-    private String txtUbicacion;
-    
     
     @Column(name = "val_coordenadaeste")
     private BigDecimal valCoordenadaEste;
@@ -234,11 +217,11 @@ public class Predios implements Serializable {
         this.codCatastral = codCatastral;
     }
 
-    public String getStsTipo() {
+    public EnumTipoPredio getStsTipo() {
         return stsTipo;
     }
 
-    public void setStsTipo(String stsTipo) {
+    public void setStsTipo(EnumTipoPredio stsTipo) {
         this.stsTipo = stsTipo;
     }
 
@@ -336,14 +319,6 @@ public class Predios implements Serializable {
 
     public void setNomNumero(String nomNumero) {
         this.nomNumero = nomNumero;
-    }
-
-    public String getTxtUbicacion() {
-        return txtUbicacion;
-    }
-
-    public void setTxtUbicacion(String txtUbicacion) {
-        this.txtUbicacion = txtUbicacion;
     }
 
     public BigDecimal getValCoordenadaEste() {
@@ -674,38 +649,6 @@ public class Predios implements Serializable {
         this.stsUrbanomarginal = stsUrbanomarginal;
     }
 
-    public String getStsSectorhomogeneo() {
-        return stsSectorhomogeneo;
-    }
-
-    public void setStsSectorhomogeneo(String stsSectorhomogeneo) {
-        this.stsSectorhomogeneo = stsSectorhomogeneo;
-    }
-
-    public String getStsPlanospredio() {
-        return stsPlanospredio;
-    }
-
-    public void setStsPlanospredio(String stsPlanospredio) {
-        this.stsPlanospredio = stsPlanospredio;
-    }
-
-    public BigDecimal getValOtro1() {
-        return valOtro1;
-    }
-
-    public void setValOtro1(BigDecimal valOtro1) {
-        this.valOtro1 = valOtro1;
-    }
-
-    public BigDecimal getValOtro2() {
-        return valOtro2;
-    }
-
-    public void setValOtro2(BigDecimal valOtro2) {
-        this.valOtro2 = valOtro2;
-    }
-
     public String getTxtObservacion() {
         return txtObservacion;
     }
@@ -849,12 +792,12 @@ public class Predios implements Serializable {
         return bloquesActivos;
     }
 
-    public Collection<Titulos> getTitulosCollection() {
-        return titulosCollection;
+    public List<Titulos> getListaTitulos() {
+        return listaTitulos;
     }
 
-    public void setTitulosCollection(Collection<Titulos> titulosCollection) {
-        this.titulosCollection = titulosCollection;
+    public void setListaTitulos(List<Titulos> listaTitulos) {
+        this.listaTitulos = listaTitulos;
     }
 
 }
