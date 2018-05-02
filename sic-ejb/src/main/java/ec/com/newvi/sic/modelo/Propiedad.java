@@ -70,9 +70,7 @@ public class Propiedad implements Serializable {
     @Column(name = "sts_tenencia")
     private String stsTenencia;
 
-    @Size(max = 50)
-    @Column(name = "sts_tenenciaotro")
-    private String stsTenenciaotro;
+    
 
     @Column(name = "sts_transferenciadominio")
     private String stsTransferenciadominio;
@@ -169,14 +167,6 @@ public class Propiedad implements Serializable {
 
     public void setStsTenencia(EnumTenencia stsTenencia) {
         this.stsTenencia = stsTenencia.toString();
-    }
-
-    public String getStsTenenciaotro() {
-        return stsTenenciaotro;
-    }
-
-    public void setStsTenenciaotro(String stsTenenciaotro) {
-        this.stsTenenciaotro = stsTenenciaotro;
     }
 
     public EnumTraslacion getStsTransferenciadominio() {

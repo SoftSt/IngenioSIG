@@ -885,7 +885,7 @@ public class PresentacionFichaCatastralDto {
         this.nomCodigocatastral = predio.getNomCodigocatastral();
         this.nomCodigocatastralanterior = predio.getNomCodigocatastralanterior();
         this.stsBarrio = predio.getStsBarrio();
-        this.stsTipo = predio.getStsTipo();
+        this.stsTipo = predio.getStsTipo().getStsTipo();
         this.txtDireccion = predio.getTxtDireccion();
         this.txtObservacion = predio.getTxtObservacion();
         this.txtEste = predio.getTxtEste();
@@ -930,7 +930,7 @@ public class PresentacionFichaCatastralDto {
 
     private void setearDatosPropiedad(Propiedad propiedad) {
         this.stsTenencia = propiedad.getStsTenencia().getStsTenencia();
-        this.stsTenenciaotro = propiedad.getStsTenenciaotro();
+        //this.stsTenenciaotro = propiedad.getStsTenenciaotro();
         this.stsTransferenciadominio = propiedad.getStsTransferenciadominio().getStsTransferenciadominio();
     }
 
