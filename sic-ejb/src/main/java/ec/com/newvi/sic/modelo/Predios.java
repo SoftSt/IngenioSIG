@@ -50,9 +50,9 @@ public class Predios implements Serializable {
     @OneToMany(mappedBy = "codCatastral")
     private Collection<DetallesAvaluo> detallesAvaluoCollection;
 
-    @Size(max = 100)
+    /*@Size(max = 100)
     @Column(name = "nom_predio")
-    private String nomPredio;
+    private String nomPredio;*/
     @Size(max = 25)
     @Column(name = "sts_urbanomarginal")
     private String stsUrbanomarginal;
@@ -66,9 +66,7 @@ public class Predios implements Serializable {
     private BigDecimal valOtro1;
     @Column(name = "val_otro2")
     private BigDecimal valOtro2;
-    @Size(max = 50)
-    @Column(name = "cat_casosespeciales")
-    private String catCasosespeciales;
+    
     @Size(max = 2147483647)
     @Column(name = "txt_observacion")
     private String txtObservacion;
@@ -134,15 +132,8 @@ public class Predios implements Serializable {
     @Size(max = 100)
     @Column(name = "txt_ubicacion")
     private String txtUbicacion;
-    @Size(max = 50)
-    @Column(name = "nom_cartografia")
-    private String nomCartografia;
-    @Size(max = 50)
-    @Column(name = "nom_fotoaerea")
-    private String nomFotoAerea;
-    @Size(max = 50)
-    @Column(name = "nom_cartootros")
-    private String nomcCartografiaOtros;
+    
+    
     @Column(name = "val_coordenadaeste")
     private BigDecimal valCoordenadaEste;
     @Column(name = "val_coordenadanorte")
@@ -353,30 +344,6 @@ public class Predios implements Serializable {
 
     public void setTxtUbicacion(String txtUbicacion) {
         this.txtUbicacion = txtUbicacion;
-    }
-
-    public String getNomCartografia() {
-        return nomCartografia;
-    }
-
-    public void setNomCartografia(String nomCartografia) {
-        this.nomCartografia = nomCartografia;
-    }
-
-    public String getNomFotoAerea() {
-        return nomFotoAerea;
-    }
-
-    public void setNomFotoAerea(String nomFotoAerea) {
-        this.nomFotoAerea = nomFotoAerea;
-    }
-
-    public String getNomcCartografiaOtros() {
-        return nomcCartografiaOtros;
-    }
-
-    public void setNomcCartografiaOtros(String nomcCartografiaOtros) {
-        this.nomcCartografiaOtros = nomcCartografiaOtros;
     }
 
     public BigDecimal getValCoordenadaEste() {
@@ -699,14 +666,6 @@ public class Predios implements Serializable {
         this.nomCodigocatastral = this.codDpa.concat(this.codZona).concat(this.codSector).concat(this.codManzana).concat(this.codPredio).concat(this.codRegimentenencia).concat(this.codHorizontal);
     }
 
-    public String getNomPredio() {
-        return nomPredio;
-    }
-
-    public void setNomPredio(String nomPredio) {
-        this.nomPredio = nomPredio;
-    }
-
     public String getStsUrbanomarginal() {
         return stsUrbanomarginal;
     }
@@ -745,14 +704,6 @@ public class Predios implements Serializable {
 
     public void setValOtro2(BigDecimal valOtro2) {
         this.valOtro2 = valOtro2;
-    }
-
-    public String getCatCasosespeciales() {
-        return catCasosespeciales;
-    }
-
-    public void setCatCasosespeciales(String catCasosespeciales) {
-        this.catCasosespeciales = catCasosespeciales;
     }
 
     public String getTxtObservacion() {

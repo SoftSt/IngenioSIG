@@ -65,7 +65,7 @@ public class Dominios implements Serializable {
     @Size(max = 100)
     @Column(name = "domi_descripcion")
     private String domiDescripcion;
-    @Size(max = 30)
+    @Size(max = 35)
     @Column(name = "domi_grupos")
     private String domiGrupos;
     @Size(max = 50)

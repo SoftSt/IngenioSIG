@@ -897,9 +897,9 @@ public class PresentacionFichaCatastralDto {
         this.valAreaFondo = predio.getValAreaFondo();
         this.valAreaConstruccion = predio.getValAreaConstruccion();
         this.nomNumero = predio.getNomNumero();
-        this.nomCartografia = predio.getNomCartografia();
-        this.nomFotoAerea = predio.getNomFotoAerea();
-        this.nomcCartografiaOtros = predio.getNomcCartografiaOtros();
+        //this.nomCartografia = predio.getNomCartografia();
+        //this.nomFotoAerea = predio.getNomFotoAerea();
+        //this.nomcCartografiaOtros = predio.getNomcCartografiaOtros();
         this.valCoordenadaEste = predio.getValCoordenadaEste();
         this.valCoordenadaNorte = predio.getValCoordenadaNorte();
         this.valTerreno = predio.getValTerreno();

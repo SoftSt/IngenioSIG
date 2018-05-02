@@ -24,6 +24,7 @@
                         <p:commandButton value="Nuevo Parametro" icon="fa fa-plus" 
                                          update="messages grupoConstantesImpuestos"
                                          id="ingresarConstanteImpuestos"
+                                         rendered="false"
                                          actionListener="#{constantesImpuestoBB.crearNuevaConstanteImpuesto()}">
                             <p:ajax update="toolTipInsert" process="@this" />  
                         </p:commandButton>
@@ -76,6 +77,7 @@
                             <p:commandButton actionListener="#{constantesImpuestoBB.eliminarConstanteImpuesto(constanteImpuestos.codConstantesimpuestos)}" 
                                              icon="fa fa-trash"
                                              id="eliminarConstanteImpuestos"
+                                             rendered="false"
                                              update="listaConstantesImpuestos :formularioListaConstantesImpuestos:growl :formularioListaConstantesImpuestos:messages" >
                                 <p:confirm header="Eliminar constanteImpuestos" message="¿Está seguro?" icon="ui-icon-alert" />
                                 <p:ajax update="toolTipDelete" process="@this" /> 

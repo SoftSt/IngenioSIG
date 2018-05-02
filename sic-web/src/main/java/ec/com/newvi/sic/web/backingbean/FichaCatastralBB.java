@@ -355,20 +355,20 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
     public void setListaEstadosDetallesPisos(List<PisoDetalle> listaEstadosDetallesPisos) {
         this.listaEstadosDetallesPisos = listaEstadosDetallesPisos;
     }
-    
+
     @PostConstruct
     public void init() {
-        
+
         this.predio = new Predios();
         deshabilitarPantallas();
         seleccionPantallas();
     }
-    
-    public void actulizarEstadosPisos(){
+
+    public void actulizarEstadosPisos() {
         this.listaEstadosPisos = catastroServicio.consultarStsEstadoPiso();
     }
-    
-    public void actulizarEstadosDetallesPisos(){
+
+    public void actulizarEstadosDetallesPisos() {
         this.listaEstadosDetallesPisos = catastroServicio.consultarStsEstadoDetallePiso();
     }
 
@@ -1096,7 +1096,7 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
     public DefaultStreamedContent imprimir(EnumReporte tipoReporte, String formatoReporte) {
         return generarReporteCatastro(tipoReporte, ReporteGenerador.FormatoReporte.PDF, obtenerDatosReporteCatastral(this.predio), PresentacionFichaCatastralDto.class);
     }
-    
+
     private ReporteGenerador.FormatoReporte obtenerFormatoReporte(String tipoReporte) {
         if (tipoReporte.equals("PDF")) {
             return ReporteGenerador.FormatoReporte.PDF;
@@ -1106,7 +1106,7 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
             return ReporteGenerador.FormatoReporte.DOCX;
         }
     }
-    
+
     public DefaultStreamedContent imprimirLista(EnumReporte tipoReporte, String formatoReporte) {
         return generarReporteCatastro(tipoReporte, obtenerFormatoReporte(formatoReporte), obtenerListaFichas(this.listaFichas), PresentacionFichaCatastralDto.class);
         //return generarReporteCatastro(tipoReporte, obtenerFormatoReporte(formatoReporte), obtenerDatosReporteListaTitulosDesmarcados(this.listaFichas), PresentacionFichaCatastralDto.class);
@@ -1130,6 +1130,16 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
             establecerTitulo(EnumEtiquetas.FICHA_CATASTRAL_LISTA_EDITAR_TITULO,
                     EnumEtiquetas.FICHA_CATASTRAL_LISTA_EDITAR_ICONO,
                     EnumEtiquetas.FICHA_CATASTRAL_LISTA_EDITAR_DESCRIPCION);
+            actualizarListadoPredios();
+            actualizarCaracteristicasPredios();
+            actulizarEstadosPisos();
+            actulizarEstadosDetallesPisos();
+        } else if (cadenaAccion.equals(EnumTipoPantalla.edicionFichaRural.getTipoPantalla())) {
+            this.esPantallaLista = true;
+            this.esPantallaEdicion = true;
+            establecerTitulo(EnumEtiquetas.FICHA_CATASTRAL_LISTA_RURAL_EDITAR_TITULO,
+                    EnumEtiquetas.FICHA_CATASTRAL_LISTA_RURAL_EDITAR_ICONO,
+                    EnumEtiquetas.FICHA_CATASTRAL_LISTA_RURAL_EDITAR_DESCRIPCION);
             actualizarListadoPredios();
             actualizarCaracteristicasPredios();
             actulizarEstadosPisos();
@@ -1306,5 +1316,4 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
         }
     }
 
-    
 }

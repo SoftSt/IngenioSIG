@@ -11,7 +11,9 @@ package ec.com.newvi.sic.enums;
  */
 public enum EnumTipoPantalla {
     eliminacionFicha ("eliminacionFicha"),
+    eliminacionFichaRural ("eliminacionFichaRural"),
     edicionFicha ("edicionFicha"),
+    edicionFichaRural ("edicionFichaRural"),
     nuevaFicha ("nuevaFicha"),
     formulariosEconomicos ("formulariosEconomicos");
     
