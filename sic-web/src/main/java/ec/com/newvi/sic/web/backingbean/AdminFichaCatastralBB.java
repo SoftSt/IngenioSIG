@@ -117,12 +117,10 @@ public abstract class AdminFichaCatastralBB extends AdminSistemaBB {
     public void setlistaContribuyentesFiltrado(List<Contribuyentes> listaContribuyentesFiltrado) {
         this.listaContribuyentesFiltrado = listaContribuyentesFiltrado;
     }*/
-    protected void actualizarListadoPredios() {
-        FichaCatastralDto nuevaFicha;
+    protected void actualizarListadoPrediosRurales() {
         List<Predios> listaPredios = catastroServicio.consultarPredios();
-        //String sql = ComunUtil.generarScriptTenencia(listaPredios, parametrosServicio);
         listaFichas = new ArrayList<>();
-        
+
         /*for (Predios predioLista : listaPredios) {
             nuevaFicha = new FichaCatastralDto(predioLista);
             String cedulaPredio = nuevaFicha.getContribuyentePropiedad().getCodCedularuc().trim();
@@ -133,7 +131,34 @@ public abstract class AdminFichaCatastralBB extends AdminSistemaBB {
                 listaFichas.add(nuevaFicha);
             }
         }*/
+        listaPredios.forEach((elementoPredio) -> {
+            listaFichas.add(new FichaCatastralDto(elementoPredio));
+        });
+        listaFichasLazy = new ModeloPredioLazy(listaFichas);
+        /*try {
+            List<GeoPredio> nuevoPre = geoCatastroServicio.obtenerListadoGeoPrediosHuerfanos(listaPredios, sesionBean.getSesion());
+            nuevoPre.size();
+        } catch (NewviExcepcion ex) {
+            Logger.getLogger(AdminFichaCatastralBB.class.getName()).log(Level.SEVERE, null, ex);
+        }*/
+    }
 
+    protected void actualizarListadoPredios() {
+        FichaCatastralDto nuevaFicha;
+        List<Predios> listaPredios = catastroServicio.consultarPredios();
+        //String sql = ComunUtil.generarScriptTenencia(listaPredios, parametrosServicio);
+        listaFichas = new ArrayList<>();
+
+        /*for (Predios predioLista : listaPredios) {
+            nuevaFicha = new FichaCatastralDto(predioLista);
+            String cedulaPredio = nuevaFicha.getContribuyentePropiedad().getCodCedularuc().trim();
+            String codigoCatastral = nuevaFicha.getPredio().getNomCodigocatastral().trim();
+            
+            if (ComunUtil.esCedulaValida(cedulaPredio)) {
+            if (cedulaPredio.length() > 10&& !cedulaPredio.equals("1760009530001")) {
+                listaFichas.add(nuevaFicha);
+            }
+        }*/
         listaPredios.forEach((elementoPredio) -> {
             listaFichas.add(new FichaCatastralDto(elementoPredio));
         });

@@ -75,8 +75,7 @@ public class Propiedad implements Serializable {
     @Column(name = "sts_transferenciadominio")
     private String stsTransferenciadominio;
 
-    @Column(name = "val_predioareaescritura")
-    private BigDecimal valPredioAreaEscritura;
+    
     @Size(max = 100)
     @Column(name = "txt_notaria")
     private String txtNotaria;
@@ -175,14 +174,6 @@ public class Propiedad implements Serializable {
 
     public void setStsTransferenciadominio(EnumTraslacion stsTransferenciadominio) {
         this.stsTransferenciadominio = stsTransferenciadominio.toString();
-    }
-
-    public BigDecimal getValPredioAreaEscritura() {
-        return valPredioAreaEscritura;
-    }
-
-    public void setValPredioAreaEscritura(BigDecimal valPredioAreaEscritura) {
-        this.valPredioAreaEscritura = valPredioAreaEscritura;
     }
 
     public String getTxtNotaria() {
