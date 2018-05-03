@@ -102,7 +102,16 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
     private Boolean esPantallaLista;
     private Boolean esPantallaEditable;
     private Boolean esPantallaNueva;
+    private Boolean esUrbano;
     private String direccionVisorPredios;
+
+    public Boolean getEsUrbano() {
+        return esUrbano;
+    }
+
+    public void setEsUrbano(Boolean esUrbano) {
+        this.esUrbano = esUrbano;
+    }
 
     public Boolean getEsPantallaNueva() {
         return esPantallaNueva;
@@ -436,9 +445,15 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
             }
         }
         conmutarPantalla(EnumPantallaMantenimiento.PANTALLA_LISTADO);
-        establecerTitulo(EnumEtiquetas.FICHA_CATASTRAL_LISTA_TITULO,
-                EnumEtiquetas.FICHA_CATASTRAL_LISTA_ICONO,
-                EnumEtiquetas.FICHA_CATASTRAL_LISTA_DESCRIPCION);
+        if (esUrbano) {
+            establecerTitulo(EnumEtiquetas.FICHA_CATASTRAL_LISTA_TITULO,
+                    EnumEtiquetas.FICHA_CATASTRAL_LISTA_ICONO,
+                    EnumEtiquetas.FICHA_CATASTRAL_LISTA_DESCRIPCION);
+        } else {
+            establecerTitulo(EnumEtiquetas.FICHA_CATASTRAL_RURAL_EDITAR_TITULO,
+                    EnumEtiquetas.FICHA_CATASTRAL_RURAL_EDITAR_ICONO,
+                    EnumEtiquetas.FICHA_CATASTRAL_RURAL_EDITAR_DESCRIPCION);
+        }
     }
 
     public void eliminarPredio(Integer idPredio) {
@@ -478,9 +493,16 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
             MensajesFaces.mensajeError(e.getMessage());
         }
         conmutarPantalla(EnumPantallaMantenimiento.PANTALLA_EDICION);
-        establecerTitulo(EnumEtiquetas.FICHA_CATASTRAL_EDITAR_TITULO,
-                EnumEtiquetas.FICHA_CATASTRAL_EDITAR_ICONO,
-                EnumEtiquetas.FICHA_CATASTRAL_EDITAR_DESCRIPCION);
+        if (esUrbano) {
+            establecerTitulo(EnumEtiquetas.FICHA_CATASTRAL_EDITAR_TITULO,
+                    EnumEtiquetas.FICHA_CATASTRAL_EDITAR_ICONO,
+                    EnumEtiquetas.FICHA_CATASTRAL_EDITAR_DESCRIPCION);
+
+        } else {
+            establecerTitulo(EnumEtiquetas.FICHA_CATASTRAL_RURAL_EDITAR_TITULO,
+                    EnumEtiquetas.FICHA_CATASTRAL_RURAL_EDITAR_ICONO,
+                    EnumEtiquetas.FICHA_CATASTRAL_RURAL_EDITAR_DESCRIPCION);
+        }
     }
 
     private void listarFotosPorPredio(Integer idPredio) {
@@ -570,6 +592,21 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
         }
     }
 
+    private void actualizarListadoServiciosRural() {
+        List<DominioDto> listadoDominiosDto = parametrosServicio.listarDominiosDto("INFRAESTRUCTURA DE SERVICIOS RURAL", "Nodo");
+
+        try {
+            listaArbolServicios = new DefaultTreeNode();
+            listaArbolServicios = WebUtils.generarArbol(listadoDominiosDto, listaArbolServicios, "getHijos");
+        } catch (NewviExcepcion ex) {
+            LoggerNewvi.getLogNewvi(this.getClass()).error(ex, sesionBean.getSesion());
+            MensajesFaces.mensajeError(ex.getMessage());
+        } catch (Exception e) {
+            LoggerNewvi.getLogNewvi(this.getClass()).error(EnumNewviExcepciones.ERR000.presentarMensajeCodigo(), e, sesionBean.getSesion());
+            MensajesFaces.mensajeError(e.getMessage());
+        }
+    }
+
     private void generarArbolAvaluo(List<AvaluoDto> listaArbol) {
 
         try {
@@ -585,6 +622,21 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
 
     private void actualizarListadoDescripcionTerreno() {
         List<DominioDto> listadoDominiosDto = parametrosServicio.listarDominiosDto("DESCRIPCION DEL TERRENO", "Nodo");
+
+        try {
+            listaArbolDescripcionTerreno = new DefaultTreeNode();
+            listaArbolDescripcionTerreno = WebUtils.generarArbol(listadoDominiosDto, listaArbolDescripcionTerreno, "getHijos");
+        } catch (NewviExcepcion ex) {
+            LoggerNewvi.getLogNewvi(this.getClass()).error(ex, sesionBean.getSesion());
+            MensajesFaces.mensajeError(ex.getMessage());
+        } catch (Exception e) {
+            LoggerNewvi.getLogNewvi(this.getClass()).error(EnumNewviExcepciones.ERR000.presentarMensajeCodigo(), e, sesionBean.getSesion());
+            MensajesFaces.mensajeError(e.getMessage());
+        }
+    }
+
+    private void actualizarListadoDescripcionTerrenoRural() {
+        List<DominioDto> listadoDominiosDto = parametrosServicio.listarDominiosDto("DESCRIPCION DEL TERRENO RURAL", "Nodo");
 
         try {
             listaArbolDescripcionTerreno = new DefaultTreeNode();
@@ -1125,8 +1177,9 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
 
     private void ejecutarAccion(String cadenaAccion) {
         if (cadenaAccion.equals(EnumTipoPantalla.edicionFicha.getTipoPantalla())) {
-            this.esPantallaLista = true;
-            this.esPantallaEdicion = true;
+            this.esPantallaLista = Boolean.TRUE;
+            this.esPantallaEdicion = Boolean.TRUE;
+            this.esUrbano = Boolean.TRUE;
             establecerTitulo(EnumEtiquetas.FICHA_CATASTRAL_LISTA_EDITAR_TITULO,
                     EnumEtiquetas.FICHA_CATASTRAL_LISTA_EDITAR_ICONO,
                     EnumEtiquetas.FICHA_CATASTRAL_LISTA_EDITAR_DESCRIPCION);
@@ -1135,13 +1188,14 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
             actulizarEstadosPisos();
             actulizarEstadosDetallesPisos();
         } else if (cadenaAccion.equals(EnumTipoPantalla.edicionFichaRural.getTipoPantalla())) {
-            this.esPantallaLista = true;
-            this.esPantallaEdicion = true;
-            establecerTitulo(EnumEtiquetas.FICHA_CATASTRAL_LISTA_RURAL_EDITAR_TITULO,
-                    EnumEtiquetas.FICHA_CATASTRAL_LISTA_RURAL_EDITAR_ICONO,
-                    EnumEtiquetas.FICHA_CATASTRAL_LISTA_RURAL_EDITAR_DESCRIPCION);
-            actualizarListadoPredios();
-            actualizarCaracteristicasPredios();
+            this.esPantallaLista = Boolean.TRUE;
+            this.esPantallaEdicion = Boolean.TRUE;
+            this.esUrbano = Boolean.FALSE;
+            establecerTitulo(EnumEtiquetas.FICHA_CATASTRAL_RURAL_LISTA_TITULO,
+                    EnumEtiquetas.FICHA_CATASTRAL_RURAL_LISTA_ICONO,
+                    EnumEtiquetas.FICHA_CATASTRAL_RURAL_LISTA_DESCRIPCION);
+            actualizarListadoPrediosRurales();
+            actualizarCaracteristicasPrediosRurales();
             actulizarEstadosPisos();
             actulizarEstadosDetallesPisos();
         } else if (cadenaAccion.equals(EnumTipoPantalla.eliminacionFicha.getTipoPantalla())) {
@@ -1150,6 +1204,13 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
             establecerTitulo(EnumEtiquetas.FICHA_CATASTRAL_LISTA_ELIMINAR_TITULO,
                     EnumEtiquetas.FICHA_CATASTRAL_LISTA_ELIMINAR_ICONO,
                     EnumEtiquetas.FICHA_CATASTRAL_LISTA_ELIMINAR_DESCRIPCION);
+            actualizarListadoPredios();
+        } else if (cadenaAccion.equals(EnumTipoPantalla.eliminacionFichaRural.getTipoPantalla())) {
+            this.esPantallaEliminacion = true;
+            this.esPantallaLista = true;
+            establecerTitulo(EnumEtiquetas.FICHA_CATASTRAL_RURAL_LISTA_ELIMINAR_TITULO,
+                    EnumEtiquetas.FICHA_CATASTRAL_RURAL_LISTA_ELIMINAR_ICONO,
+                    EnumEtiquetas.FICHA_CATASTRAL_RURAL_LISTA_ELIMINAR_DESCRIPCION);
             actualizarListadoPredios();
         } else if (cadenaAccion.equals(EnumTipoPantalla.formulariosEconomicos.getTipoPantalla())) {
             this.esPantallaFormularios = true;
@@ -1197,6 +1258,20 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
     private void actualizarCaracteristicasPredios() {
         actualizarListadoServicios();
         actualizarListadoDescripcionTerreno();
+        actualizarListadoPisosDetalle();
+        actualizarListadoTenencia();
+        listaEstadosPisoDetalle = EnumEstadoPisoDetalle.values();
+        this.listaFotosJpg = new ArrayList<>();
+        listaTenenciaDominios = EnumTenencia.values();
+        listaZonaInfluencia = EnumZonaInfluencia.values();
+        listaTraslacion = EnumTraslacion.values();
+        listaSituacionActual = EnumSitActual.values();
+        listaEstadoEscritura = EnumSiNo.values();
+    }
+
+    private void actualizarCaracteristicasPrediosRurales() {
+        actualizarListadoServiciosRural();
+        actualizarListadoDescripcionTerrenoRural();
         actualizarListadoPisosDetalle();
         actualizarListadoTenencia();
         listaEstadosPisoDetalle = EnumEstadoPisoDetalle.values();

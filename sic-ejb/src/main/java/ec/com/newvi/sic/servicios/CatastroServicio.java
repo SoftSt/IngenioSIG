@@ -71,7 +71,12 @@ public interface CatastroServicio {
      * @return Listado de Predios
      */
     public List<Predios> consultarPredios();
-
+/**
+     * Devuelve un listado de Predios Rurales.
+     *
+     * @return Listado de Predios Rurales
+     */
+    public List<Predios> consultarPrediosRural();
     /**
      * Elimina un predios dado
      *

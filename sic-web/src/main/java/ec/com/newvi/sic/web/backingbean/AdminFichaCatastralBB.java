@@ -118,7 +118,7 @@ public abstract class AdminFichaCatastralBB extends AdminSistemaBB {
         this.listaContribuyentesFiltrado = listaContribuyentesFiltrado;
     }*/
     protected void actualizarListadoPrediosRurales() {
-        List<Predios> listaPredios = catastroServicio.consultarPredios();
+        List<Predios> listaPredios = catastroServicio.consultarPrediosRural();
         listaFichas = new ArrayList<>();
 
         /*for (Predios predioLista : listaPredios) {

@@ -148,6 +148,11 @@ public class CatastroServicioImpl implements CatastroServicio {
     public List<Predios> consultarPredios() {
         return prediosFacade.buscarPredio();
     }
+    
+    @Override
+    public List<Predios> consultarPrediosRural(){
+        return prediosFacade.buscarPredioRural();
+    }
 
     @Override
     public Predios seleccionarPredio(Integer idPredio) throws NewviExcepcion {
