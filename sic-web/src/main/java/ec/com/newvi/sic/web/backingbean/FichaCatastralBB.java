@@ -1211,7 +1211,7 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
             establecerTitulo(EnumEtiquetas.FICHA_CATASTRAL_RURAL_LISTA_ELIMINAR_TITULO,
                     EnumEtiquetas.FICHA_CATASTRAL_RURAL_LISTA_ELIMINAR_ICONO,
                     EnumEtiquetas.FICHA_CATASTRAL_RURAL_LISTA_ELIMINAR_DESCRIPCION);
-            actualizarListadoPredios();
+            actualizarListadoPrediosRurales();
         } else if (cadenaAccion.equals(EnumTipoPantalla.formulariosEconomicos.getTipoPantalla())) {
             this.esPantallaFormularios = true;
             this.esPantallaLista = true;

@@ -45,6 +45,13 @@ import javax.validation.constraints.Size;
 
 public class Predios implements Serializable {
 
+    
+    @OneToMany(mappedBy = "codCatastral")
+    private List<UsoTierra> listaUsoTierra;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "codCatastral")
+    private List<UsoSuelo> listaUsoSuelo;
+
     @OneToMany(mappedBy = "codCatastral")
     private List<Titulos> listaTitulos;
     @ElementCollection
@@ -798,6 +805,22 @@ public class Predios implements Serializable {
 
     public void setListaTitulos(List<Titulos> listaTitulos) {
         this.listaTitulos = listaTitulos;
+    }
+
+    public List<UsoTierra> getListaUsoTierra() {
+        return listaUsoTierra;
+    }
+
+    public void setListaUsoTierra(List<UsoTierra> listaUsoTierra) {
+        this.listaUsoTierra = listaUsoTierra;
+    }
+
+    public List<UsoSuelo> getListaUsoSuelo() {
+        return listaUsoSuelo;
+    }
+
+    public void setListaUsoSuelo(List<UsoSuelo> listaUsoSuelo) {
+        this.listaUsoSuelo = listaUsoSuelo;
     }
 
 }
