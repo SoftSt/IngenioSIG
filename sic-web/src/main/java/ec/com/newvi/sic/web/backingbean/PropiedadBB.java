@@ -134,32 +134,23 @@ public class PropiedadBB extends AdminFichaCatastralBB {
                 EnumEtiquetas.PROPIETARIO_LISTA_DESCRIPCION);
     }
 
+    public List<Propiedad> crearListaPropiedades(List<Propiedad> listaPropiedades, Propiedad nuevaPropiedad) {
+        if (ComunUtil.esNulo(listaPropiedades)) {
+            listaPropiedades = new ArrayList<>();
+        }
+        listaPropiedades.add(nuevaPropiedad);
+        return listaPropiedades;
+    }
+
     public void crearNuevoPropiedad() {
         try {
-            /*this.propiedad = new Propiedad();
-            this.propiedad.setProEstado(EnumEstadoRegistro.A);
-            this.propiedad.setPropiedad(contribuyente);
-            this.propiedad.setCodCatastral(predio);
-            
-            
-            
-            conmutarPantalla(EnumPantallaMantenimiento.PANTALLA_EDICION);
-            establecerTitulo(EnumEtiquetas.PROPIETARIO_NUEVO_TITULO,
-            EnumEtiquetas.PROPIETARIO_NUEVO_ICONO,
-            EnumEtiquetas.PROPIETARIO_NUEVO_DESCRIPCION);*/
             Propiedad nuevaPropiedad = new Propiedad();
-
-            //contribuyenteActual = contribuyentesServicio.seleccionarContribuyente(contribuyente);
-            
             Predios predioActual = catastroServicio.seleccionarPredio(this.predio.getCodCatastral());
-            
             nuevaPropiedad.setContribuyente(contribuyente);
             nuevaPropiedad.setCodCatastral(predioActual);
             nuevaPropiedad.setProEstado(EnumEstadoRegistro.A);
-            List<Propiedad> listaPropiedadesHistoricas = new ArrayList();
-            listaPropiedadesHistoricas.add(nuevaPropiedad);
-            predioActual.setHistoricoPropiedad(listaPropiedadesHistoricas);
-            contribuyentesServicio.generarNuevoPropiedad(nuevaPropiedad, sesionBean.getSesion());
+            predioActual.setHistoricoPropiedad(crearListaPropiedades(predioActual.getHistoricoPropiedad(), nuevaPropiedad));
+            catastroServicio.actualizarPredio(predioActual, sesionBean.getSesion());
 
             LoggerNewvi.getLogNewvi(this.getClass()).info(EnumNewviExcepciones.INF375.presentarMensaje(), sesionBean.getSesion());
             MensajesFaces.mensajeInformacion(EnumNewviExcepciones.INF375.presentarMensaje());
