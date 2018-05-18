@@ -38,7 +38,7 @@
                         </h:panelGrid>
                         <h:panelGrid>
                             <p:dataTable id="listaGeoPredios" var="predioHuerfano" widgetVar="listaPrediosHuerfanosTabla" selection="#{nuevoPredioBB.listaPrediosHuerfanosSeleccionados}"
-                                         value="#{nuevoPredioBB.listaPrediosHuerfanos}" rowKey="#{predioHuerfano.codigoCampoPredio}" filteredValue="#{nuevoPredioBB.listaPrediosHuerfanosFiltrados}"
+                                         value="#{nuevoPredioBB.listaPrediosHuerfanos}" rowKey="#{predioHuerfano.id}" filteredValue="#{nuevoPredioBB.listaPrediosHuerfanosFiltrados}"
                                          paginator="true" rows="20" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" 
                                          rowsPerPageTemplate="10,15,20" 
                                          resizableColumns="true"

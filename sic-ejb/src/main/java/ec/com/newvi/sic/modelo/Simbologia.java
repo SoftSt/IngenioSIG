@@ -14,6 +14,8 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -26,22 +28,26 @@ import javax.validation.constraints.Size;
  * 
  */
 @Entity
-@Table(name = "cat_adm_uso_suelo", schema = "public")
-public class UsoSuelo implements Serializable {
+@Table(name = "cat_adm_simbologia", schema = "public")
+public class Simbologia implements Serializable {
     
     @Id
-    @SequenceGenerator(name = "USOSUELO_CODIGO_GENERATOR", initialValue = 1, allocationSize = 1, sequenceName = "cat_adm_uso_suelo_uss_cod_secuencial_seq", schema = "public")
-    @GeneratedValue(generator = "USOSUELO_CODIGO_GENERATOR")
-    @Column(name = "uss_cod_secuencial")
-    private Integer ussCod;
+    @SequenceGenerator(name = "SIMBOLOGIA_CODIGO_GENERATOR", initialValue = 1, allocationSize = 1, sequenceName = "cat_adm_simbologia_smb_cod_secuencia_seq", schema = "public")
+    @GeneratedValue(generator = "SIMBOLOGIA_CODIGO_GENERATOR")
+    @Column(name = "smb_cod_secuencial")
+    private Integer smbCod;
     
-    @Size(max = 100)
-    @Column(name = "uss_txt_nombre")
-    private String ussNombre;
+    @Size(max = 50)
+    @Column(name = "smb_txt_nombre")
+    private String smbNombre;
+    
+    @Size(max = 2500)
+    @Column(name = "smb_txt_descripcion")
+    private String smbDescripcion;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "uss_sts_estado")
-    private EnumEstadoRegistro ussEstado;
+    @Column(name = "smb_sts_estado")
+    private EnumEstadoRegistro smbEstado;
         
     @Size(max = 50)
     @Column(name = "aud_ing_usu")
@@ -67,37 +73,48 @@ public class UsoSuelo implements Serializable {
     @Column(name = "aud_mod_ip")
     private String audModIp;
     
-    @Override
-    public boolean equals(Object object) {
-        if (!(object instanceof UsoSuelo)) {
-            return false;
-        }
-        UsoSuelo usoSuelo = (UsoSuelo) object;
-        return !((this.ussCod == null && usoSuelo.ussCod != null) || (this.ussCod != null && !this.ussCod.equals(usoSuelo.ussCod)));
+    @JoinColumn(name = "znf_cod_secuencial", referencedColumnName = "znf_cod_secuencial")
+    @ManyToOne
+    private Zonificacion zonificacion;
+    
+    @JoinColumn(name = "uss_cod_secuencial", referencedColumnName = "uss_cod_secuencial")
+    @ManyToOne
+    private UsoSuelo usoSuelo;
+    
+    @JoinColumn(name = "tpl_cod_secuencial", referencedColumnName = "tpl_cod_secuencial")
+    @ManyToOne
+    private Tipologia tipologia;
+    
+    public Integer getSmbCod() {
+        return smbCod;
     }
 
-    public Integer getUssCod() {
-        return ussCod;
+    public void setSmbCod(Integer smbCod) {
+        this.smbCod = smbCod;
     }
 
-    public void setUssCod(Integer ussCod) {
-        this.ussCod = ussCod;
+    public String getSmbNombre() {
+        return smbNombre;
     }
 
-    public String getUssNombre() {
-        return ussNombre;
+    public void setSmbNombre(String smbNombre) {
+        this.smbNombre = smbNombre;
     }
 
-    public void setUssNombre(String ussNombre) {
-        this.ussNombre = ussNombre;
+    public String getSmbDescripcion() {
+        return smbDescripcion;
     }
 
-    public EnumEstadoRegistro getUssEstado() {
-        return ussEstado;
+    public void setSmbDescripcion(String smbDescripcion) {
+        this.smbDescripcion = smbDescripcion;
     }
 
-    public void setUssEstado(EnumEstadoRegistro ussEstado) {
-        this.ussEstado = ussEstado;
+    public EnumEstadoRegistro getSmbEstado() {
+        return smbEstado;
+    }
+
+    public void setSmbEstado(EnumEstadoRegistro smbEstado) {
+        this.smbEstado = smbEstado;
     }
 
     public String getAudIngUsu() {
@@ -148,4 +165,28 @@ public class UsoSuelo implements Serializable {
         this.audModIp = audModIp;
     }
 
+    public Tipologia getTipologia() {
+        return tipologia;
+    }
+
+    public void setTipologia(Tipologia tipologia) {
+        this.tipologia = tipologia;
+    }
+
+    public UsoSuelo getUsoSuelo() {
+        return usoSuelo;
+    }
+
+    public void setUsoSuelo(UsoSuelo usoSuelo) {
+        this.usoSuelo = usoSuelo;
+    }
+
+    public Zonificacion getZonificacion() {
+        return zonificacion;
+    }
+
+    public void setZonificacion(Zonificacion zonificacion) {
+        this.zonificacion = zonificacion;
+    }
+    
 }

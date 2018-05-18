@@ -35,9 +35,9 @@ public class GeoPredioFacade extends AbstractFacade<GeoPredio, Integer> implemen
     public String obtenerBordePredio(String codigoPredio, SesionDto sesion) throws NewviExcepcion {
         //String codPredio =codigoPredio.trim().substring(0, 16);
         String codPredio =codigoPredio.trim();
-        Query q = this.getEntityManager().createNativeQuery("SELECT ST_AsText(ST_Transform(ST_SetSRID(ST_Expand(ST_Extent(geom),5),32717),3857)) "
+        Query q = this.getEntityManager().createNativeQuery("SELECT ST_AsText(ST_Transform(ST_SetSRID(ST_Expand(ST_Extent(geom),5),32718),3857)) "
                 + " FROM public.he002_lote as predio "
-                + " WHERE TRIM(predio.cod_campo) = :CODIGOPREDIO");
+                + " WHERE TRIM(predio.clave_catastal) = :CODIGOPREDIO");
         q.setParameter("CODIGOPREDIO",codPredio);
         try {
             Object caja = q.getSingleResult();
@@ -75,7 +75,7 @@ public class GeoPredioFacade extends AbstractFacade<GeoPredio, Integer> implemen
     
     
     public List<GeoPredio> obtenerListadoPrediosHuerfanos(List<String> listaCodigosPrediosRegistrados, SesionDto sesion) throws NewviExcepcion {
-        Query q = this.getEntityManager().createQuery("SELECT geoPredioHuerfano FROM GeoPredio geoPredioHuerfano WHERE TRIM(geoPredioHuerfano.codigoCampoPredio) NOT IN :PREDIOSREGISTRADOS");
+        Query q = this.getEntityManager().createQuery("SELECT geoPredioHuerfano FROM GeoPredio geoPredioHuerfano WHERE TRIM(geoPredioHuerfano.clave_catastal) NOT IN :PREDIOSREGISTRADOS");
         q.setParameter("PREDIOSREGISTRADOS", listaCodigosPrediosRegistrados);
         try {
             return q.getResultList();

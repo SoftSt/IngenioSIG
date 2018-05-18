@@ -27,12 +27,12 @@ public class GeoPredio implements Serializable {
     @Id
     @SequenceGenerator(name = "GEOPREDIO_CODIGO_GENERATOR", initialValue = 1, allocationSize = 1, sequenceName = "he002_lote_id_seq", schema = "public")
     @GeneratedValue(generator = "GEOPREDIO_CODIGO_GENERATOR")
-    @Column(name = "id")
+    @Column(name = "gid")
     private Integer id;
     
-    @Size(max = 6)
+    /*@Size(max = 6)
     @Column(name = "dpa_codigo")
-    private String codigoDPA;
+    private String codigoDPA;*/
     
     /*@Column(name = "geom")
     private Polygon geom;*/
@@ -49,28 +49,28 @@ public class GeoPredio implements Serializable {
     @Column(name = "man_codigo")
     private String codigoManzana;
     
-    @Size(max = 4)
+    /*@Size(max = 4)
     @Column(name = "lot_numero")
-    private String numeroLote;
+    private String numeroLote;*/
     
     @Size(max = 24)
-    @Column(name = "lot_codigo")
+    @Column(name = "clave_catastal")
     private String codigoPredio;
     
-    @Size(max = 10)
+    /*@Size(max = 10)
     @Column(name = "cod_campo")
-    private String codigoCampoPredio;
+    private String codigoCampoPredio;*/
     
     @Column(name = "area_total")
     private String areaPredio;
     
-    public String getCodigoDPA() {
+    /*public String getCodigoDPA() {
         return codigoDPA;
     }
 
     public void setCodigoDPA(String codigoDPA) {
         this.codigoDPA = codigoDPA;
-    }
+    }*/
 
     public String getCodigoZona() {
         return codigoZona;
@@ -96,13 +96,13 @@ public class GeoPredio implements Serializable {
         this.codigoManzana = codigoManzana;
     }
 
-    public String getNumeroLote() {
+    /*public String getNumeroLote() {
         return numeroLote;
     }
 
     public void setNumeroLote(String numeroLote) {
         this.numeroLote = numeroLote;
-    }
+    }*/
 
     public String getCodigoPredio() {
         return codigoPredio;
@@ -120,13 +120,13 @@ public class GeoPredio implements Serializable {
         this.id = id;
     }
 
-    public String getCodigoCampoPredio() {
+    /*public String getCodigoCampoPredio() {
         return codigoCampoPredio;
     }
 
     public void setCodigoCampoPredio(String codigoCampoPredio) {
         this.codigoCampoPredio = codigoCampoPredio;
-    }
+    }*/
 
     public String getAreaPredio() {
         return areaPredio;

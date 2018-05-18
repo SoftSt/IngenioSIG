@@ -26,22 +26,22 @@ import javax.validation.constraints.Size;
  * 
  */
 @Entity
-@Table(name = "cat_adm_uso_suelo", schema = "public")
-public class UsoSuelo implements Serializable {
+@Table(name = "cat_adm_zonificacion", schema = "public")
+public class Zonificacion implements Serializable {
     
     @Id
-    @SequenceGenerator(name = "USOSUELO_CODIGO_GENERATOR", initialValue = 1, allocationSize = 1, sequenceName = "cat_adm_uso_suelo_uss_cod_secuencial_seq", schema = "public")
-    @GeneratedValue(generator = "USOSUELO_CODIGO_GENERATOR")
-    @Column(name = "uss_cod_secuencial")
-    private Integer ussCod;
+    @SequenceGenerator(name = "ZONIFICACION_CODIGO_GENERATOR", initialValue = 1, allocationSize = 1, sequenceName = "cat_adm_zonificacion_znf_cod_secuencial_seq", schema = "public")
+    @GeneratedValue(generator = "ZONIFICACION_CODIGO_GENERATOR")
+    @Column(name = "znf_cod_secuencial")
+    private Integer znfCod;
     
-    @Size(max = 100)
-    @Column(name = "uss_txt_nombre")
-    private String ussNombre;
-
+    @Size(max = 150)
+    @Column(name = "znf_txt_nombre")
+    private String znfNombre;
+    
     @Enumerated(EnumType.STRING)
-    @Column(name = "uss_sts_estado")
-    private EnumEstadoRegistro ussEstado;
+    @Column(name = "znf_sts_estado")
+    private EnumEstadoRegistro znfEstado;
         
     @Size(max = 50)
     @Column(name = "aud_ing_usu")
@@ -69,35 +69,35 @@ public class UsoSuelo implements Serializable {
     
     @Override
     public boolean equals(Object object) {
-        if (!(object instanceof UsoSuelo)) {
+        if (!(object instanceof Zonificacion)) {
             return false;
         }
-        UsoSuelo usoSuelo = (UsoSuelo) object;
-        return !((this.ussCod == null && usoSuelo.ussCod != null) || (this.ussCod != null && !this.ussCod.equals(usoSuelo.ussCod)));
+        Zonificacion zonificacion = (Zonificacion) object;
+        return !((this.znfCod == null && zonificacion.znfCod != null) || (this.znfCod != null && !this.znfCod.equals(zonificacion.znfCod)));
+    }
+    
+    public Integer getZnfCod() {
+        return znfCod;
     }
 
-    public Integer getUssCod() {
-        return ussCod;
+    public void setZnfCod(Integer znfCod) {
+        this.znfCod = znfCod;
     }
 
-    public void setUssCod(Integer ussCod) {
-        this.ussCod = ussCod;
+    public String getZnfNombre() {
+        return znfNombre;
     }
 
-    public String getUssNombre() {
-        return ussNombre;
+    public void setZnfNombre(String znfNombre) {
+        this.znfNombre = znfNombre;
     }
 
-    public void setUssNombre(String ussNombre) {
-        this.ussNombre = ussNombre;
+    public EnumEstadoRegistro getZnfEstado() {
+        return znfEstado;
     }
 
-    public EnumEstadoRegistro getUssEstado() {
-        return ussEstado;
-    }
-
-    public void setUssEstado(EnumEstadoRegistro ussEstado) {
-        this.ussEstado = ussEstado;
+    public void setZnfEstado(EnumEstadoRegistro znfEstado) {
+        this.znfEstado = znfEstado;
     }
 
     public String getAudIngUsu() {
@@ -147,5 +147,4 @@ public class UsoSuelo implements Serializable {
     public void setAudModIp(String audModIp) {
         this.audModIp = audModIp;
     }
-
 }

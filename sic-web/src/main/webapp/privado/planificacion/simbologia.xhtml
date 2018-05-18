@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                template="/WEB-INF/templates/default.xhtml"
+                xmlns:p="http://primefaces.org/ui">
+    <ui:define name="content">
+        <h:panelGroup id="grupoSmb">
+            <p:panel id="panelListaSimbologia" rendered="#{simbologiaBB.esPantallaActual('PANTALLA_LISTADO')}">
+                <h:form id="formularioListaSimbologia">  
+
+                    <p:growl id="growl" showDetail="true" sticky="true" life="800"/>
+                    <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+                    <p>
+                        <h2>
+                            <h:outputText styleClass="#{simbologiaBB.iconoPantalla.textoEtiqueta}"/>
+                            <h:outputText value=" #{simbologiaBB.tituloPantalla.textoEtiqueta}"/>
+                        </h2>
+                    </p>
+                    <p>#{simbologiaBB.descripcionPantalla.textoEtiqueta}</p>
+                    <p>
+                        <p:commandButton value="Nueva Simbologia" icon="fa fa-plus" 
+                                         update="messages grupoSmb"
+                                         id="ingresarSimbologia"
+                                         actionListener="#{simbologiaBB.crearNuevaSimbologia()}">
+                            <p:ajax update="toolTipInsert" process="@this" />  
+                        </p:commandButton>
+                        <p:tooltip id="toolTipInsert" for="ingresarSimbologia" value="Ingresar una nueva Simbologia" showEffect="fade" hideEffect="fade" position="bottom"/>
+
+                    </p>
+                    <p:dataTable id="listaSmb" var="simbologia" widgetVar="listaSmbTabla"
+                                 value="#{simbologiaBB.listaSimbologia}" rowKey="#{simbologia.smbCod}" filteredValue="#{simbologiaBB.listaSimbologiaFiltrado}"
+                                 paginator="true" rows="10" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" 
+                                 rowsPerPageTemplate="10,15,20" 
+                                 resizableColumns="true" 
+                                 emptyMessage="No se han encontrado resultados" 
+                                 paginatorPosition="bottom">
+
+                        <p:column rendered="false">
+                            <h:outputText value="#{simbologia.smbCod}" />
+                        </p:column>
+                        
+                         <p:column headerText="Zona" sortBy="#{simbologia.zonificacion.znfNombre}" filterBy="#{simbologia.zonificacion.znfNombre}" filterMatchMode="contains">
+                            <h:outputText value="#{simbologia.zonificacion.znfNombre}" />
+                        </p:column>
+                        <p:column headerText="Uso Suelo" sortBy="#{simbologia.usoSuelo.ussNombre}" filterBy="#{simbologia.usoSuelo.ussNombre}" filterMatchMode="contains">
+                            <h:outputText value="#{simbologia.usoSuelo.ussNombre}" />
+                        </p:column> 
+                        
+                        <p:column headerText="Tipologia" sortBy="#{simbologia.tipologia.tplNombre}" filterBy="#{simbologia.tipologia.tplNombre}" filterMatchMode="contains">
+                            <h:outputText value="#{simbologia.tipologia.tplNombre}" />
+                        </p:column>  
+                        <p:column headerText="Simbologia" sortBy="#{simbologia.smbNombre}" filterBy="#{simbologia.smbNombre}" filterMatchMode="contains">
+                            <h:outputText value="#{simbologia.smbNombre}" />
+                        </p:column>
+                         <p:column headerText="Descripcion" sortBy="#{simbologia.smbDescripcion}" filterBy="#{simbologia.smbDescripcion}" filterMatchMode="contains">
+                            <h:outputText value="#{simbologia.smbDescripcion}" />
+                        </p:column> 
+
+                        <p:column width="80">
+                            <p:commandButton process="listaSmb" 
+                                             actionListener="#{simbologiaBB.seleccionarSimbologia(simbologia.smbCod)}"
+                                             icon="fa fa-edit"
+                                             id="editarSmb"
+                                             update="grupoSmb">
+                                <p:ajax update="toolTipEdit" process="@this" /> 
+                            </p:commandButton>
+                            <p:tooltip id="toolTipEdit" for="editarSmb" value="Editar Simbologia" showEffect="fade" hideEffect="fade" position="bottom"/>
+                        </p:column>            
+                    </p:dataTable>
+                </h:form>
+            </p:panel>
+            <p:panel id="panelSimbologia" rendered="#{simbologiaBB.esPantallaActual('PANTALLA_EDICION')}">
+                <h:form id="formularioSimbologia">
+                    <p>
+                        <h2>
+                            <h:outputText styleClass="#{simbologiaBB.iconoPantalla.textoEtiqueta}"/>
+                            <h:outputText value=" #{simbologiaBB.tituloPantalla.textoEtiqueta}"/>
+                        </h2>
+                    </p>
+                    <p>#{simbologiaBB.descripcionPantalla.textoEtiqueta}</p>
+                    <p:messages id="mensajeFormulario" showDetail="true" autoUpdate="true" closable="true" />
+                    <p:tooltip />
+                    <p:outputPanel id="opDetalleSimbologia">
+                        <h:panelGrid>
+                            <br/>
+                            <div style="font-size:1.2em;font-weight:bold;">Datos Simbologia Uso de Suelo</div>
+                            <p:separator />
+                            <h:outputLabel for="zonificacion" value="Zona" style="font-weight: bold;"/>
+                            <p:selectOneMenu value="#{simbologiaBB.simbologiaSeleccionado.zonificacion}" converter="zonificacionConverter" 
+                                             id="zonificacion" label="Zonificacion" required="true">
+                                <f:selectItem itemLabel="Seleccione uno" itemValue="" />
+                                <f:selectItems var="zona" value="#{simbologiaBB.listaZonificacion}" itemLabel="#{zona.znfNombre}" itemValue="#{zona}"  />
+                            </p:selectOneMenu>
+                            <p:message for="zonificacion" display="tooltip"/>
+                            <h:outputLabel for="usoS" value="Uso de Suelo" style="font-weight: bold;"/>
+                            <p:selectOneMenu value="#{simbologiaBB.simbologiaSeleccionado.usoSuelo}" converter="usoSueloConverter" 
+                                             id="usoS" label="Uso de Suelo" required="true">
+                                <f:selectItem itemLabel="Seleccione uno" itemValue="" />
+                                <f:selectItems var="suelo" value="#{simbologiaBB.listaUsoSuelo}" itemLabel="#{suelo.ussNombre}" itemValue="#{suelo}"  />
+                            </p:selectOneMenu>
+                            <p:message for="usoS" display="tooltip"/>
+                            <h:outputLabel for="tipologia" value="Tipologia" style="font-weight: bold;"/>
+                            <p:selectOneMenu value="#{simbologiaBB.simbologiaSeleccionado.tipologia}" converter="tipologiaConverter" 
+                                             id="tipologia" label="Tipologia" required="true">
+                                <f:selectItem itemLabel="Seleccione uno" itemValue="" />
+                                <f:selectItems var="tip" value="#{simbologiaBB.listaTipologia}" itemLabel="#{tip.tplNombre}" itemValue="#{tip}"  />
+                            </p:selectOneMenu>
+                            <p:message for="tipologia" display="tooltip"/>
+
+                            <h:outputLabel value="Nombre Simbologia" style="font-weight: bold;"/>
+                            <p:inputText id="nombreSimbologia" value="#{simbologiaBB.simbologiaSeleccionado.smbNombre}" label="Nombre" size="50" required="true">
+                                <f:validateLength minimum="1" maximum="100" />
+                            </p:inputText>
+                            <p:message for="nombreSimbologia" display="tooltip"/>
+                            <h:outputLabel value="Descripciòn" style="font-weight: bold;"/>
+                            <p:inputTextarea id="descSimbologia" value="#{simbologiaBB.simbologiaSeleccionado.smbDescripcion}" label="Descripcion" required="true" cols="80" rows="20">
+                                <f:validateLength minimum="1" maximum="2500" />
+                            </p:inputTextarea>
+                            <p:message for="descSimbologia" display="tooltip"/>
+                             <h:outputLabel for="estado" value="Estado" style="font-weight: bold;"/>
+                             <p:selectOneMenu value="#{simbologiaBB.simbologiaSeleccionado.smbEstado}" id="estado" label="Estado del Registro" required="true">
+                                <f:selectItem itemLabel="Seleccione uno" itemValue="" />
+                                <f:selectItems var="enumEstado" value="#{simbologiaBB.listaSeleccionEstados}" itemLabel="#{enumEstado}" itemValue="#{enumEstado}"  />
+                             </p:selectOneMenu>
+                            <p:message for="estado" display="tooltip"/>
+                        </h:panelGrid>
+                        <h:panelGrid columns="4">
+
+                            <p:commandButton actionListener="#{simbologiaBB.actualizarSimbologia()}" 
+                                             update="grupoSmb" 
+                                             icon="fa fa-check"
+                                             id="guardarSimbologia"
+                                             value="Guardar">
+                                <p:ajax update="toolTipSave" process="@this" /> 
+                            </p:commandButton>
+                            <p:tooltip id="toolTipSave" for="guardarSimbologia" value="Guardar" showEffect="fade" hideEffect="fade" position="top"/>
+
+                            <p:commandButton icon="fa fa-close" 
+                                             value="Cerrar"
+                                             id="cancelar"
+                                             update="grupoSmb" 
+                                             process="@this"
+                                             actionListener="#{simbologiaBB.cancelarEdicion()}">
+                                <p:ajax update="toolTipCancel" process="@this" />
+                                <p:resetInput target="panelSimbologia" />
+                            </p:commandButton>
+                            <p:tooltip id="toolTipCancel" for="cancelar" value="Regresar sin guardar cambios" showEffect="fade" hideEffect="fade" position="top"/>
+                        </h:panelGrid>
+                    </p:outputPanel>
+                </h:form>
+            </p:panel>
+        </h:panelGroup>
+    </ui:define>
+</ui:composition>

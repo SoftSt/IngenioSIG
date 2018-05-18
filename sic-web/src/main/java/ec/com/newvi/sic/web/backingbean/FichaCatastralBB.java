@@ -511,7 +511,7 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
         try {
             String rutaFotografias = parametrosServicio.obtenerParametroPorNombre(EnumParametroSistema.DIRECCION_IMAGENES_PREDIO, sesionBean.getSesion()).getValor().concat("/");
             if (imagenes.isEmpty()) {
-                listaFotosJpg.add("vacio.jpg");
+                listaFotosJpg.add(rutaFotografias.concat("vacio.jpg"));
             } else {
                 imagenes.forEach((imagen) -> {
                     listaFotosJpg.add(rutaFotografias.concat(imagen.getDirFotos().trim()).concat(".JPG"));
@@ -1145,7 +1145,7 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
         }
     }
 
-    public DefaultStreamedContent imprimir(EnumReporte tipoReporte, String formatoReporte) {
+    public DefaultStreamedContent imprimir(EnumReporte tipoReporte) {
         return generarReporteCatastro(tipoReporte, ReporteGenerador.FormatoReporte.PDF, obtenerDatosReporteCatastral(this.predio), PresentacionFichaCatastralDto.class);
     }
 
@@ -1334,7 +1334,8 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
     }
 
     public String obtenerCodigoLote() {
-        return predio.getNomCodigocatastral().trim().substring(0, 15);
+        String codigoLote = predio.getNomCodigocatastral().trim();
+        return codigoLote.substring(0, 10).concat(codigoLote.substring(11,19));
     }
 
     public void eliminarPiso(Integer codPiso) {

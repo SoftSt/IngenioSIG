@@ -158,5 +158,30 @@ public abstract class AdminSistemaBB extends SistemaBB {
         }
         return tablita;
     }
+    
+    protected DefaultStreamedContent generarReporteCertificado(EnumReporte tipoReporte, ReporteGenerador.FormatoReporte formatoReporte, List datosImpresion, Class claseImpresion) {
+        try {
+
+            Map<String, Object> parametrosReporte = new HashMap<>();
+
+            parametrosReporte.put(EnumParametrosReporte.NOMBRE_MODULO.getNombre(), "CERTIFICADO DE USO DE SUELO");
+
+            String xPath = "/lista".concat(claseImpresion.getSimpleName()).concat("//").concat(claseImpresion.getSimpleName());
+
+            Map<String, Class> paramRepA = new HashMap<String, Class>();
+            paramRepA.put(claseImpresion.getSimpleName(), claseImpresion);
+            paramRepA.put("lista".concat(claseImpresion.getSimpleName()), List.class);
+
+            return generarReporte(tipoReporte, datosImpresion, paramRepA, xPath, parametrosReporte, formatoReporte);
+
+        } catch (NewviExcepcion ex) {
+            LoggerNewvi.getLogNewvi(this.getClass()).error(ex, sesionBean.getSesion());
+            MensajesFaces.mensajeError(ex.getMessage());
+        } catch (Exception ex) {
+            LoggerNewvi.getLogNewvi(this.getClass()).error(ex, sesionBean.getSesion());
+            return null;
+        }
+        return null;
+    }
 
 }

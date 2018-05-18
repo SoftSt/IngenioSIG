@@ -26,22 +26,22 @@ import javax.validation.constraints.Size;
  * 
  */
 @Entity
-@Table(name = "cat_adm_uso_suelo", schema = "public")
-public class UsoSuelo implements Serializable {
+@Table(name = "cat_adm_tipologia", schema = "public")
+public class Tipologia implements Serializable {
     
     @Id
-    @SequenceGenerator(name = "USOSUELO_CODIGO_GENERATOR", initialValue = 1, allocationSize = 1, sequenceName = "cat_adm_uso_suelo_uss_cod_secuencial_seq", schema = "public")
-    @GeneratedValue(generator = "USOSUELO_CODIGO_GENERATOR")
-    @Column(name = "uss_cod_secuencial")
-    private Integer ussCod;
+    @SequenceGenerator(name = "TIPOLOGIA_CODIGO_GENERATOR", initialValue = 1, allocationSize = 1, sequenceName = "cat_adm_tipologia_tpl_cod_secuencial_seq", schema = "public")
+    @GeneratedValue(generator = "TIPOLOGIA_CODIGO_GENERATOR")
+    @Column(name = "tpl_cod_secuencial")
+    private Integer tplCod;
     
     @Size(max = 100)
-    @Column(name = "uss_txt_nombre")
-    private String ussNombre;
+    @Column(name = "tpl_txt_nombre")
+    private String tplNombre;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "uss_sts_estado")
-    private EnumEstadoRegistro ussEstado;
+    @Column(name = "tpl_sts_estado")
+    private EnumEstadoRegistro tplEstado;
         
     @Size(max = 50)
     @Column(name = "aud_ing_usu")
@@ -69,35 +69,35 @@ public class UsoSuelo implements Serializable {
     
     @Override
     public boolean equals(Object object) {
-        if (!(object instanceof UsoSuelo)) {
+        if (!(object instanceof Tipologia)) {
             return false;
         }
-        UsoSuelo usoSuelo = (UsoSuelo) object;
-        return !((this.ussCod == null && usoSuelo.ussCod != null) || (this.ussCod != null && !this.ussCod.equals(usoSuelo.ussCod)));
+        Tipologia tipologia = (Tipologia) object;
+        return !((this.tplCod == null && tipologia.tplCod != null) || (this.tplCod != null && !this.tplCod.equals(tipologia.tplCod)));
     }
 
-    public Integer getUssCod() {
-        return ussCod;
+    public Integer getTplCod() {
+        return tplCod;
     }
 
-    public void setUssCod(Integer ussCod) {
-        this.ussCod = ussCod;
+    public void setTplCod(Integer tplCod) {
+        this.tplCod = tplCod;
     }
 
-    public String getUssNombre() {
-        return ussNombre;
+    public String getTplNombre() {
+        return tplNombre;
     }
 
-    public void setUssNombre(String ussNombre) {
-        this.ussNombre = ussNombre;
+    public void setTplNombre(String tplNombre) {
+        this.tplNombre = tplNombre;
     }
 
-    public EnumEstadoRegistro getUssEstado() {
-        return ussEstado;
+    public EnumEstadoRegistro getTplEstado() {
+        return tplEstado;
     }
 
-    public void setUssEstado(EnumEstadoRegistro ussEstado) {
-        this.ussEstado = ussEstado;
+    public void setTplEstado(EnumEstadoRegistro tplEstado) {
+        this.tplEstado = tplEstado;
     }
 
     public String getAudIngUsu() {

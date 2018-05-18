@@ -50,7 +50,10 @@ public class GeoCatastroServicioImpl implements GeoCatastroServicio {
     }
 
     private Geometry obtenerGeometriaPredio(Predios predio, SesionDto sesion) throws NewviExcepcion {
-        String wktPredio = geoPredioFacade.obtenerBordePredio(predio.getCodCampo(), sesion);
+        String codigoLote = predio.getNomCodigocatastral().trim();
+        codigoLote = codigoLote.substring(0, 10).concat(codigoLote.substring(11, 19));
+
+        String wktPredio = geoPredioFacade.obtenerBordePredio(codigoLote, sesion);
         return UtilGeografico.obtenerGeometriaDeTexto(wktPredio);
     }
 
@@ -62,7 +65,9 @@ public class GeoCatastroServicioImpl implements GeoCatastroServicio {
     private List<String> obtenerCodigosPredios(List<Predios> prediosRegistrados) {
         List<String> listaCodigosPredios = new ArrayList<>();
         prediosRegistrados.forEach((predioRegistrado) -> {
-            listaCodigosPredios.add(predioRegistrado.getCodCampo().trim());
+            String codigoLote = predioRegistrado.getNomCodigocatastral().trim();
+            codigoLote = codigoLote.substring(0, 10).concat(codigoLote.substring(11, 19));
+            listaCodigosPredios.add(codigoLote);
         });
         return listaCodigosPredios;
     }
@@ -70,15 +75,15 @@ public class GeoCatastroServicioImpl implements GeoCatastroServicio {
     private Predios obtenerPredioDesdeGeoPredio(GeoPredio geoPredio, SesionDto sesion) throws NewviExcepcion {
         Predios nuevoPredio = new Predios();
         //nuevoPredio.setCodCatastral(geoPredio.getId());
-        nuevoPredio.setCodDpa(geoPredio.getCodigoDPA());
+        //nuevoPredio.setCodDpa(geoPredio.getCodigoDPA());
         nuevoPredio.setCodZona(geoPredio.getCodigoZona());
         nuevoPredio.setCodSector(geoPredio.getCodigoSector());
         nuevoPredio.setCodManzana(geoPredio.getCodigoManzana());
-        nuevoPredio.setCodPredio(geoPredio.getNumeroLote());
+        //nuevoPredio.setCodPredio(geoPredio.getNumeroLote());
         nuevoPredio.setNomCodigocatastral(geoPredio.getCodigoPredio());
         //nuevoPredio.setValAreaPredio(!ComunUtil.esNulo(geoPredio.getAreaPredio())? new BigDecimal(geoPredio.getAreaPredio()): null);
-        nuevoPredio.setValAreaPredio(geoPredioFacade.obtenerAreaPredioDesdeGeometria(geoPredio.getCodigoCampoPredio(), sesion));
-        nuevoPredio.setCodCampo(geoPredio.getCodigoCampoPredio());
+        //nuevoPredio.setValAreaPredio(geoPredioFacade.obtenerAreaPredioDesdeGeometria(geoPredio.getCodigoCampoPredio(), sesion));
+        //nuevoPredio.setCodCampo(geoPredio.getCodigoCampoPredio());
         return nuevoPredio;
     }
 
@@ -87,22 +92,21 @@ public class GeoCatastroServicioImpl implements GeoCatastroServicio {
         List<Predios> listaNuevosPredios = new ArrayList<>();
         Date fechaCreacion = ComunUtil.hoy();
 
-            try {
-                for (GeoPredio geoPredio : geoPredios) {
-                    Predios nuevoPredio;
+        try {
+            for (GeoPredio geoPredio : geoPredios) {
+                Predios nuevoPredio;
                 nuevoPredio = obtenerPredioDesdeGeoPredio(geoPredio, sesion);
-                    if (!ComunUtil.esNulo(nuevoPredio)) {
-                        //Registramos la auditoria de ingreso
-                        nuevoPredio.setAudIngIp(sesion.getDireccionIP());
-                        nuevoPredio.setAudIngUsu(sesion.getUsuarioRegistrado().getUsuPalabraclave().trim());
-                        nuevoPredio.setAudIngFec(fechaCreacion);
-                        listaNuevosPredios.add(nuevoPredio);
-                    }
+                if (!ComunUtil.esNulo(nuevoPredio)) {
+                    //Registramos la auditoria de ingreso
+                    nuevoPredio.setAudIngIp(sesion.getDireccionIP());
+                    nuevoPredio.setAudIngUsu(sesion.getUsuarioRegistrado().getUsuPalabraclave().trim());
+                    nuevoPredio.setAudIngFec(fechaCreacion);
+                    listaNuevosPredios.add(nuevoPredio);
                 }
-            } catch (NewviExcepcion ex) {
-                LoggerNewvi.getLogNewvi(this.getClass()).error(ex, sesion);
             }
-
+        } catch (NewviExcepcion ex) {
+            LoggerNewvi.getLogNewvi(this.getClass()).error(ex, sesion);
+        }
 
         return listaNuevosPredios;
     }

@@ -155,6 +155,28 @@ public enum EnumNewviExcepciones {
     // 601 al 700 excepciones de Tesoreria
     INF700("INF700", "descuento editado.", "El descuento se ha editado correctamente."),
     INF701("INF701", "multa editada.", "La Multa se ha editado correctamente."),
+    
+    INF702("INF702", "Zonificación ingresada.", "La zonificación se ha registrado correctamente."),
+    INF703("INF703", "Zonificación eliminada.", "La Zonificación se ha eliminado correctamente."),
+    INF704("INF704", "Zonificación editada.", "La Zonificación se ha editado correctamente."),
+    INF705("INF705", "Uso de Suelo ingresado.", "El Uso de Suelo se ha registrado correctamente."),
+    INF706("INF706", "Uso de Suelo eliminado.", "El Uso de Suelo se ha eliminado correctamente."),
+    INF707("INF707", "Uso de Suelo editado.", "El Uso de Suelo se ha editado correctamente."),
+    INF708("INF708", "Tipologia ingresada.", "La Tipologia se ha registrado correctamente."),
+    INF709("INF709", "Tipologia eliminada.", "La Tipologia se ha eliminado correctamente."),
+    INF710("INF710", "Tipologia editada.", "La Tipologia se ha editado correctamente."),
+    INF711("INF711", "Simbologia ingresada.", "La Simbologia se ha registrado correctamente."),
+    INF712("INF712", "Simbologia eliminada.", "La Simbologia se ha eliminado correctamente."),
+    INF713("INF713", "Simbologia editada.", "La Simbologia se ha editado correctamente."),
+    INF714("INF714", "Firma reporte ingresada.", "La Firma reporte se ha registrado correctamente."),
+    INF715("INF715", "Firma reporte eliminada.", "La Firma reporte se ha eliminado correctamente."),
+    INF716("INF716", "Firma reporte editada.", "La Firma reporte se ha editado correctamente."),
+    INF717("INF717", "Regulación Municipal ingresada.", "La Regulación Municipal se ha registrado correctamente."),
+    INF718("INF718", "Regulación Municipal eliminada.", "La Regulación Municipal se ha eliminado correctamente."),
+    INF719("INF719", "Regulación Municipal editada.", "La Regulación Municipal se ha editado correctamente."),
+    INF720("INF720", "Certificado ingresado.", "El Certificado se ha registrado correctamente."),
+    INF721("INF721", "Certificado eliminado.", "El Certificado se ha eliminado correctamente."),
+    INF722("INF722", "Certificado editado.", "El Certificado se ha editado correctamente."),
     ;
     
     private final String codigoExcepcion;

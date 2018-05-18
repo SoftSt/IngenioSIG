@@ -1,0 +1,391 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="f51b1e07-c6b1-462b-aa7e-8fb860fbde54">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="328"/>
+	<style name="table">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<parameter name="RUTA_IMAGENES" class="java.lang.String"/>
+	<parameter name="NOMBRE_MUNICIPIO" class="java.lang.String"/>
+	<parameter name="NOMBRE_MODULO" class="java.lang.String"/>
+	<parameter name="TITULO_REPORTE" class="java.lang.String"/>
+	<parameter name="IMAGEN_LOGO_MUNICIPIO_1" class="java.lang.String"/>
+	<field name="css_cod_secuencial" class="java.lang.String"/>
+	<field name="css_txt_nombre_local" class="java.lang.String"/>
+	<field name="css_txt_tipo_predio" class="java.lang.String"/>
+	<field name="css_txt_direccion" class="java.lang.String"/>
+	<field name="css_val_lote" class="java.lang.String"/>
+	<field name="css_val_manzana" class="java.lang.String"/>
+	<field name="css_txt_apellido_nombre" class="java.lang.String"/>
+	<field name="css_txt_domicilio_tributario" class="java.lang.String"/>
+	<field name="construir" class="java.lang.String"/>
+	<field name="renovar" class="java.lang.String"/>
+	<field name="ampliar" class="java.lang.String"/>
+	<field name="reformar" class="java.lang.String"/>
+	<field name="demoler" class="java.lang.String"/>
+	<field name="mensurar" class="java.lang.String"/>
+	<field name="subdividir" class="java.lang.String"/>
+	<field name="lotear" class="java.lang.String"/>
+	<field name="otro" class="java.lang.String"/>
+	<field name="unifam" class="java.lang.String"/>
+	<field name="colect" class="java.lang.String"/>
+	<field name="deposito" class="java.lang.String"/>
+	<field name="taller" class="java.lang.String"/>
+	<field name="comercio" class="java.lang.String"/>
+	<field name="servicio" class="java.lang.String"/>
+	<field name="industria" class="java.lang.String"/>
+	<field name="pub" class="java.lang.String"/>
+	<title>
+		<band height="79" splitType="Stretch">
+			<staticText>
+				<reportElement x="131" y="46" width="301" height="32" uuid="c46dfd52-bf5e-4f5f-926e-6389fb7e7fce"/>
+				<textElement textAlignment="Center">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[CERTIFICADO DE USO DE SUELO]]></text>
+			</staticText>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="688" splitType="Stretch">
+			<textField>
+				<reportElement x="5" y="59" width="155" height="20" uuid="1b3071e0-9d34-45c3-ac7a-52a9a5671086"/>
+				<textFieldExpression><![CDATA[$F{css_txt_nombre_local}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="131" y="123" width="100" height="20" uuid="d0e177c1-0c82-446d-8915-2019f9efc05f"/>
+				<textFieldExpression><![CDATA[$F{css_txt_tipo_predio}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="109" y="82" width="175" height="20" uuid="5fb0082c-8e1a-4bae-8e30-337db71057d0"/>
+				<textFieldExpression><![CDATA[$F{css_txt_apellido_nombre}]]></textFieldExpression>
+			</textField>
+			<rectangle>
+				<reportElement x="90" y="498" width="20" height="20" uuid="50186ee8-5130-4e7c-a936-a59f342bde99"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="190" y="498" width="20" height="20" uuid="fede8162-07f7-4252-a639-ed208331f6d6"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="90" y="539" width="20" height="20" uuid="726291a7-9d7d-4423-bfa1-25453933cf2d"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="90" y="539" width="20" height="20" uuid="d92c3d53-e1ee-4ff3-ba05-659e9f3930bb"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="190" y="539" width="20" height="20" uuid="89d94c0b-2fbc-4f64-b038-25cee2b63b52"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="90" y="581" width="20" height="20" uuid="f2c1daf9-7855-479c-a4b4-2347408331d7"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="190" y="581" width="20" height="20" uuid="72a98070-9a8f-4437-a5bc-81f5fedf4ec4"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="90" y="615" width="20" height="20" uuid="4ae67914-028e-47ed-a37a-44002e788052"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="190" y="615" width="20" height="20" uuid="15253ea6-ca4e-4457-b7e6-8958f7a88d13"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="25" y="498" width="65" height="18" uuid="8fbdf549-7c94-44b4-91e3-30f7c54d8943"/>
+				<text><![CDATA[CONSTRUIR]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="119" y="498" width="65" height="18" uuid="210f18eb-c36a-47fc-b86f-4ba580b2ba9f"/>
+				<text><![CDATA[RENOVAR]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="25" y="541" width="65" height="18" uuid="a36aedfb-0df0-47e3-8a87-80b0c8042bd9"/>
+				<text><![CDATA[AMPLIAR]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="25" y="581" width="65" height="18" uuid="f37292c0-dccf-4b37-a3bf-7f006ac3c3e6"/>
+				<text><![CDATA[DEMOLER]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="25" y="615" width="65" height="18" uuid="afaf1311-34f5-431d-a75c-483c8559657d"/>
+				<text><![CDATA[SUBDIVIDIR]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="119" y="541" width="65" height="18" uuid="a712118f-e3fd-45ef-b307-deadcdf5445f"/>
+				<text><![CDATA[REFORMAR]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="119" y="583" width="65" height="18" uuid="2187a85a-0554-4ec9-aadd-ef98d4e6b52e"/>
+				<text><![CDATA[MENSURAR]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="119" y="615" width="65" height="18" uuid="54555fba-e1e2-4390-ac27-2e5c9337f047"/>
+				<text><![CDATA[LOTEAR]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="89" y="652" width="20" height="20" uuid="db3df6ee-00b5-413f-a042-2e8a1bd782b5"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="25" y="652" width="65" height="18" uuid="89b28a0f-cfce-4827-9c76-5a40a39c94b3"/>
+				<text><![CDATA[OTROS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="54" y="467" width="136" height="20" uuid="3bd64314-ebd0-4218-8b56-a0ca7624912b"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[MOTIVO DE LA CONSULTA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="5" y="39" width="255" height="20" uuid="91e521b8-e45e-40fa-bafb-a9cb9bafb7f1"/>
+				<text><![CDATA[Ubicación geográfica de la implantación de un local ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="161" y="59" width="100" height="20" uuid="ff35e81d-6ef1-4ae4-aa70-3ac335280c8e"/>
+				<text><![CDATA[en el Cantón]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="5" y="79" width="100" height="20" uuid="cb7a83f7-e1bd-4743-a9d8-3bf35faea5ea"/>
+				<text><![CDATA[representante legal ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="9" y="123" width="100" height="20" uuid="42e80ac2-2459-4dfb-81c4-54bd4b5b8e52"/>
+				<text><![CDATA[TIPO DE PREDIO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="9" y="143" width="100" height="20" uuid="62bdee99-97cb-4078-bb51-bf7c093a2955"/>
+				<text><![CDATA[DIRECCIÓN]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="9" y="163" width="100" height="20" uuid="eb2a2d1c-55ec-41c9-ac16-3f84d4fd98de"/>
+				<text><![CDATA[PARROQUIA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="9" y="203" width="100" height="20" uuid="ddc50c0f-9eb1-4243-b164-65ee67d9d3e4"/>
+				<text><![CDATA[PROVINCIA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="9" y="183" width="100" height="20" uuid="23d3b2af-a3fd-481a-8d70-547c14386b34"/>
+				<text><![CDATA[CANTÓN]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="340" y="15" width="140" height="20" uuid="5fffa82c-12e9-40ec-9c1b-dfe1ae1dbab8"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[DATOS DEL USUARIO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="80" y="12" width="140" height="20" uuid="894c198d-de22-4a42-8b0a-975776fd582e"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[CROQUIS DE UBICACIÓN]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="295" y="116" width="260" height="107" uuid="d29b7c19-7be8-4320-9d9d-48fe47df1e8a"/>
+				<textFieldExpression><![CDATA[$F{css_txt_domicilio_tributario}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="295" y="93" width="100" height="20" uuid="162dd4d9-301b-41d5-b294-026aba53b324"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Domicilio: tributario]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="294" y="32" width="100" height="20" uuid="dc14e7d8-b603-405f-86e0-c876883e42d7"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Apellido y Nombre]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="395" y="32" width="160" height="20" uuid="54326223-754f-4d43-91ab-84e1294b6b2f"/>
+				<textFieldExpression><![CDATA[$F{css_txt_apellido_nombre}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="295" y="59" width="137" height="20" uuid="9b109547-ba7b-468b-a029-dde6ec65e95b"/>
+				<textFieldExpression><![CDATA[$F{css_txt_nombre_local}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="445" y="57" width="100" height="20" uuid="21a229e6-bb6f-43c5-81bd-46f40fcc4a41"/>
+				<text><![CDATA[(representante legal).]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="369" y="496" width="20" height="20" uuid="3c7d23ba-7644-4b0d-b651-8bc28a18b0f1"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="326" y="467" width="155" height="20" uuid="948dc00b-7da1-48fd-bb21-e2a3e3debcb4"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[DESTINO DE LA EDIFICACIÓN]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="295" y="498" width="65" height="18" uuid="b43a15a1-48e9-4208-890f-2834668d5d43"/>
+				<text><![CDATA[VIV. UNIFAM.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="416" y="496" width="65" height="18" uuid="14b63360-3eea-440f-9bdc-9820f779266a"/>
+				<text><![CDATA[VIV. COLECT]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="499" y="498" width="20" height="20" uuid="0bb396eb-74d4-4944-97c1-94c2e8c30089"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="295" y="541" width="65" height="18" uuid="9c56b6d2-915f-485d-948a-ba5c385064f7"/>
+				<text><![CDATA[DEPOSITO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="416" y="539" width="65" height="18" uuid="07fa20a0-ba50-47a0-9bfa-eab679b99e2d"/>
+				<text><![CDATA[TALLER]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="369" y="537" width="20" height="20" uuid="655fe266-2079-49f1-9c11-fa091c0d34bd"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="499" y="537" width="20" height="20" uuid="7c007065-4847-43a4-93a1-4dd02dab484a"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="295" y="583" width="65" height="18" uuid="b2231e4b-93de-40e9-ad8a-7177b5c61dc3"/>
+				<text><![CDATA[COMERCIO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="416" y="581" width="65" height="18" uuid="1fedfade-a32b-46dc-8b9b-fb72151e8523"/>
+				<text><![CDATA[SERVICIOS]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="370" y="579" width="20" height="20" uuid="a2cb1c79-a3d3-42c9-9a6e-a3b561228322"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="499" y="579" width="20" height="20" uuid="469aac0d-618c-4216-b3e3-235bd7e763e2"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="294" y="617" width="65" height="18" uuid="037f9590-d7c1-4b12-8e36-60a5dada2fef"/>
+				<text><![CDATA[INDUSTRIA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="416" y="615" width="83" height="18" uuid="180a765e-573d-472b-8946-7476a0e27a44"/>
+				<text><![CDATA[OCUP.ESP.PUB]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="370" y="613" width="20" height="20" uuid="ff2234b9-e47c-47b2-ace6-9adba1016037"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="499" y="613" width="20" height="20" uuid="08a62e00-c5c1-4d74-961b-e9105b59ec85"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="392" y="333" width="100" height="20" uuid="f45cd0bf-dcc0-47cb-a74a-16ee94a70e54"/>
+				<text><![CDATA[FIRMA]]></text>
+			</staticText>
+			<line>
+				<reportElement x="308" y="319" width="211" height="1" uuid="ee5bd05f-3dc5-48a5-b6db-c166236d5e29"/>
+			</line>
+			<rectangle>
+				<reportElement mode="Transparent" x="5" y="5" width="279" height="676" uuid="b4689f66-167b-4114-85ab-8bda15169037"/>
+			</rectangle>
+			<rectangle>
+				<reportElement mode="Transparent" x="290" y="6" width="261" height="676" uuid="bee29d0f-0590-4a73-9893-10909e655c1b"/>
+			</rectangle>
+			<textField>
+				<reportElement x="194" y="499" width="16" height="20" uuid="f22809b8-f510-4348-873f-c490e0c4553c"/>
+				<textFieldExpression><![CDATA[$F{renovar}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="373" y="581" width="19" height="20" uuid="d47e487f-cae5-44da-8eb3-40f7c9f19f73"/>
+				<textFieldExpression><![CDATA[$F{comercio}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="372" y="499" width="14" height="20" uuid="849c6300-d09c-4c28-91c5-7503f4747ef3"/>
+				<textElement>
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{unifam}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="502" y="499" width="18" height="20" uuid="10e6cf45-ea0b-4ffa-82cb-acde65cfabac"/>
+				<textFieldExpression><![CDATA[$F{colect}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="372" y="540" width="19" height="20" uuid="357290d1-d02c-49f7-b427-2713cdb78eb3"/>
+				<textFieldExpression><![CDATA[$F{deposito}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="501" y="540" width="18" height="20" uuid="6c9155ce-74e8-4e6f-9f48-1406d64a4861"/>
+				<textFieldExpression><![CDATA[$F{taller}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="502" y="582" width="17" height="20" uuid="ce3e4b06-67c7-4d20-bb92-0e582c27d35b"/>
+				<textFieldExpression><![CDATA[$F{servicio}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="373" y="616" width="14" height="20" uuid="66cdb3fc-4f64-460b-885b-261614edf043"/>
+				<textFieldExpression><![CDATA[$F{industria}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="502" y="615" width="21" height="20" uuid="a595b070-e484-4f17-95ef-96caee8e14e6"/>
+				<textFieldExpression><![CDATA[$F{pub}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="93" y="500" width="16" height="20" uuid="1739ca41-0831-4933-ae07-3dc25c31b32e"/>
+				<textFieldExpression><![CDATA[$F{construir}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="92" y="542" width="17" height="20" uuid="0c0a251b-2c68-4991-a775-be0fb6e5db18"/>
+				<textFieldExpression><![CDATA[$F{ampliar}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="192" y="542" width="18" height="20" uuid="90be37d9-550f-41a1-a2da-eb7a9b3833e7"/>
+				<textFieldExpression><![CDATA[$F{reformar}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="93" y="584" width="17" height="20" uuid="ce6f14fb-d08d-4544-9a07-21efb4f13f9f"/>
+				<textFieldExpression><![CDATA[$F{demoler}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="191" y="584" width="19" height="20" uuid="11125d11-9d20-4401-95f6-9ad25caacc62"/>
+				<textFieldExpression><![CDATA[$F{mensurar}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="93" y="618" width="16" height="20" uuid="5e2fe2ac-66d3-43c6-bb30-5221fa7df506"/>
+				<textFieldExpression><![CDATA[$F{subdividir}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="192" y="618" width="19" height="20" uuid="9b9da496-3edb-45dc-b690-99c3a33341a4"/>
+				<textFieldExpression><![CDATA[$F{lotear}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="91" y="655" width="18" height="20" uuid="21b5223a-b446-4556-9909-68d0bf5ce770"/>
+				<textFieldExpression><![CDATA[$F{otro}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="106" y="2" width="100" height="20" uuid="b979b8a1-ceac-487c-a010-e55c8ba099a4"/>
+				<text><![CDATA[css_txt_apellido_nombre]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="50">
+			<textField>
+				<reportElement x="106" y="24" width="100" height="20" uuid="ba768d3b-893b-4938-979a-effa592c53d4"/>
+				<textFieldExpression><![CDATA[$F{css_txt_apellido_nombre}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

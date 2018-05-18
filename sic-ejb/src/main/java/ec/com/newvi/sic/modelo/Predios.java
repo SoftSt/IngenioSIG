@@ -49,8 +49,8 @@ public class Predios implements Serializable {
     @OneToMany(mappedBy = "codCatastral")
     private List<UsoTierra> listaUsoTierra;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "codCatastral")
-    private List<UsoSuelo> listaUsoSuelo;
+    /*@OneToMany(cascade = CascadeType.ALL, mappedBy = "codCatastral")
+    private List<UsoSuelo> listaUsoSuelo;*/
 
     @OneToMany(mappedBy = "codCatastral")
     private List<Titulos> listaTitulos;
@@ -815,12 +815,12 @@ public class Predios implements Serializable {
         this.listaUsoTierra = listaUsoTierra;
     }
 
-    public List<UsoSuelo> getListaUsoSuelo() {
+    /*public List<UsoSuelo> getListaUsoSuelo() {
         return listaUsoSuelo;
     }
 
     public void setListaUsoSuelo(List<UsoSuelo> listaUsoSuelo) {
         this.listaUsoSuelo = listaUsoSuelo;
-    }
+    }*/
 
 }
