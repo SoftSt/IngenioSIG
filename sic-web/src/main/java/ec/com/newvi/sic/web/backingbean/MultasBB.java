@@ -60,6 +60,7 @@ public class MultasBB extends AdminTesoreriaBB {
         this.constantesInteresMora = new ConstantesInteresMora();
         actualizarListadoDescuentos();
         conmutarPantalla(EnumPantallaMantenimiento.PANTALLA_LISTADO);
+        establecerTituloXML();
         establecerTitulo(EnumEtiquetas.MULTA_LISTA_TITULO, 
                 EnumEtiquetas.MULTA_LISTA_ICONO,
                 EnumEtiquetas.MULTA_LISTA_DESCRIPCION);

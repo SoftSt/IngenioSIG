@@ -1,0 +1,441 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                template="/WEB-INF/templates/default.xhtml"
+                xmlns:p="http://primefaces.org/ui">
+    <ui:define name="content">
+        <h:panelGroup id="grupoNuevosElementos">
+            <p:panel id="panelListaNuevosElementos" rendered="#{nuevosElementosPredioBB.esPantallaActual('PANTALLA_LISTADO')}">
+                <h:form id="formularioListaNuevosElementos">
+
+                    <p:growl id="growl" showDetail="true"/>
+                    <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true"/>
+                    <p>
+                        <h2>
+                            <h:outputText styleClass="#{nuevosElementosPredioBB.iconoPantalla.textoEtiqueta}"/>
+                            <h:outputText value=" #{nuevosElementosPredioBB.tituloPantalla.textoEtiqueta}"/>
+                        </h2>
+
+                    </p>
+                    <p>#{nuevosElementosPredioBB.descripcionPantalla.textoEtiqueta}</p>
+
+                    <p:tooltip />
+                    <p:outputPanel id="opListaNuevosElementos">
+
+                        <br/>
+                        <div style="font-size:1.2em;font-weight:bold;">Dominios</div>
+                        <p:separator />
+
+                        <p:accordionPanel id="aPanel">
+                            <p:tab title="Caracteristicas de Terreno">
+                                <h:panelGrid id="pgTerreno">
+                                    <p:commandButton value="Agregar Descripcion"
+                                                     actionListener="#{nuevosElementosPredioBB.abrirDialogDescripcionTerreno()}"
+                                                     id="btnNuevaDescripcionTerreno"
+                                                     update="listaDescripcionTerrenoSeleccionados">
+                                        <p:ajax update="toolTipInsertDescripcion" process="@this" />
+                                    </p:commandButton>
+
+
+                                    <p:tooltip id="toolTipInsertDescripcion" for="btnNuevaDescripcionTerreno" value="Agregar nuevo descripcion de terreno" showEffect="fade" hideEffect="fade" position="bottom"/>
+
+                                    <p:dataTable id="listaDescripcionTerrenoSeleccionados" var="descripcionTerreno" widgetVar="listaDescripcionTerrenoSeleccionadosTabla"
+                                                 value="#{nuevosElementosPredioBB.listaTerrenoSeleccionados}" rowKey="#{descripcionTerreno.codTerrenodetalle}" 
+                                                 paginator="true" rows="10" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" 
+                                                 rowsPerPageTemplate="10,15,20" 
+                                                 emptyMessage="No se han encontrado resultados" 
+                                                 paginatorPosition="bottom">
+
+                                        <p:column headerText="Grupo" sortBy="#{descripcionTerreno.stsGrupo}">
+                                            <h:outputText value="#{descripcionTerreno.stsGrupo}" />
+                                        </p:column>
+
+                                        <p:column headerText="Característica" sortBy="#{descripcionTerreno.stsSubGrupo}">
+                                            <h:outputText value="#{descripcionTerreno.stsSubGrupo}" />
+                                        </p:column>
+
+                                        <p:column headerText="Detalle" sortBy="#{descripcionTerreno.stsDescripcion}">
+                                            <h:outputText value="#{descripcionTerreno.stsDescripcion}" />
+                                        </p:column>
+
+                                        <p:column headerText="Eliminar">
+                                            <p:commandButton actionListener="#{nuevosElementosPredioBB.eliminarTerreno(descripcionTerreno)}" 
+                                                             icon="fa fa-trash"
+                                                             id="btnEliminarTerreno"
+                                                             update="grupoNuevosElementos">
+                                                <p:confirm header="Eliminar Terreno" message="¿Está seguro?" icon="ui-icon-alert" />
+                                                <p:ajax update="toolTipDeleteTerreno" process="@this" /> 
+                                            </p:commandButton>
+                                            <p:tooltip id="toolTipDeleteTerreno" for="btnEliminarTerreno" value="Eliminar Terreno" showEffect="fade" hideEffect="fade" position="bottom"/>
+                                        </p:column>
+
+                                    </p:dataTable>
+                                </h:panelGrid>
+                            </p:tab>
+                            <p:tab title="Infraestructura de Servicios y Cerramiento">
+                                <h:panelGrid id="pgServicios">
+                                    <p:commandButton value="Agregar Servicio"
+                                                     actionListener="#{nuevosElementosPredioBB.abrirDialogServicios()}"
+                                                     id="btnNuevoServicio"
+                                                     update="listaServiciosBasicosSeleccionados">
+                                        <p:ajax update="toolTipInsertServicio" process="@this" />
+                                    </p:commandButton>
+
+                                    <p:tooltip id="toolTipInsertServicio" for="btnNuevoServicio" value="Agregar nuevo servicio" showEffect="fade" hideEffect="fade" position="bottom"/>
+
+
+                                    <p:dataTable id="listaServiciosBasicosSeleccionados" var="servicios" editable="true" widgetVar="listaSeviciosBasicosSeleccionadosTabla"
+                                                 value="#{nuevosElementosPredioBB.listaServiciosSeleccionados}" rowKey="#{servicios.codServicios}" filteredValue=""
+                                                 paginator="true" rows="10" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" 
+                                                 rowsPerPageTemplate="10,15,20" 
+                                                 emptyMessage="No se han encontrado resultados" 
+                                                 paginatorPosition="bottom">
+
+                                        <p:column headerText="Grupo" sortBy="#{servicios.stsGrupo}">
+                                            <h:outputText value="#{servicios.stsGrupo}" />
+                                        </p:column>
+
+                                        <p:column headerText="Servicios" sortBy="#{servicios.stsSubGrupo}">
+                                            <h:outputText value="#{servicios.stsSubGrupo}" />
+                                        </p:column>
+
+                                        <p:column headerText="Descripción" sortBy="#{servicios.stsDescripcion}">
+                                            <h:outputText value="#{servicios.stsDescripcion}" />
+                                        </p:column>
+
+                                        <p:column headerText="Eliminar">
+                                            <p:commandButton actionListener="#{nuevosElementosPredioBB.eliminarServicio(servicios)}" 
+                                                             icon="fa fa-trash"
+                                                             id="btnEliminarServicio"
+                                                             update="grupoNuevosElementos">
+                                                <p:confirm header="Eliminar Servicio" message="¿Está seguro?" icon="ui-icon-alert" />
+                                                <p:ajax update="toolTipDeleteServicio" process="@this" /> 
+                                            </p:commandButton>
+                                            <p:tooltip id="toolTipDeleteServicio" for="btnEliminarServicio" value="Eliminar Servicio" showEffect="fade" hideEffect="fade" position="bottom"/>
+                                        </p:column>
+                                    </p:dataTable>
+                                </h:panelGrid>
+                            </p:tab>
+                            <p:tab title="Tenencia">
+                                <h:panelGrid id="pgTenencia">
+                                    <p:commandButton value="Agregar tenencia"
+                                                     actionListener="#{nuevosElementosPredioBB.abrirDialogTenencia()}"
+                                                     id="btnNuevaTenecia"
+                                                     update="listaTenenciaPropietarioSeleccionados">
+                                        <p:ajax update="toolTipInsertDescripcion" process="@this" />
+                                    </p:commandButton>
+                                    <p:tooltip id="toolTipInsertTenencia" for="btnNuevaTenecia" value="Agregar información tenencia" showEffect="fade" hideEffect="fade" position="bottom"/>
+
+                                    <p:dataTable id="listaTenenciaPropietarioSeleccionados" var="tenencia" widgetVar="listaTenenciaPropietarioSeleccionadosTabla"
+                                                 value="#{nuevosElementosPredioBB.listaTenenciaSeleccionados}" rowKey="#{tenencia.codTenencia}" 
+                                                 paginator="true" rows="10" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" 
+                                                 rowsPerPageTemplate="10,15,20" 
+                                                 emptyMessage="No se han encontrado resultados" 
+                                                 paginatorPosition="bottom">
+
+                                        <p:column headerText="Grupo" sortBy="#{tenencia.stsGrupo}">
+                                            <h:outputText value="#{tenencia.stsGrupo}" />
+                                        </p:column>
+
+                                        <p:column headerText="SubGrupo" sortBy="#{tenencia.stsSubgrupo}">
+                                            <h:outputText value="#{tenencia.stsSubgrupo}" />
+                                        </p:column>
+
+                                        <p:column headerText="Descripción" sortBy="#{tenencia.stsDescripcion}">
+                                            <h:outputText value="#{tenencia.stsDescripcion}" />
+                                        </p:column>
+
+                                        <p:column headerText="Eliminar">
+                                            <p:commandButton actionListener="#{nuevosElementosPredioBB.eliminarTenencia(tenencia)}" 
+                                                             icon="fa fa-trash"
+                                                             id="btnEliminarTenecia"
+                                                             update="grupoNuevosElementos">
+                                                <p:confirm header="Eliminar Servicio" message="¿Está seguro?" icon="ui-icon-alert" />
+                                                <p:ajax update="toolTipDeleteTenencia" process="@this" /> 
+                                            </p:commandButton>
+                                            <p:tooltip id="toolTipDeleteTenencia" for="btnEliminarTenecia" value="Eliminar Tenecia" showEffect="fade" hideEffect="fade" position="bottom"/>
+                                        </p:column>
+
+                                    </p:dataTable>
+                                </h:panelGrid>
+                            </p:tab>
+                        </p:accordionPanel>
+                        <h:panelGrid style="float:right;" id="pgFooter">
+                            <f:facet name="footer">
+                                <p:commandButton value="Continuar Selección Predios"
+                                                 id="btnContinuar"
+                                                 update="grupoNuevosElementos"
+                                                 disabled="#{nuevosElementosPredioBB.hayElementosSeleccionados}"
+                                                 icon="fa fa-arrow-right"
+                                                 actionListener="#{nuevosElementosPredioBB.avanzarPaginaSiguiente()}"
+                                                 style="float:right;"/>
+                            </f:facet>
+
+                        </h:panelGrid>
+
+                        <p:dialog header="Agregar nuevos servicios" widgetVar="dlgServicios" appendTo="@(body)" modal="true" showEffect="fade" hideEffect="fade" resizable="false" closable="true" width="550" height="400">
+                            <p:growl id="messagesServicios" showDetail="true" escape="false"/>
+                            <p:treeTable value="#{nuevosElementosPredioBB.listaArbolServicios}"
+                                         id="listaArbolServicios" var="servicio"
+                                         selectionMode="single" selection="#{nuevosElementosPredioBB.servicioSeleccionado}" >
+
+                                <p:ajax event="select" listener="#{nuevosElementosPredioBB.agregarServicioSeleccionado}" update="formularioListaNuevosElementos:aPanel:pgServicios formularioListaNuevosElementos:pgFooter" />
+
+                                <p:column headerText="Descripcion" sortBy="#{servicio.descripcion}">
+                                    <h:outputText value="#{servicio.descripcion}"/>
+                                </p:column>            
+
+                            </p:treeTable>
+                        </p:dialog>
+                    </p:outputPanel>
+                </h:form>
+
+
+                <p:dialog header="Agregar nuevos descripcion al terreno" widgetVar="dlgDescripcionTerreno" appendTo="@(body)" modal="true" showEffect="fade" hideEffect="fade" resizable="false" closable="true" width="550" height="400">
+                    <p:treeTable value="#{nuevosElementosPredioBB.listaArbolDescripcionTerreno}"
+                                 id="listaArbolDescripcionTerreno" var="descripcionTerreno"
+                                 selectionMode="single" selection="#{nuevosElementosPredioBB.descripcionTerrenoSeleccionado}" >
+
+                        <p:ajax event="select" listener="#{nuevosElementosPredioBB.agregarDescripcionTerrenoSeleccionada}" update="formularioListaNuevosElementos:aPanel:pgTerreno formularioListaNuevosElementos:pgFooter" />
+
+                        <p:column headerText="Descripcion" sortBy="#{descripcionTerreno.descripcion}">
+                            <h:outputText value="#{descripcionTerreno.descripcion}"/>
+                        </p:column>            
+
+                    </p:treeTable>
+                </p:dialog>
+                <p:dialog header="Agregar elementos de tenencia" widgetVar="dlgTenencia" appendTo="@(body)" modal="true" showEffect="fade" hideEffect="fade" resizable="false" closable="true" width="550" height="400">
+                    <p:treeTable value="#{nuevosElementosPredioBB.listaArbolTenencia}"
+                                 id="listaArbolTenencia" var="tenencia"
+                                 selectionMode="single" selection="#{nuevosElementosPredioBB.tenenciaSeleccionada}" >
+
+                        <p:ajax event="select" listener="#{nuevosElementosPredioBB.agregarTenenciaSeleccionada}" update="formularioListaNuevosElementos:aPanel:pgTenencia formularioListaNuevosElementos:pgFooter" />
+
+                        <p:column headerText="Descripcion" sortBy="#{tenencia.descripcion}">
+                            <h:outputText value="#{tenencia.descripcion}"/>
+                        </p:column>            
+
+                    </p:treeTable>
+                </p:dialog>
+
+            </p:panel>
+
+            <p:panel id="panelNuevosElementos" rendered="#{nuevosElementosPredioBB.esPantallaActual('PANTALLA_EDICION')}">
+                <h:form id="formularioNuevosElementos">
+
+                    <p:growl id="growl" showDetail="true"/>
+                    <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true"/>
+                    <p>
+                        <h2>
+                            <h:outputText styleClass="#{nuevosElementosPredioBB.iconoPantalla.textoEtiqueta}"/>
+                            <h:outputText value=" #{nuevosElementosPredioBB.tituloPantalla.textoEtiqueta}"/>
+                        </h2>
+                    </p>
+                    <p>#{nuevosElementosPredioBB.descripcionPantalla.textoEtiqueta}</p>
+                    <p:tooltip />
+                    <p:outputPanel id="opNuevosElementos">
+                        <h:panelGrid>
+                            <br/>
+                            <div style="font-size:1em;font-weight:bold;">Descripción de Terreno</div>
+                            <p:separator />
+                            <p:dataList value="#{nuevosElementosPredioBB.listaTerrenoSeleccionados}" var="descripcionTerreno" type="ordered" emptyMessage="No se ha seleccionado registros">
+                                #{descripcionTerreno.stsGrupo}, #{descripcionTerreno.stsSubGrupo}, #{descripcionTerreno.stsDescripcion}
+                            </p:dataList>
+                            <br/>
+                            <div style="font-size:1em;font-weight:bold;">Infraestructura de Servicios y Cerramiento</div>
+                            <p:separator />
+                            <p:dataList value="#{nuevosElementosPredioBB.listaServiciosSeleccionados}" var="servicios" type="ordered" emptyMessage="No se ha seleccionado registros">
+                                #{servicios.stsGrupo}, #{servicios.stsSubGrupo}, #{servicios.stsDescripcion}
+                            </p:dataList>
+                            <br/>
+                            <div style="font-size:1em;font-weight:bold;">Características de Tenencia</div>
+                            <p:separator />
+                            <p:dataList value="#{nuevosElementosPredioBB.listaTenenciaSeleccionados}" var="tenencia" type="ordered" emptyMessage="No se ha seleccionado registros">
+                                #{tenencia.stsGrupo}, #{tenencia.stsSubgrupo}, #{tenencia.stsDescripcion}
+                            </p:dataList>
+
+                            <br/>
+                            <div style="font-size:1.2em;font-weight:bold;">Predios a modificar</div>
+                            <p:separator />
+                            <p:tabView dynamic="true" >
+                                <p:tab id="tabLista" title="Por lista">
+                                    <p:dataTable id="listaFichasEditables" var="fichasEditables" widgetVar="listaAvaluoProcesadoTabla" selection="#{nuevosElementosPredioBB.listaFichasSeleccionadas}"
+                                                 value="#{nuevosElementosPredioBB.listaFichas}" rowKey="#{fichasEditables.predio.codCatastral}" filteredValue="#{nuevosElementosPredioBB.listaFichaFiltradas}"
+                                                 paginator="true" rows="7" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" 
+                                                 rowsPerPageTemplate="7,15,30" 
+                                                 resizableColumns="true"
+                                                 style="font-size: 0.8em;" sortBy="#{fichasEditables.predio.nomCodigocatastral}"
+                                                 emptyMessage="No se han encontrado resultados" 
+                                                 paginatorPosition="bottom">
+
+                                        <p:column selectionMode="multiple" width="20" style="text-align:center" priority="1"/>
+
+                                        <p:column headerText="Codigo" sortBy="#{fichasEditables.predio.nomCodigocatastral}" filterBy="#{fichasEditables.predio.nomCodigocatastral}">
+                                            <h:outputText value="#{fichasEditables.predio.nomCodigocatastral}" />
+                                        </p:column>
+
+                                        <p:column headerText="Propietario CI/RUC" sortBy="#{fichasEditables.contribuyentePropiedad.codCedularuc}" filterBy="#{fichasEditables.contribuyentePropiedad.codCedularuc}">
+                                            <h:outputText value="#{fichasEditables.contribuyentePropiedad.codCedularuc}"/>
+                                        </p:column>
+
+                                        <p:column headerText="Nombre Propietario" sortBy="#{fichasEditables.contribuyentePropiedad.nomApellidos} #{fichasEditables.contribuyentePropiedad.nomNombres}" filterBy="#{fichasEditables.contribuyentePropiedad.nomApellidos} #{fichasEditables.contribuyentePropiedad.nomNombres}" >
+                                            <h:outputText value="#{fichasEditables.contribuyentePropiedad.nomApellidos} #{fichasEditables.contribuyentePropiedad.nomNombres}"/>
+                                        </p:column>
+
+                                    </p:dataTable>
+                                </p:tab>
+                                <p:tab id="tabMapa" title="Por mapa">
+
+                                </p:tab>
+                            </p:tabView>
+
+                            <f:facet name="footer">
+                                <p:commandButton value="Verificar cambios"
+                                                 id="btnVerificarCambios"
+                                                 actionListener="#{nuevosElementosPredioBB.avanzarPaginaVerificacion()}"
+                                                 update="grupoNuevosElementos"
+                                                 icon="fa fa-arrow-right"
+                                                 style="float:right;">
+                                </p:commandButton>
+                                <p:commandButton value="Regresar Selección Dominios"
+                                                 id="btnRegresarDominios"
+                                                 update="grupoNuevosElementos"
+                                                 icon="fa fa-arrow-left"
+                                                 actionListener="#{nuevosElementosPredioBB.regresarPaginaAnterior()}"
+                                                 style="float:left;">
+                                </p:commandButton>
+                            </f:facet>
+
+                        </h:panelGrid>
+
+                    </p:outputPanel>
+                </h:form>
+                
+                <p:dialog header="Seleccione predios" widgetVar="dlgPredios" appendTo="@(body)" modal="true" showEffect="fade" hideEffect="fade" resizable="false" closable="true">
+                    
+                </p:dialog>
+            </p:panel>
+            <p:panel id="panelVerificacionElementos" rendered="#{nuevosElementosPredioBB.esPantallaActual('PANTALLA_ASIGNACION')}">
+                <h:form id="formularioVerificacionElementos">
+
+                    <p:growl id="growl" showDetail="true"/>
+                    <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true"/>
+                    <p>
+                        <h2>
+                            <h:outputText styleClass="#{nuevosElementosPredioBB.iconoPantalla.textoEtiqueta}"/>
+                            <h:outputText value=" #{nuevosElementosPredioBB.tituloPantalla.textoEtiqueta}"/>
+                        </h2>
+                    </p>
+                    <p>#{nuevosElementosPredioBB.descripcionPantalla.textoEtiqueta}</p>
+                    <p:tooltip />
+                    <p:outputPanel id="opVerificacionElementos">
+                        <h:panelGrid class="ui-g-12">
+
+                            <br/>
+                            <div style="font-size:1em;font-weight:bold;">Descripción de Terreno</div>
+                            <p:separator />
+                            <p:dataList value="#{nuevosElementosPredioBB.listaTerrenoProcesados}" var="descripcionTerreno" type="ordered" emptyMessage="No se ha seleccionado registros">
+                                #{descripcionTerreno.stsGrupo}, #{descripcionTerreno.stsSubGrupo}, #{descripcionTerreno.stsDescripcion}
+                            </p:dataList>
+                            <br/>
+                            <div style="font-size:1em;font-weight:bold;">Infraestructura de Servicios y Cerramiento</div>
+                            <p:separator />
+                            <p:dataList value="#{nuevosElementosPredioBB.listaServiciosProcesados}" var="servicios" type="ordered" emptyMessage="No se ha seleccionado registros">
+                                #{servicios.stsGrupo}, #{servicios.stsSubGrupo}, #{servicios.stsDescripcion}
+                            </p:dataList>
+                            <br/>
+                            <div style="font-size:1em;font-weight:bold;">Características de Tenencia</div>
+                            <p:separator />
+                            <p:dataList value="#{nuevosElementosPredioBB.listaTenenciaProcesados}" var="tenencia" type="ordered" emptyMessage="No se ha seleccionado registros">
+                                #{tenencia.stsGrupo}, #{tenencia.stsSubgrupo}, #{tenencia.stsDescripcion}
+                            </p:dataList>
+                            <br/>
+                            <div style="font-size:1.2em;font-weight:bold;">A los siguentes Predios</div>
+                            <p:separator />
+                            <p:dataList value="#{nuevosElementosPredioBB.listaFichasProcesados}" style="font-size: 0.8em;" var="fichaProcesado" type="ordered" emptyMessage="No se ha seleccionado registros">
+                                #{fichaProcesado.predio.nomCodigocatastral}, #{fichaProcesado.contribuyentePropiedad.nomApellidos} #{fichaProcesado.contribuyentePropiedad.nomNombres}
+                            </p:dataList>
+
+                            <f:facet name="footer">
+                                <p:commandButton value="Realizar Registro"
+                                                 id="btnEjecutar"
+                                                 actionListener="#{nuevosElementosPredioBB.ejecutarRegistro()}"
+                                                 update="grupoNuevosElementos"
+                                                 icon="fa fa-save"
+                                                 style="float:right;">
+                                </p:commandButton>
+                                <p:commandButton value="Regresar Seleccion Predios"
+                                                 id="btnRegresae"
+                                                 update="grupoNuevosElementos"
+                                                 icon="fa fa-arrow-left"
+                                                 actionListener="#{nuevosElementosPredioBB.avanzarPaginaSiguiente()}"
+                                                 style="float:left;">
+                                </p:commandButton>
+                            </f:facet>
+
+                        </h:panelGrid>
+
+                    </p:outputPanel>
+                </h:form>
+            </p:panel>
+            <p:panel id="panelConsultaElementos" rendered="#{nuevosElementosPredioBB.esPantallaActual('PANTALLA_BUSQUEDA')}">
+                <h:form id="formularioConsultaElementos">
+
+                    <p:growl id="growl" showDetail="true"/>
+                    <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true"/>
+                    <p>
+                        <h2>
+                            <h:outputText styleClass="#{nuevosElementosPredioBB.iconoPantalla.textoEtiqueta}"/>
+                            <h:outputText value=" #{nuevosElementosPredioBB.tituloPantalla.textoEtiqueta}"/>
+                        </h2>
+                    </p>
+                    <p>#{nuevosElementosPredioBB.descripcionPantalla.textoEtiqueta}</p>
+                    <p:tooltip />
+                    <p:outputPanel id="opConsultaElementos">
+                        <h:panelGrid class="ui-g-12">
+
+                            <br/>
+                            <div style="font-size:1em;font-weight:bold;">Descripción de Terreno</div>
+                            <p:separator />
+                            <p:dataList value="#{nuevosElementosPredioBB.listaTerrenoProcesados}" var="descripcionTerreno" type="ordered" emptyMessage="No se ha seleccionado registros">
+                                #{descripcionTerreno.stsGrupo}, #{descripcionTerreno.stsSubGrupo}, #{descripcionTerreno.stsDescripcion}
+                            </p:dataList>
+                            <br/>
+                            <div style="font-size:1em;font-weight:bold;">Infraestructura de Servicios y Cerramiento</div>
+                            <p:separator />
+                            <p:dataList value="#{nuevosElementosPredioBB.listaServiciosProcesados}" var="servicios" type="ordered" emptyMessage="No se ha seleccionado registros">
+                                #{servicios.stsGrupo}, #{servicios.stsSubGrupo}, #{servicios.stsDescripcion}
+                            </p:dataList>
+                            <br/>
+                            <div style="font-size:1em;font-weight:bold;">Características de Tenencia</div>
+                            <p:separator />
+                            <p:dataList value="#{nuevosElementosPredioBB.listaTenenciaProcesados}" var="tenencia" type="ordered" emptyMessage="No se ha seleccionado registros">
+                                #{tenencia.stsGrupo}, #{tenencia.stsSubgrupo}, #{tenencia.stsDescripcion}
+                            </p:dataList>
+                            <br/>
+                            <div style="font-size:1.2em;font-weight:bold;">A los siguentes Predios</div>
+                            <p:separator />
+                            <p:dataList value="#{nuevosElementosPredioBB.listaFichasProcesados}" style="font-size: 0.8em;" var="fichaProcesado" type="ordered" emptyMessage="No se ha seleccionado registros">
+                                #{fichaProcesado.predio.nomCodigocatastral}, #{fichaProcesado.contribuyentePropiedad.nomApellidos} #{fichaProcesado.contribuyentePropiedad.nomNombres}
+                            </p:dataList>
+
+                            <f:facet name="footer">
+                                <p:commandButton value="Regresar al inicio"
+                                                 id="btnRegresarInicio"
+                                                 actionListener="#{nuevosElementosPredioBB.regresarPaginaInicial()}"
+                                                 update="grupoNuevosElementos"
+                                                 icon="fa fa-arrow-left"
+                                                 style="float:left;">
+                                </p:commandButton>
+                            </f:facet>
+
+                        </h:panelGrid>
+
+                    </p:outputPanel>
+                </h:form>
+            </p:panel>
+        </h:panelGroup>
+    </ui:define>
+</ui:composition>

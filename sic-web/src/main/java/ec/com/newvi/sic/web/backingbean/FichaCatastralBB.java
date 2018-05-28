@@ -776,6 +776,9 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
 
     public void actualizarPisoIngresado(Pisos piso) {
         try {
+            if(ComunUtil.esNulo(piso.getStsEstado())){
+                piso.setStsEstado("Estable");
+            }
             catastroServicio.actualizarPiso(piso, sesionBean.getSesion());
             LoggerNewvi.getLogNewvi(this.getClass()).info(EnumNewviExcepciones.INF345.presentarMensaje(), sesionBean.getSesion());
             MensajesFaces.mensajeInformacion(EnumNewviExcepciones.INF345.presentarMensaje());
@@ -1094,8 +1097,9 @@ public class FichaCatastralBB extends AdminFichaCatastralBB {
         try {
             String formatoMonedaSistema = parametrosServicio.obtenerParametroPorNombre(EnumParametroSistema.FORMATO_MONEDAS, sesionBean.getSesion()).getValor();
             this.nodo = catastroServicio.obtenerAvaluoPredio(this.predio, parametrosServicio.consultarDominios(), formatoMonedaSistema, sesionBean.getSesion());
-            catastroServicio.registrarArbol(this.nodo, this.predio, sesionBean.getSesion());
-            generarArbolAvaluo(catastroServicio.listarAvaluoDto("Nodo", this.predio));
+            //catastroServicio.registrarArbol(this.nodo, this.predio, sesionBean.getSesion());
+            //generarArbolAvaluo(catastroServicio.listarAvaluoDto("Nodo", this.predio));
+            generarArbolAvaluo(this.nodo);
         } catch (NewviExcepcion e) {
             LoggerNewvi.getLogNewvi(this.getClass()).error(EnumNewviExcepciones.ERR010.presentarMensajeCodigo(), e, sesionBean.getSesion());
             MensajesFaces.mensajeError(e.getMessage());

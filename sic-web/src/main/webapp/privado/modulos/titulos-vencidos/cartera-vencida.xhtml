@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                template="/WEB-INF/templates/default.xhtml"
+                xmlns:p="http://primefaces.org/ui">
+    <ui:define name="content">
+        <h:panelGroup id="grupoTitulosVencidos">
+            <p:panel id="panelListaTitulosVencidos" rendered="#{carteraVencidaBB.esPantallaActual('PANTALLA_LISTADO')}">
+                <h:form id="formularioListaTitulosVencidos">
+
+                    <p:growl id="growl" showDetail="true"/>
+                    <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true"/>
+                    <p>
+                        <h2>
+                            <h:outputText styleClass="#{carteraVencidaBB.iconoPantalla.textoEtiqueta}"/>
+                            <h:outputText value=" #{carteraVencidaBB.tituloPantalla.textoEtiqueta}"/>
+                        </h2>
+                    </p>
+                    <p>#{carteraVencidaBB.descripcionPantalla.textoEtiqueta}</p>
+                    <p:tooltip />
+                    <p:outputPanel id="opListaTitulosDesmarcado">
+
+                        <h:panelGrid class="ui-g-12">
+                            <h:panelGrid columns="2">
+                                <p:commandButton actionListener="#{carteraVencidaBB.buscarTitulosVencidos}"
+                                                 icon="fa fa-search"
+                                                 value="Buscar"
+                                                 update="grupoTitulosVencidos"
+                                                 id="btnTipoTitulo"
+                                                 onclick="PF('statusDialog').show();"
+                                                 oncomplete="PF('statusDialog').hide();">
+                                </p:commandButton>
+                                <p:splitButton id="imprimir" value="Imprimir" icon="fa fa-print">
+                                    <p:menuitem icon="fa fa-file-pdf-o" value="Imprimir en PDF" ajax="false" update="grupoTitulosVencidos" onclick="PrimeFaces.monitorDownload(start, stop);">
+                                        <p:fileDownload value="#{carteraVencidaBB.imprimir('CARTERA_VENCIDA','PDF')}"/>
+                                    </p:menuitem>
+                                    <p:menuitem icon="fa fa-file-excel-o" value="Imprimir en XLSX" ajax="false" update="grupoTitulosVencidos" onclick="PrimeFaces.monitorDownload(start, stop);">
+                                        <p:fileDownload value="#{carteraVencidaBB.imprimir('CARTERA_VENCIDA','XLSX')}"/>
+                                    </p:menuitem>
+                                </p:splitButton>
+
+                            </h:panelGrid>
+
+                            <p:dataTable id="listaTitulosRegistrados" var="tituloRegistrado" widgetVar="listaTitulosRegistradosTabla"
+                                         value="#{carteraVencidaBB.listaTitulosRegistradosVencidos}" rowKey="#{tituloRegistrado.codTitulos}" filteredValue="#{carteraVencidaBB.listaTitulosRegistradosVencidosFiltrados}"
+                                         paginator="true" rows="10" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" 
+                                         rowsPerPageTemplate="10,30,50" 
+                                         resizableColumns="false"
+                                         style="font-size: 0.8em;" sortBy="#{tituloRegistrado.codTitulos}"
+                                         emptyMessage="No se han encontrado resultados" 
+                                         paginatorPosition="bottom">
+
+                                <p:column headerText="Fecha emisión:">
+                                    <h:outputText value="#{tituloRegistrado.fecEmision}"/>
+                                </p:column>
+
+                                <p:column headerText="Cod. Catastral" >
+                                    <h:outputText value="#{tituloRegistrado.codCatastral.nomCodigocatastral}"/>
+                                </p:column>
+
+                                <p:column headerText="Contribuyente" >
+                                    <h:outputText value="#{tituloRegistrado.codPropietarios.contribuyente.nomApellidos} #{tituloRegistrado.codPropietarios.contribuyente.nomNombres}"/>
+                                </p:column>
+
+                                <p:column headerText="Dirección" >
+                                    <h:outputText value="#{tituloRegistrado.txtDireccion}">
+                                        <f:convertNumber pattern="$ ###,###.00"/>
+                                    </h:outputText>
+                                </p:column>
+
+                                <p:column headerText="Subtotal">
+                                    <h:outputText value="#{tituloRegistrado.valTotalapagar}">
+                                        <f:convertNumber pattern="###,###.00"/>
+                                    </h:outputText>
+                                </p:column>
+
+
+
+
+                            </p:dataTable>
+
+
+
+                        </h:panelGrid>
+
+
+                    </p:outputPanel>
+                </h:form>
+
+            </p:panel>
+        </h:panelGroup>
+    </ui:define>
+</ui:composition>

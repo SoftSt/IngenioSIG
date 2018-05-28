@@ -267,7 +267,7 @@ public class CatastroServicioImpl implements CatastroServicio {
     public List<Dominios> buscarDominiosPorEstadoReparacion(List<Dominios> dominios, String domiDescripcion, String domiCalculo) {
         List<Dominios> listaDominios = new ArrayList<>();
         for (Dominios nuevoDominio : dominios) {
-            if (nuevoDominio.getDomiDescripcion().contains(domiDescripcion.trim())
+            if (!ComunUtil.esNulo(domiDescripcion)&& nuevoDominio.getDomiDescripcion().contains(domiDescripcion.trim())
                     && nuevoDominio.getDomiCalculo().contains(domiCalculo.trim())) {
                 listaDominios.add(nuevoDominio);
             }

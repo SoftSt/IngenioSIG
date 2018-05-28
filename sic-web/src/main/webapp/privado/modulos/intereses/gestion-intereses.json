@@ -1,0 +1,9 @@
+{
+    "configuraciones": {
+        "pantalla": {
+            "titulo": "Lista Intereses",
+            "icono": "fa fa-bar-chart",
+            "descripcion": "Gestión de intereses del Sistema"
+        }
+    }
+}

@@ -16,6 +16,13 @@ import ec.com.newvi.sic.web.sesion.SesionBean;
 import ec.com.newvi.sic.web.sesion.SistemaBean;
 import javax.ejb.EJB;
 import javax.inject.Inject;
+import java.io.File;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 /**
  *
@@ -38,8 +45,11 @@ public abstract class SistemaBB {
     protected Funcionalidades funcionalidadActual;
 
     protected EnumEtiquetas tituloPantalla;
+    protected String tituloPantallaXML;
     protected EnumEtiquetas iconoPantalla;
+    protected String iconoPantallaXML;
     protected EnumEtiquetas descripcionPantalla;
+    protected String descripcionPantallaXML;
 
     public EnumEtiquetas getTituloPantalla() {
         return tituloPantalla;
@@ -53,10 +63,54 @@ public abstract class SistemaBB {
         return descripcionPantalla;
     }
 
+    public String getTituloPantallaXML() {
+        return tituloPantallaXML;
+    }
+
+    public String getIconoPantallaXML() {
+        return iconoPantallaXML;
+    }
+
+    public String getDescripcionPantallaXML() {
+        return descripcionPantallaXML;
+    }
+
     protected void establecerTitulo(EnumEtiquetas titulo, EnumEtiquetas icono, EnumEtiquetas descripcion) {
         this.tituloPantalla = titulo;
         this.iconoPantalla = icono;
         this.descripcionPantalla = descripcion;
+    }
+
+    protected void establecerTituloXML() {
+
+        try {
+
+            File archivo = new File("/opt/sigc/config/pantallas/prueba.xml");
+
+            DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+            DocumentBuilder documentBuilder = dbf.newDocumentBuilder();
+            Document document = documentBuilder.parse(archivo);
+
+            //NodeList nList = doc.getElementsByTagName("pantalla");
+            NodeList listaEmpleados = document.getElementsByTagName("pantalla");
+            NodeList listaEmpleados2 = document.getChildNodes();
+            //NodeList listaEmpleados2 = document.get
+            NodeList node = document.getChildNodes();
+             
+            for (int temp = 0; temp < listaEmpleados.getLength(); temp++) {
+                Node node2 = listaEmpleados.item(temp);
+                if (node2.getNodeType() == Node.ELEMENT_NODE) {
+
+                    Element eElement = (Element) node2;
+
+                    this.tituloPantallaXML = eElement.getAttribute("titulo");
+                    this.iconoPantallaXML = eElement.getAttribute("icono");
+                    this.descripcionPantallaXML = eElement.getAttribute("descripcion");
+                }
+            }
+        } catch (Exception e) {
+        }
+
     }
 
     protected void obtenerFuncionalidadActual(EnumFuncionalidad funcionalidad) {

@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:h="http://java.sun.com/jsf/html"
+                template="/WEB-INF/templates/default.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:newvi="http://ec.com.newvi.faces/ui">
+    <ui:define name="content">
+        <h:panelGroup id="grupoFormularioEconomico">
+            <p:panel id="panelListaFichaCatastral" rendered="#{formularioEconomicoBB.esPantallaActual('PANTALLA_LISTADO')}">
+                <h:form id="formularioListaFichaCatastral">  
+
+                    <p:growl id="growl" showDetail="true" sticky="true" life="800"/>
+                    <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+                    <p>
+                        <h2>
+                            <h:outputText styleClass="#{formularioEconomicoBB.iconoPantalla.textoEtiqueta}"/>
+                            <h:outputText value=" #{formularioEconomicoBB.tituloPantalla.textoEtiqueta}"/>
+                        </h2>
+                    </p>
+                    <p>#{formularioEconomicoBB.descripcionPantalla.textoEtiqueta}</p>
+
+                    <p:dataTable id="listaFichaCatastral" var="fichaCatastral" widgetVar="listaFichaCatastralTabla"
+                                 value="#{formularioEconomicoBB.listaFichas}" rowKey="#{fichaCatastral.predio.codCatastral}" 
+                                 paginator="true" rows="10" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" 
+                                 rowsPerPageTemplate="10,15,20" 
+                                 emptyMessage="No se han encontrado resultados" 
+                                 paginatorPosition="bottom">
+
+                        <p:column headerText="Codigo" sortBy="#{fichaCatastral.predio.nomCodigocatastral}" filterBy="#{fichaCatastral.predio.nomCodigocatastral}">
+                            <h:outputText value="#{fichaCatastral.predio.nomCodigocatastral}" />
+                        </p:column>
+
+                        <p:column headerText="Propietario CI/RUC" sortBy="#{fichaCatastral.contribuyentePropiedad.codCedularuc}" filterBy="#{fichaCatastral.contribuyentePropiedad.codCedularuc}">
+                            <h:outputText value="#{fichaCatastral.contribuyentePropiedad.codCedularuc}"/>
+                        </p:column>
+
+                        <p:column headerText="Nombre Propietario" sortBy="#{fichaCatastral.contribuyentePropiedad.nomApellidos} #{fichaCatastral.contribuyentePropiedad.nomNombres}" filterBy="#{fichaCatastral.contribuyentePropiedad.nomApellidos} #{fichaCatastral.contribuyentePropiedad.nomNombres}" >
+                            <h:outputText value="#{fichaCatastral.contribuyentePropiedad.nomApellidos} #{fichaCatastral.contribuyentePropiedad.nomNombres}"/>
+                        </p:column>
+                        <p:column width="80">
+                            <p:commandButton process="listaFichaCatastral" 
+                                             actionListener="#{formularioEconomicoBB.abrirDialogImpresionFormulario(fichaCatastral.predio.codCatastral)}"
+                                             icon="fa fa-edit"
+                                             id="generarFormulario"
+                                             update="grupoFormularioEconomico">
+                                <p:ajax update="toolTipAdd" process="@this" /> 
+                            </p:commandButton>
+                            <p:tooltip id="toolTipAdd" for="generarFormulario" value="Generar Reportes" showEffect="fade" hideEffect="fade" position="bottom"/>
+                        </p:column>
+
+
+                    </p:dataTable>
+                    <p:dialog header="Seleccionar Formulario Económico" widgetVar="wgSeleccionFormulario" 
+                              modal="true" height="100">
+                        <p><h:outputText value="Seleccione el tipo de formulario económico que necesita" /></p>
+                        <h:panelGrid columns="3">
+                            <p:commandButton icon="fa fa-print" 
+                                             value="Notificación Avalúo" 
+                                             id="imprimirNotificacionAvaluo"
+                                             update="grupoFormularioEconomico"
+                                             onclick="PrimeFaces.monitorDownload(start, stop);">
+                                <p:fileDownload value="#{formularioEconomicoBB.imprimir('NOTIFICACION_AVALUO')}" />
+                            </p:commandButton>
+                            <p:commandButton icon="fa fa-print" 
+                                             value="Cerfiticación Avalúo" 
+                                             id="imprimirCerfiticacionAvaluo"
+                                             update="grupoFormularioEconomico"
+                                             onclick="PrimeFaces.monitorDownload(start, stop);">
+                                <p:fileDownload value="#{formularioEconomicoBB.imprimir('CERTIFICACION_AVALUO')}" />
+                            </p:commandButton>
+                            <p:commandButton icon="fa fa-print" 
+                                             value="Título Credito" 
+                                             id="imprimirTituloCredito"
+                                             update="grupoFormularioEconomico"
+                                             onclick="PrimeFaces.monitorDownload(start, stop);">
+                                <p:fileDownload value="#{formularioEconomicoBB.imprimir('TITULO_CREDITO')}" />
+                            </p:commandButton>
+                        </h:panelGrid>
+                    </p:dialog>                   
+                </h:form>
+            </p:panel>
+        </h:panelGroup>
+
+
+    </ui:define>
+</ui:composition>

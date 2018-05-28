@@ -5,6 +5,7 @@
  */
 package ec.com.newvi.sic.web.backingbean;
 
+import ec.com.newvi.sic.dto.FichaCatastralDto;
 import ec.com.newvi.sic.enums.EnumEstadoRegistro;
 import ec.com.newvi.sic.enums.EnumNewviExcepciones;
 import ec.com.newvi.sic.enums.EnumSiNo;
@@ -45,8 +46,17 @@ public class PropiedadBB extends AdminFichaCatastralBB {
     private EnumTraslacion[] listaTipoTraslacion;
     private EnumSitActual[] listaTipoSitActual;
     private EnumSiNo[] listaTipoEscritura;
+    FichaCatastralDto fichaContribuyente;
 
     private List<Contribuyentes> listaContribuyentesFiltrado;
+
+    public FichaCatastralDto getFichaContribuyente() {
+        return fichaContribuyente;
+    }
+
+    public void setFichaContribuyente(FichaCatastralDto fichaContribuyente) {
+        this.fichaContribuyente = fichaContribuyente;
+    }
 
     public List<Contribuyentes> getListaContribuyentesFiltrado() {
         return listaContribuyentesFiltrado;
@@ -221,6 +231,7 @@ public class PropiedadBB extends AdminFichaCatastralBB {
     @Override
     public void seleccionarPredio(Integer idPredio) {
         super.seleccionarPredio(idPredio);
+        this.fichaContribuyente = new FichaCatastralDto(this.predio);
         this.listaPropiedad = (List) predio.getHistoricoPropiedad();
         conmutarPantalla(EnumPantallaMantenimiento.PANTALLA_EDICION);
         establecerTitulo(EnumEtiquetas.PROPIETARIO_EDITAR_TITULO,
@@ -238,6 +249,7 @@ public class PropiedadBB extends AdminFichaCatastralBB {
     public void seleccionarContribuyenteParaNuevaPropiedad(Integer idContribuyente) {
         this.seleccionarContribuyente(idContribuyente);
         this.crearNuevoPropiedad();
+        actualizarListadoPredios();
     }
 
     public void seleccionarPropiedad(Integer idPropiedad) {
@@ -278,6 +290,20 @@ public class PropiedadBB extends AdminFichaCatastralBB {
             LoggerNewvi.getLogNewvi(this.getClass()).error(e, sesionBean.getSesion());
             MensajesFaces.mensajeError(e.getMessage());
             return false;
+        }
+    }
+
+    public void actualizarCaracteristicasPropiedad(Propiedad propiedadActual) {
+        try {
+            contribuyentesServicio.actualizarPropiedad(propiedadActual, sesionBean.getSesion());
+            actualizarListadoPredios();
+            MensajesFaces.mensajeInformacion(EnumNewviExcepciones.INF349.presentarMensaje());
+        } catch (NewviExcepcion e) {
+            LoggerNewvi.getLogNewvi(this.getClass()).error(e, sesionBean.getSesion());
+            MensajesFaces.mensajeError(e.getMessage());
+        } catch (Exception e) {
+            LoggerNewvi.getLogNewvi(this.getClass()).error(EnumNewviExcepciones.ERR000.presentarMensajeCodigo(), e, sesionBean.getSesion());
+            MensajesFaces.mensajeError(e.getMessage());
         }
     }
 

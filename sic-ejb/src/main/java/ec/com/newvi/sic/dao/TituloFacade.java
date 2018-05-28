@@ -56,6 +56,16 @@ public class TituloFacade extends AbstractFacade<Titulos, Integer> implements Se
 
     public List<Titulos> buscarTitulosPorCodigoCatastral(Integer codCatastral) {
         // Busca un listado de titulos
+        //Query q = this.getEntityManager().createQuery("SELECT titulo FROM Titulos titulo where titulo.tituloEstado = :ESTADO AND titulo.codCatastral.codCatastral = :CODCATASTRAL AND titulo.stsEstado = :ESTADOTITULO OR titulo.stsEstado = :ESTADOTITULOAUX");
+        Query q = this.getEntityManager().createQuery("SELECT titulo FROM Titulos titulo where titulo.tituloEstado = :ESTADO AND titulo.codCatastral.codCatastral = :CODCATASTRAL AND titulo.stsEstado = :ESTADOTITULO");
+        q.setParameter("ESTADO", EnumEstadoRegistro.A);
+        q.setParameter("ESTADOTITULO", EnumEstadoTitulo.TITULO_EMITIDO);
+        q.setParameter("CODCATASTRAL", codCatastral);
+        //@return listado de titulos
+        return q.getResultList();
+    }
+    /*public List<Titulos> buscarTitulosPorCodigoCatastral(Integer codCatastral) {
+        // Busca un listado de titulos
         Query q = this.getEntityManager().createQuery("SELECT titulo FROM Titulos titulo where titulo.tituloEstado = :ESTADO AND titulo.codCatastral.codCatastral = :CODCATASTRAL AND titulo.stsEstado = :ESTADOTITULO OR titulo.stsEstado = :ESTADOTITULOAUX");
         q.setParameter("ESTADO", EnumEstadoRegistro.A);
         q.setParameter("ESTADOTITULO", EnumEstadoTitulo.TITULO_EMITIDO);
@@ -63,7 +73,7 @@ public class TituloFacade extends AbstractFacade<Titulos, Integer> implements Se
         q.setParameter("CODCATASTRAL", codCatastral);
         //@return listado de titulos
         return q.getResultList();
-    }
+    }*/
 
     public List<Titulos> buscarTitulosPorTipo(EnumEstadoTitulo tipoTitulo) {
         // Busca un listado de titulos
