@@ -30,7 +30,8 @@ public class FichaCatastralDto {
 
     public FichaCatastralDto(Predios predio) {
         this.predio = predio;
-        this.propiedadActual = obtenerPropiedadActual(predio);
+        //this.propiedadActual = obtenerPropiedadActual(predio);
+        this.propiedadActual = null;
         if (ComunUtil.esNulo(propiedadActual) || ComunUtil.esNulo(propiedadActual.getPropiedad())) {
             this.propiedadActual = obtenerPropiedadDesconocido();
         }

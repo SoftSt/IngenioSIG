@@ -9,7 +9,9 @@ import ec.com.newvi.sic.enums.EnumEstadoRegistro;
 import ec.com.newvi.sic.util.ComunUtil;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -18,6 +20,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -32,6 +35,9 @@ import javax.validation.constraints.Size;
 @Table(name = "cat_seg_usuarios", schema = "public")
 
 public class Usuarios implements Serializable {
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "secUsuarioEmite")
+    private List<CabeceraTitulo> listaTitulosEmitidos;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -373,4 +379,13 @@ public class Usuarios implements Serializable {
     public String obtenerImagen(){
         return !ComunUtil.esNulo(this.usuFoto) || !ComunUtil.esCadenaVacia(this.usuFoto)? this.usuFoto : "usuario_desconocido.jpg";
     }
+
+    public List<CabeceraTitulo> getListaTitulosEmitidos() {
+        return listaTitulosEmitidos;
+    }
+
+    public void setListaTitulosEmitidos(List<CabeceraTitulo> listaTitulosEmitidos) {
+        this.listaTitulosEmitidos = listaTitulosEmitidos;
+    }
+
 }

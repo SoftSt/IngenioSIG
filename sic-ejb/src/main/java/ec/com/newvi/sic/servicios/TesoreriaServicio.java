@@ -6,6 +6,7 @@
 package ec.com.newvi.sic.servicios;
 
 import ec.com.newvi.sic.dto.SesionDto;
+import ec.com.newvi.sic.modelo.CabeceraTitulo;
 import ec.com.newvi.sic.modelo.ConstantesDescuentos;
 import ec.com.newvi.sic.modelo.ConstantesInteresMora;
 import ec.com.newvi.sic.util.excepciones.NewviExcepcion;
@@ -95,11 +96,55 @@ public interface TesoreriaServicio {
      * @throws NewviExcepcion
      */
     public void generarNuevaMulta(ConstantesInteresMora constantesInteresMora, SesionDto sesion) throws NewviExcepcion;
+
     /**
      * Obtiene el interes generado
-     * @param numeroAnios numero de anios por los cuales se va ha bucar el interes
+     *
+     * @param numeroAnios numero de anios por los cuales se va ha bucar el
+     * interes
      * @return interes generado
      */
     public ConstantesInteresMora buscarInteresPorNumeroAnios(Integer numeroAnios);
+
+    /*------------------------------------------------------------Titulos------------------------------------------------------------*/
+    // public List<CabeceraTitulo> generarTitulosDesdeAvaluos(List<Avaluo> listadoAvaluos, SesionDto sesion) throws NewviExcepcion;
+    //public List<CabeceraTitulo> consultarTitulosGenerados(Date fechaEmision);
+    //public List<CabeceraTitulo> consultarTitulosPorCodigoCatastral(Integer codCatastral);
+    //public List<CabeceraTitulo> consultarTitulosPorTipo(EnumEstadoTitulo tipoTitulo);
+    //public List<CabeceraTitulo> buscarTitulosGeneradosPorAnio(String anio);
+    /**
+     * Generará una cabecera de título
+     *
+     * @param nuevaCabeceraTitulo nueva cabecera de título a registrarse
+     * @param sesion Sesion que realiza la operación
+     * @return código de la la cabera del título
+     * @throws NewviExcepcion
+     */
+    public Integer generarNuevaCabeceraTitulo(CabeceraTitulo nuevaCabeceraTitulo, SesionDto sesion) throws NewviExcepcion;
+
+    /**
+     * Obtendrá una cabecera de título dado por su secuencial
+     *
+     * @param secTitulo secuencial de la cabecera de título
+     * @return cabecera de título consultada
+     * @throws NewviExcepcion
+     */
+    public CabeceraTitulo seleccionarCabeceraTitulo(Integer secTitulo) throws NewviExcepcion;
+
+    /**
+     * Actualizará la cabecera de título
+     *
+     * @param cabeceraTitulo cabecera título a actualizar
+     * @param sesion Sesion que realiza la operación
+     * @return código de la cabecera título actualizada
+     * @throws NewviExcepcion
+     */
+    public Integer actualizarCabeceraTitulo(CabeceraTitulo cabeceraTitulo, SesionDto sesion) throws NewviExcepcion;
+
+    /**
+     *Listará las cabeceras de títulos que tenga el sistema
+     * @return lista de cabeceras de titulos
+     */
+    public List<CabeceraTitulo> consultarCabeceraTitulos();
 
 }

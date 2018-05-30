@@ -5,16 +5,20 @@
  */
 package ec.com.newvi.sic.servicios.impl;
 
+import ec.com.newvi.sic.dao.CabeceraTituloFacade;
 import ec.com.newvi.sic.dao.ConstantesDescuentosFacade;
 import ec.com.newvi.sic.dao.ConstantesInteresMoraFacade;
 import ec.com.newvi.sic.dto.SesionDto;
 import ec.com.newvi.sic.enums.EnumNewviExcepciones;
+import ec.com.newvi.sic.modelo.CabeceraTitulo;
 import ec.com.newvi.sic.modelo.ConstantesDescuentos;
 import ec.com.newvi.sic.modelo.ConstantesInteresMora;
 import ec.com.newvi.sic.servicios.TesoreriaServicio;
 import ec.com.newvi.sic.util.ComunUtil;
 import ec.com.newvi.sic.util.excepciones.NewviExcepcion;
 import ec.com.newvi.sic.util.logs.LoggerNewvi;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import javax.annotation.security.PermitAll;
 import javax.ejb.EJB;
@@ -33,6 +37,9 @@ public class TesoreriaServicioImpl implements TesoreriaServicio {
 
     @EJB
     private ConstantesInteresMoraFacade constantesInteresMoraFacade;
+
+    @EJB
+    private CabeceraTituloFacade cabeceraTituloFacade;
 
     @Override
     public List<ConstantesDescuentos> consultarDescuentos() {
@@ -128,8 +135,54 @@ public class TesoreriaServicioImpl implements TesoreriaServicio {
 
         constantesInteresMoraFacade.create(constantesInteresMora);
     }
+
     @Override
-    public ConstantesInteresMora buscarInteresPorNumeroAnios(Integer numeroAnios){
+    public ConstantesInteresMora buscarInteresPorNumeroAnios(Integer numeroAnios) {
         return constantesInteresMoraFacade.buscarInteresPorNumeroAnios(numeroAnios);
+    }
+
+    @Override
+    public Integer generarNuevaCabeceraTitulo(CabeceraTitulo nuevaCabeceraTitulo, SesionDto sesion) throws NewviExcepcion {
+        // Validar que los datos no sean incorrectos
+        LoggerNewvi.getLogNewvi(this.getClass()).debug("Validando cabecera del título...", sesion);
+        if (!nuevaCabeceraTitulo.esCabeceraTituloValida()) {
+            throw new NewviExcepcion(EnumNewviExcepciones.ERR338);
+        }
+        // Crear el cabecera del título
+        LoggerNewvi.getLogNewvi(this.getClass()).debug("Creando cabecera del título...", sesion);
+
+        cabeceraTituloFacade.create(nuevaCabeceraTitulo);
+        // Si todo marcha bien enviar nombre del cabecera título
+        return nuevaCabeceraTitulo.getSecTitulo();
+    }
+
+    @Override
+    public CabeceraTitulo seleccionarCabeceraTitulo(Integer secTitulo) throws NewviExcepcion {
+        if (ComunUtil.esNumeroPositivo(secTitulo)) {
+            return cabeceraTituloFacade.find(secTitulo);
+        } else {
+            throw new NewviExcepcion(EnumNewviExcepciones.ERR011);
+        }
+    }
+
+    @Override
+    public Integer actualizarCabeceraTitulo(CabeceraTitulo cabeceraTitulo, SesionDto sesion) throws NewviExcepcion {
+        // Validar que los datos no sean incorrectos
+        LoggerNewvi.getLogNewvi(this.getClass()).debug("Validando cabecera del título...", sesion);
+        if (!cabeceraTitulo.esCabeceraTituloValida()) {
+            throw new NewviExcepcion(EnumNewviExcepciones.ERR338);
+        }
+        // Editar la cabecera del título
+        LoggerNewvi.getLogNewvi(this.getClass()).debug("Editando cabecera del título...", sesion);
+
+        cabeceraTituloFacade.edit(cabeceraTitulo);
+
+        // Si todo marcha bien enviar nombre de la cabecera del título
+        return cabeceraTitulo.getSecTitulo();
+    }
+
+    @Override
+    public List<CabeceraTitulo> consultarCabeceraTitulos() {
+        return cabeceraTituloFacade.buscarListaCabeceraTitulos();
     }
 }

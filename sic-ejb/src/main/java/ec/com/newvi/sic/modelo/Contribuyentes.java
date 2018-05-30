@@ -11,6 +11,8 @@ import ec.com.newvi.sic.util.ComunUtil;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -31,6 +33,9 @@ import javax.validation.constraints.Size;
 @Entity
 @Table(name = "cat_ciu_personeria", schema = "public")
 public class Contribuyentes implements Serializable {
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "secContribuyente")
+    private List<CabeceraTitulo> listaTitulosPrediales;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -346,4 +351,13 @@ public class Contribuyentes implements Serializable {
     public Boolean esContribuyenteValido() {
         return (!ComunUtil.esNulo(this.codCedularuc));
     }
+
+    public List<CabeceraTitulo> getListaTitulosPrediales() {
+        return listaTitulosPrediales;
+    }
+
+    public void setListaTitulosPrediales(List<CabeceraTitulo> listaTitulosPrediales) {
+        this.listaTitulosPrediales = listaTitulosPrediales;
+    }
+
 }
